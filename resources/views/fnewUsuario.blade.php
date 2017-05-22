@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="category"> ooooooooo</label>
+                    <label for="category"> ttttttttt</label>
                     <input type="text" class="form-control" id="cNomUsu" placeholder="Nombres" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="tags">ppppppppp</label>
+                    <label for="tags">rrrrrrrrr</label>
                     <input type="text" class="form-control" id="cApeUsu" placeholder="Apellidos" />
                 </div>
             </div>
