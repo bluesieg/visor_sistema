@@ -29,10 +29,10 @@ Route::get('/dialog',function(){
 
 //Route::get('/nuevousuario', 'HomeController@nuevoUsuario');
 
-//Route::get('vw_general', function (){
-//    return view('vw_general');
-//    
-//});
+Route::get('hola', function (){
+    echo 'HOLA';
+    
+});
 //Route::get('home', [
 //    'uses'  => 'HomeController@index',
 //    'as'    => 'home'
