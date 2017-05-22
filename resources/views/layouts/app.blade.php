@@ -37,6 +37,13 @@
     <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-portrait.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
     <link rel="apple-touch-startup-image" href="{{ asset('img/splash/iphone.png') }}" media="screen and (max-device-width: 320px)">
     
+    <style>
+        .ui-dialog .ui-widget-header
+        {
+            background: #005533;
+            height: 40px;
+        }
+    </style>
 </head>
 <body class="desktop-detected pace-done fixed-header fixed-navigation">
     <header id="header">
@@ -176,89 +183,72 @@
 		
 		// DO NOT REMOVE : GLOBAL FUNCTIONS!
 		
-		$(document).ready(function() {
-			
-		
-			/*
-			 * CONVERT DIALOG TITLE TO HTML
-			 * REF: http://stackoverflow.com/questions/14488774/using-html-in-a-dialogs-title-in-jquery-ui-1-10
-			 */
-			$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-				_title : function(title) {
-					if (!this.options.title) {
-						title.html("&#160;");
-					} else {
-						title.html(this.options.title);
-					}
-				}
-			}));
-		
-		
-			/*
-			* DIALOG SIMPLE
-			*/
-		
-			// Dialog click
-			$('#dialog_link').click(function() {
-				$('#dialog_simple').dialog('open');
-				return false;
-		
-			});
-		
-			$('#dialog_simple').dialog({
-				autoOpen : false,
-				width : 600,
-				resizable : false,
-				modal : true,
-				title : "<div class='widget-header'><h4><i class='fa fa-warning'></i> Empty the recycle bin?</h4></div>",
-				buttons : [{
-					html : "<i class='fa fa-trash-o'></i>&nbsp; Delete all items",
-					"class" : "btn btn-danger",
-					click : function() {
-						$(this).dialog("close");
-					}
-				}, {
-					html : "<i class='fa fa-times'></i>&nbsp; Cancel",
-					"class" : "btn btn-default",
-					click : function() {
-						$(this).dialog("close");
-					}
-				}]
-			});
-		
-			/*
-			* DIALOG HEADER ICON
-			*/
-		
-			// Modal Link
-			$('#modal_link').click(function() {
-				$('#dialog-message').dialog('open');
-				return false;
-			});
-		
-			$("#dialog-message").dialog({
-				autoOpen : false,
-				modal : true,
-				title : "<div class='widget-header'><h4><i class='icon-ok'></i> jQuery UI Dialog</h4></div>",
-				buttons : [{
-					html : "Cancel",
-					"class" : "btn btn-default",
-					click : function() {
-						$(this).dialog("close");
-					}
-				}, {
-					html : "<i class='fa fa-check'></i>&nbsp; OK",
-					"class" : "btn btn-primary",
-					click : function() {
-						$(this).dialog("close");
-					}
-				}]
-		
-			});			
+$(document).ready(function() {
 
-		})
+    $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title : function(title) {
+                    if (!this.options.title) {
+                            title.html("&#160;");
+                    } else {
+                            title.html(this.options.title);
+                    }
+            }
+    }));
 
-		</script>
+    $('#dialog_link').click(function() {
+            $('#dialog_simple').dialog('open');
+//            return false;
+
+    });
+
+    $('#dialog_simple').dialog({
+            autoOpen : false,
+            width : 600,
+            resizable : false,
+            modal : true,
+            title : "<div class='widget-header'><h4><i class='fa fa-warning'></i>Titulo</h4></div>",
+            buttons : [{
+                    html : "<i class='fa fa-trash-o'></i>&nbsp; Borrar",
+                    "class" : "btn btn-danger",
+                    click : function() {
+                            $(this).dialog("close");
+                    }
+            }, {
+                    html : "<i class='fa fa-times'></i>&nbsp; Salir",
+                    "class" : "btn btn-default",
+                    click : function() {
+                            $(this).dialog("close");
+                    }
+            }]
+    });
+
+       
+    $('#modal_link').click(function() {
+            $('#dialog-message').dialog('open');
+            return false;
+    });
+
+    $("#dialog-message").dialog({
+            autoOpen : false,
+            modal : true,
+            title : "<div class='widget-header'><h4><i class='icon-ok'></i> jQuery UI Dialog</h4></div>",
+            buttons : [{
+                    html : "Cancel",
+                    "class" : "btn btn-default",
+                    click : function() {
+                            $(this).dialog("close");
+                    }
+            }, {
+                    html : "<i class='fa fa-check'></i>&nbsp; OK",
+                    "class" : "btn btn-primary",
+                    click : function() {
+                            $(this).dialog("close");
+                    }
+            }]
+    });
+});
+
+</script>
     
     <script type="text/javascript">
 

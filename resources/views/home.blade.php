@@ -28,21 +28,21 @@
 
 <div id="dialog_simple" title="Dialog Simple Title">
     <p>
-        Dialog
+        Dialog Dialog
     </p>
 </div>
 
 <div id="dialog-message" title="Dialog Simple Title">
-	<p>
-		This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.
-	</p>
+    <p>
+        Mensaje de Este dialogo
+    </p>
 
-	<div class="hr hr-12 hr-double"></div>
-		Currently using
-		<b>36% of your storage space</b>
-		<div class="progress progress-striped active no-margin">
-                    <div class="progress-bar progress-primary" role="progressbar" style="width: 36%"></div>
-		</div>
+    <div class="hr hr-12 hr-double"></div>
+        Currently using
+        <b>36% of your storage space</b>
+        <div class="progress progress-striped active no-margin">
+            <div class="progress-bar progress-primary" role="progressbar" style="width: 36%"></div>
+        </div>
 </div>
 
 @endsection
