@@ -1,7 +1,19 @@
 
-
-     
-
+    <div class="row">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="category"> Nombre</label>
+                    <input type="text" class="form-control" id="cNomUsu" placeholder="Nombres" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="tags">Apellidos</label>
+                    <input type="text" class="form-control" id="cApeUsu" placeholder="Apellidos" />
+                </div>
+            </div>
+        </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -47,4 +59,4 @@
                     </div>
                 </div>
 
-           
+           </div>
