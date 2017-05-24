@@ -116,14 +116,52 @@
         </div>
         <nav>
             <ul>
-                <li class="active">
-                    <a href="#" title="Administracion"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Administracion</span></a>
+                <li class="top-menu-invisible">
+                    <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">Configuracion</span></a>
                     <ul>
-                        <li class="active">
-                            <a href='{{ route('usuarios') }}' onclick=""><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Usuarios</span></a>                            
+                        <li class="">
+                            <a href="layouts.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-gear"></i> <span class="menu-item-parent">UIT</span></a>
                         </li>
                         <li class="">
-                            <a href="{{ route('reportes1') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Reportes</span></a>
+                            <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Depreciacion</span></a>
+                        </li>
+                        <li>
+                            <a href="#" title="Valores Unitario"><i class="fa fa-cube"></i>Valores Unitario</a>
+                        </li>
+                        <li>
+                            <a href="#" title="Oficinas"><i class="fa fa-cube"></i>Oficinas</a>
+                        </li>
+                        <li>
+                            <a href="#" title="Configuracion del IPM."><i class="fa fa-cube"></i>Config. IPM</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('usuarios') }}" title="Usuarios"><i class="fa fa-cube"></i>Usuarios</a>
+                        </li>                        
+                        <li>
+                            <a href="#" title="Usos Predio"><i class="fa fa-cube"></i>Usos Predio</a>
+                        </li>
+                        <li>
+                            <a href="#" title="Naturaleza del Contrato"><i class="fa fa-cube"></i>Nat. del Contrato</a>
+                        </li>
+                        <li>
+                            <a href="#" title="Documento de Transferencia"><i class="fa fa-cube"></i>Doc. Transferencia</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
+                    <ul>
+                        <li class="">
+                            <a href='#' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyantes</span></a>                            
+                        </li>
+                        <li class="">
+                            <a href="#" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
+                        </li>
+                        <li class="">
+                            <a href='#' title="Predios Rusticos"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
+                        </li>
+                        <li class="">
+                            <a href="#" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
                         </li>
                     </ul>	
                 </li>
