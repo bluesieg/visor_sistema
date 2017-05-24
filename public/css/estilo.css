@@ -1,0 +1,58 @@
+.ui-dialog .ui-widget-header{
+    background: #5F9C5F;
+    height: 42px;
+}
+.ui-dialog-titlebar-close::before {
+    content: "";          
+    line-height: 2;            
+    opacity: 1;
+}
+
+.ui-widget-content.ui-dialog{
+    border: 1px solid #70B870;   
+}
+.ui-dialog .ui-dialog-titlebar{
+    border-radius: 0px;
+    font-size: 14px;           
+}
+.ui-dialog {            
+    border-radius: 0px;            
+}
+.ui-dialog .ui-dialog-title {
+    margin: -3px 3px;
+    color: #FFFFFF;
+    padding: 0;
+}
+.ui-dialog .ui-dialog-content {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;            
+    overflow: visible;
+    padding: 0.5em 1em;            
+}
+.ui-dialog .ui-dialog-buttonpane {
+    border-top: 1px solid #70b870;
+    margin-top: 13px;
+    padding: 12px;
+    text-align: right;
+}
+aside {
+    background: rgba(0, 0, 0, 0) linear-gradient(to right, #2d5e2d 93%, #374f37 100%) repeat scroll 0 0;   
+}
+.page-footer {
+    background:#407040;    
+}
+#header {
+    background-color: #f3f3f3;
+    background-image: linear-gradient(to bottom, #80E080,#80C080);
+    background-repeat: repeat-x;    
+}
+.fixed-header #header {
+    border-bottom: 1px solid #80C080;    
+}
+
+#logo {   
+    margin-top: 4px;   
+}
+#logo img {    
+    padding-left: 5px;
+    width: 155px;
+}

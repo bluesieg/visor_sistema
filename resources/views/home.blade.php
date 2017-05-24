@@ -11,38 +11,16 @@
                 Container
             </span>
                 
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="well well-sm well-light">
-                        <h3>Dialogue</h3>
-                        <a href="#" id="dialog_link" class="btn btn-info">Dialog</a>
-                        &nbsp;
-                        <a href="#" id="modal_link" class="btn bg-color-purple txt-color-white"> Open Modal Dialog</a>
-                    </div>
-                </div>
+            <div class="well well-sm well-light">
+                <h3>Dialogue</h3>
+                <a id="dialog_link" class="btn btn-info" href="#"> Open Dialog </a>
+                <a id="modal_link" class="btn bg-color-purple txt-color-white" href="#"> Open Modal Dialog </a>
             </div>
 
         </h1>
     </div>
 </div>
-
-<div id="dialog_simple" title="Dialog Simple Title">
-    <p>
-        Dialog Dialog
-    </p>
-</div>
-
-<div id="dialog-message" title="Dialog Simple Title">
-    <p>
-        Mensaje de Este dialogo
-    </p>
-
-    <div class="hr hr-12 hr-double"></div>
-        Currently using
-        <b>36% of your storage space</b>
-        <div class="progress progress-striped active no-margin">
-            <div class="progress-bar progress-primary" role="progressbar" style="width: 36%"></div>
-        </div>
-</div>
+<script src="{{ asset('archivos_js/administracion.js') }}"></script>
+@include('administracion/vw_general')
 
 @endsection

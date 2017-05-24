@@ -26,10 +26,4 @@
         </h1>
     </div>
 </div>
-
-<div class="modal fade" id="myModal" data-backdrop='static' role="dialog">
-     HOLA
-</div>
-
-
 @endsection

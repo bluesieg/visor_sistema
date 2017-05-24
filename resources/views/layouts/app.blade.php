@@ -8,7 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>MD-CERRO COLORADO</title>
+    <title>Maynsa</title>
+    
     
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
@@ -37,67 +38,68 @@
     <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-portrait.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
     <link rel="apple-touch-startup-image" href="{{ asset('img/splash/iphone.png') }}" media="screen and (max-device-width: 320px)">
     
-    <style>
-        .ui-dialog .ui-widget-header
-        {
-            background: #005533;
-            height: 40px;
-        }
-    </style>
+    <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
 </head>
 <body class="desktop-detected pace-done fixed-header fixed-navigation">
     <header id="header">
-            <div id="logo-group">                
-                <span id="logo"> <img src="img/logo_cc.png" alt="SmartAdmin"> </span>
-            </div>
-            @if (Auth::guest())
-            <div class="pull-right" style="margin-top: 8px">
-                <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Session</a>
-                <a href="{{ route('register') }}" class="btn btn-success">Registrarse</a>
-            </div>  
-            @else
-            <div class="project-context hidden-xs">
-                <span class="label">Projects:</span>
-                <span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
-                <!-- Suggestion: populate this list with fetch and push technique -->
-                <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a></li>
-                    <li><a href="javascript:void(0);">Notes on pipeline upgradee</a></li>
-                    <li><a href="javascript:void(0);">Assesment Report for merchant account</a></li>
-                    <li class="divider"></li>
-                    <li><a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a></li>
-                </ul>
-            </div>  
-            <div class="pull-right">
-                <div id="hide-menu" class="btn-header pull-right">
-                    <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
-                </div> 
-                <div id="logout" class="btn-header transparent pull-right">
-                    <span> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="Salir" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> 
-                        <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    </span>
-                </div>     
-                <ul class="header-dropdown-list">
-                    <li class="">
-                        <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
-                            <img src="img/avatars/sunny.png" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
-                            <span> {{ Auth::user()->name }} </span> <i class="fa fa-angle-down"></i> 
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Cambiar Password</a>
-                            </li>
-                            <div class="divider"></div>
-                            <li>
-                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>    
-            @endif
+        <div id="logo-group">                
+            <span id="logo"> <img src="img/logo_cc_2.png" alt="SmartAdmin"> </span> 
+
+        </div>
+        <div class="header hidden-xs">            
+            <h3 style="margin: 5px 0px; font-size: 27px">
+                <span class="label label-success">CERRO COLORADO</span>
+            </h3>
+        </div>
+        @if (Auth::guest())
+        <div class="pull-right" style="margin-top: 8px">
+            <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Session</a>
+            <a href="{{ route('register') }}" class="btn btn-success">Registrarse</a>
+        </div>  
+        @else
+        <div class="project-context hidden-xs">
+
+            <span class="label">Projects:</span>
+            <span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
+            <!-- Suggestion: populate this list with fetch and push technique -->
+            <ul class="dropdown-menu">
+                <li><a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a></li>
+                <li><a href="javascript:void(0);">Notes on pipeline upgradee</a></li>
+                <li><a href="javascript:void(0);">Assesment Report for merchant account</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a></li>
+            </ul>
+        </div>  
+        <div class="pull-right">
+            <div id="hide-menu" class="btn-header pull-right">
+                <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Colapsar Menu"><i class="fa fa-reorder"></i></a> </span>
+            </div> 
+            <div id="logout" class="btn-header transparent pull-right">
+                <span> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="Salir" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> 
+                    <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                </span>
+            </div>     
+            <ul class="header-dropdown-list">
+                <li class="">
+                    <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
+                        <img src="img/avatars/sunny.png" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
+                        <span> {{ Auth::user()->name }} </span> <i class="fa fa-angle-down"></i> 
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Cambiar Password</a>
+                        </li>
+                        <div class="divider"></div>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>    
+        @endif
     </header>
     @if (!Auth::guest())
     <aside id="left-panel">        
@@ -118,8 +120,7 @@
                     <a href="#" title="Administracion"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Administracion</span></a>
                     <ul>
                         <li class="active">
-                            <!--<a href='#' id="modal_link"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Usuarios</span></a>-->
-                            <a href="#" class="recargar_nuevo"> Open Modal Dialog </a>
+                            <a href='{{ route('usuarios') }}' onclick=""><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Usuarios</span></a>                            
                         </li>
                         <li class="">
                             <a href="{{ route('reportes1') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Reportes</span></a>
@@ -177,78 +178,23 @@
     
     <script src="{{ asset('js/app.seed.js') }}"></script>   
     
+    <script src="js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="js/plugin/jqgrid/grid.locale-en.min.js"></script>
     
     
-<script type="text/javascript">
-		
-		// DO NOT REMOVE : GLOBAL FUNCTIONS!
-		
-$(document).ready(function() {
-
-    $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-            _title : function(title) {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+                _title : function(title) {
                     if (!this.options.title) {
-                            title.html("&#160;");
+                        title.html("&#160;");
                     } else {
-                            title.html(this.options.title);
+                        title.html(this.options.title);
                     }
-            }
-    }));
-
-    $('#dialog_link').click(function() {
-            $('#dialog_simple').dialog('open');
-//            return false;
-
-    });
-
-    $('#dialog_simple').dialog({
-            autoOpen : false,
-            width : 600,
-            resizable : false,
-            modal : true,
-            title : "<div class='widget-header'><h4><i class='fa fa-warning'></i>Titulo</h4></div>",
-            buttons : [{
-                    html : "<i class='fa fa-trash-o'></i>&nbsp; Borrar",
-                    "class" : "btn btn-danger",
-                    click : function() {
-                            $(this).dialog("close");
-                    }
-            }, {
-                    html : "<i class='fa fa-times'></i>&nbsp; Salir",
-                    "class" : "btn btn-default",
-                    click : function() {
-                            $(this).dialog("close");
-                    }
-            }]
-    });
-
-       
-    $('#modal_link').click(function() {
-            $('#dialog-message').dialog('open');
-            return false;
-    });
-
-    $("#dialog-message").dialog({
-            autoOpen : false,
-            modal : true,
-            title : "<div class='widget-header'><h4><i class='icon-ok'></i> jQuery UI Dialog</h4></div>",
-            buttons : [{
-                    html : "Cancel",
-                    "class" : "btn btn-default",
-                    click : function() {
-                            $(this).dialog("close");
-                    }
-            }, {
-                    html : "<i class='fa fa-check'></i>&nbsp; OK",
-                    "class" : "btn btn-primary",
-                    click : function() {
-                            $(this).dialog("close");
-                    }
-            }]
-    });
-});
-
-</script>
+                }
+            }));
+        });
+    </script>
     
     <script type="text/javascript">
 

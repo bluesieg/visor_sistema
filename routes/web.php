@@ -23,17 +23,12 @@ Route::get('/reportes', function () {
     return view("reportes");
 })->name('reportes1');
 
-Route::get('/dialog',function(){
-    return view('vw_dialog');
-});
+Route::get('/usuarios', function () {
+    return view("administracion/vw_usuarios");
+})->name('usuarios');
 
-//Route::get('/nuevousuario', 'HomeController@nuevoUsuario');
+Route::get('/usuarios','Usuarios@getAllUsuarios')->name('usuarios');
 
-Route::get('hola', function (){
-    echo 'HOLA';
-    
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Clientes
 });
-//Route::get('home', [
-//    'uses'  => 'HomeController@index',
-//    'as'    => 'home'
-//]);
