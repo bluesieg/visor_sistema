@@ -85,7 +85,7 @@
                 <li class="">
                     <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
                         <img src="img/avatars/sunny.png" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
-                        <span> {{ Auth::user()->name }} </span> <i class="fa fa-angle-down"></i> 
+                        <span> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down"></i> 
                     </a>
                     <ul class="dropdown-menu pull-right">
                         <li>
@@ -108,7 +108,7 @@
                 <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
                     <img src="img/avatars/sunny.png" alt="me" class="online" /> 
                     <span>
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->usuario }}
                     </span>
                     <i class="fa fa-angle-down"></i>
                 </a> 
@@ -216,12 +216,17 @@
     
     <script src="{{ asset('js/app.seed.js') }}"></script>   
     
-    <script src="js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
-    <script src="js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="{{ asset('js/plugin/jqgrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('js/plugin/jqgrid/grid.locale-en.min.js') }}"></script>
     
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>
+    
+
+
     
     <script type="text/javascript">
         $(document).ready(function() {
+//            pageSetUp();
             $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
                 _title : function(title) {
                     if (!this.options.title) {
@@ -233,6 +238,7 @@
             }));
         });
     </script>
+    @yield('page-js-script')
     
     <script type="text/javascript">
 

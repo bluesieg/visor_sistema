@@ -6,63 +6,28 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Routing\UrlGenerator;
+//use Illuminate\Routing\UrlGenerator;
 
 class Usuarios extends Controller
 {
-    protected $url;
-    
-    public function __construct(UrlGenerator $url)
-    {
-        $this->url = $url;
-    }
+//    protected $url;
+//    
+//    public function __construct(UrlGenerator $url)
+//    {
+//        $this->url = $url;
+//    }
     
     public function getAllUsuarios(){
-
-//        $table= array();        
-//        $table['page'] = $page;
-//        $table['total'] = $total_pages;
-//        $table['records'] = $count;
-
-//        $campos=array('id','name','email');
-//
-//        $data=array();
-//        $cell=array();
-//        $rows=array();
-        
-//        foreach($sql as $Index => $Datos)
-//        {
-//            $Lista->rows[$Index]['id'] = $Datos->id;
-//            $Lista->rows[$Index]['cell']= array(
-//                     trim($Datos->id),
-//                     trim($Datos->name),
-//                     trim($Datos->email),
-//                     );	      
-//        }
-
-//        for($x=0; $x<=(count($sql)-1);$x++){ 
-//            for($y=0;$y<=(count($campos)-1);$y++){                
-//                $data[$y]=$sql[$x]->$campos[$y];                
-//            }
-//            $cell['id']= $sql[$x]->$campos[0];
-//            $cell['cell']=$data;
-//            array_push($rows, $cell);
-//        }
-
-//        $table['rows']=$rows;
-        $table = DB::select('select * from users');
-//        dd($Lista);
+        $table = DB::select('select * from usuarios limit 10');
+//        dd($table);
         return view('administracion/vw_usuarios')->with([
                 'Usuarios' => $table]
-        );
-        
+        );        
     }
 
     public function index() {
-        header('Content-type: application/json');   
-        
-        
-        $totalg = DB::select('select count(id) as total from users');
+        header('Content-type: application/json');  
+        $totalg = DB::select('select count(id) as total from usuarios');
         $page  = $_GET['page']; 
         $limit = $_GET['rows']; 
         $sidx  = $_GET['sidx']; 
@@ -84,7 +49,7 @@ class Usuarios extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('users')->orderBy($sidx,$sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('usuarios')->orderBy($sidx,$sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page    = $page;
         $Lista->total   = $total_pages;
@@ -94,10 +59,13 @@ class Usuarios extends Controller
         {
             $Lista->rows[$Index]['id'] = $Datos->id;
             $Lista->rows[$Index]['cell']= array(
-                     trim($Datos->id),
-                     trim($Datos->name),
-                     trim($Datos->email),
-                     );	      
+                    trim($Datos->id),
+                    trim($Datos->dni),
+                    trim($Datos->ape_nom),
+                    trim($Datos->usuario),
+                    trim($Datos->nivel),
+                    trim($Datos->fch_nac)
+                    );	      
         }
        
         return response()->json($Lista);

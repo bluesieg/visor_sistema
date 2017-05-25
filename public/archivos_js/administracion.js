@@ -1,7 +1,7 @@
-// $('#dialog_link').click(function() {
-//            $('#dialog_simple').dialog('open');
-//            return false;
-//
+
+
+//$(document).ready(function(){
+//   get_lista_Usuarios();
 //});
 
 function open_dialog(){
@@ -23,26 +23,38 @@ function open_dialog(){
         }]
     }).dialog('open');
 }
-
-function load_list_Usuarios(){
-//    alert(5);
+function get_lista_Usuarios(){
     jQuery("#table_Usuarios").jqGrid({ 
         url: 'list_usuarios',
         datatype: 'json', mtype: 'GET',        
-        width: '100%', height: '150',
-        colNames:['id',' Nombres','Email'], 
-        rowNum: 11, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTADO DE USUARIOS REGISTRADOS',  align: "center",
+        height: 'auto', autowidth : true,
+        toolbarfilter : true,
+        colNames:['id','DNI',' Nombres','Usuario','Nivel','Fecha Nac.'], 
+        rowNum: 10, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTADO DE USUARIOS REGISTRADOS',  align: "center",
         colModel:[ 
             {name:'id',index:'id', hidden:true}, 
-            {name:'name',index:'name', width:165, align:'left'}, 
-            {name:'email',index:'email', width:165}           
+            {name:'dni',index:'dni', align:'left'}, 
+            {name:'ape_nom',index:'ape_nom', align:'left'},
+            {name:'usuario',index:'usuario'},
+            {name:'nivel',index:'nivel'},
+            {name:'fch_nac',index:'fch_nac'}
         ],        
         pager: '#pager_table_Usuarios',
-        rowList: [11, 22],
+        rowList: [10, 20],
         onSelectRow: function(Id){
             
         }
     });
+    $(window).on('resize.jqGrid', function() {
+            $("#table_Usuarios").jqGrid('setGridWidth', $("#content").width());
+    });
+//    
+//    alert(5);
+}
+
+function load_list_Usuarios(){
+//    alert(5);
+    
 }
 
 

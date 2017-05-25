@@ -19,16 +19,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/vw_general', 'General@index')->name('vw_general');
 
-Route::get('/reportes', function () {
-    return view("reportes");
-})->name('reportes1');
 
-Route::get('/usuarios', function () {
-    return view("administracion/vw_usuarios");
-})->name('usuarios');
+//Route::get('/usuarios', function () {
+//    return view("administracion/vw_usuarios");
+//})->name('usuarios');
 
-Route::get('/usuarios','Usuarios@getAllUsuarios')->name('usuarios');
+
 
 Route::group(['middleware' => 'auth'], function(){
-    Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Clientes
+    Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
+    Route::get('/usuarios','Usuarios@getAllUsuarios')->name('usuarios');
 });

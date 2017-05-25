@@ -22,12 +22,12 @@
                     </header>
                     <fieldset>
                             <section>
-                                <label class="label">E-mail</label>
+                                <label class="label">Usuario</label>
                                 <label class="input"> <i class="icon-append fa fa-user"></i>
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>Porfavor Ingresa tu Email / Usuario</b></label>
-                                    @if ($errors->has('email'))
-                                        <span class="help-block"><strong>{{ $errors->first('email') }}</strong></span>
+                                    <input id="usuario" type="text" class="form-control" name="usuario" value="{{ old('usuario') }}" required autofocus>
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>Porfavor Ingresa tu Usuario</b></label>
+                                    @if ($errors->has('usuario'))
+                                        <span class="help-block"><strong>{{ $errors->first('usuario') }}</strong></span>
                                     @endif
                             </section>
                             <section>
