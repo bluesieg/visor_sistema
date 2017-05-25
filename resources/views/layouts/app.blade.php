@@ -39,6 +39,9 @@
     <link rel="apple-touch-startup-image" href="{{ asset('img/splash/iphone.png') }}" media="screen and (max-device-width: 320px)">
     
     <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
+    
+   
+   
 </head>
 <body class="desktop-detected pace-done fixed-header fixed-navigation">
     <header id="header">
@@ -221,7 +224,7 @@
     
     <script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>
     
-
+   
 
     
     <script type="text/javascript">

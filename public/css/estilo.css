@@ -57,6 +57,85 @@ aside {
     width: 155px;
 }
 
-/*.ui-jqgrid .ui-jqgrid-titlebar {
-    font-size: 11px;
-}*/
+.ui-jqgrid .ui-jqgrid-titlebar {
+    background-color: blue;
+    background-image: linear-gradient(to bottom, #80B23E, #B1DD77); COLOR HEADER TITLE
+    background-repeat: repeat-x;
+    border-left: 0 none;
+    border-right: 0 none;
+    border-top: 0 none;
+    font-size: 12px;
+    padding: 8px 10px;
+    position: relative;
+}
+.ui-jqgrid .ui-jqgrid-title {
+    color: #306D30;
+    font-size: 17px;
+}
+
+.ui-jqgrid .ui-state-default {
+    background-color: #fff;
+    border: 1px solid #97D149;
+    color: #017E42;titulos de las columnas
+    font-weight: 400;
+}
+
+.ui-jqgrid {
+    border: 1px solid #97D149 !important;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.ui-corner-right, .ui-corner-top, .ui-corner-tr {
+    border-top-right-radius: 0px;
+}
+.ui-corner-left, .ui-corner-tl, .ui-corner-top {
+    border-top-left-radius: 0px;
+}
+
+.ui-corner-bottom, .ui-corner-br, .ui-corner-right {
+    border-bottom-right-radius: 0px;
+}
+.ui-corner-bl, .ui-corner-bottom, .ui-corner-left {
+    border-bottom-left-radius: 0px;
+}
+
+.ui-jqgrid .ui-jqgrid-pager {    
+    background-color: #97D149 !important; 
+    padding: 0px !important;
+}
+.ui-jqgrid .ui-jqgrid-pager {
+    font-size: 13px;    
+}
+
+.ui-widget-content {
+    background: white none repeat scroll 0 0;
+    border: 1px solid #B1DD77;
+    color: #404040;
+}
+.ui-jqgrid table, .ui-jqgrid tr.ui-row-ltr, .ui-jqgrid tr.ui-row-ltr td {
+    border: 1px solid #97D149 !important;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+    background: #F6F6F6 none repeat scroll 0 0;
+    font-size: 13px;
+    padding-bottom: 4px;
+    padding-right: 0;
+    padding-top: 4px;
+}
+
+.ui-widget-content table { border: 0px solid #97D149 !important; }
+
+.ui-jqgrid tr.jqgrow {    
+    height: 25px;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {   
+    font-size: 11.5px !important;
+    padding-bottom: 0;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    padding-top: 0;
+}

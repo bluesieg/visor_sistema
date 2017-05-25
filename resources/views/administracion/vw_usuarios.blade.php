@@ -31,7 +31,7 @@
                 {name:'id',index:'id', hidden:true}, 
                 {name:'dni',index:'dni', align:'left'}, 
                 {name:'ape_nom',index:'ape_nom', align:'left'},
-                {name:'usuario',index:'usuario'},
+                {name:'usuario',index:'usuario', align: 'center'},
                 {name:'nivel',index:'nivel'},
                 {name:'fch_nac',index:'fch_nac'}
             ],        
@@ -53,27 +53,5 @@
 
 @endsection
 
-<!--asd
 
-<thead>
-                                            <tr>
-                                                <th data-hide="phone">ID</th>
-                                                <th data-class="expand">DNI</th>
-                                                <th data-class="expand">Nombres</th>
-                                                <th data-class="expand">Usuarios</th>
-                                                <th data-class="expand">Fech. Naci.</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($Usuarios as $usu)
-                                            <tr>
-                                                <td>{{ $usu->id }}</td>
-                                                <td>{{ $usu->dni }}</td>
-                                                <td>{{ $usu->ape_nom }}</td>
-                                                <td>{{ $usu->usuario }}</td>
-                                                <td>{{ $usu->fch_nac }}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
--->
 
