@@ -28,5 +28,5 @@ Route::get('/vw_general', 'General@index')->name('vw_general');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
-    Route::get('/usuarios','Usuarios@getAllUsuarios')->name('usuarios');
+    Route::get('/usuarios','Usuarios@getAllUsuarios')->name('usuarios');//vw_usuarios
 });
