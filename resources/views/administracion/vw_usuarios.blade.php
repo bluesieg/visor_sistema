@@ -15,6 +15,9 @@
                 <button type="button" class="btn btn-labeled btn-danger">
                     <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                 </button>
+                <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                    <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                </button>
             </div>                   
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -44,8 +47,8 @@
             pager: '#pager_table_Usuarios',
             rowList: [10, 20],
             onSelectRow: function (Id) {
-                $('#btn_vw_usuarios_Nuevo').on('click', open_dialog_new_edit_Usuario('EDITAR', Id));
-
+//                $('#btn_vw_usuarios_Nuevo').on('click', open_dialog_new_edit_Usuario('EDITAR', Id));
+                $('#btn_vw_usuarios_Editar').attr('onClick', 'open_dialog_new_edit_Usuario("'+'EDITAR'+'",'+Id+')');
             }
         });
         $(window).on('resize.jqGrid', function () {

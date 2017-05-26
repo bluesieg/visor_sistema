@@ -15,10 +15,14 @@ function open_dialog_new_edit_Usuario(tipe, Id) {
             }]
     }).dialog('open');
 
-//        if(tipe=='NUEVO'){
-//            alert(tipe+ '---'+ Id);
-//        }else{
-//            alert(tipe+ '---'+ Id);
-//        }
+        if(tipe=='NUEVO'){
+            alert(tipe+ '---'+ Id);
+        }else{
+//            ape_nom = $.trim($("#table_Usuarios").getCell(Id, "ape_nom"));
+            $("#txt_ape_nom").val($.trim($("#table_Usuarios").getCell(Id, "ape_nom")));
+        }
 
+}
+function guardar_insertar_Usuario(){
+    
 }
