@@ -3,15 +3,18 @@
 @section('content')
 
 <!-- MAIN CONTENT -->
-<div id="content" class="container padding-top-15">
+<!--<div id="content" class="container padding-top-15">-->
+<section id="widget-grid" class="">
+    
+
     <div class="padding-top-15"></div>
     <div class="padding-top-15"></div>
     <div class="row padding-top-15">
-        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 hidden-xs hidden-sm">
             <h1 class="txt-color-red login-header-big">SmartAdmin</h1>
         </div>
         
-        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4 padding-top-15">
+        <div class="col-xs-12 col-md-8 col-lg-4">
             <div class="well no-padding">
                 <form action="{{ route('login') }}" method="POST" id="login-form" class="smart-form client-form">
                     {{ csrf_field() }}
@@ -57,6 +60,7 @@
             </div>
         </div>
     </div>
-</div>
+    </section>
+<!--</div>-->
 
 @endsection

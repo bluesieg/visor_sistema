@@ -1,6 +1,18 @@
+.ClassMsgBlock{
+    padding: 13px;
+    font-weight: bold;
+    color: black;
+    height: 35px;
+}
+
 .ui-dialog .ui-widget-header{
     background: #97D149;
-    height: 42px;
+    height: 32px;
+}
+.ui-dialog .ui-dialog-title {
+    color: #ffffff;
+    margin: -8px 3px;
+    padding: 0;
 }
 .ui-dialog-titlebar-close::before {
     content: "";          
@@ -13,16 +25,12 @@
 }
 .ui-dialog .ui-dialog-titlebar{
     border-radius: 0px;
-    font-size: 14px;    
+    font-size: 10px;
 }
 .ui-dialog {            
     border-radius: 0px;            
 }
-.ui-dialog .ui-dialog-title {
-    margin: -3px 3px;
-    color: #FFFFFF;
-    padding: 0;
-}
+
 .ui-dialog .ui-dialog-content {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;            
     overflow: visible;
@@ -34,7 +42,14 @@
     padding: 12px;
     text-align: right;
 }
-aside {
+
+.panel-success>.panel-heading {
+    color: white;
+    background-color: #80B23E;
+    border-color: #80B23E;
+    text-align: center;
+}
+/*aside {
     background: rgba(0, 0, 0, 0) linear-gradient(to right,#A3D9A3 93%, #97D149  100%) repeat scroll 0 0;   
 }
 .login-info a {
@@ -61,7 +76,7 @@ nav ul .active > a {
 }
 
 nav ul ul li > a :hover{
-    background: red none repeat scroll 0 0;
+    background: none repeat scroll 0 0;
     
 }
 
@@ -70,7 +85,7 @@ nav ul ul {
 }
 nav ul li a {
     color: #40A040;    
-}
+}*/
 
 
 
@@ -96,7 +111,7 @@ nav ul li a {
 
 .ui-jqgrid .ui-jqgrid-titlebar {
     background-color: blue;
-    background-image: linear-gradient(to bottom, #80B23E, #B1DD77); COLOR HEADER TITLE
+    background-image: linear-gradient(to bottom, #80B23E, #B1DD77); /*COLOR HEADER TITLE*/
     background-repeat: repeat-x;
     border-left: 0 none;
     border-right: 0 none;
@@ -113,7 +128,7 @@ nav ul li a {
 .ui-jqgrid .ui-state-default {
     background-color: #fff;
     border: 1px solid #97D149;
-    color: #017E42;titulos de las columnas
+    color: #017E42;/*titulos de las columnas*/
     font-weight: 400;
 }
 
@@ -175,4 +190,23 @@ nav ul li a {
     padding-left: 4px !important;
     padding-right: 4px !important;
     padding-top: 0;
+}
+
+.ui-jqgrid .ui-state-highlight td {
+    background-color: #c0ffc0 !important;
+    border-color: #bce8f1 !important;
+    color: #006d00 !important;
+    font-weight: bold !important;
+}
+
+/*NOTIFICACION MSG SISTEMA*/
+.SmallBox {
+    position: absolute;
+    right: 442px;
+    top: 230px;
+    width: 486px;
+    color: #fff;
+    z-index: 9999;
+    overflow: hidden;
+    border: 1px solid transparent;
 }

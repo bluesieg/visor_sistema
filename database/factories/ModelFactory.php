@@ -16,7 +16,7 @@
 //});
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
-    return [        
+    return [
         'dni'       => str_random(8),
         'ape_nom'   => strtoUpper(str_random(10)),
         'usuario'   => str_random(10),

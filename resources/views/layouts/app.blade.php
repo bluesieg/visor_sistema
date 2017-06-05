@@ -37,7 +37,9 @@
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-landscape.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-portrait.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/iphone.png') }}" media="screen and (max-device-width: 320px)">
-
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.css">
+        
         <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
 
 
@@ -56,8 +58,7 @@
             </div>
             @if (Auth::guest())
             <div class="pull-right" style="margin-top: 8px">
-                <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Session</a>
-                <a href="{{ route('register') }}" class="btn btn-success">Registrarse</a>
+                <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Session</a>                
             </div>  
             @else
             <div class="project-context hidden-xs">
@@ -126,6 +127,9 @@
                                 <a href="layouts.html" title="Dashboard"><i class="fa fa-gear"></i>UIT</a>
                             </li>
                             <li class="">
+                                <a href="{{route('val_aran')}}" title="Dashboard"><i class="fa fa-picture-o"></i> Valores Arancelarios</a>
+                            </li>
+                            <li class="">
                                 <a href="skins.html" title="Dashboard"><i class="fa fa-picture-o"></i> Depreciacion</a>
                             </li>
                             <li>
@@ -155,7 +159,7 @@
                         <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
                         <ul>
                             <li class="">
-                                <a href='#' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyantes</span></a>                            
+                                <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyantes</span></a>                            
                             </li>
                             <li class="">
                                 <a href="#" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
@@ -193,7 +197,7 @@
                 @yield('content') 
             </div>
         </div>
-       
+
         <div class="page-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
@@ -201,23 +205,36 @@
                 </div>
             </div>            
         </div>
+
+        
+        <div class="alert-info"  id="mensaje" title="MENSAJE DEL SISTEMA" style="display: none;">
+            <h1>Would you like to contine?.</h1> 
+            <input type="button" id="yes" value="Yes" /> 
+            <input type="button" id="no" value="No" /> 
+        </div>
+        <div class="alert-danger" id="eliminar" title="MENSAJE DEL SISTEMA" style="display: none;"></div> 
+        
         
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>
-                        if (!window.jQuery) {
-                            document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
-
-                        }
+            if (!window.jQuery) {
+                document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
+            }
         </script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script>
-                        if (!window.jQuery.ui) {
-                            document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-                        }
+            if (!window.jQuery.ui) {
+                document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+            }
         </script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>
+
+        <script src="{{ asset('archivos_js/global_function.js') }}"></script>
 
         <script src="{{ asset('js/app.config.js') }}"></script>
         <script src="{{ asset('js/app.min.js') }}"></script>
+        <script src="{{ asset('js/block_ui.js') }}"></script>
 
         <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
 
@@ -226,28 +243,38 @@
 
         <script src="{{ asset('js/plugin/masked-input/jquery.maskedinput.min.js') }}"></script>
 
+        <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
+
         <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
 
         <script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                pageSetUp();
-                $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-                    _title: function (title) {
-                        if (!this.options.title) {
-                            title.html("&#160;");
-                        } else {
-                            title.html(this.options.title);
-                        }
+        @if (!Auth::guest()) 
+<!--        <input type="hidden" id="usuario_id" value="{{ Auth::user()->id }}" >
+        <input type="hidden" id="usuario" value="{{ Auth::user()->ape_nom }}" >-->
+        <!--<input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">-->
+
+        <script>
+        $(document).ready(function () {
+            pageSetUp();
+            $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+                _title: function (title) {
+                    if (!this.options.title) {
+                        title.html("&#160;");
+                    } else {
+                        title.html(this.options.title);
                     }
-                }));
-            });
+                }
+            }));
+            
+
+        });
         </script>
+        @endif
+
         @yield('page-js-script')
 
         <script type="text/javascript">
-
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
             _gaq.push(['_trackPageview']);
@@ -260,7 +287,6 @@
                 var s = document.getElementsByTagName('script')[0];
                 s.parentNode.insertBefore(ga, s);
             })();
-
         </script>
     </body>
 </html>
