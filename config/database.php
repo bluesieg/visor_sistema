@@ -63,7 +63,7 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
-            'schema' => 'adm_tri',
+            'schema' => 'public',
             'sslmode' => 'prefer',
         ],
 

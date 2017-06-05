@@ -14,7 +14,7 @@ class Contribuyentes extends Controller
     
     public function index() {
         header('Content-type: application/json');
-        $totalg = DB::select('select count(id_pers) as total from vw_contribuyentes_vias');
+        $totalg = DB::select('select count(id_pers) as total from adm_tri.vw_contribuyentes_vias');
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -36,7 +36,7 @@ class Contribuyentes extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('vw_contribuyentes_vias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('adm_tri.vw_contribuyentes_vias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -62,7 +62,7 @@ class Contribuyentes extends Controller
     
     function llenar_form_contribuyentes(Request $request){
         
-        $Consulta = DB::table('contribuyentes')->where('id_pers',$request['id_pers'])->get();
+        $Consulta = DB::table('adm_tri.contribuyentes')->where('id_pers',$request['id_pers'])->get();
         $Lista=new \stdClass();
         foreach($Consulta as $Datos){                     
             $Lista->id_persona      =  trim($Datos->id_persona);
@@ -106,7 +106,7 @@ class Contribuyentes extends Controller
         $data['id_persona'] = $id_persona;
         $data['dpto'] = '0';
         
-        $insert=DB::table('contribuyentes')->insert($data);
+        $insert=DB::table('adm_tri.contribuyentes')->insert($data);
         
         if ($insert) return response()->json($data);
         else return false;
