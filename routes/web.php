@@ -56,4 +56,5 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('contribuyente_delete','adm_tributaria\Contribuyentes@eliminar_contribuyente');//eliminar contribuyente
     /****************************************VALORES ARANCELARIOS*********************************************************************/
     Route::get('val_arancel','configuracion\Valores_Arancelarios@vw_val_arancel')->name('val_aran');// VW_CONTRIUYENTES
+    Route::resource('predios_urbanos','adm_tributaria\PredioController');
 });
