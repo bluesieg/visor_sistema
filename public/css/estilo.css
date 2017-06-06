@@ -199,8 +199,9 @@ nav ul li a {
     font-weight: bold !important;
 }
 
+
 /*NOTIFICACION MSG SISTEMA*/
-.SmallBox {
+/*.SmallBox {
     position: absolute;
     right: 442px;
     top: 230px;
@@ -209,4 +210,4 @@ nav ul li a {
     z-index: 9999;
     overflow: hidden;
     border: 1px solid transparent;
-}
+}*/

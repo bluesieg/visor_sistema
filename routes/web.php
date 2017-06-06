@@ -57,4 +57,7 @@ Route::group(['middleware' => 'auth'], function(){
     /****************************************VALORES ARANCELARIOS*********************************************************************/
     Route::get('val_arancel','configuracion\Valores_Arancelarios@vw_val_arancel')->name('val_aran');// VW_CONTRIUYENTES
     Route::resource('predios_urbanos','adm_tributaria\PredioController');
+    Route::get('get_anio_val_arancel','configuracion\Valores_Arancelarios@get_anio');//llena combo AÑO vw_val_arancel
+    Route::get('get_sector_val_arancel','configuracion\Valores_Arancelarios@get_sector');//llena combo SECTOR vw_val_arancel
+    Route::get('get_mzna_val_arancel','configuracion\Valores_Arancelarios@get_mzna');//llena combo MANZANAvw_val_arancel
 });

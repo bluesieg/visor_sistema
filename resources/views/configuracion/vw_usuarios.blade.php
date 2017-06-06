@@ -5,29 +5,33 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
                 <h1 class="txt-color-green"><b>Mantenimiento de Usuarios...</b></h1>
-                <ul id="sparks">                                        
-                    <button onclick="open_dialog_new_edit_Usuario('NUEVO');" id="btn_vw_usuarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                    </button>
-                    <button id="btn_vw_usuarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                    </button>
-                    <button id="btn_vw_usuarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
-                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                    </button> 
-                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                    </button>  
-                    <!--                        <div class="input-group col-lg-4">
-                                                <div class="icon-addon addon-md">
-                                                    <input type="text" class="form-control" placeholder="Buscar" value="asfd">
-                                                    <label title="" rel="tooltip" class="glyphicon glyphicon-search" for="Buscar" data-original-title="Buscar"></label>
-                                                </div>
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary">Buscar</button>
-                                                </span>
-                                            </div>                    -->
-                </ul>
+                <div class="row">
+                    <div class="input-group col-lg-4">
+                        <div class="icon-addon addon-md">
+                            <input type="text" class="form-control" placeholder="Buscar" value="asfd">
+                            <label title="" rel="tooltip" class="glyphicon glyphicon-search" for="Buscar" data-original-title="Buscar"></label>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary">Buscar</button>
+                        </span>
+                    </div>
+                    <div class="col-xs-12">                        
+                        <div class="text-right">                             
+                            <button onclick="open_dialog_new_edit_Usuario('NUEVO');" id="btn_vw_usuarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                            </button>
+                            <button id="btn_vw_usuarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                            </button>
+                            <button id="btn_vw_usuarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                            </button> 
+                            <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                            </button> 
+                        </div>
+                    </div>
+                </div>
             </div>                   
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -56,7 +60,7 @@
             ],
             pager: '#pager_table_Usuarios',
             rowList: [13, 20],
-            onSelectRow: function (Id) {                
+            onSelectRow: function (Id) {
                 $('#btn_vw_usuarios_Editar').attr('onClick', 'open_dialog_new_edit_Usuario("' + 'EDITAR' + '",' + Id + ')');
                 $('#btn_vw_usuarios_Eliminar').attr('onClick', 'eliminar_usuario(' + Id + ')');
             },
@@ -66,7 +70,7 @@
         });
         $(window).on('resize.jqGrid', function () {
             $("#table_Usuarios").jqGrid('setGridWidth', $("#content").width());
-        });        
+        });
     });
 </script>
 @stop
