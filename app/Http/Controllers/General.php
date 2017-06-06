@@ -20,7 +20,7 @@ class General extends Controller
 //        $table = DB::select('select * from tipo_documento');
 //        dd($table);
         
-        $doc = DB::table('tipo_documento')->get();
+        $doc = DB::table('adm_tri.tipo_documento')->get();
         
         $datos=array();
         for($y=0;$y<=(count($doc)-1);$y++){
@@ -34,7 +34,7 @@ class General extends Controller
         }
     }
     public function get_cond_exonerac(Request $request) {
-        $doc = DB::table('cond_exonerac')->get();
+        $doc = DB::table('adm_tri.cond_exonerac')->get();
         
         $datos=array();
         for($y=0;$y<=(count($doc)-1);$y++){

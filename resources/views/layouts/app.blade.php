@@ -37,9 +37,9 @@
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-landscape.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-portrait.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/iphone.png') }}" media="screen and (max-device-width: 320px)">
-        
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.css">
-        
+
         <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
 
 
@@ -206,28 +206,28 @@
             </div>            
         </div>
 
-        
+
         <div class="alert-info"  id="mensaje" title="MENSAJE DEL SISTEMA" style="display: none;">
             <h1>Would you like to contine?.</h1> 
             <input type="button" id="yes" value="Yes" /> 
             <input type="button" id="no" value="No" /> 
         </div>
         <div class="alert-danger" id="eliminar" title="MENSAJE DEL SISTEMA" style="display: none;"></div> 
-        
-        
+
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>
-            if (!window.jQuery) {
-                document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
-            }
+                        if (!window.jQuery) {
+                            document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
+                        }
         </script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script>
-            if (!window.jQuery.ui) {
-                document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-            }
+                        if (!window.jQuery.ui) {
+                            document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+                        }
         </script>
-        
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>
 
         <script src="{{ asset('archivos_js/global_function.js') }}"></script>
@@ -255,20 +255,23 @@
         <!--<input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">-->
 
         <script>
-        $(document).ready(function () {
-            pageSetUp();
-            $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-                _title: function (title) {
-                    if (!this.options.title) {
-                        title.html("&#160;");
-                    } else {
-                        title.html(this.options.title);
-                    }
-                }
-            }));
-            
-
-        });
+                        $(document).ready(function () {
+                            pageSetUp();
+                            $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+                                _title: function (title) {
+                                    if (!this.options.title) {
+                                        title.html("&#160;");
+                                    } else {
+                                        title.html(this.options.title);
+                                    }
+                                }
+                            }));
+                            jconfirm.defaults = {
+                                closeIcon: true,
+                                type: 'green', 
+                                
+                            };
+                        });
         </script>
         @endif
 
@@ -278,7 +281,6 @@
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
             _gaq.push(['_trackPageview']);
-
             (function () {
                 var ga = document.createElement('script');
                 ga.type = 'text/javascript';

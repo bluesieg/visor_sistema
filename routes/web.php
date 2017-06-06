@@ -56,4 +56,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('contribuyente_delete','adm_tributaria\Contribuyentes@eliminar_contribuyente');//eliminar contribuyente
     /****************************************VALORES ARANCELARIOS*********************************************************************/
     Route::get('val_arancel','configuracion\Valores_Arancelarios@vw_val_arancel')->name('val_aran');// VW_CONTRIUYENTES
+    Route::get('get_anio_val_arancel','configuracion\Valores_Arancelarios@get_anio');//llena combo AÑO vw_val_arancel
+    Route::get('get_sector_val_arancel','configuracion\Valores_Arancelarios@get_sector');//llena combo SECTOR vw_val_arancel
+    Route::get('get_mzna_val_arancel','configuracion\Valores_Arancelarios@get_mzna');//llena combo MANZANAvw_val_arancel
 });
