@@ -178,6 +178,45 @@ function autocompletar_av_jr_call(textbox){
             }
     });
 }
+var global_id_via;
+function get_global_cod_via(input,cod_via){
+    $.ajax({
+        url: 'autocomplete_nom_via?cod_via=' + cod_via,
+        type: 'GET',
+        success: function (data) {
+            if (data.msg == 'si') {
+                global_id_via = data.id_via;
+                $("#"+input).val(data.via_compl);
+                $("#"+input).attr('maxlength', data.via_compl.length);
+            } else {
+                mensaje_sis('mensajesis', '* El Codigo Ingresado no Existe ... !', ':. Mensaje del Sistema ...!!!');
+            }
+
+        },
+        error: function (data) {
+            alert(' Error Interno !  Comuniquese con el Administrador...');
+        }
+    });
+}
+
+function get_global_anio_uit(input){
+    
+    var d = new Date();
+    $.ajax({
+        url: 'get_anio_val_arancel',
+        type: 'GET',
+        success: function (data) {
+            for (i = 0; i <= data.length - 1; i++) {                
+                $('#'+input).append('<option value=' + data[i].anio + '>' + data[i].anio + '</option>');
+            }
+            $('#'+input).val(d.getFullYear());
+        },
+        error: function (data) {
+            alert(' Error al llenar combo Año...');
+            MensajeDialogLoadAjaxFinish('content', '.:: CARGANDO ...');
+        }
+    });
+}
 
 /*COMBOS DE DEPARTAMENTOS PROVINCIA Y DISTRITO*/
 
