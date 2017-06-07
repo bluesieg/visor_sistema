@@ -100,14 +100,14 @@ class Valores_Arancelarios extends Controller {
         $Consulta = DB::table('catastro.vw_vias_cod')->where('cod_via', $request['cod_via'])->get();
         if (isset($Consulta[0]->id_via)) {
             return response()->json([
-                        'msg'=>'si',
+                        'msg' => 'si',
                         'id_via' => $Consulta[0]->id_via,
                         'cod_via' => $Consulta[0]->cod_via,
                         'via_compl' => $Consulta[0]->via_compl,
             ]);
-        }else{
+        } else {
             return response()->json([
-                        'msg' => 'no',                        
+                        'msg' => 'no',
             ]);
         }
     }
@@ -127,16 +127,22 @@ class Valores_Arancelarios extends Controller {
         } else
             return false;
     }
-    
-    function update_valor_arancel(Request $request){
-//        header('Content-type: application/json');
-        $data = $request->all();
-        $cod_arancel = $request['anio'] . $request['sec'] . $request['mzna'] . $request['cod_via'];
-        $data['cod_arancel'] = $cod_arancel;
 
-        $update = DB::table('catastro.arancel')->where('id_arancel',$data['id_arancel'])->update($data);
+    function update_valor_arancel(Request $request) {
+        $data = $request->all();
+        $update = DB::table('catastro.arancel')->where('id_arancel', $data['id_arancel'])->update($data);
 
         if ($update) {
+            return response()->json([
+                        'msg' => 'si',
+            ]);
+        } else
+            return false;
+    }
+
+    function delete_valor_arancel(Request $request) {
+        $delete = DB::table('catastro.arancel')->where('id_arancel', $request['id_arancel'])->delete();
+        if ($delete) {
             return response()->json([
                         'msg' => 'si',
             ]);
