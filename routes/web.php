@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento
     Route::get('get_all_cond_exonerac', 'General@get_cond_exonerac'); //llena combo condicion exonerac
     Route::get('autocompletar_direccion', 'General@autocompletar_direccion'); //autocompleta el input text avenida,jiro, calle de contribuyentes
-    Route::get('autocomplete_nom_via', 'Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
+    Route::get('autocomplete_nom_via', 'configuracion\Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
     Route::get('get_all_prov', 'General@get_prov'); //llena combo provincias
