@@ -8,31 +8,30 @@
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
-                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-2">
+                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-5">
                                 <label>Filtro Año:</label>
                                 <select id="vw_val_arancel_cb_anio" class="input-sm">
                                     <option value="select" selected="" disabled="">Año.</option>
                                 </select><i></i>
-                            </div>
-                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-2">
                                 <label>Sector:</label>
-                                <select id="vw_val_arancel_cb_sector" class="input-sm">
+                                <select id="vw_val_arancel_cb_sector" onchange="llenar_combo_mzna(this.value);" class="input-sm">
                                     <option value="select" selected="" disabled="">Sector.</option>                                    
                                 </select><i></i>
-                            </div>
-                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-2">
                                 <label> Manzana:</label>
                                 <select id="vw_val_arancel_cb_mzna" class="input-sm">
                                     <option value="select" selected="" disabled="">Mzna.</option>                                    
                                 </select><i></i>
                             </div>
+                            <button onclick="buscar_val_arancel();" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <span class="btn-label"><i class="fa fa-search"></i></span>Buscar
+                            </button>
                             <button onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button>
-                            <button id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
-                            <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                            <button id="btn_vw_valores_arancelarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 
                             <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
@@ -52,82 +51,142 @@
 @section('page-js-script')
 <script type="text/javascript">
     $(document).ready(function () {
-        jQuery("#table_Val_Arancel").jqGrid({
-            url: 'grid_val_arancel',
-            datatype: 'json', mtype: 'GET',
-            height: 'auto', autowidth: true,
-            toolbarfilter: true,
-            colNames: ['id_arancel', 'Sector', 'Manzana', 'Cod. Via', 'Nombre de Via', 'Arancel S/.'],
-            rowNum: 13, sortname: 'id_arancel', sortorder: 'desc', viewrecords: true, caption: 'Lista de Valores Arancelarios', align: "center",
-            colModel: [
-                {name: 'id_arancel', index: 'id_arancel', hidden: true},
-                {name: 'sec', index: 'sec', align: 'left', width: 90},
-                {name: 'mzna', index: 'mzna', align: 'center', width: 60},
-                {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 100},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
-                {name: 'cod_via', index: 'cod_via', align: 'center', width: 70},
-                {name: 'nom_via', index: 'nom_via', width: 100},
-                {name: 'tlfno_fijo', index: 'tlfno_fijo', width: 80},
-                {name: 'tlfono_celular', index: 'tlfono_celular', width: 80}
-            ],
-            pager: '#pager_table_Val_Arancel',
-            rowList: [13, 20],
-            onSelectRow: function (Id) {
-                $('#btn_vw_contribuyentes_Editar').attr('onClick', 'open_dialog_new_edit_Contribuyente("' + 'EDITAR' + '",' + Id + ')');
-                $('#btn_vw_contribuyentes_Eliminar').attr('onClick', 'eliminar_contribuyente(' + Id + ')');
-            },
-            ondblClickRow: function (Id) {
-                $("#btn_vw_contribuyentes_Editar").click();
-            }
-        });
-        $(window).on('resize.jqGrid', function () {
-            $("#pager_table_Val_Arancel").jqGrid('setGridWidth', $("#content").width());
-        });
-
+        MensajeDialogLoadAjax('content', '.:: CARGANDO ...');
+        var d = new Date();
+        var filtro = 0;
+        var global_filtro = 0;
         $.ajax({
             url: 'get_anio_val_arancel',
             type: 'GET',
             success: function (data) {
-                for (i = 0; i <= data.length - 1; i++) {                   
+                for (i = 0; i <= data.length - 1; i++) {
                     $('#vw_val_arancel_cb_anio').append('<option value=' + data[i].anio + '>' + data[i].anio + '</option>');
                 }
+                $('#vw_val_arancel_cb_anio').val(d.getFullYear());
+
             },
             error: function (data) {
                 alert(' Error al llenar combo Año...');
+                MensajeDialogLoadAjaxFinish('content', '.:: CARGANDO ...');
             }
         });
-        var sector_global =0;
+        var sector_global = 0;
+
         $.ajax({
             url: 'get_sector_val_arancel',
             type: 'GET',
             success: function (data) {
-                for (i = 0; i <= data.length - 1; i++) {                   
-                    $('#vw_val_arancel_cb_sector').append('<option value=' + data[i].id_sec + '>' + data[i].sector + '</option>');
+                for (i = 0; i <= data.length - 1; i++) {
+                    $('#vw_val_arancel_cb_sector').append('<option value=' + data[i].sector + '>' + data[i].sector + '</option>');
                 }
-                if(sector_global == 0 ){
-                    $('#vw_val_arancel_cb_sector').
+                if (sector_global == 0) {
+                    sector_global = 1;
+                    $('#vw_val_arancel_cb_sector').val('01');
                 }
-                
             },
             error: function (data) {
                 alert(' Error al llenar combo Sector...');
+                MensajeDialogLoadAjaxFinish('content', '.:: CARGANDO ...');
             }
         });
-        $.ajax({
-            url: 'get_mzna_val_arancel',
-            type: 'GET',
-            success: function (data) {
-                for (i = 0; i <= data.length - 1; i++) {                   
-                    $('#vw_val_arancel_cb_mzna').append('<option value=' + data[i].id_mzna + '>' + data[i].codi_mzna + '</option>');
-                }
+        var mzna_global = 0;
+        if (mzna_global == 0) {
+            mzna_global = 1;
+            llenar_combo_mzna(1);
+            $("#vw_val_arancel_cb_mzna").prop("selectedIndex", 1);
+        }
+        if (global_filtro == 0) {
+            global_filtro = 1;
+            filtro = d.getFullYear() + '01001';
+        }
+
+        jQuery("#table_Val_Arancel").jqGrid({
+            url: 'grid_val_arancel?filtro=' + filtro,
+            datatype: 'json', mtype: 'GET',
+            height: 'auto', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_arancel', 'Sector', 'Manzana', 'Cod. Via', 'Nombre de Via', 'Arancel S/.','id_via'],
+            rowNum: 13, sortname: 'id_arancel', sortorder: 'asc', viewrecords: true, caption: 'Lista de Valores Arancelarios', align: "center",
+            colModel: [
+                {name: 'id_arancel', index: 'id_arancel', hidden: true},
+                {name: 'sec', index: 'sec', align: 'center', width: 50},
+                {name: 'mzna', index: 'mzna', align: 'center', width: 50},
+                {name: 'cod_via', index: 'cod_via', align: 'center', width: 60},
+                {name: 'nom_via', index: 'nom_via', align: 'left', width: 300},
+                {name: 'val_ara', index: 'val_ara', align: 'right', width: 60},
+                {name: 'id_via', index: 'id_via', hidden: true}
+            ],
+            pager: '#pager_table_Val_Arancel',
+            rowList: [13, 20],
+            onSelectRow: function (Id) {
+                $('#btn_vw_valores_arancelarios_Editar').attr('onClick', 'open_dialog_new_edit_Val_Arancel("' + 'EDITAR' + '",' + Id + ')');
+//                $('#btn_vw_valores_arancelarios_Eliminar').attr('onClick', 'eliminar_contribuyente(' + Id + ')');
             },
-            error: function (data) {
-                alert(' Error al llenar combo Sector...');
+            ondblClickRow: function (Id) {
+                $("#btn_vw_valores_arancelarios_Editar").click();
+            }
+        });
+        $(window).on('resize.jqGrid', function () {
+            $("#table_Val_Arancel").jqGrid('setGridWidth', $("#content").width());
+        });
+        $("#val_arancel_cod_via").keypress(function (e) {
+            if (e.which == 13) {
+                cod_via = $('#val_arancel_cod_via').val();
+                val_arancel_auto_nom_via(cod_via);
             }
         });
     });
 </script>
 @stop
 <script src="{{ asset('archivos_js/configuracion/valores_arancelarios.js') }}"></script>
+<div id="dialog_new_edit_Val_Arancel" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Valores Arancelarios ::.</div>
+                    <div class="panel-body">
+                        <fieldset>                           
+                            <div class="row">
+                                <section class="col col-6">
+                                    <label class="label">Sector:</label>
+                                    <label class="input">
+                                        <input id="val_arancel_sec" type="text" placeholder="Sector" class="input-sm" disabled="disabled">
+                                    </label>                        
+                                </section>
+                                <section class="col col-6">
+                                    <label class="label">Manzana:</label>
+                                    <label class="input">
+                                        <input id="val_arancel_mzna" type="text" placeholder="Manzana" class="input-sm" disabled="disabled">
+                                    </label>                      
+                                </section>                               
+                            </div>
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label class="label">Cod. Via:</label>
+                                    <label class="input">
+                                        <input id="val_arancel_cod_via" onkeypress="return soloDNI(event);" type="text" placeholder="Codigo Via" class="input-sm">
+                                    </label>                        
+                                </section>
+                                <section class="col col-8">
+                                    <label class="label">.</label>
+                                    <label class="input">
+                                        <input id="val_arancel_nom_via" type="text" placeholder="Nombre Via." class="input-sm" disabled="disabled">
+                                    </label>                      
+                                </section>                               
+                            </div>        
+                            <section> 
+                                <label class="label">Arancel:</label>
+                                <label class="input">
+                                    <input id="val_arancel_val_ara" onkeypress="return soloDNI(event);" type="text" placeholder="Arancel." class="input-sm">
+                                </label>                      
+                            </section>         
+                        </fieldset>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 

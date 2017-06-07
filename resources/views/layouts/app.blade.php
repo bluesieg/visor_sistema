@@ -213,7 +213,7 @@
             <input type="button" id="no" value="No" /> 
         </div>
         <div class="alert-danger" id="eliminar" title="MENSAJE DEL SISTEMA" style="display: none;"></div> 
-
+        <div class="alert-danger" id="mensajesis" title="MENSAJE DEL SISTEMA" style="display: none;"></div> 
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>

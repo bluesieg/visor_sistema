@@ -63,7 +63,7 @@ function valores_defaul_form(tip) {
 function soloDNI(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if((charCode > 45 && charCode < 58) || (charCode > 36 && charCode < 41) || charCode == 9 || charCode == 8 ){       
-        if(charCode == 110 || charCode == 190 || charCode == 191 || charCode == 84 || charCode == 78 || charCode == 40 || charCode == 37 || charCode == 46 || charCode == 110){
+        if(charCode == 190 || charCode == 191 || charCode == 84 || charCode == 78 || charCode == 40 || charCode == 37 || charCode == 46 || charCode == 110){
             return false;
         }else{
             return true;
@@ -71,6 +71,20 @@ function soloDNI(evt){
     }else{
         return false;
     }
+}
+function soloNumeroTab(evt) {// con guin y slash ( - / )
+   
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if((charCode > 44 && charCode < 58) || (charCode > 36 && charCode < 41) || charCode == 9 || charCode == 8 || charCode == 110){
+        if(charCode == 78 || charCode == 40 || charCode == 37 || charCode == 110){
+            return false;
+        }else{
+            return true;
+        }
+        
+    }else{
+        return false;
+    }           
 }
 
 function dialog_close(div){
@@ -239,7 +253,8 @@ function llenar_combo_dist(tip,cod_prov,tipo){// 0 form contribuyentes
 function fn_actualizar_grilla(grilla,url) {
     jQuery("#"+grilla).jqGrid('setGridParam', {
         url: url
-    }).trigger('reloadGrid');   
+    }).trigger('reloadGrid');
+    
 }
 /**********MENSAJES DEL SISTEMA*****************************************/
 

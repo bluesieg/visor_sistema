@@ -14,7 +14,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
                     save_edit_contribuyentes(tipo, id);
                 }
             }, {
-                html: "<i class='fa fa-trash-o'></i>&nbsp; Salir",
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-primary bg-color-blue",
                 click: function () {
                     $(this).dialog("close");

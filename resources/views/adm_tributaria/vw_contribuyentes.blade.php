@@ -61,12 +61,6 @@
         $(window).on('resize.jqGrid', function () {
             $("#table_Contribuyentes").jqGrid('setGridWidth', $("#content").width());
         });
-//        $("#txt_av_jr_calle_psje").keypress(function (e) {
-//            if (e.which == 13) {
-//               nom_via = $('#txt_av_jr_calle_psje').val();
-//               autocompletar_av_jr_calle('txt_av_jr_calle_psje',nom_via);
-//            }
-//        });
     });
 </script>
 @stop

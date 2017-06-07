@@ -6,12 +6,12 @@
 }
 
 .ui-dialog .ui-widget-header{
-    background: #97D149;
-    height: 32px;
+    background: #01A858;
+    height: 35px;
 }
 .ui-dialog .ui-dialog-title {
     color: #ffffff;
-    margin: -8px 3px;
+    margin: -5px 3px;
     padding: 0;
 }
 .ui-dialog-titlebar-close::before {
@@ -21,7 +21,7 @@
 }
 
 .ui-widget-content.ui-dialog{
-    border: 1px solid #97D149;   
+    border: 1px solid #01A858;   
 }
 .ui-dialog .ui-dialog-titlebar{
     border-radius: 0px;
