@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento
     Route::get('get_all_cond_exonerac', 'General@get_cond_exonerac'); //llena combo condicion exonerac
     Route::get('autocompletar_direccion', 'General@autocompletar_direccion'); //autocompleta el input text avenida,jiro, calle de contribuyentes
+    Route::get('autocomplete_nom_via', 'Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
     Route::get('get_all_prov', 'General@get_prov'); //llena combo provincias
@@ -62,8 +63,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_val_arancel', 'Valores_Arancelarios@grid_valores_arancelarios'); // tabla grilla Valores Arancelarios
         Route::get('get_anio_val_arancel', 'Valores_Arancelarios@get_anio'); //llena combo AÑO vw_val_arancel
         Route::get('get_sector_val_arancel', 'Valores_Arancelarios@get_sector'); //llena combo SECTOR vw_val_arancel
-        Route::get('get_mzna_val_arancel', 'Valores_Arancelarios@get_mzna'); //llena combo MANZANAvw_val_arancel
-        Route::get('autocomplete_nom_via', 'Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
+        Route::get('get_mzna_val_arancel', 'Valores_Arancelarios@get_mzna'); //llena combo MANZANAvw_val_arancel        
         Route::post('insert_valor_arancel', 'Valores_Arancelarios@insert_valor_arancel');
         Route::post('update_valor_arancel', 'Valores_Arancelarios@update_valor_arancel');
         Route::post('delete_valor_arancel', 'Valores_Arancelarios@delete_valor_arancel');
