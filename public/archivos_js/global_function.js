@@ -323,3 +323,17 @@ function mensaje_sis(div, texto, tit) {
     }).dialog('open');
     $("#" + div).html('<p class="info"><b>' + texto + '</b></p>');
 }
+function foco(div)
+{    $(div).focus();}
+function mostraralertas(texto)
+{
+    $("#alertdialog").html('<p>'+texto+'</p>');
+    $("#alertdialog").dialog('open');
+}
+var focoglobal="";    
+function mostraralertasconfoco(texto,foco)
+{
+        $("#alertdialog").html('<p>'+texto+'</p>');
+        $("#alertdialog").dialog('open');
+        focoglobal=foco;
+}

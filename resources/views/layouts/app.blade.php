@@ -105,6 +105,8 @@
             </div>    
             @endif
         </header>
+        <!-- Dialogo de alertas -->
+        <div id="alertdialog" style="display: none;" ></div>
         @if (!Auth::guest())
         <aside id="left-panel" style="background: #4caf50 !important">        
             <div class="login-info">
@@ -271,6 +273,9 @@
                                 type: 'green', 
                                 
                             };
+                            $("#alertdialog").dialog({
+                                    autoOpen: false,modal:true,title: "<div class='widget-header'><h4>.: Alerta :.</h4></div>", buttons: [ { text: "Aceptar", click: function() { $( this ).dialog( "close" );  if(focoglobal!=""){ foco(focoglobal);} focoglobal="";} } ]
+                                });
                         });
         </script>
         @endif

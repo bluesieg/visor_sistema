@@ -67,7 +67,18 @@ class PredioController extends Controller
         $val=  $predio::where("id_pred","=",$id )->first();
         if(count($val)>=1)
         {
+            $val->id_cond_prop = $request['condpre'];
+            $val->nro_condominios = $request['condos'];
+            $val->id_via = $request['cvia'];
+            $val->nro_mun = $request['n'];
             $val->mzna_dist = $request['mz'];
+            $val->lote_dist = $request['lt'];
+            $val->zona = $request['zn'];
+            $val->secc = $request['secc'];
+            $val->piso = $request['piso'];
+            $val->dpto = $request['dpto'];
+            $val->nro_int = $request['int'];
+            $val->referencia = $request['ref'];
             $val->save();
         }
         return "edit".$id;
@@ -159,6 +170,7 @@ class PredioController extends Controller
                 trim($Datos->descripcion),
                 trim($Datos->contribuyente),               
                 trim($Datos->nom_via),               
+                trim($Datos->id_via),               
                 trim($Datos->are_terr),               
                 trim($Datos->val_ter),               
                 trim($Datos->val_const),               
@@ -171,6 +183,8 @@ class PredioController extends Controller
                 trim($Datos->secc),               
                 trim($Datos->piso),               
                 trim($Datos->nro_int),               
+                trim($Datos->referencia),               
+                trim($Datos->nro_condominios),               
                               
                 
             );

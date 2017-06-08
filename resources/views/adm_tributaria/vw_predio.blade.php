@@ -2,6 +2,7 @@
 @section('content')
 <section id="widget-grid" class=""> 
 <div class='cr_content col-xs-12'>
+    <h1 class="txt-color-green"><b>Predios Urbanos...</b></h1>
     <div class="col-lg-3 col-md-6 col-xs-12">
         <div class='col-lg-4'>
             <label class="control-label col-lg-4">Sector</label>
@@ -26,11 +27,8 @@
             </select>
         </div>
     </div>
-    
-    
-</div>
-    <div class='cr_content col-xs-12'>
-                <ul id="sparks">                                        
+    <div class="col-lg-6 col-md-12 col-xs-12">
+        <ul id="sparks">                                        
                     <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                     </button>
@@ -43,7 +41,13 @@
                     <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
-                </ul>
+        </ul>
+    </div>
+    
+    
+</div>
+    <div class='cr_content col-xs-12'>
+                
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
             <table id="table_predios"></table>
             <div id="pager_table_predios"></div>
@@ -61,7 +65,7 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pred','t_pred', 'Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','S/.Terreno','S/.Construct','cpre','contrib','dni','cod_via','dpto','zona','secc','piso','nro_int'],
+            colNames: ['id_pred','t_pred', 'Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct','cpre','contrib','dni','cod_via','dpto','zona','secc','piso','nro_int','referencia','nro_condominios'],
             rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
@@ -74,6 +78,7 @@
                 {name: 'descripcion', index: 'descripcion', width: 150},
                 {name: 'contribuyente', index: 'contribuyente', width: 80},
                 {name: 'nom_via', index: 'nom_via', width: 100},
+                {name: 'id_via', index: 'id_via', hidden: true},
                 {name: 'are_terr', index: 'are_terr', width: 60,align: "right"},
                 {name: 'val_ter', index: 'val_ter', width: 60,align: "right"},
                 {name: 'val_const', index: 'val_const', width: 60, align: "right"},
@@ -85,7 +90,9 @@
                 {name: 'zona', index: 'zona', hidden: true},
                 {name: 'secc', index: 'secc', hidden: true},
                 {name: 'piso', index: 'piso', hidden: true},
-                {name: 'nro_int', index: 'nro_int', hidden: true}
+                {name: 'nro_int', index: 'nro_int', hidden: true},
+                {name: 'referencia', index: 'referencia', hidden: true},
+                {name: 'nro_condominios', index: 'nro_condominios', hidden: true}
             ],
             pager: '#pager_table_predios',
             rowList: [13, 20],
@@ -95,6 +102,7 @@
             },
             ondblClickRow: function (Id) 
             {
+                limpiarpred();
                 $("#dlg_idpre").val(Id);
                 $("#dlg_sec").val($("#selsec option:selected").text());
                 $("#dlg_mzna").val($("#selmnza option:selected").text());
@@ -103,6 +111,7 @@
                 $("#dlg_sel_condpre").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'id_cond_prop'));
                 $("#dlg_dni").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_doc'));
                 $("#dlg_inp_cvia").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'cod_via'));
+                $("#id_via").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'id_via'));
                 $("#dlg_inp_dpto").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'dpto'));
                 $("#dlg_inp_mz").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'mzna_dist'));
                 $("#dlg_inp_lt").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'lote_dist'));
@@ -111,6 +120,8 @@
                 $("#dlg_inp_secc").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'secc'));
                 $("#dlg_inp_piso").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'piso'));
                 $("#dlg_inp_tdastand").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_int'));
+                $("#dlg_inp_condos").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_condominios'));
+                $("#dlg_inp_refe").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'referencia'));
                 get_global_cod_via("dlg_inp_nvia",jQuery("#table_predios").jqGrid ('getCell', Id, 'cod_via'));
                 opendlgRegdj(Id,jQuery("#table_predios").jqGrid ('getCell', Id, 'id_contrib'));
             }
@@ -207,6 +218,7 @@
                                         <label class="label">Cod. Via:</label>
                                         <label class="input">
                                             <input id="dlg_inp_cvia" type="text" onkeypress="return soloDNI(event);" class="input-sm" >
+                                            <input type="hidden" id="id_via"/>
                                         </label>
                                     </section>
                                     <section class="col-xs-3" style="padding: 0px 0px 0px 5px !important">
@@ -217,50 +229,50 @@
                                     </section>
                                     
                                     <section class="col-xs-7 " style="padding: 0px !important; margin:0px !important">
-                                        <section class="col col-1" style="padding: 1px !important">
+                                        <section class="col col-2" style="padding: 1px !important">
                                             <label class="label lb_cr">N°</label>
                                             <label class="input">
-                                                <input id="dlg_inp_n" type="text"  class="input-sm">
+                                                <input id="dlg_inp_n" type="text"  class="input-sm" maxlength="19">
                                             </label>
                                         </section>
                                         
                                         <section class="col col-1" style="padding: 1px !important">
                                             <label class="label lb_cr">mz</label>
                                             <label class="input">
-                                                <input id="dlg_inp_mz" type="text"  class="input-sm">
+                                                <input id="dlg_inp_mz" type="text"  class="input-sm" maxlength="5">
                                             </label>
                                         </section>
                                         
                                         <section class="col col-1" style="padding: 1px !important">
                                             <label class="label lb_cr">LT</label>
                                             <label class="input">
-                                                <input id="dlg_inp_lt" type="text"  class="input-sm">
+                                                <input id="dlg_inp_lt" type="text"  class="input-sm" maxlength="5">
                                             </label>
                                         </section>
                                         
                                         <section class="col col-1" style="padding: 1px !important">
                                             <label class="label lb_cr">ZN</label>
                                             <label class="input">
-                                                <input id="dlg_inp_zn" type="text"  class="input-sm">
+                                                <input id="dlg_inp_zn" type="text"  class="input-sm" maxlength="15">
                                             </label>
                                         </section>
                                         
-                                        <section class="col col-2" style="padding: 1px !important">
+                                        <section class="col col-1" style="padding: 1px !important">
                                             <label class="label lb_cr">SECC</label>
                                             <label class="input">
-                                                <input id="dlg_inp_secc" type="text"  class="input-sm">
+                                                <input id="dlg_inp_secc" type="text"  class="input-sm" maxlength="15">
                                             </label>
                                         </section>
                                         <section class="col col-2" style="padding: 1px !important">
                                             <label class="label lb_cr">PISO</label>
                                             <label class="input">
-                                                <input id="dlg_inp_piso" type="text"  class="input-sm">
+                                                <input id="dlg_inp_piso" type="text"  class="input-sm" maxlength="2">
                                             </label>
                                         </section>
                                         <section class="col col-2" style="padding: 1px !important">
                                             <label class="label lb_cr">DPTO</label>
                                             <label class="input">
-                                                <input id="dlg_inp_dpto" type="text"  class="input-sm">
+                                                <input id="dlg_inp_dpto" type="text"  class="input-sm" maxlength="5">
                                             </label>
                                         </section>
                                         <section class="col col-2" style="padding: 1px !important">
@@ -283,20 +295,15 @@
                                     <section class="col col-10 pd_dlg_cr" >
                                         <label class="label">Referencia:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_refe" type="text"  class="input-sm" >
+                                            <input id="dlg_inp_refe" type="text"  class="input-sm" maxlength="150">
                                         </label>
                                     </section>
                                 </div>
                             </div>
                         </div>
                         
-                            <ul id="sparks">                                        
-                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="dlgUpdate()">
-                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                </button>
-                            </ul>
                     </div>
-                        
+                       
                 </div>
 </div>
              
