@@ -5,7 +5,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
     limpiar_ctrl('dialog_new_edit_Contribuyentes');
 
     $("#dialog_new_edit_Contribuyentes").dialog({
-        autoOpen: false, modal: true, height: 1010, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " CONTRIBUYENTE :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",

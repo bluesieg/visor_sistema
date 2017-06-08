@@ -254,7 +254,7 @@ function llenar_combo_prov(tip,cod_dpto){// 0 form contribuyentes
             if(global_prov==0){
                 global_prov=1;$('#contrib_prov').val('0401');
             }else{
-                setTimeout(function () {$('#contrib_prov').val('select');}, 1000);
+                setTimeout(function () {$('#contrib_setprov').val('select');}, 1000);
             }            
         },
         error: function(data) {

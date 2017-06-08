@@ -10,7 +10,7 @@
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-5">
                                 <label>Filtro Año:</label>
-                                <select id="vw_val_arancel_cb_anio" class="input-sm">
+                                <select id="vw_val_arancel_cb_anio" onchange="click_btn_buscar();" class="input-sm">
                                     <option value="select" selected="" disabled="">Año.</option>
                                 </select><i></i>
                                 <label>Sector:</label>
@@ -18,11 +18,11 @@
                                     <option value="select" selected="" disabled="">Sector.</option>                                    
                                 </select><i></i>
                                 <label> Manzana:</label>
-                                <select id="vw_val_arancel_cb_mzna" class="input-sm">
+                                <select id="vw_val_arancel_cb_mzna" onchange="click_btn_buscar();" class="input-sm">
                                     <option value="select" selected="" disabled="">Mzna.</option>                                    
                                 </select><i></i>
                             </div>
-                            <button onclick="buscar_val_arancel();" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button onclick="buscar_val_arancel();" style="display: none;" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="fa fa-search"></i></span>Buscar
                             </button>
                             <button onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
@@ -49,27 +49,13 @@
     </div>
 </section>
 @section('page-js-script')
-<script type="text/javascript">
+<script type="text/javascript">    
     $(document).ready(function () {
         MensajeDialogLoadAjax('content', '.:: CARGANDO ...');
-        var d = new Date();
+
         var filtro = 0;
         var global_filtro = 0;
-        $.ajax({
-            url: 'get_anio_val_arancel',
-            type: 'GET',
-            success: function (data) {
-                for (i = 0; i <= data.length - 1; i++) {
-                    $('#vw_val_arancel_cb_anio').append('<option value=' + data[i].anio + '>' + data[i].anio + '</option>');
-                }
-                $('#vw_val_arancel_cb_anio').val(d.getFullYear());
-
-            },
-            error: function (data) {
-                alert(' Error al llenar combo Año...');
-                MensajeDialogLoadAjaxFinish('content', '.:: CARGANDO ...');
-            }
-        });
+        get_global_anio_uit('vw_val_arancel_cb_anio');
         var sector_global = 0;
 
         $.ajax({
@@ -82,6 +68,8 @@
                 if (sector_global == 0) {
                     sector_global = 1;
                     $('#vw_val_arancel_cb_sector').val('01');
+                } else {
+                    $("#btn_vw_valores_arancelarios_Buscar").click();
                 }
             },
             error: function (data) {
@@ -90,6 +78,7 @@
             }
         });
         var mzna_global = 0;
+        var d = new Date();
         if (mzna_global == 0) {
             mzna_global = 1;
             llenar_combo_mzna(1);
@@ -105,7 +94,7 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_arancel', 'Sector', 'Manzana', 'Cod. Via', 'Nombre de Via', 'Arancel S/.','id_via'],
+            colNames: ['id_arancel', 'Sector', 'Manzana', 'Cod. Via', 'Nombre de Via', 'Arancel S/.', 'id_via'],
             rowNum: 13, sortname: 'id_arancel', sortorder: 'asc', viewrecords: true, caption: 'Lista de Valores Arancelarios', align: "center",
             colModel: [
                 {name: 'id_arancel', index: 'id_arancel', hidden: true},
@@ -120,7 +109,7 @@
             rowList: [13, 20],
             onSelectRow: function (Id) {
                 $('#btn_vw_valores_arancelarios_Editar').attr('onClick', 'open_dialog_new_edit_Val_Arancel("' + 'EDITAR' + '",' + Id + ')');
-//                $('#btn_vw_valores_arancelarios_Eliminar').attr('onClick', 'eliminar_contribuyente(' + Id + ')');
+                $('#btn_vw_valores_arancelarios_Eliminar').attr('onClick', 'eliminar_val_arancel(' + Id + ')');
             },
             ondblClickRow: function (Id) {
                 $("#btn_vw_valores_arancelarios_Editar").click();

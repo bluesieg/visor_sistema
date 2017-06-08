@@ -12,7 +12,18 @@ $this->get('logout', 'Auth\LoginController@logout')->name('logout');
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 //$this->post('register', 'Auth\RegisterController@register');
 //Route::post('registro','Usuarios@postRegistro')->name('registro_user');
-//Route::get('/', auth());
+Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
+    Route::get('uit', 'configuracion\Oficinas_Uit@get_alluit')->name('uit'); // tabla..
+    Route::get('list_uit', 'configuracion\Oficinas_Uit@index'); // tabla grilla uit
+
+    Route::post('uit_save', 'configuracion\Oficinas_Uit@insert'); // ruta para guardar
+    Route::post('uit_mod', 'configuracion\Oficinas_Uit@modif');
+    Route::post('uit_quitar', 'configuracion\Oficinas_Uit@eliminar');
+
+    Route::get('oficinas', 'configuracion\Oficinas_Uit@get_alloficinas')->name('oficinas'); // tabla grilla Clientes
+    Route::get('list_oficinas', 'configuracion\Oficinas_Uit@index1'); // tabla grilla uit
+    Route::post('oficinas_mod', 'configuracion\Oficinas_Uit@modif_ofi');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -70,13 +81,21 @@ Route::group(['middleware' => 'auth'], function() {
     });
 
     /*     * ****************************************   VALORES UNITARIOS    ************************************************************** */
-    
+
     Route::group(['namespace' => 'configuracion'], function() {
         Route::get('val_unit', 'Valores_Unitarios@show_vw_val_unit')->name('valores_unitarios'); // VW_VALORES_UNITARIOS
         Route::get('grid_val_unitarios', 'Valores_Unitarios@grid_val_unitarios'); // tabla grilla VALORES UNITARIOS
+        Route::get('create_magic_grid_val_unit', 'Valores_Unitarios@magic_grid_valores_unit'); // EXECUTE FUNCTION POSTGRES... VALORES UNITARIOS
+        Route::post('update_valor_unitario', 'Valores_Unitarios@update_valor_unitario');
     });
 
 
     Route::resource('predios_urbanos', 'adm_tributaria\PredioController');
+    Route::get('gridpredio', 'adm_tributaria\PredioController@listpredio'); //llena combo MANZANAvw_val_arancel
+    Route::get('selmzna', 'adm_tributaria\PredioController@ListManz'); //llena combo MANZANAvw_val_arancel
+    Route::get('getcontri', 'adm_tributaria\PredioController@GetContrib'); //obtener informacion predio
 });
+
+
+
 

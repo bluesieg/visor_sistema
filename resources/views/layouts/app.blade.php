@@ -124,7 +124,7 @@
                         <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Configuracion</span></a>
                         <ul>
                             <li class="">
-                                <a href="layouts.html" title="Dashboard"><i class="fa fa-gear"></i>UIT</a>
+                                <a href="{{ route('uit') }}" title="Dashboard"><i class="fa fa-gear"></i>UIT</a>
                             </li>
                             <li class="">
                                 <a href="{{route('val_aran')}}" title="Dashboard"><i class="fa fa-picture-o"></i> Valores Arancelarios</a>
@@ -133,10 +133,10 @@
                                 <a href="skins.html" title="Dashboard"><i class="fa fa-picture-o"></i> Depreciacion</a>
                             </li>
                             <li>
-                                <a href="#" title="Valores Unitario"><i class="fa fa-cube"></i>Valores Unitario</a>
+                                <a href="{{route('valores_unitarios')}}" title="Valores Unitario"><i class="fa fa-cube"></i>Valores Unitario</a>
                             </li>
                             <li>
-                                <a href="#" title="Oficinas"><i class="fa fa-cube"></i>Oficinas</a>
+                                <a href="{{ route('oficinas') }}" title="Oficinas"><i class="fa fa-cube"></i>Oficinas</a>
                             </li>
                             <li>
                                 <a href="#" title="Configuracion del IPM."><i class="fa fa-cube"></i>Config. IPM</a>
