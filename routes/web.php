@@ -78,5 +78,9 @@ Route::group(['middleware' => 'auth'], function() {
 
 
     Route::resource('predios_urbanos', 'adm_tributaria\PredioController');
+    Route::get('gridpredio','adm_tributaria\PredioController@listpredio');//llena combo MANZANAvw_val_arancel
+    Route::get('selmzna','adm_tributaria\PredioController@ListManz');//llena combo MANZANAvw_val_arancel
+    Route::get('getcontri','adm_tributaria\PredioController@GetContrib');//obtener informacion predio
+
 });
 

@@ -106,7 +106,7 @@
             @endif
         </header>
         @if (!Auth::guest())
-        <aside id="left-panel">        
+        <aside id="left-panel" style="background: #4caf50 !important">        
             <div class="login-info">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
@@ -118,7 +118,7 @@
                     </a> 
                 </span>
             </div>
-            <nav>
+            <nav >
                 <ul>
                     <li class="">
                         <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Configuracion</span></a>
@@ -162,7 +162,7 @@
                                 <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyantes</span></a>                            
                             </li>
                             <li class="">
-                                <a href="#" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
+                                <a href="predios_urbanos" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
                             </li>
                             <li class="">
                                 <a href='#' title="Predios Rusticos"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
