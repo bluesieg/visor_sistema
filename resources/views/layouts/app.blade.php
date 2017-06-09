@@ -270,7 +270,7 @@
                 $("#alertdialog").dialog({
                     autoOpen: false,modal:true,title: "<div class='widget-header'><h4>.: Alerta :.</h4></div>", buttons: [ { text: "Aceptar", click: function() { $( this ).dialog( "close" );  if(focoglobal!=""){ foco(focoglobal);} focoglobal="";} } ]
                 });
-            });
+            });                       
         </script>
         @endif
 
