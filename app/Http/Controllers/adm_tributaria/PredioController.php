@@ -27,9 +27,38 @@ class PredioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        echo "create";
+        $predio=new Predios;
+        $predio->id_cond_prop = $request['condpre'];
+        $predio->nro_condominios = $request['condos'];
+        $predio->id_via = $request['cvia'];
+        $predio->nro_mun = $request['n'];
+        $predio->mzna_dist = $request['mz'];
+        $predio->lote_dist = $request['lt'];
+        $predio->zona = $request['zn'];
+        $predio->secc = $request['secc'];
+        $predio->piso = $request['piso'];
+        $predio->dpto = $request['dpto'];
+        $predio->nro_int = $request['int'];
+        $predio->referencia = $request['ref'];
+        $predio->id_est_const = 1;
+        $predio->id_tip_pred = 1;
+        $predio->id_contrib = $request['contrib'];
+        $predio->id_exon = 1;
+        $predio->id_cond_esp_exon = 1;
+        $predio->id_uso_predio = '010101';
+        $predio->id_hab_urb = 1;
+        $predio->id_form_adq = 1;
+        $predio->mzna = $request['mzna'];
+        $predio->sec = $request['sec'];
+        $predio->lote = $request['lote'];
+        $predio->anio = date("Y");
+        $predio->cod_cat = $request['sec'].$request['mzna'].$request['lote'];
+        
+        $predio->save();
+        
+        echo $predio->id;
     }
 
     /**

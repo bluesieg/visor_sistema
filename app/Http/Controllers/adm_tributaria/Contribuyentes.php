@@ -133,4 +133,19 @@ class Contribuyentes extends Controller
             ]);
         }else return false;
     }
+    
+    function get_autocomplete_contrib(Request $request) {
+        $Consulta = DB::table('adm_tri.vw_contribuyentes')->where('nro_doc', $request['doc'])->get();
+        if (isset($Consulta[0]->id_pers)) {
+            return response()->json([
+                        'msg' => 'si',
+                        'id_pers' => $Consulta[0]->id_pers,
+                        'contribuyente' => $Consulta[0]->contribuyente,
+            ]);
+        } else {
+            return response()->json([
+                        'msg' => 'no',
+            ]);
+        }
+    }
 }

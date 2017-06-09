@@ -180,8 +180,10 @@ function autocompletar_av_jr_call(textbox){
             }
     });
 }
+
 var global_id_via;
 function get_global_cod_via(input,cod_via){
+    MensajeDialogLoadAjax(input, '.:: Cargando ...');
     $.ajax({
         url: 'autocomplete_nom_via?cod_via=' + cod_via,
         type: 'GET',
@@ -191,12 +193,39 @@ function get_global_cod_via(input,cod_via){
                 $("#"+input).val(data.via_compl);
                 $("#"+input).attr('maxlength', data.via_compl.length);
             } else {
-                mensaje_sis('mensajesis', '* El Codigo Ingresado no Existe ... !', ':. Mensaje del Sistema ...!!!');
+                global_id_via =0;
+                $("#"+input).val("");
+                mostraralertas('* El Codigo Ingresado no Existe ... !');
             }
+            MensajeDialogLoadAjaxFinish(input);
+        },
+        error: function (data) {
+            alert(' Error Interno !  Comuniquese con el Administrador...');
+            MensajeDialogLoadAjaxFinish(input);
+        }
+    });
+    
+}
+function get_global_contri(input,doc){
+    MensajeDialogLoadAjax(input, '.:: Cargando ...');
+    $.ajax({
+        url: 'autocomplete_contrib?doc=' + doc,
+        type: 'GET',
+        success: function (data) {
+            if (data.msg == 'si') {
+                $("#"+input+"_hidden").val(data.id_pers);
+                $("#"+input).val(data.contribuyente);
+            } else {
+                $("#"+input+"_hidden").val(0);
+                $("#"+input).val("");
+                mostraralertas('* El Documento Ingresado no Existe, registre al contribuyente o intente con otro número ... !');
+            }
+            MensajeDialogLoadAjaxFinish(input);
 
         },
         error: function (data) {
             alert(' Error Interno !  Comuniquese con el Administrador...');
+            MensajeDialogLoadAjaxFinish(input);
         }
     });
 }
@@ -305,7 +334,12 @@ function mostraralertas(texto)
 var focoglobal="";    
 function mostraralertasconfoco(texto,foco)
 {
-        $("#alertdialog").html('<p>'+texto+'</p>');
-        $("#alertdialog").dialog('open');
-        focoglobal=foco;
+    $("#alertdialog").html('<p>'+texto+'</p>');
+    $("#alertdialog").dialog('open');
+    focoglobal=foco;
+}
+function ajustar(tam, num) 
+{
+    if (num.toString().length <= tam) return ajustar(tam, "0" + num)
+    else return num;
 }
