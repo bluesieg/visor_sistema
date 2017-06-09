@@ -97,16 +97,18 @@ function get_fecha_actual(input){
 }
 
 
-function llenar_combo_tipo_documento(tip){// 0 para llenar conbo contribuyentes 
+function llenar_combo_tipo_documento(input_1,input_2){
     $.ajax({
         url: 'get_all_tipo_documento',
         type: 'GET',
         success: function(data) {
             for (i = 0; i <= data.length - 1; i++) {//carga el combo para seleccionar el seguro desde la BD
-                if (tip == 0) {
-                    $('#cb_tip_doc_1').append('<option value=' + data[i].tip_doc + '>' + data[i].tipo_documento + '</option>');
-                    $('#cb_tip_doc_2').append('<option value=' + data[i].tip_doc + '>' + data[i].tipo_documento + '</option>');
-                }
+                
+                $('#'+input_1).append('<option value=' + data[i].tip_doc + '>' + data[i].tipo_documento + '</option>');
+                    
+                if(input_2!=undefined){
+                    $('#'+input_2).append('<option value=' + data[i].tip_doc + '>' + data[i].tipo_documento + '</option>');                    
+                }                
             }
         },
         error: function(data) {
@@ -220,71 +222,67 @@ function get_global_anio_uit(input){
 
 /*COMBOS DE DEPARTAMENTOS PROVINCIA Y DISTRITO*/
 
-function llenar_combo_dpto(tip){// 0 form contribuyentes
+function llenar_combo_dpto(input){// 0 form contribuyentes
     $.ajax({
         url: 'get_all_dpto',
         type: 'GET',
         success: function(data) {
-            for (i = 0; i <= data.length - 1; i++) {
-                if (tip == 0) {// form contribuyentes
-                    $('#contrib_dpto').append('<option value=' + data[i].cod + '>' + data[i].dpto + '</option>');                    
-                }
+            for (i = 0; i <= data.length - 1; i++) {                
+                $('#'+input).append('<option value=' + data[i].cod + '>' + data[i].dpto + '</option>');
             }
-            $('#contrib_dpto').val('04');
+            $('#'+input).val('04');
         },
         error: function(data) {
-            alert(' Error al traer departamentos');           
+            mostraralertas('* Error al traer Departamentos...!');           
         }
     });
 }
 
 global_prov = 0;
-function llenar_combo_prov(tip,cod_dpto){// 0 form contribuyentes
+function llenar_combo_prov(input,cod_dpto){// 0 form contribuyentes
     cod_dpto = cod_dpto || "04";
-    document.getElementById('contrib_prov').options.length = 1;    
+//    document.getElementById(input).options.length = 1;  
+    $('#'+input).prop('options').length = 1;
     $.ajax({
-        url: 'get_all_prov?cod_pdto='+cod_dpto,
+        url: 'get_all_prov?cod_dpto='+cod_dpto,
         type: 'GET',
         success: function(data) {
-            for (i = 0; i <= data.length - 1; i++) {
-                if (tip == 0) {// form contribuyentes
-                    $('#contrib_prov').append('<option value=' + data[i].cod_prov + '>' + data[i].provinc + '</option>');                    
-                }
+            for (i = 0; i <= data.length - 1; i++) {                
+                $('#'+input).append('<option value=' + data[i].cod_prov + '>' + data[i].provinc + '</option>');
             }
             if(global_prov==0){
-                global_prov=1;$('#contrib_prov').val('0401');
+                global_prov=1;$('#'+input).val('0401');
             }else{
                 setTimeout(function () {$('#contrib_setprov').val('select');}, 1000);
             }            
         },
         error: function(data) {
-            alert(' Error al traer  provincias');           
+            mostraralertas('* Error al traer  Provincias...!');           
         }
     });    
 }
 global_dist=0;
-function llenar_combo_dist(tip,cod_prov,tipo){// 0 form contribuyentes
+function llenar_combo_dist(input,cod_prov){// 0 form contribuyentes
     cod_prov = cod_prov || "0401";
-    document.getElementById('contrib_dist').options.length = 1;
+    $('#'+input).prop('options').length = 1;
+//    document.getElementById('contrib_dist').options.length = 1;
     $.ajax({
         url: 'get_all_dist?cod_prov='+cod_prov,
         type: 'GET',
         success: function(data) {
-            for (i = 0; i <= data.length - 1; i++) {
-                if (tip == 0) {// form contribuyentes
-                    $('#contrib_dist').append('<option value=' + data[i].cod_dist + '>' + data[i].distrit + '</option>');                    
-                }
+            for (i = 0; i <= data.length - 1; i++) {               
+                $('#'+input).append('<option value=' + data[i].cod_dist + '>' + data[i].distrit + '</option>');
             }
             if(global_dist==0){
-                global_dist=1;$('#contrib_dist').val('040101');
+                global_dist=1;$('#'+input).val('040101');
             }else{
-                if(tipo!='EDITAR'){
-                    setTimeout(function () {$('#contrib_dist').val('select');}, 1000);
-                }                
+//                if(tipo!='EDITAR'){
+                    setTimeout(function () {$('#'+input).val('select');}, 1000);
+//                }                
             }            
         },
         error: function(data) {
-            alert(' Error al traer Distritos');           
+            mostraralertas('* Error al traer Distritos...!');           
         }
     });
 }
@@ -297,29 +295,17 @@ function fn_actualizar_grilla(grilla,url) {
 }
 /**********MENSAJES DEL SISTEMA*****************************************/
 
-function mensaje_confirm(tit,texto,id) {
-//    return true;
-    $("#eliminar").dialog({
-        autoOpen: false, modal: true, height: 180, width: 400, show: {effect: "fade", duration: 300},
-        title:"<div class='widget-header'><h4>&nbsp&nbsp" + tit + "</h4></div>",
-        buttons: [
-            { text: "Aceptar", click: function() {  $(this).dialog("close"); } },
-            { text: "Cancelar", click: function() { $(this).dialog("close"); return false; } }
-        ]
-    }).dialog('open');
-    $("#eliminar").html('<p class="info"><b>' + texto + '</b></p>');
-    
-    
+function foco(div)
+{    $(div).focus();}
+function mostraralertas(texto)
+{
+    $("#alertdialog").html('<p>'+texto+'</p>');
+    $("#alertdialog").dialog('open');
 }
-function mensaje_sis(div, texto, tit) {
-    $("#" + div).dialog({
-        autoOpen: false, modal: true, height: 180, width: 400, show: {effect: "fade", duration: 300},
-        title:"<div class='widget-header'><h4>&nbsp&nbsp" + tit + "</h4></div>",
-        buttons: [
-            {text: "Aceptar",id:"msg_aceptar", click: function() {
-                    $(this).dialog("close");
-                }}
-        ]
-    }).dialog('open');
-    $("#" + div).html('<p class="info"><b>' + texto + '</b></p>');
+var focoglobal="";    
+function mostraralertasconfoco(texto,foco)
+{
+        $("#alertdialog").html('<p>'+texto+'</p>');
+        $("#alertdialog").dialog('open');
+        focoglobal=foco;
 }

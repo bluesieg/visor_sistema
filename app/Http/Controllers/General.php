@@ -82,7 +82,7 @@ class General extends Controller
     }
     
     public function get_prov(Request $request) {
-        $Consulta = DB::table('maysa.prov')->where('cod',$request['cod_pdto'])->get();
+        $Consulta = DB::table('maysa.prov')->where('cod',$request['cod_dpto'])->get();
         $todo=array();
         foreach($Consulta as $Datos)
         {

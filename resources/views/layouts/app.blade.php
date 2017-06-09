@@ -38,10 +38,11 @@
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/ipad-portrait.png') }}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
         <link rel="apple-touch-startup-image" href="{{ asset('img/splash/iphone.png') }}" media="screen and (max-device-width: 320px)">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.css">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.css">-->
 
         <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
-
+        <link href="{{ asset('css/jquery-confirm.css') }}" rel="stylesheet">
+        
 
 
     </head>
@@ -105,8 +106,10 @@
             </div>    
             @endif
         </header>
+        <!-- Dialogo de alertas -->
+        <div id="alertdialog" style="display: none;" ></div>
         @if (!Auth::guest())
-        <aside id="left-panel">        
+        <aside id="left-panel" style="background: #4caf50 !important">        
             <div class="login-info">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
@@ -118,7 +121,7 @@
                     </a> 
                 </span>
             </div>
-            <nav>
+            <nav >
                 <ul>
                     <li class="">
                         <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Configuracion</span></a>
@@ -162,7 +165,7 @@
                                 <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyantes</span></a>                            
                             </li>
                             <li class="">
-                                <a href="#" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
+                                <a href="predios_urbanos" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
                             </li>
                             <li class="">
                                 <a href='#' title="Predios Rusticos"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
@@ -206,15 +209,6 @@
             </div>            
         </div>
 
-
-        <div class="alert-info"  id="mensaje" title="MENSAJE DEL SISTEMA" style="display: none;">
-            <h1>Would you like to contine?.</h1> 
-            <input type="button" id="yes" value="Yes" /> 
-            <input type="button" id="no" value="No" /> 
-        </div>
-        <div class="alert-danger" id="eliminar" title="MENSAJE DEL SISTEMA" style="display: none;"></div> 
-        <div class="alert-danger" id="mensajesis" title="MENSAJE DEL SISTEMA" style="display: none;"></div> 
-
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>
                         if (!window.jQuery) {
@@ -228,7 +222,7 @@
                         }
         </script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>-->
 
         <script src="{{ asset('archivos_js/global_function.js') }}"></script>
 
@@ -244,6 +238,8 @@
         <script src="{{ asset('js/plugin/masked-input/jquery.maskedinput.min.js') }}"></script>
 
         <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
+        
+        <script src="{{ asset('js/jquery-confirm.js')}}"></script>
 
         <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
 
@@ -255,29 +251,32 @@
         <!--<input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">-->
 
         <script>
-                        $(document).ready(function () {
-                            pageSetUp();
-                            $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-                                _title: function (title) {
-                                    if (!this.options.title) {
-                                        title.html("&#160;");
-                                    } else {
-                                        title.html(this.options.title);
-                                    }
-                                }
-                            }));
-                            jconfirm.defaults = {
-                                closeIcon: true,
-                                type: 'green', 
-                                
-                            };
-                        });
+            $(document).ready(function () {                
+                pageSetUp();
+                $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+                    _title: function (title) {
+                        if (!this.options.title) {
+                            title.html("&#160;");
+                        } else {
+                            title.html(this.options.title);
+                        }
+                    }
+                }));
+                jconfirm.defaults = {
+                    closeIcon: true,
+                    type: 'green', 
+
+                };
+                $("#alertdialog").dialog({
+                    autoOpen: false,modal:true,title: "<div class='widget-header'><h4>.: Alerta :.</h4></div>", buttons: [ { text: "Aceptar", click: function() { $( this ).dialog( "close" );  if(focoglobal!=""){ foco(focoglobal);} focoglobal="";} } ]
+                });
+            });
         </script>
         @endif
 
         @yield('page-js-script')
 
-        <script type="text/javascript">
+<!--        <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
             _gaq.push(['_trackPageview']);
@@ -289,6 +288,6 @@
                 var s = document.getElementsByTagName('script')[0];
                 s.parentNode.insertBefore(ga, s);
             })();
-        </script>
+        </script>-->
     </body>
 </html>

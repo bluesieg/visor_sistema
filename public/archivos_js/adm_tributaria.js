@@ -31,11 +31,11 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
         }
     }).dialog('open');
     MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
-    llenar_combo_tipo_documento(0);
+    llenar_combo_tipo_documento('cb_tip_doc_1','cb_tip_doc_2');
     llenar_combo_cond_exonerac(0);
-    llenar_combo_dpto(0);
-    llenar_combo_prov(0);
-    llenar_combo_dist(0, false, 'EDITAR');
+    llenar_combo_dpto('contrib_dpto');
+    llenar_combo_prov('contrib_prov');
+    llenar_combo_dist('contrib_dist');
     autocompletar_av_jr_call('txt_av_jr_calle_psje');
     if (tipo == 'NUEVO') {
         valores_defaul_form(0);//0 form contribuyentes

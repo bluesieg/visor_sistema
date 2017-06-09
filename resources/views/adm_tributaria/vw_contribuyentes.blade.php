@@ -190,14 +190,14 @@
                                 <section class="col col-4">
                                     <label class="label">Departamento:</label>
                                     <label class="select">
-                                        <select id="contrib_dpto" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_prov(0, this.value);">
+                                        <select id="contrib_dpto" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_prov('contrib_prov',this.value);">
                                             <option value="select" selected="" disabled="">Departamento</option>                                           
                                         </select><i></i> </label>                        
                                 </section>
                                 <section class="col col-4">
                                     <label class="label">Provincia:</label>
                                     <label class="select">
-                                        <select id="contrib_prov" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_dist(0, this.value);">
+                                        <select id="contrib_prov" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_dist('contrib_dist', this.value);">
                                             <option value="select" selected="" disabled="">Provincia</option>                                            
                                         </select><i></i> </label>                     
                                 </section>

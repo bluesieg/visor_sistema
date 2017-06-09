@@ -89,11 +89,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('update_valor_unitario', 'Valores_Unitarios@update_valor_unitario');
     });
 
+    Route::group(['namespace' => 'adm_tributaria'], function() {
+        Route::resource('predios_urbanos', 'PredioController');
+        Route::get('gridpredio','PredioController@listpredio');//llena combo MANZANAvw_val_arancel
+        Route::get('selmzna','PredioController@ListManz');//llena combo MANZANAvw_val_arancel
+        Route::get('getcontri','PredioController@GetContrib');//obtener informacion predio
+    });
 
-    Route::resource('predios_urbanos', 'adm_tributaria\PredioController');
-    Route::get('gridpredio', 'adm_tributaria\PredioController@listpredio'); //llena combo MANZANAvw_val_arancel
-    Route::get('selmzna', 'adm_tributaria\PredioController@ListManz'); //llena combo MANZANAvw_val_arancel
-    Route::get('getcontri', 'adm_tributaria\PredioController@GetContrib'); //obtener informacion predio
 });
 
 
