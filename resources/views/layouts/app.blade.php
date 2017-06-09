@@ -274,7 +274,8 @@
                                 
                             };
                             $("#alertdialog").dialog({
-                                    autoOpen: false,modal:true,title: "<div class='widget-header'><h4>.: Alerta :.</h4></div>", buttons: [ { text: "Aceptar", click: function() { $( this ).dialog( "close" );  if(focoglobal!=""){ foco(focoglobal);} focoglobal="";} } ]
+                                    autoOpen: false,modal:true,title: "<div class='widget-header'><h4>.: Mensaje del Sistema :.</h4></div>", buttons: [ { html: '<span class="btn-label"><i class="glyphicon glyphicon-check"></i></span>&nbsp; Aceptar',
+                "class": "btn btn-labeled bg-color-blue txt-color-white", click: function() { $( this ).dialog( "close" );  if(focoglobal!=""){ foco(focoglobal);} focoglobal="";} } ]
                                 });
                         });
         </script>

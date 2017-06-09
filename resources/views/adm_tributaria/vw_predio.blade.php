@@ -29,10 +29,10 @@
     </div>
     <div class="col-lg-6 col-md-12 col-xs-12">
         <ul id="sparks">                                        
-                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="clicknewgrid();">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                     </button>
-                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="clickmodgrid();">
                         <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                     </button>
                     <button  type="button" class="btn btn-labeled btn-danger">
@@ -96,39 +96,27 @@
             ],
             pager: '#pager_table_predios',
             rowList: [13, 20],
+            gridComplete: function () {
+                      var idarray = jQuery('#table_predios').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_predios').jqGrid('getDataIDs')[0];
+                            $("#table_predios").setSelection(firstid);    
+                        }
+                },
             onSelectRow: function (Id) {
 //                $('#btn_vw_contribuyentes_Editar').attr('onClick', 'open_dialog_new_edit_Contribuyente("' + 'EDITAR' + '",' + Id + ')');
 //                $('#btn_vw_contribuyentes_Eliminar').attr('onClick', 'eliminar_contribuyente(' + Id + ')');
             },
             ondblClickRow: function (Id) 
             {
-                limpiarpred();
-                $("#dlg_idpre").val(Id);
-                $("#dlg_sec").val($("#selsec option:selected").text());
-                $("#dlg_mzna").val($("#selmnza option:selected").text());
-                $("#dlg_lot").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'lote'));
-                $("#dlg_contri").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'contribuyente'));
-                $("#dlg_sel_condpre").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'id_cond_prop'));
-                $("#dlg_dni").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_doc'));
-                $("#dlg_inp_cvia").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'cod_via'));
-                $("#id_via").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'id_via'));
-                $("#dlg_inp_dpto").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'dpto'));
-                $("#dlg_inp_mz").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'mzna_dist'));
-                $("#dlg_inp_lt").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'lote_dist'));
-                $("#dlg_inp_n").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_mun'));
-                $("#dlg_inp_zn").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'zona'));
-                $("#dlg_inp_secc").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'secc'));
-                $("#dlg_inp_piso").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'piso'));
-                $("#dlg_inp_tdastand").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_int'));
-                $("#dlg_inp_condos").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'nro_condominios'));
-                $("#dlg_inp_refe").val(jQuery("#table_predios").jqGrid ('getCell', Id, 'referencia'));
-                get_global_cod_via("dlg_inp_nvia",jQuery("#table_predios").jqGrid ('getCell', Id, 'cod_via'));
-                opendlgRegdj(Id,jQuery("#table_predios").jqGrid ('getCell', Id, 'id_contrib'));
+                clickmodgrid();
             }
         });
         $("#dlg_inp_cvia").keypress(function (e) {
             if (e.which == 13) {
-                cod_via = $('#dlg_inp_cvia').val();
+                
+                cod_via = ajustar(5,$('#dlg_inp_cvia').val());
+                $('#dlg_inp_cvia').val(cod_via);
                 get_global_cod_via("dlg_inp_nvia",cod_via);
             }
         });
@@ -172,7 +160,7 @@
                                     <section class="col col-3">
                                         <label class="label">Dni/Ruc:</label>
                                         <label class="input">
-                                            <input id="dlg_dni" type="text" placeholder="Nro. Documento" class="input-sm" disabled="">
+                                            <input id="dlg_dni" onkeypress="return soloDNI(event);" type="text" placeholder="Nro. Documento" class="input-sm" disabled="">
                                         </label>
                                     </section>
                                     <section class="col col-9">

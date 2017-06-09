@@ -189,7 +189,9 @@ function get_global_cod_via(input,cod_via){
                 $("#"+input).val(data.via_compl);
                 $("#"+input).attr('maxlength', data.via_compl.length);
             } else {
-                mensaje_sis('mensajesis', '* El Codigo Ingresado no Existe ... !', ':. Mensaje del Sistema ...!!!');
+                global_id_via =0;
+                $("#"+input).val("");
+                mostraralertas('* El Codigo Ingresado no Existe ... !');
             }
 
         },
@@ -336,4 +338,9 @@ function mostraralertasconfoco(texto,foco)
         $("#alertdialog").html('<p>'+texto+'</p>');
         $("#alertdialog").dialog('open');
         focoglobal=foco;
+}
+function ajustar(tam, num) 
+{
+    if (num.toString().length <= tam) return ajustar(tam, "0" + num)
+    else return num;
 }
