@@ -22,6 +22,8 @@ $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
     Route::get('oficinas', 'configuracion\Oficinas_Uit@get_alloficinas')->name('oficinas'); // tabla grilla Clientes
     Route::get('list_oficinas', 'configuracion\Oficinas_Uit@index1'); // tabla grilla uit
     Route::post('oficinas_mod', 'configuracion\Oficinas_Uit@modif_ofi');
+    Route::post('oficinas_insert_new', 'configuracion\Oficinas_Uit@oficinas_insert_new');
+    Route::post('oficinas_delete', 'configuracion\Oficinas_Uit@oficinas_delete');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -33,7 +35,7 @@ Route::get('msg', function() {
 });
 
 
-Route::get('via', 'General@autocompletar_direccion');
+Route::get('via', 'General@prueba');
 
 //Route::get('/usuarios', function () {
 //    return view("administracion/vw_usuarios");

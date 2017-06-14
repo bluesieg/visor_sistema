@@ -1,6 +1,4 @@
 
-
-
 function open_dialog_new_edit_Usuario(tipe, Id) {
 
     if ((tipe == 0 && Id == 0) || (tipe == '' && Id == '')) {

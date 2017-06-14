@@ -1,5 +1,16 @@
 @extends('layouts.app')
 @section('content')
+<style>    
+    .smart-form fieldset {    
+        padding: 5px 8px 0px;   
+    }
+    .smart-form section {
+        margin-bottom: 5px;    
+    }
+    .smart-form .label {  
+        margin-bottom: 0px;   
+    }
+</style>
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -28,8 +39,11 @@
     </div>
 </section>
 @section('page-js-script')
+
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#menu_adm_tri").show();
+        $("#li_config_contribuyentes").addClass('cr-active');
         jQuery("#table_Contribuyentes").jqGrid({
             url: 'grid_contribuyentes',
             datatype: 'json', mtype: 'GET',
@@ -65,6 +79,7 @@
 </script>
 @stop
 <script src="{{ asset('archivos_js/adm_tributaria.js') }}"></script>
+
 <div id="dialog_new_edit_Contribuyentes" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -167,9 +182,11 @@
                                     </label>                        
                                 </section>                                
                                 <section class="col col-6"> 
-                                    <label class="label">Autocompletar:</label>
+                                    <label class="label">Autocompletar: Reniec / Sunat</label>
                                     <label class="input">
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-lg Button">RENIEC</a>
+                                        <a href="#" onclick="fn_buscar_reniec();">
+                                            <img src="{{asset('img/reniec.png')}}" width="70" />
+                                        </a>
                                     </label>
                                 </section>
                             </div>                            
@@ -190,7 +207,7 @@
                                 <section class="col col-4">
                                     <label class="label">Departamento:</label>
                                     <label class="select">
-                                        <select id="contrib_dpto" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_prov('contrib_prov',this.value);">
+                                        <select id="contrib_dpto" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_prov('contrib_prov', this.value);">
                                             <option value="select" selected="" disabled="">Departamento</option>                                           
                                         </select><i></i> </label>                        
                                 </section>
@@ -293,6 +310,22 @@
                         </fieldset>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_captcha_reniec" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <center><img id="captcha_reniec" src="" width="150"></center>
+                <section>
+                    <label class="label">Codigo:</label>
+                    <label class="input">
+                        <input id="txt_captcha_reniec" type="text" class="input-sm">
+                    </label>                        
+                </section> 
+
             </div>
         </div>
     </div>

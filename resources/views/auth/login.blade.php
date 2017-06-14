@@ -11,7 +11,7 @@
     <div class="padding-top-15"></div>
     <div class="row padding-top-15">
         <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 hidden-xs hidden-sm">
-            <h1 class="txt-color-red login-header-big">SmartAdmin</h1>
+            <h1 class="txt-color-red login-header-big">Municipalidad Distrital de Cerro Colorado</h1>
         </div>
         
         <div class="col-xs-12 col-md-8 col-lg-4">
@@ -40,16 +40,8 @@
                                     <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i>Ingrese el Password</b> </label>
                                     @if ($errors->has('password'))
                                         <span class="help-block"><strong>{{ $errors->first('password') }}</strong></span>
-                                    @endif
-                                <div class="note">
-                                    <a href="#">Olvidaste tu Password?</a>
-                                </div>
-                            </section>
-                            <section>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    <i></i>Remember Me</label>
-                            </section>
+                                    @endif                                
+                            </section>                           
                     </fieldset>
                     <footer>
                         <button type="submit" class="btn btn-primary">

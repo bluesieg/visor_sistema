@@ -1,8 +1,8 @@
 .ClassMsgBlock{
-    padding: 13px;
+    padding: 4px;
     font-weight: bold;
     color: black;
-    height: 35px;
+    height: 17px;
 }
 
 .ui-dialog .ui-widget-header{
@@ -200,17 +200,6 @@ nav ul li a {
 }
 
 
-/*NOTIFICACION MSG SISTEMA*/
-/*.SmallBox {
-    position: absolute;
-    right: 442px;
-    top: 230px;
-    width: 486px;
-    color: #fff;
-    z-index: 9999;
-    overflow: hidden;
-    border: 1px solid transparent;
-}*/
 .cr_content
 {
     padding-top: 10px;

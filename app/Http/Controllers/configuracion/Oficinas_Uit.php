@@ -121,12 +121,9 @@ class Oficinas_Uit extends Controller {
 
         $data = $request->all();
 
-
         if ($this->insert_2($request->all())) {
             return response()->json([
-                        'msg' => 'si',
-                            //'anio' => $data['anio'],
-                            //'uit' => $data['uit']
+                    'msg' => 'si'
             ]);
         }
     }
@@ -208,15 +205,23 @@ class Oficinas_Uit extends Controller {
     }
 
     public function eliminar_2(array $data) {
-        $arr_uit = array('pk_uit' => $data['pk_uit']);
-        // $uit=array('uit'=>$data['uit']); 
+        $arr_uit = array('pk_uit' => $data['pk_uit']);        
 
         $insert = DB::table('adm_tri.uit')->where('pk_uit', '=', $data['pk_uit'])->delete();
-        //$insert = DB::table('uit')->insert($arr_uit);
+        
         if ($insert)
             return true;
         else
             return false;
+    }
+    
+    function oficinas_delete(Request $request){
+        $delete = DB::table('adm_tri.oficinas')->where('id_ofi',$request['id_ofi'])->delete();
+        if($delete)
+            return response()->json([
+                'msg'=>'si'
+            ]);
+        else return false;
     }
 
     public function modif_ofi(Request $request) {
@@ -235,14 +240,22 @@ class Oficinas_Uit extends Controller {
             'nombre' => $data['nombre'],
             'cod_oficina' => $data['cod_oficina']
         );
-        // $uit=array('uit'=>$data['uit']); 
 
         $insert = DB::table('adm_tri.oficinas')->where('id_ofi', '=', $data['id_ofi'])->update($arr_uit);
-        //$insert = DB::table('uit')->insert($arr_uit);
+        
         if ($insert)
             return true;
         else
             return false;
     }
-
+    function oficinas_insert_new(Request $request){
+        $data = $request->all();
+        $insert = DB::table('adm_tri.oficinas')->insert($data);
+        
+        if ($insert) {
+            return response()->json([
+                        'msg' => 'si'
+            ]);
+        }
+    }
 }

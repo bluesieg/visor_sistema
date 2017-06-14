@@ -85,8 +85,7 @@ class Valores_Unitarios extends Controller {
     }
     
     function update_valor_unitario(Request $request){
-        $update = DB::table('adm_tri.val_unit')->where('id_val',$request['id_val'])->update($request['valor']);
-        
+        $update = DB::table('adm_tri.val_unit')->where('id_val',$request['id_val'])->update(['valor'=>$request['valor']]);        
 
         if ($update) {
             return response()->json([
