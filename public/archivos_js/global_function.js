@@ -340,6 +340,13 @@ function mostraralertasconfoco(texto,foco)
 }
 function ajustar(tam, num) 
 {
-    if (num.toString().length <= tam) return ajustar(tam, "0" + num)
-    else return num;
+    data=$("#"+num).val();
+    if(data!="")
+    {
+        if (data.toString().length <= tam)
+        {   $("#"+num).val("0"+data);
+            return ajustar(tam, num)
+        }
+        else return $("#"+num).val(data);
+    }
 }

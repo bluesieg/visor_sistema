@@ -19,7 +19,11 @@ class PredioController extends Controller
         $sectores = DB::select('select * from catastro.sectores');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=1 ');
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
-        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion'));
+        $ecc = DB::select('select * from adm_tri.ecc order by id_ecc ');
+        $tpre = DB::select('select * from adm_tri.tip_predio order by id_tip_p ');
+        $upa = DB::select('select * from adm_tri.uso_predio_arbitrios order by id_uso_arb ');
+        $fadq = DB::select('select * from adm_tri.form_adq order by id_for ');
+        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion','ecc','tpre','upa','fadq'));
     }
 
     /**
@@ -42,23 +46,28 @@ class PredioController extends Controller
         $predio->dpto = $request['dpto'];
         $predio->nro_int = $request['int'];
         $predio->referencia = $request['ref'];
-        $predio->id_est_const = 1;
-        $predio->id_tip_pred = 1;
         $predio->id_contrib = $request['contrib'];
         $predio->id_exon = 1;
         $predio->id_cond_esp_exon = 1;
-        $predio->id_uso_predio = '010101';
         $predio->id_hab_urb = 1;
-        $predio->id_form_adq = 1;
         $predio->mzna = $request['mzna'];
         $predio->sec = $request['sec'];
         $predio->lote = $request['lote'];
         $predio->anio = date("Y");
         $predio->cod_cat = $request['sec'].$request['mzna'].$request['lote'];
-        
+        $predio->id_est_const = $request['ecc'];
+        $predio->id_tip_pred = $request['tpre'];
+        $predio->id_uso_predio = $request['tipuso'];
+        $predio->id_uso_pred_arbitrio = $request['uprearb'];
+        $predio->id_form_adq = $request['ifor'];
+        $predio->fech_adquis = $request['ffor'];
+        $predio->luz_nro_sum = $request['luz'];
+        $predio->agua_nro_sum = $request['agua'];
+        $predio->licen_const = $request['liccon'];
+        $predio->conform_obra = $request['confobr'];
+        $predio->declar_fabrica = $request['defra'];
         $predio->save();
-        
-        echo $predio->id;
+        return $predio->id_pred;
     }
 
     /**
@@ -80,8 +89,20 @@ class PredioController extends Controller
      */
     public function show($id)
     {
-        
-        return "show";
+        $prediovw= DB::table('adm_tri.vw_predi_urba')->where('id_pred',$id)->get();
+        $predio= DB::table('adm_tri.predios')->leftJoin('catastro.usos_predio', 'predios.id_uso_predio', '=', 'usos_predio.id_uso')->where('predios.id_pred',$id)->get();
+        $prediovw[0]->id_uso_predio=$predio[0]->id_uso_predio;
+        $prediovw[0]->codi_uso=$predio[0]->codi_uso;
+        $prediovw[0]->desc_uso=$predio[0]->desc_uso;
+        $prediovw[0]->id_uso_pred_arbitrio=$predio[0]->id_uso_pred_arbitrio;
+        $prediovw[0]->fech_adquis=date("d/m/Y",strtotime(str_replace("/", "-", $predio[0]->fech_adquis)));
+        $prediovw[0]->luz_nro_sum=$predio[0]->luz_nro_sum;
+        $prediovw[0]->agua_nro_sum=$predio[0]->agua_nro_sum;
+        $prediovw[0]->licen_const=$predio[0]->licen_const;
+        $prediovw[0]->conform_obra=$predio[0]->conform_obra;
+        $prediovw[0]->declar_fabrica=$predio[0]->declar_fabrica;
+        $prediovw[0]->declar_fabrica=$predio[0]->declar_fabrica;
+        return $prediovw;
     }
 
     /**
@@ -108,7 +129,19 @@ class PredioController extends Controller
             $val->dpto = $request['dpto'];
             $val->nro_int = $request['int'];
             $val->referencia = $request['ref'];
+            $val->id_est_const = $request['ecc'];
+            $val->id_tip_pred = $request['tpre'];
+            $val->id_uso_predio = $request['tipuso'];
+            $val->id_uso_pred_arbitrio = $request['uprearb'];
+            $val->id_form_adq = $request['ifor'];
+            $val->fech_adquis = $request['ffor'];
+            $val->luz_nro_sum = $request['luz'];
+            $val->agua_nro_sum = $request['agua'];
+            $val->licen_const = $request['liccon'];
+            $val->conform_obra = $request['confobr'];
+            $val->declar_fabrica = $request['defra'];
             $val->save();
+   
         }
         return "edit".$id;
     }
@@ -180,7 +213,7 @@ class PredioController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_predi_urba where id_mzna='$secmn' and anio='".date("Y")."'");
+        $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_mzna='$secmn' and anio='".date("Y")."'");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -203,19 +236,7 @@ class PredioController extends Controller
                 trim($Datos->are_terr),               
                 trim($Datos->val_ter),               
                 trim($Datos->val_const),               
-                trim($Datos->id_cond_prop),               
-                trim($Datos->id_contrib),               
-                trim($Datos->nro_doc),               
-                trim($Datos->cod_via),               
-                trim($Datos->dpto),               
-                trim($Datos->zona),               
-                trim($Datos->secc),               
-                trim($Datos->piso),               
-                trim($Datos->nro_int),               
-                trim($Datos->referencia),               
-                trim($Datos->nro_condominios),               
-                              
-                
+                            
             );
         }
         return response()->json($Lista);

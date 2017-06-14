@@ -160,11 +160,11 @@
                     </li>
                     <li class="">
                         <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
-                        <ul>
+                        <ul id="menu_admtri">
                             <li class="">
                                 <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
                             </li>
-                            <li class="">
+                            <li id="li_preurb">
                                 <a href="predios_urbanos" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
                             </li>
                             <li class="">
@@ -204,7 +204,7 @@
         <div class="page-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
-                    <span class="txt-color-white">SmartAdmin 1.8.x <span class="hidden-xs"> - Web Application Framework</span> © 2014-2016</span>
+                    <span class="txt-color-white">Maynsa<span class="hidden-xs"> Sistema Web</span> © Arequipa-2017</span>
                 </div>
             </div>            
         </div>

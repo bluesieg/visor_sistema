@@ -67,6 +67,22 @@ class General extends Controller
 //                $table = DB::select('select * from catastro.vw_vias');  
 //        dd($table);
     }
+    function autocompletar_tipo_uso(Request $request){
+        $data = $request->all();
+        $Consulta = DB::table('catastro.usos_predio')->get();  
+
+        $todo=array();
+        foreach($Consulta as $Datos)
+        {
+            $Lista=new \stdClass();           
+            $Lista->value=$Datos->id_uso;
+            $Lista->label=  trim($Datos->desc_uso);           
+            $Lista->codi=  trim($Datos->codi_uso);           
+            array_push($todo,$Lista);
+        }        
+        return response()->json($todo);
+ 
+    }
     /*****************************************COMBO  DEPARTAMENTO / PROVINCIA / DISTRITO **************************************/
     public function get_dpto() {
         $Consulta = DB::table('maysa.dpto')->get();

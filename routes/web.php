@@ -12,10 +12,9 @@ $this->get('logout', 'Auth\LoginController@logout')->name('logout');
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 //$this->post('register', 'Auth\RegisterController@register');
 //Route::post('registro','Usuarios@postRegistro')->name('registro_user');
-Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
+    Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
     Route::get('uit', 'configuracion\Oficinas_Uit@get_alluit')->name('uit'); // tabla..
     Route::get('list_uit', 'configuracion\Oficinas_Uit@index'); // tabla grilla uit
-
     Route::post('uit_save', 'configuracion\Oficinas_Uit@insert'); // ruta para guardar
     Route::post('uit_mod', 'configuracion\Oficinas_Uit@modif');
     Route::post('uit_quitar', 'configuracion\Oficinas_Uit@eliminar');
@@ -54,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento
     Route::get('get_all_cond_exonerac', 'General@get_cond_exonerac'); //llena combo condicion exonerac
     Route::get('autocompletar_direccion', 'General@autocompletar_direccion'); //autocompleta el input text avenida,jiro, calle de contribuyentes
+    Route::get('autocompletar_tipo_uso', 'General@autocompletar_tipo_uso'); //autocompleta el input text avenida,jiro, calle de contribuyentes
     Route::get('autocomplete_nom_via', 'configuracion\Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
+        Route::resource('pisos_predios', 'PisosController');
         Route::get('gridpredio','PredioController@listpredio');//llena combo MANZANAvw_val_arancel
         Route::get('selmzna','PredioController@ListManz');//llena combo MANZANAvw_val_arancel
         Route::get('getcontri','PredioController@GetContrib');//obtener informacion predio
