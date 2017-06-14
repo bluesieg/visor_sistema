@@ -7,10 +7,7 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>Maynsa</title>
-
-
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 
@@ -142,8 +139,8 @@
                     </li>
                     <li class="">
                         <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
-                        <ul id="menu_adm_tri">
-                            <li id="li_config_contribuyentes">
+                        <ul id="menu_admtri">
+                            <li class="">
                                 <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
                             </li>
                             <li id="li_preurb">
