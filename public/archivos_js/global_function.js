@@ -322,6 +322,70 @@ function fn_actualizar_grilla(grilla,url) {
     }).trigger('reloadGrid');
     
 }
+
+var global_captcha_reniec = 0;
+function fn_buscar_reniec() {
+    tipo = $("#cb_tip_doc_1").val();
+    dni = ($("#txt_nro_doc").val()).trim();
+//    if(dni!='' && tipo==02){
+//        var tecactusApi = new TecactusApi("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjExZTVmMzAxOGNjYWYzZjA1OGZkYjQ3NjNmYmQ3NDQ5NTYxZjJhNTE4YzVlMTdiZjllNzdhOGNmYmIxZTZlMmEyN2IyZmI2MDA1OTI4YTYxIn0.eyJhdWQiOiIxIiwianRpIjoiMTFlNWYzMDE4Y2NhZjNmMDU4ZmRiNDc2M2ZiZDc0NDk1NjFmMmE1MThjNWUxN2JmOWU3N2E4Y2ZiYjFlNmUyYTI3YjJmYjYwMDU5MjhhNjEiLCJpYXQiOjE0OTc0MDgzODIsIm5iZiI6MTQ5NzQwODM4MiwiZXhwIjoxODEyOTQxMTgyLCJzdWIiOiIzNTIiLCJzY29wZXMiOlsidXNlLXJlbmllYyJdfQ.GUNrMCwwV1K6G8HNeTs1YtpLbPBUZSKIGpm0xH2RUKvwrHa8vhWzqLB1GCtVOCXdA9UlAabnQwz7kv2smTjfMD9wwgncbhUSpavEXlr6Wl0Sk0OR-FNaI2-4FhQTqrOycyezRZvhmIPQjaUfl98wympjmBbs03ylWHFacjVUkHSFx9DsmEnlZFb133lrWgsbKOES8zko-xt2z-czqQjMA57nWE6rG5_4ehkmb2a6nPHzLeoJuduCRzxtFAXohngNl47_SVGGlz__u3z2oBbvqamJZCWN8eotMK65WTLHyr5yXROXziZ3zpn8Pv-mURpYV-z5tdvcBxOhONqUCpU5JR3qr47gkvI73Nq140jA5VePEk0gwVdid_azS6dmfjsM6hbMwlivP5Lt0FBsyUhhD6kWLOmgPua9Y9O9qoG4VUozymBItSmNZaQm8XduT8BUg0tR9Mt1yvdzJqYxFbNkI0PIApT4ftgVIvbQD6793E02axQ38py3lc-AwnlkEf_pZ56Ziw6zX7rW-fR2JVLUsZg_ZKdDi3sFz2j8axwqMxrp5D7PPY_ySL-WzUPLIQiqp2rZ31cSfCVCHZMT_DyfVS_0ylrHdjLytDOkYD7GNwjES9QnWBIBjqOXCAfhwwZqBjBs3NjF1escydE40g8TlbpwTXa0lUu_ZKane6v5Txw")
+//
+//        tecactusApi.Reniec.getDni(dni)
+//                .then(function (response) {
+//                    console.log("consulta correcta!")
+//                    console.log(response.data)
+//                    $("#contrib_ape_pat").val(response.data.apellido_paterno);
+//                    $("#contrib_ape_mat").val(response.data.apellido_materno);
+//                    $("#contrib_nombres").val(response.data.nombres);
+//                })
+//                .catch(function (response) {
+//                    console.log("algo ocurrió")
+//                    console.log("código de error: " + response.code)
+//                    console.log("mensaje de respuesta: " + response.status)
+//                    console.log(response.data)
+//
+//                })
+//        
+//    }else{
+//        mostraralertasconfoco('DNI requerido','#txt_nro_doc');
+//        return false
+//    }
+   
+    MensajeDialogLoadAjax('captcha_reniec','Reniec...');
+    if (global_captcha_reniec == 0) {
+//        global_captcha_reniec = 1;
+        $("#dialog_captcha_reniec").dialog({
+            autoOpen: false, modal: true, height: 220, width: 300, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>&nbsp&nbsp.: CAPTCHA RENIEC :.</h4></div>",
+            buttons: [{
+                    html: " <span class='btn-label'><i class='fa fa-save'></i></span>Guardar",
+                    "class": "btn btn-labeled bg-color-blue txt-color-white",
+                    click: function () {
+                        fn_traer_datos_reniec();
+                        $(this).dialog("close");
+                    }
+                }, {
+                    html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                    "class": "btn btn-primary bg-color-blue",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }],
+            close: function (event, ui) {
+
+            }
+        }).dialog('open');        
+        
+        $('#captcha_reniec').attr('src', 'https://cel.reniec.gob.pe/valreg/codigo.do');        
+    }
+    MensajeDialogLoadAjaxFinish('captcha_reniec');
+}
+//function fn_traer_datos_reniec(){
+//    dni=$("#txt_nro_doc").val();
+//    captcha = $("#txt_captcha_reniec").val();
+//}
+
+
 /**********MENSAJES DEL SISTEMA*****************************************/
 
 function foco(div)

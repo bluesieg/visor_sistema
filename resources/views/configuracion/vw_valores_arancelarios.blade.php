@@ -51,6 +51,8 @@
 @section('page-js-script')
 <script type="text/javascript">    
     $(document).ready(function () {
+        $("#menu_configuracion").show();
+        $("#li_config_val_ara").addClass('cr-active');
         MensajeDialogLoadAjax('content', '.:: CARGANDO ...');
 
         var filtro = 0;

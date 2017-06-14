@@ -52,29 +52,11 @@
                 <span id="logo"> <img src="img/logo_cc_2.png" alt="SmartAdmin"> </span> 
 
             </div>
-            <div class="header hidden-xs">            
-                <h3 style="margin: 5px 0px; font-size: 27px">
-                    <span class="label label-success">CERRO COLORADO</span>
-                </h3>
-            </div>
             @if (Auth::guest())
             <div class="pull-right" style="margin-top: 8px">
                 <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Session</a>                
             </div>  
             @else
-            <div class="project-context hidden-xs">
-
-                <span class="label">Projects:</span>
-                <span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
-                <!-- Suggestion: populate this list with fetch and push technique -->
-                <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a></li>
-                    <li><a href="javascript:void(0);">Notes on pipeline upgradee</a></li>
-                    <li><a href="javascript:void(0);">Assesment Report for merchant account</a></li>
-                    <li class="divider"></li>
-                    <li><a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a></li>
-                </ul>
-            </div>  
             <div class="pull-right">
                 <div id="hide-menu" class="btn-header pull-right">
                     <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Colapsar Menu"><i class="fa fa-reorder"></i></a> </span>
@@ -124,21 +106,21 @@
             <nav >
                 <ul>
                     <li class="">
-                        <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Configuracion</span></a>
-                        <ul>
-                            <li class="">
+                        <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cogs"></i> <span class="menu-item-parent">Configuracion</span></a>
+                        <ul id="menu_configuracion">
+                            <li id="li_config_uit">
                                 <a href="{{ route('uit') }}" title="Dashboard"><i class="fa fa-gear"></i>UIT</a>
                             </li>
-                            <li class="">
+                            <li id="li_config_val_ara">
                                 <a href="{{route('val_aran')}}" title="Dashboard"><i class="fa fa-picture-o"></i> Valores Arancelarios</a>
                             </li>
                             <li class="">
                                 <a href="skins.html" title="Dashboard"><i class="fa fa-picture-o"></i> Depreciacion</a>
                             </li>
-                            <li>
+                            <li id="li_config_val_unit">
                                 <a href="{{route('valores_unitarios')}}" title="Valores Unitario"><i class="fa fa-cube"></i>Valores Unitario</a>
                             </li>
-                            <li>
+                            <li id="li_config_oficinas">
                                 <a href="{{ route('oficinas') }}" title="Oficinas"><i class="fa fa-cube"></i>Oficinas</a>
                             </li>
                             <li>
@@ -160,8 +142,8 @@
                     </li>
                     <li class="">
                         <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
-                        <ul id="menu_admtri">
-                            <li class="">
+                        <ul id="menu_adm_tri">
+                            <li id="li_config_contribuyentes">
                                 <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
                             </li>
                             <li id="li_preurb">

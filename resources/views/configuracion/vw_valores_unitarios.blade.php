@@ -37,6 +37,8 @@
 @section('page-js-script')
 <script type="text/javascript">
     $(document).ready(function () { 
+        $("#menu_configuracion").show();
+        $("#li_config_val_unit").addClass('cr-active');
         get_global_anio_uit('vw_val_unitarios_cb_anio');
         var d = new Date();
         jQuery("#table_Val_Unitarios").jqGrid({
@@ -81,7 +83,7 @@
                             <section> 
                                 <label class="label">Ingrese Valor S/.</label>
                                 <label class="input">
-                                    <input id="vw_val_unitarios_valor" onkeypress="return soloDNI(event);" type="text" placeholder="Arancel." class="input-sm">
+                                    <input id="vw_val_unitarios_valor" onkeypress="return soloNumeroTab(event);" type="text" placeholder="Arancel." class="input-sm">
                                 </label>                      
                             </section>         
                         </fieldset>
