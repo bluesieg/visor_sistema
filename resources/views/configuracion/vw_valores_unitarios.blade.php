@@ -76,14 +76,14 @@
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
-                <div class="panel panel-success">
-                    <!--<div class="panel-heading bg-color-success">.:: Valores Unitarios ::.</div>-->
+                <div class="panel panel-success" style="border: 0px !important;">
+                    <div class="panel-heading bg-color-success">.:: Precio del Valor Unitario / Soles ::.</div>
                     <div class="panel-body">
                         <fieldset> 
                             <section> 
                                 <label class="label">Ingrese Valor S/.</label>
                                 <label class="input">
-                                    <input id="vw_val_unitarios_valor" onkeypress="return soloNumeroTab(event);" type="text" placeholder="Arancel." class="input-sm">
+                                    <input id="vw_val_unitarios_valor" onkeypress="return soloNumeroTab(event);" type="text" placeholder="Arancel." class="input-sm text-right">
                                 </label>                      
                             </section>         
                         </fieldset>

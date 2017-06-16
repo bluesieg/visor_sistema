@@ -200,13 +200,13 @@ function get_global_cod_via(input,cod_via){
                 $("#"+input).attr('maxlength', data.via_compl.length);
             } else {
                 global_id_via =0;
-                $("#"+input).val("");
+                $("#"+input).val("");                
                 mostraralertas('* El Codigo Ingresado no Existe ... !');
             }
             MensajeDialogLoadAjaxFinish(input);
         },
         error: function (data) {
-            alert(' Error Interno !  Comuniquese con el Administrador...');
+            mostraralertas('*Error Interno !  Comuniquese con el Administrador...');
             MensajeDialogLoadAjaxFinish(input);
         }
     });
@@ -230,7 +230,7 @@ function get_global_contri(input,doc){
 
         },
         error: function (data) {
-            alert(' Error Interno !  Comuniquese con el Administrador...');
+            mostraralertas('* Error Interno !  Comuniquese con el Administrador...');
             MensajeDialogLoadAjaxFinish(input);
         }
     });

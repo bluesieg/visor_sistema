@@ -36,59 +36,69 @@
 
 
 <div id="dialog_open_list_uit" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">    
+                <div class="panel panel-success" style="border: 0px !important;">
+                    <div class="panel-heading bg-color-success">.:: Datos Uit ::.</div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
     <table align="center" >
         <tr>
             <td> AÑO : </td>
             <td>
-                <input id="txt_anio" type="number" min="1999" max="3000" step="1"  required="required"><p>
+                <input id="txt_anio" type="number" min="1999" max="3000" step="1" maxlength="4"  required="required"><p>
             </td>
         </tr>
         <tr>
             <td> UIT : </td>
             <td>
-                <input type="number" id="txt_uit" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_uit" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
         </tr>
         <tr>
             <td> Uit Alcabala : </td>
             <td>
-                <input type="number" id="txt_uit_alc" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_uit_alc" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
         </tr>
         <tr>
             <td> Tasa Alcabala : </td>
             <td>
-                <input type="number" id="txt_tas_alc" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_tas_alc" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
         </tr>
         <tr>
             <td> Formatos : </td>
             <td>
-                <input type="number" id="txt_formatos" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_formatos" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
             <td> &nbsp &nbsp Hasta 15 UIT : </td>
             <td>
-                <input type="number" id="txt_15uit" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_15uit" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
         </tr>
         <tr>
             <td> % Min Ivpp : </td>
             <td>
-                <input type="number" id="txt_min_ivpp" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_min_ivpp" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
             <td> &nbsp &nbsp Hasta 60 UIT : </td>
             <td>
-                <input type="number" id="txt_60uit" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_60uit" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
         </tr>
         <tr>
             <td> % Otras Inst : </td>
             <td>
-                <input type="number" id="txt_ot_ins" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_ot_ins" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
             <td> &nbsp &nbsp mas de 60 UIT : </td>
             <td>
-                <input type="number" id="txt_60mas" min="0" max="10000" step="0.1"  required="required"><p>
+                <input type="number" id="txt_60mas" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
         </tr>
     </table>
@@ -108,7 +118,7 @@
             url: 'list_uit',
             datatype: 'json', mtype: 'GET',
             autowidth: true, height: 'auto',
-            colNames: ['pk_uit', 'Año', 'UIT', 'Uit Alcab %', 'Tasa Alcab', 'Formatos', '% Min Ivpp', '% Min O Inst', 'deoa15', 'de15a60', 'mas60'],            
+            colNames: ['pk_uit', 'Año', 'UIT', 'Uit Alcab %', 'Tasa Alcab', 'Formatos', '% Min Ivpp', '% Min O Inst', 'deoa15', 'de15a60', 'mas60'],
             rowNum: 15, sortname: 'pk_uit', sortorder: 'desc', viewrecords: true, caption: 'Lista UIT', align: "center",
             colModel: [
                 {name: 'pk_uit', index: 'pk_uit', hidden: true},

@@ -124,8 +124,12 @@ class Valores_Arancelarios extends Controller {
             return response()->json([
                         'msg' => 'si',
             ]);
-        } else
-            return false;
+        } else{
+            return response()->json([
+                        'msg' => 'no',
+            ]);
+        }
+            
     }
 
     function update_valor_arancel(Request $request) {

@@ -1,26 +1,26 @@
 var global_id_via;
-function open_dialog_new_edit_Val_Arancel(tipo, id_arancel) {
-    limpiar_ctrl('dialog_new_edit_Val_Arancel');
-
+function open_dialog_new_edit_Val_Arancel(tipo) {
+    id_arancel=$('#table_Val_Arancel').jqGrid('getGridParam', 'selrow');
+    $("#val_arancel_cod_via").val('');
     $("#val_arancel_nom_via").val('');
     $("#dialog_new_edit_Val_Arancel").dialog({
-        autoOpen: false, modal: true, height: 380, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, height: 305, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " ARANCEL :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-primary bg-color-blue",
+                "class": "btn btn-success bg-color-green txt-color-white",
                 click: function () {
                     valores_arancelarios_save_edit(tipo, id_arancel);
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-blue",
+                "class": "btn btn-danger",
                 click: function () {
                     $(this).dialog("close");
                 }
             }],
         close: function (event, ui) {
-
+            limpiar_ctrl('dialog_new_edit_Val_Arancel');
         }
     }).dialog('open');
     if (tipo == 'NUEVO') {
@@ -43,7 +43,8 @@ function open_dialog_new_edit_Val_Arancel(tipo, id_arancel) {
 
 }
 
-function eliminar_val_arancel(id_arancel) {
+function eliminar_val_arancel(){
+    id_arancel=$('#table_Val_Arancel').jqGrid ('getGridParam', 'selrow');
     filtro = $("#vw_val_arancel_cb_anio").val() + $("#val_arancel_sec").val() + $("#val_arancel_mzna").val();
     $.confirm({
         type: 'red',
@@ -73,22 +74,20 @@ function eliminar_val_arancel(id_arancel) {
 function valores_arancelarios_save_edit(tipo, id_arancel) {
 
     val_ara = $("#val_arancel_val_ara").val();
-    val_arancel_cod_via=$("#val_arancel_cod_via").val();
-    
+    val_arancel_cod_via = $("#val_arancel_cod_via").val();
+
     if (val_ara == '') {
         mostraralertasconfoco('* El campo Arancel es Obligatorio...!', '#val_arancel_val_ara');
         return false;
-    }else if(val_arancel_cod_via==''){
+    } else if (val_arancel_cod_via == '') {
         mostraralertasconfoco('* El campo Codigo/Via es Obligatorio...!', '#val_arancel_cod_via');
         return false;
     }
-    
 
     MensajeDialogLoadAjax('dialog_new_edit_Val_Arancel', '.:: CARGANDO ...');
     filtro = $("#vw_val_arancel_cb_anio").val() + $("#val_arancel_sec").val() + $("#val_arancel_mzna").val();
 
-    if (tipo === 'NUEVO' && id_arancel === undefined) {
-
+    if (tipo === 'NUEVO') {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'insert_valor_arancel',
@@ -102,8 +101,12 @@ function valores_arancelarios_save_edit(tipo, id_arancel) {
                 id_via: global_id_via
             },
             success: function (data) {
-                fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
-                dialog_close('dialog_new_edit_Val_Arancel');
+                if (data.msg == 'si') {
+                    fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+                    dialog_close('dialog_new_edit_Val_Arancel');
+                }else{
+                    mostraralertas('* Codigo Via ya Existe...!');
+                }
                 MensajeDialogLoadAjaxFinish('dialog_new_edit_Val_Arancel', '.:: CARGANDO ...');
             },
             error: function (data) {
@@ -111,7 +114,7 @@ function valores_arancelarios_save_edit(tipo, id_arancel) {
                 MensajeDialogLoadAjaxFinish('dialog_new_edit_Val_Arancel', '.:: CARGANDO ...');
             }
         });
-    } else if (tipo === 'EDITAR' && id_arancel != undefined) {
+    } else if (tipo === 'EDITAR') {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'update_valor_arancel',
@@ -131,7 +134,6 @@ function valores_arancelarios_save_edit(tipo, id_arancel) {
             }
         });
     }
-
 }
 
 function buscar_val_arancel() {
@@ -163,29 +165,6 @@ function llenar_combo_mzna(id_sec) {
         }
     });
 
-}
-
-function val_arancel_auto_nom_via(cod_via) {
-    MensajeDialogLoadAjax('dialog_new_edit_Val_Arancel', '.:: CARGANDO ...');
-    get_global_cod_via('val_arancel_nom_via', cod_via);
-    MensajeDialogLoadAjaxFinish('dialog_new_edit_Val_Arancel', '.:: CARGANDO ...');
-//    $.ajax({
-//        url: 'autocomplete_nom_via?cod_via=' + cod_via,
-//        type: 'GET',
-//        success: function (data) {
-//            if (data.msg == 'si') {
-//                global_id_via = data.id_via;
-//                $("#val_arancel_nom_via").val(data.via_compl);
-//                $("#val_arancel_nom_via").attr('maxlength', data.via_compl.length);
-//            } else {
-//                mensaje_sis('mensajesis', '* El Codigo Ingresado no Existe ... !', ':. Mensaje del Sistema ...!!!');
-//            }
-//
-//        },
-//        error: function (data) {
-//            alert(' Error al llenar combo Manzana...');
-//        }
-//    });
 }
 
 function click_btn_buscar() {

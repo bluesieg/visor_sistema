@@ -1,5 +1,17 @@
 @extends('layouts.app')
 @section('content')
+<style>    
+    .smart-form fieldset {    
+        padding: 5px 8px 0px;   
+    }
+    .smart-form section {
+        margin-bottom: 5px;    
+    }
+    .smart-form .label {  
+        margin-bottom: 0px;   
+    }
+    
+</style>
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -28,10 +40,10 @@
                             <button onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button id="btn_vw_valores_arancelarios_Editar" onclick="open_dialog_new_edit_Val_Arancel('EDITAR');" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                            <button id="btn_vw_valores_arancelarios_Eliminar" onclick="eliminar_val_arancel();" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 
                             <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
@@ -49,7 +61,7 @@
     </div>
 </section>
 @section('page-js-script')
-<script type="text/javascript">    
+<script type="text/javascript">
     $(document).ready(function () {
         $("#menu_configuracion").show();
         $("#li_config_val_ara").addClass('cr-active');
@@ -109,12 +121,16 @@
             ],
             pager: '#pager_table_Val_Arancel',
             rowList: [13, 20],
-            onSelectRow: function (Id) {
-                $('#btn_vw_valores_arancelarios_Editar').attr('onClick', 'open_dialog_new_edit_Val_Arancel("' + 'EDITAR' + '",' + Id + ')');
-                $('#btn_vw_valores_arancelarios_Eliminar').attr('onClick', 'eliminar_val_arancel(' + Id + ')');
-            },
+            onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
-                $("#btn_vw_valores_arancelarios_Editar").click();
+                open_dialog_new_edit_Val_Arancel('EDITAR',Id);
+            },
+            gridComplete: function () {
+                var idarray = jQuery('#table_Val_Arancel').jqGrid('getDataIDs');
+                if (idarray.length > 0) {
+                    var firstid = jQuery('#table_Val_Arancel').jqGrid('getDataIDs')[0];
+                    $("#table_Val_Arancel").setSelection(firstid);
+                }
             }
         });
         $(window).on('resize.jqGrid', function () {
@@ -123,7 +139,7 @@
         $("#val_arancel_cod_via").keypress(function (e) {
             if (e.which == 13) {
                 cod_via = $('#val_arancel_cod_via').val();
-                val_arancel_auto_nom_via(cod_via);
+                get_global_cod_via('val_arancel_nom_via',cod_via,'val_arancel_cod_via');
             }
         });
     });
@@ -134,9 +150,9 @@
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
-                <div class="panel panel-success">
-                    <div class="panel-heading bg-color-success">.:: Valores Arancelarios ::.</div>
-                    <div class="panel-body">
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-heading bg-color-success" >.:: Valores Arancelarios ::.</div>
+                    <div class="panel-body cr-body">
                         <fieldset>                           
                             <div class="row">
                                 <section class="col col-6">
@@ -156,7 +172,7 @@
                                 <section class="col col-4">
                                     <label class="label">Cod. Via:</label>
                                     <label class="input">
-                                        <input id="val_arancel_cod_via" onkeypress="return soloDNI(event);" type="text" placeholder="Codigo Via" class="input-sm">
+                                        <input id="val_arancel_cod_via" onkeypress="return soloDNI(event);" type="text" placeholder="000000" class="input-sm">
                                     </label>                        
                                 </section>
                                 <section class="col col-8">
@@ -169,7 +185,7 @@
                             <section> 
                                 <label class="label">Arancel:</label>
                                 <label class="input">
-                                    <input id="val_arancel_val_ara" onkeypress="return soloDNI(event);" type="text" placeholder="Arancel." class="input-sm">
+                                    <input id="val_arancel_val_ara" onkeypress="return soloNumeroTab(event);" type="text" placeholder="0.00" class="input-sm text-right">
                                 </label>                      
                             </section>         
                         </fieldset>

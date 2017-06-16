@@ -140,7 +140,7 @@
                     <li class="">
                         <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
                         <ul id="menu_admtri">
-                            <li class="">
+                            <li id="li_config_contribuyentes">
                                 <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
                             </li>
                             <li id="li_preurb">
@@ -155,10 +155,10 @@
                         </ul>	
                     </li>
                     <li class="">
-                        <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">SmartAdmin Intel</span></a>
-                        <ul>
-                            <li class="">
-                                <a href="layouts.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-gear"></i> <span class="menu-item-parent">App Layouts</span></a>
+                        <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Tesoreria</span></a>
+                        <ul id="menu_tesoreria">
+                            <li id="li_tesoreria_emi_rec_pag">
+                                <a href="layouts.html" title="Emision de Recibos de Pago"><i class="fa fa-gear"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
                             </li>
                             <li class="">
                                 <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Prebuilt Skins</span></a>

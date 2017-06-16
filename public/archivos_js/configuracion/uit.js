@@ -1,13 +1,11 @@
 function load_list_UIT() {
-    // alert(5);
     jQuery("#table_vw_uit").jqGrid({
-
         url: 'list_uit',
         datatype: 'json', mtype: 'GET',
         autowidth: true, height: 'auto',
 
         colNames: ['pk_uit', 'Año', 'UIT', 'Uit Alcab %', 'Tasa Alcab', 'Formatos', '% Min Ivpp', '% Min O Inst'],
-        rowNum: 11, sortname: 'pk_uit', sortorder: 'desc', viewrecords: true,
+        rowNum: 15, sortname: 'pk_uit', sortorder: 'desc', viewrecords: true,
         colModel: [
             {name: 'pk_uit', index: 'pk_uit', hidden: true},
             {name: 'anio', index: 'anio', align: 'center'},
@@ -19,15 +17,9 @@ function load_list_UIT() {
             {name: 'porc_ot_ins', index: 'porc_ot_ins', align: 'center'},
         ],
         pager: '#pager_table_vw_uit',
-        rowList: [11, 22],
-
-        onSelectRow: function (Id) {
-
-        },
-
-        ondblClickRow: function (Id) {
-
-        }
+        rowList: [15, 25],
+        onSelectRow: function (Id) {},
+        ondblClickRow: function (Id) {}
     });
 
     $(window).on('resize.jqGrid', function () {
@@ -38,39 +30,51 @@ function load_list_UIT() {
 function open_tabla() {
     load_list_UIT();
 }
-
+function limpiar_uit(){
+    $("#txt_anio").val('');
+    $("#txt_uit").val('');
+    $("#txt_uit_alc").val('');
+    $("#txt_tas_alc").val('');
+    $("#txt_formatos").val('');
+    $("#txt_15uit").val('');
+    $("#txt_60uit").val('');
+    $("#txt_60mas").val('');
+    $("#txt_min_ivpp").val('');
+    $("#txt_ot_ins").val('');
+}
 function open_dialog_nuevo_uit(tipe, Id)
-{
-
+{    
     $("#dialog_open_list_uit").dialog({
         autoOpen: false, modal: true, height: 370, width: 480, show: {effect: "fade", duration: 300}, resizable: false,
-        //title : "<div class='widget-header'><h4><i class='fa fa-warning'></i> Ingresar Datos Datos</h4></div>",
-        title: "<div class='widget-header'><h4><i class='fa fa-user'></i>&nbsp.: " + tipe + " USUARIO :.</h4></div>",
+        title: "<div class='widget-header'><h4>&nbsp.: " + tipe + " UIT :.</h4></div>",
         buttons: [{
-                html: "<i class='fa fa-trash-o'></i>&nbsp; Guardar",
-                "class": "btn btn-primary bg-color-green",
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
                 click: function () {
                     if (tipe == 'NUEVO') {
-                        guardar_uit();
-                        $(this).dialog("close");
+                        guardar_uit();                        
                     }
                     if (tipe == 'EDITAR') {
-                        modificar_uit(Id);
-                        $(this).dialog("close");
-                    }
-                    recargar_uit();
+                        modificar_uit(Id);                        
+                    }                    
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-green",
+                "class": "btn btn-danger",
                 click: function () {
                     $(this).dialog("close");
                 }
-            }]
+            }],
+        close: function (event, ui) {
+            limpiar_uit();
+        }
     }).dialog('open');
 
 
     if (tipe == 'NUEVO') {
+        $("#txt_15uit").val(0.2);
+        $("#txt_60uit").val(0.6);
+        $("#txt_60mas").val(1.0);
 
     } else {
         $("#txt_anio").val($.trim($("#table_vw_uit").getCell(Id, "anio")));
@@ -84,8 +88,6 @@ function open_dialog_nuevo_uit(tipe, Id)
         $("#txt_min_ivpp").val($.trim($("#table_vw_uit").getCell(Id, "porc_min_ivpp")));
         $("#txt_ot_ins").val($.trim($("#table_vw_uit").getCell(Id, "porc_ot_ins")));
     }
-
-
 }
 
 
@@ -95,15 +97,14 @@ function open_dialog_new_edit_Oficinas(tipe, id) {
         autoOpen: false, modal: true, height: 250, width: 440, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4><i class='fa fa-home'></i>&nbsp.: " + tipe + " OFICINA :.</h4></div>",
         buttons: [{
-                html: "<i class='fa fa-trash-o'></i>&nbsp; Guardar",
-                "class": "btn btn-primary bg-color-green",
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
                 click: function () {
-//                    Oficinas_save_edit(id);
                     modificar_oficina(tipe, id);
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-green",
+                "class": "btn btn-danger",
                 click: function () {
                     $(this).dialog("close");
                 }
@@ -145,18 +146,20 @@ function guardar_uit() {
             tas_alc: v_tas_alc,
             formatos: v_formatos,
             base_01: v_base_01,
-            deoa15: v_deoa15,
+            deoa15: v_deoa15.replace(',', '.'),
             tram_01: v_tram_01,
             base_02: v_base_02,
-            de15a60: v_de15a60,
+            de15a60: v_de15a60.replace(',', '.'),
             tram_02: v_tram_02,
             base_03: v_base_03,
-            mas60: v_mas60,
+            mas60: v_mas60.replace(',', '.'),
             porc_min_ivpp: v_porc_min_ivpp,
             porc_ot_ins: v_porc_ot_ins
         },
         success: function (data) {
             if (data.msg == 'si') {
+                recargar_uit();
+                dialog_close('dialog_open_list_uit');
             } else {
                 mostraralertas('* Error al Guardar UIT...!');
             }
@@ -184,30 +187,43 @@ function modificar_uit(Id) {
     v_porc_min_ivpp = $("#txt_min_ivpp").val();
     v_porc_ot_ins = $("#txt_ot_ins").val();
 
-
-
-    $.ajax({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        type: 'POST',
-        url: 'uit_mod',
-        data: {pk_uit: Id, anio: v_anio, uit: v_uit, uit_alc: v_uit_alc, tas_alc: v_tas_alc, formatos: v_formatos, base_01: v_base_01, deoa15: v_deoa15, tram_01: v_tram_01, base_02: v_base_02, de15a60: v_de15a60, tram_02: v_tram_02, base_03: v_base_03, mas60: v_mas60, porc_min_ivpp: v_porc_min_ivpp, porc_ot_ins: v_porc_ot_ins},
-        success: function (data) {
-            if (data.msg == 'si') {
-                alert('datos guardados corecctamente');
-            } else
-            {
-                alert('error');
-            }
-        }, error: function (data) {
-            alert('error conexion');
+    $.confirm({
+        type: 'green',
+        title: '.:Cuidado... !',
+        content: 'Los Cambios no se podran revertir...',
+        buttons: {
+            Confirmar: function () {
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: 'POST',
+                    url: 'uit_mod',
+                    data: {pk_uit: Id, anio: v_anio, uit: v_uit, uit_alc: v_uit_alc, tas_alc: v_tas_alc, formatos: v_formatos, base_01: v_base_01, deoa15: v_deoa15, tram_01: v_tram_01, base_02: v_base_02, de15a60: v_de15a60, tram_02: v_tram_02, base_03: v_base_03, mas60: v_mas60, porc_min_ivpp: v_porc_min_ivpp, porc_ot_ins: v_porc_ot_ins},
+                    success: function (data) {
+                        if (data.msg == 'si') {
+                            recargar_uit();
+                            dialog_close('dialog_open_list_uit');
+                        } else {
+                            mostraralertas('* Error al modificar UIT...!');
+                        }
+                    }, error: function (data) {
+                        mostraralertas('* Error de Conexion...!');
+                    }
+                });
+            },
+            Cancelar: function () {}
         }
     });
+
 }
 
 
 function modificar_oficina(tipo, Id) {
 
     v_nombre = ($("#ofi_txt_nombre_textarea").val()).toUpperCase();
+    if(v_nombre==''){
+        mostraralertasconfoco('* Ingrese el Nombre de la Oficina...','#ofi_txt_nombre_textarea');
+        return false;
+    }
     if (tipo === 'NUEVO' && Id === undefined) {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -226,20 +242,30 @@ function modificar_oficina(tipo, Id) {
             }
         });
     } else if (tipo === 'EDITAR' && Id != undefined) {
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            url: 'oficinas_mod',
-            data: {id_ofi: Id, nombre: v_nombre, cod_oficina: Id},
-            success: function (data) {
-                if (data.msg == 'si') {
-                    recargar_oficinas();
-                    dialog_close('dialog_open_list_oficinas');
-                } else {
-                    mostraralertas('* Ha ocurrido un error al momento de guardar...');
-                }
-            }, error: function (data) {
-                mostraralertas('* Error de Conexion...!');
+        $.confirm({
+            type: 'green',
+            title: '.:Cuidado... !',
+            content: 'Los Cambios no se podran revertir...',
+            buttons: {
+                Confirmar: function () {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type: 'POST',
+                        url: 'oficinas_mod',
+                        data: {id_ofi: Id, nombre: v_nombre, cod_oficina: Id},
+                        success: function (data) {
+                            if (data.msg == 'si') {
+                                recargar_oficinas();
+                                dialog_close('dialog_open_list_oficinas');
+                            } else {
+                                mostraralertas('* Ha ocurrido un error al momento de guardar...');
+                            }
+                        }, error: function (data) {
+                            mostraralertas('* Error de Conexion...!');
+                        }
+                    });
+                },
+                Cancelar: function () {}
             }
         });
     }
@@ -287,7 +313,7 @@ function open_dialog_quitar_uit(Id) {
                     data: {pk_uit: Id},
                     success: function (data) {
                         if (data.msg == 'si') {
-                            recargar_uit();                            
+                            recargar_uit();
                         } else {
                             mostraralertas('* Error al Eliminar UIT...!');
                         }

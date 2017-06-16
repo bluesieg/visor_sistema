@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#menu_adm_tri").show();
+        $("#menu_admtri").show();
         $("#li_config_contribuyentes").addClass('cr-active');
         jQuery("#table_Contribuyentes").jqGrid({
             url: 'grid_contribuyentes',

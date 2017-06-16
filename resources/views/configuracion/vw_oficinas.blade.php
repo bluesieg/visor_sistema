@@ -36,7 +36,7 @@
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
-                <div class="panel panel-success">
+                <div class="panel panel-success" style="border: 0px !important">
                     <div class="panel-heading bg-color-success">.:: Oficina ::.</div>
                     <div class="panel-body">
                         <fieldset>  

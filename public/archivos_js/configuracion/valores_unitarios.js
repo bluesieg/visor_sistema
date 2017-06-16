@@ -1,19 +1,18 @@
 
 
 function open_dialog_new_edit_Val_Unitarios(tipo, id_val) {
-//    alert(tipo+id_val);
     $("#dialog_new_edit_Val_Unitarios").dialog({
         autoOpen: false, modal: true, height: 220, width: 300, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " VALOR UNITARIO :.</h4></div>",
         buttons: [{
-                html: " <span class='btn-label'><i class='fa fa-save'></i></span>Guardar",
-                "class": "btn btn-labeled bg-color-blue txt-color-white",
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green txt-color-white",
                 click: function () {
                     valores_unitarios_save_edit(tipo, id_val);                   
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-blue",
+                "class": "btn btn-danger",
                 click: function () {
                     $(this).dialog("close");
                 }
