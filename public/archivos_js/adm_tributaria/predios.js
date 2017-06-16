@@ -228,19 +228,72 @@ function callpredtab()
             mostraralertas("Primero Guardar Predio...");
             return false;
         }
+        $("#rpiso_inp_nro,#rpiso_inp_fech,#rpiso_inp_econstr,#rpiso_inp_estruc,#rpiso_inp_aconst,#rpiso_inp_acomun").val("")
+        $("#rpiso_inp_clasi").val($("#rpiso_inp_clasi option:first").val());
+        $("#rpiso_inp_mat").val($("#rpiso_inp_mat option:first").val());
+        $("#rpiso_inp_econserv").val($("#rpiso_inp_econserv option:first").val());
+        $("#rpiso_inp_econstr").val($("#rpiso_inp_econstr option:first").val());
+        callchangeoption("rpiso_inp_clasi");
+        callchangeoption("rpiso_inp_mat");
+        callchangeoption("rpiso_inp_econserv");
+        callchangeoption("rpiso_inp_econstr");
+        
         $("#dlg_reg_piso").dialog({
         autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  REGISTRO DE CONSTRUCCIONES :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-primary bg-color-green",
-                click: function () {}
+                click: function () {pisoSave();}
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-primary bg-color-red",
                 click: function () {$(this).dialog("close");}
             }],
         }).dialog('open');
+    }
+    function clickmodpiso()
+    {
+        Id=$('#table_pisos').jqGrid ('getGridParam', 'selrow');
+        alert(Id);
+    }
+    function pisoSave()
+    {
+        if($("#rpiso_inp_nro").val()==""){mostraralertasconfoco("Ingresar Nro Piso","#rpiso_inp_nro"); return false}
+        if($("#rpiso_inp_fech").val()==""){mostraralertasconfoco("Ingresar Fecha del Piso","#rpiso_inp_fech"); return false}
+        if($("#rpiso_inp_clasi").val()==""){mostraralertasconfoco("Ingresar Estado de Conservación","#rpiso_inp_econserv"); return false}
+        if($("#rpiso_inp_mat").val()==""){mostraralertasconfoco("Ingresar Estado de Conservación","#rpiso_inp_econserv"); return false}
+        if($("#rpiso_inp_econserv").val()==""){mostraralertasconfoco("Ingresar Estado de Conservación","#rpiso_inp_econserv"); return false}
+        if($("#rpiso_inp_econstr").val()==""){mostraralertasconfoco("Ingresar Estado de Construcción","#rpiso_inp_econstr"); return false}
+        if($("#rpiso_inp_estruc").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
+        if($("#rpiso_inp_estruc").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
+        if($("#rpiso_inp_aconst").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
+        if($("#rpiso_inp_acomun").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
+        MensajeDialogLoadAjax('dlg_reg_piso', '.:: Guardando ...');
+        Id_pre=$('#dlg_idpre').val();
+        $.ajax({url: 'pisos_predios/create',
+        type: 'GET',
+        data:{nro:$("#rpiso_inp_nro").val(),fech:$("#rpiso_inp_fech").val(),clasi:$("#rpiso_inp_clasi").val(),
+        mep:$("#rpiso_inp_mat").val(),estconserv:$("#rpiso_inp_econserv").val(),estconst:$("#rpiso_inp_econstr").val(),
+        estru:$("#rpiso_inp_estruc").val(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val(),id_pre:Id_pre},
+        success: function(r) 
+        {
+            mostraralertas('Insertó Correctamente');
+            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'pisos_predios/'+Id_pre}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            $("#dlg_reg_piso").dialog('close');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+    function callchangeoption(input)
+    {
+        $("#"+input+"_des").val($("#"+input+" option:selected").attr("descri"));
     }
     autocompletar=0;
     function auto_input(textbox,extra){

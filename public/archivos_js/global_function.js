@@ -1,7 +1,13 @@
-
+var rutaglobal = 0;
+function getServidorUrl()
+{
+    if(rutaglobal==0){rutaglobal = new Image; rutaglobal.src = '$';}
+    return rutaglobal.src.slice(0,-1);
+}
 function MensajeDialogLoadAjax(Dialogo,Mensaje){
+    
     $('#'+Dialogo).parent().block({
-        message: "<p class='ClassMsgBlock'><img src='../img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>"+Mensaje+"</p>",
+        message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>"+Mensaje+"</p>",
         css: { border: '2px solid #006000',background:'white',width: '62%'}
     });
 }

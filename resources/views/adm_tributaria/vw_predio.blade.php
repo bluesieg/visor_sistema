@@ -88,7 +88,7 @@
             pager: '#pager_table_predios',
             rowList: [13, 20],
             gridComplete: function () {
-                      var idarray = jQuery('#table_predios').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_predios').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
                     var firstid = jQuery('#table_predios').jqGrid('getDataIDs')[0];
                             $("#table_predios").setSelection(firstid);    
@@ -135,11 +135,24 @@
             ],
             pager: '#pager_table_pisos',
             rowList: [13, 20],
-            
+            gridComplete: function () {
+                    var idarray = jQuery('#table_pisos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_pisos').jqGrid('getDataIDs')[0];
+                            $("#table_pisos").setSelection(firstid);    
+                        }
+                },
         });
 
     });
-    
+    jQuery('#rpiso_inp_estruc').keypress(function(tecla) {
+        $("#rpiso_inp_estruc").val($("#rpiso_inp_estruc").val().toUpperCase());
+        if(tecla.charCode < 65 || tecla.charCode > 73)
+        {
+            if(tecla.charCode < 97 || tecla.charCode > 105) return false;
+        }
+        
+    });
         
        
 
@@ -504,17 +517,17 @@
                                                 </span>
                                                 <label>Nuevo Piso</label>
                                             </button>
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodpiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Piso</label>
+                                            </button>
                                             <button class="btn bg-color-red txt-color-white cr-btn-big" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </span>
                                                 <label>Borrar Piso</label>
-                                            </button>
-                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </span>
-                                                <label>Editar Piso</label>
                                             </button>
                                         </div>
                                 </div>
@@ -528,67 +541,101 @@
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
-                <div class="panel panel-success">
+                <div class="panel panel-success" style="border: 0px !important">
                     <div class="panel-heading bg-color-success">.:: Datos del piso ::.</div>
                     <div class="panel-body cr-body">
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">N° Piso:</label>
                             <label class="input">
-                                <input id="rpiso_inp_nro" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_nro" type="text"  class="input-sm" maxlength="5" >
                             </label>
                         </div>
-                        <div class='col-lg-4 '>
+                        <div class='col-lg-3 '>
                             <label class="label">Fecha:</label>
                             <label class="input">
                                 <input id="rpiso_inp_fech" type="text"  class="input-sm" data-mask="99/99/9999" data-mask-placeholder="-" >
                             </label>
                         </div>
                         <div class="col-xs-12"></div>
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        <div class='col-xs-3 pd_dlg_cr'>
                             <label class="label">Clasificación:</label>
+                            <select id='rpiso_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_clasi')">
+                                @foreach ($pisclasi as $pisclasi)
+                                <option value='{{$pisclasi->id_cla_pre}}' descri="{{$pisclasi->desc_clasific}}" >{{$pisclasi->id_cla_pre}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
                             <label class="input">
-                                <input id="rpiso_inp_clasi" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_clasi_des" type="text"  class="input-sm" disabled="">
                             </label>
                         </div>
                         <div class="col-xs-12"></div>
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Material:</label>
+                            <select id='rpiso_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_mat')">
+                                @foreach ($pismat as $pismat)
+                                <option value='{{$pismat->id_mep}}' descri="{{$pismat->mep}}" >{{$pismat->id_mep}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
                             <label class="input">
-                                <input id="rpiso_inp_mat" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_mat_des" type="text"  class="input-sm" disabled="">
                             </label>
                         </div>
                         <div class="col-xs-12"></div>
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Conservación:</label>
+                            <select id='rpiso_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econserv')">
+                                @foreach ($pisecs as $pisecs)
+                                <option value='{{$pisecs->id_ecs}}' descri="{{$pisecs->ecs}}" >{{$pisecs->id_ecs}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
                             <label class="input">
-                                <input id="rpiso_inp_econserv" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_econserv_des" type="text"  class="input-sm" disabled="">
                             </label>
                         </div>
                         <div class="col-xs-12"></div>
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Construcción:</label>
+                            <select id='rpiso_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econstr')">
+                                @foreach ($ecc2 as $ecc2)
+                                <option value='{{$ecc2->id_ecc}}' descri="{{$ecc2->descripcion}}" >{{$ecc2->id_ecc}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
                             <label class="input">
-                                <input id="rpiso_inp_econstr" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_econstr_des" type="text"  class="input-sm" disabled="">
                             </label>
                         </div>
                         <div class="col-xs-12"></div>
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        <div class='col-lg-5 pd_dlg_cr'>
                             <label class="label">Estructuras:</label>
                             <label class="input">
-                                <input id="rpiso_inp_estruc" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_estruc" type="text"  class="input-sm" maxlength="7" placeholder="7 Letras Entre A-I">
                             </label>
                         </div>
-                        <div class="col-xs-12"></div>
-                        <div class='col-lg-4 pd_dlg_cr'>
+                        
+                        <div class='col-lg-3 '>
                             <label class="label">Area Construida:</label>
                             <label class="input">
-                                <input id="rpiso_inp_aconst" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_aconst" type="text"  class="input-sm text-right" placeholder="0.00" onkeypress="return soloNumeroTab(event);" >
                             </label>
                         </div>
-                        <div class='col-lg-4'>
-                            <label class="label">Area Areas Comunes:</label>
+                        <div class='col-lg-3'>
+                            <label class="label">Areas Comunes:</label>
                             <label class="input">
-                                <input id="rpiso_inp_acomun" type="text"  class="input-sm" >
+                                <input id="rpiso_inp_acomun" type="text"  class="input-sm text-right" placeholder="0.00" onkeypress="return soloNumeroTab(event);" >
                             </label>
                         </div>
                     </div>

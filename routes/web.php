@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('selmzna','PredioController@ListManz');//llena combo MANZANAvw_val_arancel
         Route::get('getcontri','PredioController@GetContrib');//obtener informacion predio
     });
+    Route::get('$',function(){ echo 0;});//url auxiliar
 
 });
 

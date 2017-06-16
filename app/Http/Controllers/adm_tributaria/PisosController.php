@@ -5,6 +5,7 @@ namespace App\Http\Controllers\adm_tributaria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pisos;
 
 class PisosController extends Controller
 {
@@ -17,15 +18,37 @@ class PisosController extends Controller
     {
         //
     }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
+        $pisos=new Pisos;
+        $totapisos = DB::select("select count(id_pisos) as total from adm_tri.pisos where id_predio='".$request['id_pre']."'");
+        $pisos->anio = date("Y");
+        $pisos->cod_piso = $request['nro'];
+        $pisos->fch_const = $request['fech'];
+        $pisos->ant_ano = date("Y") - substr($request['fech'],-4);
+        $pisos->clas = "0".$request['clasi'];
+        $pisos->mep = $request['mep'];
+        $pisos->esc = $request['estconserv'];
+        $pisos->ecc = $request['estconst'];
+        $pisos->est_mur = substr($request['estru'],0,1);
+        $pisos->est_tch = substr($request['estru'],1,1);
+        $pisos->aca_pis = substr($request['estru'],2,1);
+        $pisos->aca_pta = substr($request['estru'],3,1);
+        $pisos->aca_rev = substr($request['estru'],4,1);
+        $pisos->aca_ban = substr($request['estru'],5,1);
+        $pisos->ins_ele = substr($request['estru'],6,1);
+        $pisos->area_const = $request['aconst'];
+        $pisos->val_areas_com = $request['acomun'];
+        $pisos->num_pis = $totapisos[0]->total+1;
+        $pisos->id_predio = $request['id_pre'];
+        $pisos->save();
+        return $pisos->id_pisos;
     }
 
     /**
@@ -81,7 +104,7 @@ class PisosController extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_pisos),
                 trim($Datos->cod_piso),
-                trim($Datos->fch_const),
+                date("d/m/Y",strtotime(str_replace("/", "-", $Datos->fch_const))),
                 trim($Datos->mep),
                 trim($Datos->esc), 
                 trim($Datos->ecc),
