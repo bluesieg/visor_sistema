@@ -4,6 +4,7 @@ Route::get('/', function () {
     return view("auth/login");
 });
 
+
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
 $this->post('login', 'Auth\LoginController@login');
@@ -28,14 +29,14 @@ $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/vw_general', 'General@index')->name('vw_general');
+//Route::get('/vw_general', 'General@index')->name('vw_general');
+//
+//Route::get('msg', function() {
+//    return view('fnewUsuario');
+//});
 
-Route::get('msg', function() {
-    return view('fnewUsuario');
-});
-
-
-Route::get('via', 'General@prueba');
+//Route::get('reniec','General@reniec');
+//Route::get('via', 'General@prueba');
 
 //Route::get('/usuarios', function () {
 //    return view("administracion/vw_usuarios");
@@ -90,7 +91,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('create_magic_grid_val_unit', 'Valores_Unitarios@magic_grid_valores_unit'); // EXECUTE FUNCTION POSTGRES... VALORES UNITARIOS
         Route::post('update_valor_unitario', 'Valores_Unitarios@update_valor_unitario');
     });
-
+    /******************** TESORERIA ****   EMISION D E RECIBOS DE PAGO            ************************************/
+    
+    
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
         Route::resource('pisos_predios', 'PisosController');

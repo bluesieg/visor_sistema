@@ -1,16 +1,5 @@
 @extends('layouts.app')
 @section('content')
-<style>    
-    .smart-form fieldset {    
-        padding: 5px 8px 0px;   
-    }
-    .smart-form section {
-        margin-bottom: 5px;    
-    }
-    .smart-form .label {  
-        margin-bottom: 0px;   
-    }
-</style>
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">

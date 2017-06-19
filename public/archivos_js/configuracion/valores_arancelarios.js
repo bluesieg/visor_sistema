@@ -170,18 +170,3 @@ function llenar_combo_mzna(id_sec) {
 function click_btn_buscar() {
     $("#btn_vw_valores_arancelarios_Buscar").click();
 }
-
-
-
-
-//    $.confirm({        
-//        buttons: {
-//            Aceptar: {
-//                btnClass: 'btn-green',
-//                action: function () {}
-//            },
-//            Cerrar: {
-//                btnClass: 'btn-green'
-//            }
-//        }
-//    });

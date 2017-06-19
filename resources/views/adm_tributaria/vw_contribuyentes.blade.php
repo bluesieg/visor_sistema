@@ -26,7 +26,7 @@
                     <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
                         <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                     </button> 
-                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                    <button onclick="report_pdf();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
                 </ul>
@@ -41,6 +41,28 @@
 @section('page-js-script')
 
 <script type="text/javascript">
+    function report_pdf() {
+
+        var pdf = new jsPDF();
+       
+//        var canvas = pdf.canvas;
+//        canvas.height = 72 * 11;
+//        canvas.width= 72 * 8.5;
+//        pdf.text(20, 20, 'Hello world!');
+//        pdf.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+        
+//        pdf.text(20, 20, 'Do you like that?');
+
+        // can also be document.body
+        var html = '<html><body>Hello <strong> World</strong></body></html>';
+        pdf.addPage();
+
+        html2pdf(html, pdf, function(pdf) {
+                pdf.output('dataurlnewwindow');
+        });
+        
+
+    }
     $(document).ready(function () {
         $("#menu_admtri").show();
         $("#li_config_contribuyentes").addClass('cr-active');
@@ -80,6 +102,7 @@
 @stop
 <script src="{{ asset('archivos_js/adm_tributaria.js') }}"></script>
 
+
 <div id="dialog_new_edit_Contribuyentes" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -92,7 +115,7 @@
                                 <section class="col col-3">
                                     <label class="label">Tipo Documento:</label>                                   
                                     <label class="select">
-                                        <select id="cb_tip_doc_1" name="input_form_contribuyentel" class="input-sm">
+                                        <select id="cb_tip_doc_1" onchange="filtro_tipo_doc(this.value);" name="input_form_contribuyentel" class="input-sm">
                                             <option value="select" selected="" disabled="">Documento</option>                                           
                                         </select><i></i> </label>                        
                                 </section>
@@ -106,10 +129,10 @@
                                     <label class="label">Tipo de Persona:</label>
                                     <div class="inline-group">
                                         <label class="radio">
-                                            <input type="radio" name="radio_tip_per" value="1">
+                                            <input type="radio" onclick="filtro_tipo_doc(this.value);"  name="radio_tip_per" value="1">
                                             <i></i>Persona Natural</label>
                                         <label class="radio">
-                                            <input type="radio" name="radio_tip_per" value="2">
+                                            <input type="radio" onclick="filtro_tipo_doc(this.value);"  name="radio_tip_per" value="2">
                                             <i></i>Persona Juridica</label>                                       
                                     </div>
                                 </section>
@@ -147,7 +170,7 @@
                                 <section class="col col-2">
                                     <label class="label">Fch.Nacimiento:</label>
                                     <label class="input">
-                                        <input id="contrib_fch_nac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="Fch.Nacimiento" class="input-sm">
+                                        <input id="contrib_fch_nac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="dd-mm-yy" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-2">
@@ -184,9 +207,12 @@
                                 <section class="col col-6"> 
                                     <label class="label">Autocompletar: Reniec / Sunat</label>
                                     <label class="input">
-                                        <a href="#" onclick="fn_buscar_reniec();">
-                                            <img src="{{asset('img/reniec.png')}}" width="70" />
+                                        <a id="vw_contrib_btn_con_dni" onclick="fn_consultar_dni();">
+                                            <img src="{{asset('img/reniec.png')}}" width="71" title="RENIEC" style="border: 1px solid #fff; outline: 1px solid #bfbfbf;" />                                            
                                         </a>
+                                        <a id="vw_contrib_btn_con_ruc" onclick="fn_consultar_ruc();">
+                                            <img src="{{asset('img/sunat.png')}}" width="74" title="SUNAT" style="border: 1px solid #fff; outline: 1px solid #bfbfbf;"/>                                            
+                                        </a>                                        
                                     </label>
                                 </section>
                             </div>                            

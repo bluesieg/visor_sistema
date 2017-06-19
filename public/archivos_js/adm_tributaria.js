@@ -1,21 +1,22 @@
 
 
+
 function open_dialog_new_edit_Contribuyente(tipo, id) {
 
     limpiar_ctrl('dialog_new_edit_Contribuyentes');
-
+    
     $("#dialog_new_edit_Contribuyentes").dialog({
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " CONTRIBUYENTE :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-primary bg-color-blue",
+                "class": "btn btn-success bg-color-green",
                 click: function () {
                     save_edit_contribuyentes(tipo, id);
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-blue",
+                "class": "btn btn-danger",
                 click: function () {
                     $(this).dialog("close");
                 }
@@ -30,8 +31,9 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
             document.getElementById('contrib_dist').options.length = 1;
         }
     }).dialog('open');
+    $("#vw_contrib_btn_con_ruc").hide();
     MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
-    llenar_combo_tipo_documento('cb_tip_doc_1','cb_tip_doc_2');
+    llenar_combo_tipo_documento('cb_tip_doc_1', 'cb_tip_doc_2');
     llenar_combo_cond_exonerac(0);
     llenar_combo_dpto('contrib_dpto');
     llenar_combo_prov('contrib_prov');
@@ -76,7 +78,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
                 MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
             },
             error: function (data) {
-                alert('Contactese con el Administrador...');
+                mostraralertas('* Contactese con el Administrador...');
             }
         });
     }
@@ -123,7 +125,7 @@ function save_edit_contribuyentes(tipo, id) {
                 fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
             },
             error: function (data) {
-                alert('Contactese con el Administrador...');
+                mostraralertas('* Contactese con el Administrador...');
             }
         });
     } else if (tipo === 'EDITAR' && id != undefined) {
@@ -138,7 +140,7 @@ function save_edit_contribuyentes(tipo, id) {
                         url: 'contribuyente_update',
                         type: 'POST',
                         data: {
-                            id_pers:id,
+                            id_pers: id,
                             tipo_doc: $('#cb_tip_doc_1').val(),
                             nro_doc: $('#txt_nro_doc').val(),
                             ape_pat: ($('#contrib_ape_pat').val()).toUpperCase(),
@@ -159,27 +161,27 @@ function save_edit_contribuyentes(tipo, id) {
                             id_dist: $('#contrib_dist').val(),
                             nro_mun: $('#contrib_nro_mun').val(),
                             manz: $('#contrib_manz').val(),
-                            lote: $('#contrib_lote').val(),                            
+                            lote: $('#contrib_lote').val(),
                             id_dpto: $('#contrib_dpto').val(),
                             id_cond_exonerac: $('#contrib_id_cond_exonerac').val(),
                             id_via: $('#hiddentxt_av_jr_calle_psje').val(),
                             tip_doc_conv: $('#cb_tip_doc_2').val()
                         },
                         success: function (data) {
-                            $.alert('El registro ha sido modificado...');                            
+                            mostraralertas('* El registro ha sido modificado...');
                             fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
                             dialog_close('dialog_new_edit_Contribuyentes');
                             MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
                         },
                         error: function (data) {
-                            alert('Contactese con el Administrador...');
+                            mostraralertas('* Contactese con el Administrador...');
                             dialog_close('dialog_new_edit_Contribuyentes');
                             MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
                         }
                     });
                 },
                 Cancelar: function () {
-                    $.alert('Canceled!');
+                    $.alert('* Cancelado !');
                 }
             }
         });
@@ -205,16 +207,34 @@ function eliminar_contribuyente(id) {
                         dialog_close('dialog_new_edit_Contribuyentes');
                     },
                     error: function (data) {
-                        alert(' Error al traer Tipo de Documentos');
+                        mostraralertas('* Error al Eliminar Contribuyente...');
                     }
                 });
             },
             Cancelar: function () {
-                $.alert('Canceled!');
+                mostraralertas('* Cancelado ...!');
             }
 
         }
     });
+}
+
+function filtro_tipo_doc(tipo){
+    if(tipo=='00' || tipo =='2'){
+        $("#vw_contrib_btn_con_dni").hide();
+        $("#vw_contrib_btn_con_ruc").show();
+        $("input[name=radio_tip_per][value=2]").prop('checked', true);
+        $("#cb_tip_doc_1").val('00');
+        $("#contrib_ape_pat").val('');
+        $("#contrib_ape_mat").val('-');
+        $("#contrib_nombres").val('');
+    }else if(tipo=='02' || tipo=='1'){
+        $("#vw_contrib_btn_con_dni").show();
+        $("#vw_contrib_btn_con_ruc").hide();
+        $("input[name=radio_tip_per][value=1]").prop('checked', true);
+        $("#cb_tip_doc_1").val('02');
+        $("#contrib_raz_soc").val('-');
+    }
 }
 
 

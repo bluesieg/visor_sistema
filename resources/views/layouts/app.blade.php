@@ -158,7 +158,7 @@
                         <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Tesoreria</span></a>
                         <ul id="menu_tesoreria">
                             <li id="li_tesoreria_emi_rec_pag">
-                                <a href="layouts.html" title="Emision de Recibos de Pago"><i class="fa fa-gear"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
+                                <a href="#" title="Emision de Recibos de Pago"><i class="fa fa-gear"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
                             </li>
                             <li class="">
                                 <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Prebuilt Skins</span></a>
@@ -219,6 +219,8 @@
         <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
         
         <script src="{{ asset('js/jquery-confirm.js')}}"></script>
+        <script src="{{ asset('js/pdf/jspdf.debug.js') }}"></script>
+        <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
 
         <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
 
