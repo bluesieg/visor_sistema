@@ -35,7 +35,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 //    return view('fnewUsuario');
 //});
 
-//Route::get('reniec','General@reniec');
 //Route::get('via', 'General@prueba');
 
 //Route::get('/usuarios', function () {
