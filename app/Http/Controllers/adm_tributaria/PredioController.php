@@ -186,11 +186,7 @@ class PredioController extends Controller
         }        
         return response()->json($todo);
     }
-    public function GetContrib(Request $request)
-    {
-        $contri = DB::table('adm_tri.vw_contribuyentes')->where('id_pers',$request['contri'])->get();
-        return response()->json($contri);
-    }
+    
     public function listpredio(Request $request)
     {
         header('Content-type: application/json');

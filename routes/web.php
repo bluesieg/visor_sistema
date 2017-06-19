@@ -96,9 +96,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
         Route::resource('pisos_predios', 'PisosController');
-        Route::get('gridpredio','PredioController@listpredio');//llena combo MANZANAvw_val_arancel
-        Route::get('selmzna','PredioController@ListManz');//llena combo MANZANAvw_val_arancel
-        Route::get('getcontri','PredioController@GetContrib');//obtener informacion predio
+        Route::get('gridpredio','PredioController@listpredio');//llena grid de predios
+        Route::get('gridpisos/{id}','PisosController@listpisos');//llena grid de pisos
+        Route::get('selmzna','PredioController@ListManz');//llena combo manzanas
+        //Route::get('getcontri','PredioController@GetContrib');//obtener informacion predio
     });
     Route::get('$',function(){ echo 0;});//url auxiliar
 

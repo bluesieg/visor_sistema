@@ -111,7 +111,7 @@
             }
         });
         jQuery("#table_pisos").jqGrid({
-            url: 'pisos_predios/0',
+            url: 'gridpisos/0',
             datatype: 'json', mtype: 'GET',
             height: '200px', autowidth: true,
             toolbarfilter: true,
@@ -142,6 +142,7 @@
                             $("#table_pisos").setSelection(firstid);    
                         }
                 },
+            ondblClickRow: function (Id){clickmodpiso();}
         });
 
     });
@@ -545,6 +546,7 @@
                     <div class="panel-heading bg-color-success">.:: Datos del piso ::.</div>
                     <div class="panel-body cr-body">
                         <div class='col-lg-3 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idpiso" value="0">
                             <label class="label">N° Piso:</label>
                             <label class="input">
                                 <input id="rpiso_inp_nro" type="text"  class="input-sm" maxlength="5" >

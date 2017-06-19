@@ -70,6 +70,68 @@ class PisosController extends Controller
      */
     public function show($id)
     {
+        $pisovw= DB::table('adm_tri.vw_pisos')->where('id_pisos',$id)->get();
+        $pisovw[0]->fch_const=date("d/m/Y",strtotime(str_replace("/", "-", $pisovw[0]->fch_const)));
+        return $pisovw;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request,$id)
+    {
+        $pisos=new Pisos;
+        $val=  $pisos::where("id_pisos","=",$id )->first();
+        if(count($val)>=1)
+        {
+            $val->cod_piso = $request['nro'];
+            $val->fch_const = $request['fech'];
+            $val->ant_ano = date("Y") - substr($request['fech'],-4);
+            $val->clas = "0".$request['clasi'];
+            $val->mep = $request['mep'];
+            $val->esc = $request['estconserv'];
+            $val->ecc = $request['estconst'];
+            $val->est_mur = substr($request['estru'],0,1);
+            $val->est_tch = substr($request['estru'],1,1);
+            $val->aca_pis = substr($request['estru'],2,1);
+            $val->aca_pta = substr($request['estru'],3,1);
+            $val->aca_rev = substr($request['estru'],4,1);
+            $val->aca_ban = substr($request['estru'],5,1);
+            $val->ins_ele = substr($request['estru'],6,1);
+            $val->area_const = $request['aconst'];
+            $val->val_areas_com = $request['acomun'];
+            $val->save();
+        }
+        return "edit".$id;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+    public function listpisos($id)
+    {
         header('Content-type: application/json');
         $totalg = DB::select("select count(id_pisos) as total from adm_tri.vw_pisos where id_predio='$id'");
         $page = $_GET['page'];
@@ -93,7 +155,7 @@ class PisosController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_pisos where id_predio='$id'");
+        $sql = DB::select("select * from adm_tri.vw_pisos where id_predio='$id' order by cod_piso asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -119,39 +181,5 @@ class PisosController extends Controller
             );
         }
         return response()->json($Lista);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -91,7 +91,7 @@ function callpredtab()
     
     function clicknewgrid()
     {
-        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'pisos_predios/0'}).trigger('reloadGrid');
+        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/0'}).trigger('reloadGrid');
         limpiarpred(1);
         $("#dlg_reg_dj").dialog('open');
     }
@@ -147,7 +147,7 @@ function callpredtab()
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
         }
         }); 
-        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'pisos_predios/'+Id}).trigger('reloadGrid');
+        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
         
     }
     function dlgSave()
@@ -221,8 +221,33 @@ function callpredtab()
         });
        
     }
+    function creardlgpiso()
+    {
+     $("#dlg_reg_piso").dialog({
+        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  REGISTRO DE CONSTRUCCIONES :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                id:"btnpissave",
+                "class": "btn btn-primary bg-color-green",
+                click: function () {pisoSave();}
+            },
+            {
+                html: "<i class='fa fa-save'></i>&nbsp; Modificar",
+                "class": "btn btn-primary bg-color-blue",
+                id:"btnpismod",
+                click: function () {pisoUpdate();}
+            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }],
+        }).dialog('open');
+    }
     function clicknewpiso()
     {
+        $('#dlg_idpiso').val(0);
         if($('#dlg_idpre').val()==0)
         {
             mostraralertas("Primero Guardar Predio...");
@@ -237,25 +262,48 @@ function callpredtab()
         callchangeoption("rpiso_inp_mat");
         callchangeoption("rpiso_inp_econserv");
         callchangeoption("rpiso_inp_econstr");
-        
-        $("#dlg_reg_piso").dialog({
-        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  REGISTRO DE CONSTRUCCIONES :.</h4></div>",
-        buttons: [{
-                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-primary bg-color-green",
-                click: function () {pisoSave();}
-            }, {
-                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-red",
-                click: function () {$(this).dialog("close");}
-            }],
-        }).dialog('open');
+        creardlgpiso();
+        $("#btnpissave").show();
+        $("#btnpismod").hide();
     }
     function clickmodpiso()
     {
         Id=$('#table_pisos').jqGrid ('getGridParam', 'selrow');
-        alert(Id);
+        $('#dlg_idpiso').val(Id);
+        creardlgpiso();
+        $("#btnpissave").hide();
+        $("#btnpismod").show();
+        MensajeDialogLoadAjax('dlg_reg_piso', '.:: Cargando ...');
+        $.ajax({url: 'pisos_predios/'+Id,
+        type: 'GET',
+        success: function(r) 
+        {
+            $("#rpiso_inp_nro").val(r[0].cod_piso);
+            $("#rpiso_inp_fech").val(r[0].fch_const);
+            $("#rpiso_inp_clasi").val(parseInt(r[0].clas));
+            $("#rpiso_inp_mat").val(r[0].mep);
+            $("#rpiso_inp_econserv").val(r[0].esc);
+            $("#rpiso_inp_econstr").val(parseInt(r[0].ecc));
+            $("#rpiso_inp_estruc").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
+            $("#rpiso_inp_aconst").val(r[0].area_const);
+            $("#rpiso_inp_acomun").val(r[0].val_areas_com);
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            callchangeoption("rpiso_inp_clasi");
+            callchangeoption("rpiso_inp_mat");
+            callchangeoption("rpiso_inp_econserv");
+            callchangeoption("rpiso_inp_econstr");
+
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            $("#dlg_reg_piso").dialog('close');
+        }
+        });
+        
+        
     }
     function pisoSave()
     {
@@ -271,17 +319,47 @@ function callpredtab()
         if($("#rpiso_inp_acomun").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
         MensajeDialogLoadAjax('dlg_reg_piso', '.:: Guardando ...');
         Id_pre=$('#dlg_idpre').val();
+        $("#rpiso_inp_estruc").val().toUpperCase();
         $.ajax({url: 'pisos_predios/create',
         type: 'GET',
         data:{nro:$("#rpiso_inp_nro").val(),fech:$("#rpiso_inp_fech").val(),clasi:$("#rpiso_inp_clasi").val(),
         mep:$("#rpiso_inp_mat").val(),estconserv:$("#rpiso_inp_econserv").val(),estconst:$("#rpiso_inp_econstr").val(),
-        estru:$("#rpiso_inp_estruc").val(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val(),id_pre:Id_pre},
+        estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val(),id_pre:Id_pre},
         success: function(r) 
         {
             mostraralertas('Insertó Correctamente');
-            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'pisos_predios/'+Id_pre}).trigger('reloadGrid');
+            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id_pre}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
             $("#dlg_reg_piso").dialog('close');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+    function pisoUpdate()
+    {
+        if($("#rpiso_inp_nro").val()==""){mostraralertasconfoco("Ingresar Nro Piso","#rpiso_inp_nro"); return false}
+        if($("#rpiso_inp_fech").val()==""){mostraralertasconfoco("Ingresar Fecha del Piso","#rpiso_inp_fech"); return false}
+        if($("#rpiso_inp_estruc").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
+        if($("#rpiso_inp_estruc").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
+        if($("#rpiso_inp_aconst").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
+        if($("#rpiso_inp_acomun").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
+        MensajeDialogLoadAjax('dlg_reg_piso', '.:: Modificando ...');
+        
+        $.ajax({url: 'pisos_predios/'+$('#dlg_idpiso').val()+'/edit',
+        type: 'GET',
+        data:{nro:$("#rpiso_inp_nro").val(),fech:$("#rpiso_inp_fech").val(),clasi:$("#rpiso_inp_clasi").val(),
+        mep:$("#rpiso_inp_mat").val(),estconserv:$("#rpiso_inp_econserv").val(),estconst:$("#rpiso_inp_econstr").val(),
+        estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val()},
+        success: function(r) 
+        {
+            mostraralertas('Modificó Correctamente');
+            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");

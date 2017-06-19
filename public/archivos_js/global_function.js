@@ -1,21 +1,18 @@
 var rutaglobal = 0;
 function getServidorUrl()
 {
-    if (rutaglobal == 0) {
-        rutaglobal = new Image;
-        rutaglobal.src = '$';
+    if(rutaglobal==0){rutaglobal = new Image; rutaglobal.src = '$';}
+    return rutaglobal.src.slice(0,-1);
     }
-    return rutaglobal.src.slice(0, -1);
-}
-function MensajeDialogLoadAjax(Dialogo, Mensaje) {
+function MensajeDialogLoadAjax(Dialogo,Mensaje){
 
-    $('#' + Dialogo).parent().block({
-        message: "<p class='ClassMsgBlock'><img src='" + getServidorUrl() + "img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>" + Mensaje + "</p>",
-        css: {border: '2px solid #006000', background: 'white', width: '62%'}
+    $('#'+Dialogo).parent().block({
+        message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>"+Mensaje+"</p>",
+        css: { border: '2px solid #006000',background:'white',width: '62%'}
     });
 }
-function MensajeDialogLoadAjaxFinish(Dialogo) {
-    $('#' + Dialogo).parent().unblock();
+function MensajeDialogLoadAjaxFinish(Dialogo){
+     $('#'+Dialogo).parent().unblock();
 }
 
 function limpiar_ctrl(div) {
@@ -461,9 +458,7 @@ function fn_buscar_reniec() {
 /**********MENSAJES DEL SISTEMA*****************************************/
 
 function foco(div)
-{
-    $(div).focus();
-}
+{    $(div).focus();}
 function mostraralertas(texto)
 {
     $("#alertdialog").html('<p>' + texto + '</p>');
