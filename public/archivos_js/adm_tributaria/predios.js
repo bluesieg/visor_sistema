@@ -268,6 +268,11 @@ function callpredtab()
     }
     function clickmodpiso()
     {
+        if($('#dlg_idpre').val()==0)
+        {
+            mostraralertas("Primero Guardar Predio...");
+            return false;
+        }
         Id=$('#table_pisos').jqGrid ('getGridParam', 'selrow');
         $('#dlg_idpiso').val(Id);
         creardlgpiso();
@@ -368,6 +373,41 @@ function callpredtab()
             console.log(data);
         }
         });
+    }
+    
+    function creardlgcondo()
+    {
+     $("#dlg_reg_condo").dialog({
+        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  REGISTRO DE CONDOMINIOS :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                id:"btncondsave",
+                "class": "btn btn-primary bg-color-green",
+                click: function () {pisoSave();}
+            },
+            {
+                html: "<i class='fa fa-save'></i>&nbsp; Modificar",
+                "class": "btn btn-primary bg-color-blue",
+                id:"btncondmod",
+                click: function () {pisoUpdate();}
+            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }],
+        }).dialog('open');
+    }
+    function clicknewcondo()
+    {
+        $('#dlg_idcondo').val(0);
+        if($('#dlg_idpre').val()==0)
+        {
+            mostraralertas("Primero Guardar Predio...");
+            return false;
+        }
+        creardlgcondo();
     }
     function callchangeoption(input)
     {

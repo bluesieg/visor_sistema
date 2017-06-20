@@ -87,15 +87,17 @@
                         </div>
                     </label>
                 </section>
-                <div class="row">
-                    <section class="col col-6">
+                <div class="col-xs-12">
+                    <section class="col-xs-6">
                         <section>                            
                             <label class="input img-thumbnail center-block">
                                 <div class="input-group">
                                     <img src="img/avatars/male.png" alt="" width="135" height="129">                                
                                 </div>
                             </label>                           
-                        </section>   
+                        </section> 
+                    </section>
+                    <section class="col-xs-6">
                         <section>
                             <label class="label">Dni:</label>
                             <label class="input">
@@ -105,36 +107,17 @@
                                 </div>
                             </label>
                         </section>
+                            <section>
+                                <label class="label">Usuario:</label>
+                                <label class="input">
+                                    <div class="input-group">
+                                        <input id="txt_usuario" type="text" name="txt_usuario"  class="form-control" maxlength="20">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>                                
+                                    </div>
+                                </label>
+                            </section>
                     </section>
-                    <section class="col col-6">                        
-                        <section>
-                            <label class="label">Dni:</label>
-                            <label class="input">
-                                <div class="input-group">
-                                    <input id="txt_dni_usuario" onkeypress="return soloDNI(event);" type="text" name="txt_dni"  class="form-control" maxlength="8">
-                                    <span class="input-group-addon"><i class="fa fa-slack"></i></span>                                
-                                </div>
-                            </label>
-                        </section>
-                        <section>
-                            <label class="label">Usuario:</label>
-                            <label class="input">
-                                <div class="input-group">
-                                    <input id="txt_usuario" type="text" name="txt_usuario"  class="form-control" maxlength="20">
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>                                
-                                </div>
-                            </label>
-                        </section>
-                        <section>
-                            <label class="label">Usuario:</label>
-                            <label class="input">
-                                <div class="input-group">
-                                    <input id="txt_usuario" type="text" name="txt_usuario"  class="form-control" maxlength="20">
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>                                
-                                </div>
-                            </label>
-                        </section>
-                    </section>
+                    
                 </div>                
 
                 <div class="row">

@@ -1,10 +1,7 @@
 
-function open_dialog_new_edit_Usuario(tipe, Id) {
+function open_dialog_new_edit_Usuario(tipe) {
 
-    if ((tipe == 0 && Id == 0) || (tipe == '' && Id == '')) {
-        return false;
-    }
-
+    
     if (tipe == 'NUEVO') {
         limpiar_ctrl('dialog_new_edit_Usuario');
     }
@@ -27,27 +24,6 @@ function open_dialog_new_edit_Usuario(tipe, Id) {
                 }
             }]
     }).dialog('open');
-
-    MensajeDialogLoadAjax('dialog_new_edit_Usuario', '.:: CARGANDO ...');
-
-    setTimeout(function () {
-        MensajeDialogLoadAjaxFinish('dialog_new_edit_Usuario');
-    }, 2000);
-
-//    $.blockUI({message: $('#mensaje'),theme: true,baseZ: 2000});
-
-//    $.blockUI({message: $('#mensaje'), css: {width: '275px'}});
-//    $('#yes').click(function () {
-//        $.blockUI({message: "<h1>Remote call in progress...</h1>"});
-//        $.ajax({
-//            url: 'wait.php',
-//            cache: false,
-//            complete: function () {
-//                // unblock when remote call returns 
-//                $.unblockUI();
-//            }
-//        });
-//    });
 
 }
 function btn_guardar_Usuario(tipe, id) {

@@ -43,7 +43,7 @@
 
 
     </head>
-    <body class="desktop-detected pace-done fixed-header fixed-navigation" style="background: #fff !important;background-image:url(img/mybg.jpg) !important;">
+    <body class="desktop-detected pace-done fixed-header fixed-navigation">
         <header id="header">
             <div id="logo-group">                
                 <span id="logo"> <img src="img/logo_cc_2.png" alt="SmartAdmin"> </span> 
@@ -51,7 +51,7 @@
             </div>
             @if (Auth::guest())
             <div class="pull-right" style="margin-top: 8px">
-                <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Session</a>                
+                <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Sesión</a>                
             </div>  
             @else
             <div class="pull-right">
@@ -88,12 +88,13 @@
         <!-- Dialogo de alertas -->
         <div id="alertdialog" style="display: none;" ></div>
         
-
-        <div id="main" role="main" style="margin-left: 150px !important">            
-            <div>
+        <div class="col-xs-1"></div>
+        <div id="main" role="main" class="col-xs-12 col-md-10 col-lg-10" style="margin-left: 0px;">            
+            <div id="content">
                 @yield('content') 
             </div>
         </div>
+        <div class="col-xs-1"></div>
 
         <div class="page-footer">
             <div class="row">
@@ -134,6 +135,8 @@
         <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
         
         <script src="{{ asset('js/jquery-confirm.js')}}"></script>
+        <script src="{{ asset('js/pdf/jspdf.debug.js') }}"></script>
+        <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
 
         <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
 

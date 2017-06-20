@@ -70,14 +70,14 @@
             rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
-                {name: 'tp', index: 'tp', align: 'left', width: 50},
+                {name: 'tp', index: 'tp', align: 'center', width: 50},
                 {name: 'lote', index: 'lote', align: 'center', width: 50},
-                {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 100},
-                {name: 'mzna_dist', index: 'mzna_dist', align: 'left', width: 40},
+                {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 80},
+                {name: 'mzna_dist', index: 'mzna_dist', align: 'center', width: 40},
                 {name: 'lote_dist', index: 'lote_dist', align: 'center', width: 40},
                 {name: 'nro_mun', index: 'nro_mun', width: 40,align: "right"},
-                {name: 'descripcion', index: 'descripcion', width: 150},
-                {name: 'contribuyente', index: 'contribuyente', width: 80},
+                {name: 'descripcion', index: 'descripcion', width: 100},
+                {name: 'contribuyente', index: 'contribuyente', width: 150},
                 {name: 'nom_via', index: 'nom_via', width: 100},
                 {name: 'id_via', index: 'id_via', hidden: true},
                 {name: 'are_terr', index: 'are_terr', width: 60,align: "right"},
@@ -122,7 +122,7 @@
                 {name: 'piso', index: 'piso', align: 'center', width: 80},
                 {name: 'fech', index: 'fech', align: 'center', width: 90},
                 {name: 'mep', index: 'mep', align: 'center', width: 70},
-                {name: 'ecs', index: 'ecs', align: 'left', width: 70},
+                {name: 'ecs', index: 'ecs', align: 'center', width: 70},
                 {name: 'ecc', index: 'ecc', align: 'center', width: 70},
                 {name: 'muro', index: 'muro', width: 70,align: "center"},
                 {name: 'techo', index: 'techo', width: 70,align: 'center'},
@@ -144,7 +144,32 @@
                 },
             ondblClickRow: function (Id){clickmodpiso();}
         });
-
+        jQuery("#table_condos").jqGrid({
+            url: 'gridcondos/0',
+            datatype: 'json', mtype: 'GET',
+            height: '200px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_condom','dni/ruc', 'Nombre', 'Direccion', '% Condominio'],
+            rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'Condominios del Predio', align: "center",
+            colModel: [
+                {name: 'id_condom', index: 'id_condom', hidden: true},
+                {name: 'dni_ruc', index: 'dni_ruc', align: 'center', width: 180},
+                {name: 'nombre', index: 'nombre', align: 'center', width: 350},
+                {name: 'direccion', index: 'direccion', align: 'center', width: 350},
+                {name: 'porcent', index: 'porcent', align: 'center', width: 100},
+               
+            ],
+            pager: '#pager_table_condos',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_condos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_condos').jqGrid('getDataIDs')[0];
+                            $("#table_condos").setSelection(firstid);    
+                        }
+                },
+            ondblClickRow: function (Id){clickmodcondos();}
+        });
     });
     jQuery('#rpiso_inp_estruc').keypress(function(tecla) {
         $("#rpiso_inp_estruc").val($("#rpiso_inp_estruc").val().toUpperCase());
@@ -152,17 +177,11 @@
         {
             if(tecla.charCode < 97 || tecla.charCode > 105) return false;
         }
-        
     });
-        
-       
-
 </script>
 @stop
 <script src="{{ asset('archivos_js/adm_tributaria/predios.js') }}"></script>
 <div id="dlg_reg_dj" style="display: none;">
-    
-            
                     <div class="widget-body">
                     <div  class="smart-form">
                         <div class="panel-group">                
@@ -305,12 +324,9 @@
                                             </tr>
                                         </table>
                                     </div>
-                                    
-                                    
                                 </div>
                             </div>
                         </div>
-                       
                         <div class="panel-group col-xs-4 " style="margin-top: 5px; ">                
                             <div class="panel panel-success cr-panel-sep">
                                 <div class="panel-heading bg-color-success">.:: Referencia ::.</div>
@@ -324,7 +340,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="panel-group col-xs-12 " style="margin-top: 5px; margin-bottom: 5px  ">                
                             <div class="panel panel-success">
                                 <div class="panel-heading bg-color-success">.:: Datos Relativos del Predio ::.</div>
@@ -533,7 +548,32 @@
                                         </div>
                                 </div>
                                 <div id="s2" class="tab-pane fade" style="height: 300px">s2</div>
-                                <div id="s3" class="tab-pane fade" style="height: 300px">s3</div>
+                                <div id="s3" class="tab-pane fade" style="height: 300px">
+                                    <div class="col-xs-10">
+                                            <table id="table_condos" ></table>
+                                            <div id="pager_table_condos"></div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewcondo()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nuevo Cond</label>
+                                            </button>
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodcondo()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Cond</label>
+                                            </button>
+                                            <button class="btn bg-color-red txt-color-white cr-btn-big" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </span>
+                                                <label>Borrar Cond</label>
+                                            </button>
+                                        </div>
+                                </div>
                             </div>
                     </div>    
                 </div>
@@ -638,6 +678,46 @@
                             <label class="label">Areas Comunes:</label>
                             <label class="input">
                                 <input id="rpiso_inp_acomun" type="text"  class="input-sm text-right" placeholder="0.00" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>             
+<div id="dlg_reg_condo" style="display: none;">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-heading bg-color-success">.:: Datos del piso ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idcondo" value="0">
+                            <label class="label">DNI/RUC:</label>
+                            <label class="input">
+                                <input id="rcondo_inp_dni" type="text"  class="input-sm" maxlength="12" onkeypress="return soloDNI(event);" placeholder="DNI/RUC" >
+                            </label>
+                        </div>
+                        <div class='col-lg-3 '>
+                            <label class="label">Apellidos Nombres o Razon Social:</label>
+                            <label class="input">
+                                <input id="rcondo_inp_rsoc" type="text"  class="input-sm" disabled="" >
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-xs-8 pd_dlg_cr'>
+                            <label class="label">Dirección:</label>
+                            <label class="input">
+                                <input id="rcondo_inp_dir" type="text"  class="input-sm" placeholder="Ingresar Dirección" maxlength="150">
+                            </label>
+                            
+                        </div>
+                        <div class='col-xs-4'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rcondo_inp_porcent" type="text"  class="input-sm" >
                             </label>
                         </div>
                     </div>
