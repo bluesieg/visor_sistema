@@ -21,7 +21,7 @@
         <link rel="shortcut icon" href="img/favicon/favi.ico" type="image/x-icon">
         <link rel="icon" href="img/favicon/favi.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+        <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">-->
 
         <link rel="apple-touch-icon" href="{{ asset('img/splash/sptouch-icon-iphone.png') }}">
         <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/splash/touch-icon-ipad.png') }}">
@@ -158,7 +158,21 @@
                         <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Tesoreria</span></a>
                         <ul id="menu_tesoreria">
                             <li id="li_tesoreria_emi_rec_pag">
-                                <a href="#" title="Emision de Recibos de Pago"><i class="fa fa-gear"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
+                                <a href="{{ route('emision_rec_pago') }}" title="Emision de Recibos de Pago"><i class="fa fa-gear"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
+                            </li>
+                            <li class="">
+                                <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Prebuilt Skins</span></a>
+                            </li>
+                            <li>
+                                <a href="applayout.html"><i class="fa fa-cube"></i> App Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="">
+                        <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Modulo Caja</span></a>
+                        <ul id="menu_mod_caja">
+                            <li id="li_mod_caja_gen">
+                                <a href="{{ route('mod_caj_gen') }}" title="Generica"><i class="fa fa-gear"></i> <span class="menu-item-parent">Generica</span></a>
                             </li>
                             <li class="">
                                 <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Prebuilt Skins</span></a>
@@ -183,23 +197,15 @@
         <div class="page-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
-                    <span class="txt-color-white">Maynsa<span class="hidden-xs"> Sistema Web</span> © Arequipa-2017</span>
+                    <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>
                 </div>
             </div>            
         </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script>
-                        if (!window.jQuery) {
-                            document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
-                        }
-        </script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-        <script>
-                        if (!window.jQuery.ui) {
-                            document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-                        }
-        </script>
+        <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+       
+        <script src="{{ asset('js/libs/jquery-ui-1.10.3.min.js') }}"></script>
+        
 
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>-->
 

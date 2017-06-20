@@ -90,7 +90,15 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('create_magic_grid_val_unit', 'Valores_Unitarios@magic_grid_valores_unit'); // EXECUTE FUNCTION POSTGRES... VALORES UNITARIOS
         Route::post('update_valor_unitario', 'Valores_Unitarios@update_valor_unitario');
     });
-    /******************** TESORERIA ****   EMISION D E RECIBOS DE PAGO            ************************************/
+    /******************** ********    TESORERIA     ****   EMISION DE RECIBOS DE PAGO            ************************************/
+    Route::group(['namespace' => 'tesoreria'], function() {
+        Route::get('emi_rec_pag', 'Emision_rec_Pago@vw_show')->name('emision_rec_pago'); // VW_EMISION_REC_PAGO
+        
+    });
+    Route::group(['namespace' => 'caja'], function() {
+        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA
+        
+    });
     
     
     Route::group(['namespace' => 'adm_tributaria'], function() {

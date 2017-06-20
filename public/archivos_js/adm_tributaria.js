@@ -42,6 +42,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
     if (tipo == 'NUEVO') {
         valores_defaul_form(0);//0 form contribuyentes
         MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
+        $('#contrib_dist').val('040101');
     } else if (tipo == 'EDITAR') {
         $("#txt_av_jr_calle_psje").val($.trim($("#table_Contribuyentes").getCell(id, "nom_via")));
         $.ajax({
