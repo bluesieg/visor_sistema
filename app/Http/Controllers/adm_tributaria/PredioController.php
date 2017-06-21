@@ -21,13 +21,16 @@ class PredioController extends Controller
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
         $ecc = DB::select('select * from adm_tri.ecc order by id_ecc ');
         $ecc2=$ecc;
+        $ecc3=$ecc;
         $tpre = DB::select('select * from adm_tri.tip_predio order by id_tip_p ');
         $upa = DB::select('select * from adm_tri.uso_predio_arbitrios order by id_uso_arb ');
         $fadq = DB::select('select * from adm_tri.form_adq order by id_for ');
         $pisclasi = DB::select('select * from adm_tri.clas_predio where id_cla_pre>0 order by id_cla_pre');
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
+        $pismat2=$pismat;
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
-        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','ecc2'));
+        $pisecs2=$pisecs;
+        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','ecc2','pismat2','pisecs2','ecc3'));
     }
 
     /**

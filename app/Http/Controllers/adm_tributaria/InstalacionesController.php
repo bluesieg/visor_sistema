@@ -5,9 +5,9 @@ namespace App\Http\Controllers\adm_tributaria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\Condominios;
+use App\Models\Instalaciones;
 
-class CondominiosController extends Controller
+class InstalacionesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,15 +19,14 @@ class CondominiosController extends Controller
         //
     }
 
-    public function create(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $condos=new Condominios;
-        $condos->id_contrib = $request['contrib'];
-        $condos->direccion = $request['dir'];
-        $condos->porcent = $request['porc'];
-        $condos->id_pred = $request['id_pre'];
-        $condos->save();
-        return $condos->id_condom;
+        //
     }
 
     /**
@@ -49,22 +48,18 @@ class CondominiosController extends Controller
      */
     public function show($id)
     {
-        $pisovw= DB::table('adm_tri.vw_condominios')->where('id_condom',$id)->get();
-        return $pisovw;
+        //
     }
 
-    public function edit(Request $request,$id)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-        $condos=new Condominios;
-        $val=  $condos::where("id_condom","=",$id )->first();
-        if(count($val)>=1)
-        {
-            $val->id_contrib = $request['contrib'];
-            $val->direccion = $request['dir'];
-            $val->porcent = $request['porc'];
-            $val->save();
-        }
-        return "edit".$id;
+        //
     }
 
     /**
@@ -89,10 +84,11 @@ class CondominiosController extends Controller
     {
         //
     }
-    public function listcondos($id)
+    
+    public function listinsta($id)
     {
         header('Content-type: application/json');
-        $totalg = DB::select("select count(id_condom) as total from adm_tri.vw_condominios where id_pred='$id'");
+        $totalg = DB::select("select count(cod_obra) as total from adm_tri.vw_instalaciones where id_pre='$id'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -114,20 +110,25 @@ class CondominiosController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_condominios where id_pred='$id' order by id_condom asc");
+        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pre='$id' order by cod_obra asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->id_condom;
+            $Lista->rows[$Index]['id'] = $Datos->cod_obra;
             $Lista->rows[$Index]['cell'] = array(
-                trim($Datos->id_condom),
-                trim($Datos->nro_doc),
-                trim($Datos->ape_pat)." ".trim($Datos->ape_mat)." ".trim($Datos->nombres),
-                trim($Datos->direccion), 
-                trim($Datos->porcent)
+                trim($Datos->cod_obra),"",
+                trim($Datos->anio),
+                trim($Datos->mep),
+                trim($Datos->ecs),
+                trim($Datos->ecc),
+                trim($Datos->dim_lar),
+                trim($Datos->dim_anch),
+                trim($Datos->dim_alt),
+                trim($Datos->uni_med),
+                trim($Datos->tot_inst),
             );
         }
         return response()->json($Lista);

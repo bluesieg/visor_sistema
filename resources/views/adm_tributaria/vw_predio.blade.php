@@ -67,7 +67,7 @@
             height: '300px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pred','t_pred', 'Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct'],
-            rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
+            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
                 {name: 'tp', index: 'tp', align: 'center', width: 50},
@@ -110,13 +110,18 @@
                 get_global_contri("dlg_contri",$("#dlg_dni").val());
             }
         });
+        $("#rcondo_inp_dni").keypress(function (e) {
+            if (e.which == 13) {
+                get_global_contri("rcondo_inp_rsoc",$("#rcondo_inp_dni").val());
+            }
+        });
         jQuery("#table_pisos").jqGrid({
             url: 'gridpisos/0',
             datatype: 'json', mtype: 'GET',
             height: '200px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pi','Piso', 'Fecha', 'MEP', 'ECS', 'ECC', 'Muro', 'Techo', 'Piso', 'Puerta','Reves','baños','I.Elect','Area Constr.'],
-            rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'Pisos del Predio', align: "center",
+            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Pisos del Predio', align: "center",
             colModel: [
                 {name: 'id_pi', index: 'id_pi', hidden: true},
                 {name: 'piso', index: 'piso', align: 'center', width: 80},
@@ -150,7 +155,7 @@
             height: '200px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_condom','dni/ruc', 'Nombre', 'Direccion', '% Condominio'],
-            rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'Condominios del Predio', align: "center",
+            rowNum: 20, sortname: 'id_condom', sortorder: 'desc', viewrecords: true, caption: 'Condominios del Predio', align: "center",
             colModel: [
                 {name: 'id_condom', index: 'id_condom', hidden: true},
                 {name: 'dni_ruc', index: 'dni_ruc', align: 'center', width: 180},
@@ -168,7 +173,39 @@
                             $("#table_condos").setSelection(firstid);    
                         }
                 },
-            ondblClickRow: function (Id){clickmodcondos();}
+            ondblClickRow: function (Id){clickmodcondo();}
+        });
+        jQuery("#table_instal").jqGrid({
+            url: 'gridinsta/0',
+            datatype: 'json', mtype: 'GET',
+            height: '200px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['cod_obra','Código', 'Descripción', 'año de antiguedad', 'MEP','ECS','ECC','lARGO','ANCHO','ALTO','UND.MED','PROD.TOTAL'],
+            rowNum: 20, sortname: 'cod_obra', sortorder: 'desc', viewrecords: true, caption: 'Instalación del Predio', align: "center",
+            colModel: [
+                {name: 'cod_obra', index: 'cod_obra', hidden: true},
+                {name: 'cod_inst', index: 'cod_inst', align: 'center', width: 90},
+                {name: 'des', index: 'des', align: 'center', width: 100},
+                {name: 'anio', index: 'anio', align: 'center', width: 120},
+                {name: 'mep', index: 'mel', align: 'center', width: 80},
+                {name: 'ecs', index: 'ecs', align: 'center', width: 80},
+                {name: 'ecc', index: 'ecc', align: 'center', width: 80},
+                {name: 'dim_lar', index: 'dim_lar', align: 'center', width: 80},
+                {name: 'dim_anch', index: 'dim_anch', align: 'center', width: 80},
+                {name: 'dim_alt', index: 'dim_alt', align: 'center', width: 80},
+                {name: 'uni_med', index: 'uni_med', align: 'center', width: 80},
+                {name: 'tot_inst', index: 'tot_inst', align: 'center', width: 85},
+            ],
+            pager: '#pager_table_instal',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_instal').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_instal').jqGrid('getDataIDs')[0];
+                            $("#table_instal").setSelection(firstid);    
+                        }
+                },
+            ondblClickRow: function (Id){clickmodinst();}
         });
     });
     jQuery('#rpiso_inp_estruc').keypress(function(tecla) {
@@ -547,7 +584,32 @@
                                             </button>
                                         </div>
                                 </div>
-                                <div id="s2" class="tab-pane fade" style="height: 300px">s2</div>
+                                <div id="s2" class="tab-pane fade" style="height: 300px">
+                                    <div class="col-xs-10">
+                                        <table id="table_instal" ></table>
+                                        <div id="pager_table_instal"></div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewinst()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nueva Inst</label>
+                                            </button>
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodinst()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Inst</label>
+                                            </button>
+                                            <button class="btn bg-color-red txt-color-white cr-btn-big" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </span>
+                                                <label>Borrar Inst</label>
+                                            </button>
+                                        </div>
+                                </div>
                                 <div id="s3" class="tab-pane fade" style="height: 300px">
                                     <div class="col-xs-10">
                                             <table id="table_condos" ></table>
@@ -691,41 +753,156 @@
         <div  class="smart-form">
             <div class="panel-group">                
                 <div class="panel panel-success" style="border: 0px !important">
-                    <div class="panel-heading bg-color-success">.:: Datos del piso ::.</div>
+                    <div class="panel-heading bg-color-success">.:: Datos del Condominio ::.</div>
                     <div class="panel-body cr-body">
+                        <div class="col-xs-12" style="height: 15px"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <input type="hidden" id="dlg_idcondo" value="0">
                             <label class="label">DNI/RUC:</label>
                             <label class="input">
+                                <input type="hidden" id="rcondo_inp_rsoc_hidden">
                                 <input id="rcondo_inp_dni" type="text"  class="input-sm" maxlength="12" onkeypress="return soloDNI(event);" placeholder="DNI/RUC" >
                             </label>
                         </div>
-                        <div class='col-lg-3 '>
+                        <div class='col-lg-8 '>
                             <label class="label">Apellidos Nombres o Razon Social:</label>
                             <label class="input">
                                 <input id="rcondo_inp_rsoc" type="text"  class="input-sm" disabled="" >
                             </label>
                         </div>
-                        <div class="col-xs-12"></div>
-                        <div class='col-xs-8 pd_dlg_cr'>
+                        <div class="col-xs-12" style="height: 15px"></div>
+                        <div class='col-xs-11 pd_dlg_cr'>
                             <label class="label">Dirección:</label>
                             <label class="input">
                                 <input id="rcondo_inp_dir" type="text"  class="input-sm" placeholder="Ingresar Dirección" maxlength="150">
                             </label>
+                        </div>
+                        <div class="col-xs-12" style="height: 15px"></div>
+                        <div class='col-xs-4 pd_dlg_cr'>
+                            <label class="label">Porcentaje:</label>
+                            <label class="input">
+                                <input id="rcondo_inp_porcent" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" placeholder="0.00%" >
+                            </label>
                             
                         </div>
-                        <div class='col-xs-4'>
-                            <label class="label">&nbsp;</label>
-                            <label class="input">
-                                <input id="rcondo_inp_porcent" type="text"  class="input-sm" >
-                            </label>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>             
+</div>  
+<div id="dlg_reg_inst" style="display: none;">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-heading bg-color-success">.:: Datos de Instalación ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class='col-lg-1 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idinst" value="0">
+                            <label class="label">Codigo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_cod" type="text"  class="input-sm" maxlength="2" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col-lg-6'>
+                            <label class="label">Descripción:</label>
+                            <label class="input">
+                                <input id="rinst_inp_des" type="text"  class="input-sm" maxlength="150" >
+                            </label>
+                        </div>
+                        <div class='col-lg-2'>
+                            <label class="label">Unidad de Medida:</label>
+                            <label class="input">
+                                <input id="rinst_inp_undmed" type="text"  class="input-sm" maxlength="3">
+                            </label>
+                        </div>
+                        <div class='col-lg-2'>
+                            <label class="label">Año Construc.:</label>
+                            <label class="input">
+                                <input id="rinst_inp_anio" type="text"  class="input-sm" maxlength="4" onkeypress="return soloDNI(event);" >
+                            </label>
+                        </div>
+                        
+                        <div col="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Material:</label>
+                            <select id='rinst_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_mat')">
+                                @foreach ($pismat2 as $pismat2)
+                                <option value='{{$pismat2->id_mep}}' descri="{{$pismat2->mep}}" >{{$pismat2->id_mep}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_mat_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Conservación:</label>
+                            <select id='rinst_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econserv')">
+                                @foreach ($pisecs2 as $pisecs2)
+                                <option value='{{$pisecs2->id_ecs}}' descri="{{$pisecs2->ecs}}" >{{$pisecs2->id_ecs}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_econserv_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Construcción:</label>
+                            <select id='rinst_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econstr')">
+                                @foreach ($ecc3 as $ecc3)
+                                <option value='{{$ecc3->id_ecc}}' descri="{{$ecc3->descripcion}}" >{{$ecc3->id_ecc}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_econstr_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        
+                    </div>
+                    <div class="panel-heading bg-color-success">.:: Dimensiones Verificadas ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class="col-xs-1"></div>
+                        <div class='col-lg-3'>
+                            <label class="label">Largo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_largo" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                        <div class='col-lg-3'>
+                            <label class="label">Ancho:</label>
+                            <label class="input">
+                                <input id="rinst_inp_ancho" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                        <div class='col-lg-3'>
+                            <label class="label">Alto:</label>
+                            <label class="input">
+                                <input id="rinst_inp_alto" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                        
+                       
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
 @endsection
 
 

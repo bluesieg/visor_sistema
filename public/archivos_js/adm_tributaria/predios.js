@@ -148,7 +148,7 @@ function callpredtab()
         }
         }); 
         jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
-        
+        jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id}).trigger('reloadGrid');
     }
     function dlgSave()
     {
@@ -384,13 +384,13 @@ function callpredtab()
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 id:"btncondsave",
                 "class": "btn btn-primary bg-color-green",
-                click: function () {pisoSave();}
+                click: function () {condoSave();}
             },
             {
                 html: "<i class='fa fa-save'></i>&nbsp; Modificar",
                 "class": "btn btn-primary bg-color-blue",
                 id:"btncondmod",
-                click: function () {pisoUpdate();}
+                click: function () {condoUpdate();}
             },
             {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -407,7 +407,167 @@ function callpredtab()
             mostraralertas("Primero Guardar Predio...");
             return false;
         }
+        $('#rcondo_inp_dni,#rcondo_inp_rsoc,#rcondo_inp_dir,#rcondo_inp_porcent').val("");
+        $('#rcondo_inp_dni_hidden').val(0);
         creardlgcondo();
+        $("#btncondsave").show();
+        $("#btncondmod").hide();
+    }
+    function clickmodcondo()
+    {
+        if($('#dlg_idpre').val()==0)
+        {
+            mostraralertas("Primero Guardar Predio...");
+            return false;
+        }
+        Id=$('#table_condos').jqGrid ('getGridParam', 'selrow');
+        $('#dlg_idcondo').val(Id);
+        creardlgcondo();
+        $("#btncondsave").hide();
+        $("#btncondmod").show();
+        MensajeDialogLoadAjax('dlg_reg_condo', '.:: Cargando ...');
+        $.ajax({url: 'condominios_predios/'+Id,
+        type: 'GET',
+        success: function(r) 
+        {
+            $("#rcondo_inp_dni").val(r[0].nro_doc);
+            $("#rcondo_inp_rsoc_hidden").val(r[0].id_contrib);
+            $("#rcondo_inp_rsoc").val(r[0].ape_pat+" "+r[0].ape_pat+" "+r[0].nombres);
+            $("#rcondo_inp_dir").val(r[0].direccion);
+            $("#rcondo_inp_porcent").val(r[0].porcent);
+            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+            $("#dlg_reg_condo").dialog('close');
+        }
+        });
+        
+        
+    }
+    function condoSave()
+    {
+        if($("#rcondo_inp_dni").val()==""){mostraralertasconfoco("Ingresar Nro DNI o RUC","#rcondo_inp_dni"); return false}
+        if($("#rcondo_inp_rsoc_hidden").val()=="0"){mostraralertasconfoco("Ingresar Nro DNI o RUC y confirmar con tecla enter","#rcondo_inp_dni"); return false}
+        if($("#rcondo_inp_dir").val()==""){mostraralertasconfoco("Ingresar Dirección","#rcondo_inp_dir"); return false}
+        if($("#rcondo_inp_porcent").val()==""){mostraralertasconfoco("Ingresar porcentaje","#rcondo_inp_porcent"); return false}
+        MensajeDialogLoadAjax('dlg_reg_condo', '.:: Guardando ...');
+        Id_pre=$('#dlg_idpre').val();
+        $.ajax({url: 'condominios_predios/create',
+        type: 'GET',
+        data:{contrib:$("#rcondo_inp_rsoc_hidden").val(),dir:$("#rcondo_inp_dir").val().toUpperCase(),porc:$("#rcondo_inp_porcent").val(),id_pre:Id_pre},
+        success: function(r) 
+        {
+            mostraralertas('Insertó Correctamente');
+            jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id_pre}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+            $("#dlg_reg_condo").dialog('close');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+    function condoUpdate()
+    {
+        if($("#rcondo_inp_dni").val()==""){mostraralertasconfoco("Ingresar Nro DNI o RUC","#rcondo_inp_dni"); return false}
+        if($("#rcondo_inp_rsoc_hidden").val()=="0"){mostraralertasconfoco("Ingresar Nro DNI o RUC y confirmar con tecla enter","#rcondo_inp_dni"); return false}
+        if($("#rcondo_inp_dir").val()==""){mostraralertasconfoco("Ingresar Dirección","#rcondo_inp_dir"); return false}
+        if($("#rcondo_inp_porcent").val()==""){mostraralertasconfoco("Ingresar porcentaje","#rcondo_inp_porcent"); return false}
+        MensajeDialogLoadAjax('dlg_reg_condo', '.:: Modificando ...');
+        $.ajax({url: 'condominios_predios/'+$('#dlg_idcondo').val()+'/edit',
+        type: 'GET',
+        data:{contrib:$("#rcondo_inp_rsoc_hidden").val(),dir:$("#rcondo_inp_dir").val().toUpperCase(),porc:$("#rcondo_inp_porcent").val()},
+        success: function(r) 
+        {
+            mostraralertas('Se Modificó Correctamente');
+            jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+            $("#dlg_reg_condo").dialog('close');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+    
+    function creardlginst()
+    {
+     $("#dlg_reg_inst").dialog({
+        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  REGISTRO DE INSTALACIONES :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                id:"btninstsave",
+                "class": "btn btn-primary bg-color-green",
+                click: function () {instSave();}
+            },
+            {
+                html: "<i class='fa fa-save'></i>&nbsp; Modificar",
+                "class": "btn btn-primary bg-color-blue",
+                id:"btninstmod",
+                click: function () {instUpdate();}
+            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }],
+        }).dialog('open');
+    }
+    function clicknewinst()
+    {
+        $("#dlg_idinst").val(0);
+       if($('#dlg_idpre').val()==0)
+        {
+            mostraralertas("Primero Guardar Predio...");
+            return false;
+        }
+        creardlginst();
+        $("#btninstsave").show();
+        $("#btninstmod").hide();
+        $("#rinst_inp_mat").val($("#rinst_inp_mat option:first").val());
+        $("#rinst_inp_econserv").val($("#rinst_inp_econserv option:first").val());
+        $("#rinst_inp_econstr").val($("#rinst_inp_econstr option:first").val());
+        callchangeoption("rinst_inp_mat");
+        callchangeoption("rinst_inp_econserv");
+        callchangeoption("rinst_inp_econstr");
+        
+    }
+    function instSave()
+    {
+//        if($("#rinst_inp_cod").val()==""){mostraralertasconfoco("Ingresar Codigo de Instalación","#rinst_inp_cod"); return false}
+//        if($("#rcondo_inp_rsoc_hidden").val()=="0"){mostraralertasconfoco("Ingresar Nro DNI o RUC y confirmar con tecla enter","#rcondo_inp_dni"); return false}
+//        if($("#rcondo_inp_dir").val()==""){mostraralertasconfoco("Ingresar Dirección","#rcondo_inp_dir"); return false}
+//        if($("#rcondo_inp_porcent").val()==""){mostraralertasconfoco("Ingresar porcentaje","#rcondo_inp_porcent"); return false}
+//        MensajeDialogLoadAjax('dlg_reg_condo', '.:: Guardando ...');
+//        Id_pre=$('#dlg_idpre').val();
+//        $.ajax({url: 'condominios_predios/create',
+//        type: 'GET',
+//        data:{contrib:$("#rcondo_inp_rsoc_hidden").val(),dir:$("#rcondo_inp_dir").val().toUpperCase(),porc:$("#rcondo_inp_porcent").val(),id_pre:Id_pre},
+//        success: function(r) 
+//        {
+//            mostraralertas('Insertó Correctamente');
+//            jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id_pre}).trigger('reloadGrid');
+//            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+//            $("#dlg_reg_condo").dialog('close');
+//        },
+//        error: function(data) {
+//            mostraralertas("hubo un error, Comunicar al Administrador");
+//            MensajeDialogLoadAjaxFinish('dlg_reg_condo');
+//            console.log('error');
+//            console.log(data);
+//        }
+//        });
     }
     function callchangeoption(input)
     {
