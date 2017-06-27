@@ -30,14 +30,11 @@ class PredioController extends Controller
         $pismat2=$pismat;
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
         $pisecs2=$pisecs;
-        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','ecc2','pismat2','pisecs2','ecc3'));
+        $condi_pen = DB::select('select * from adm_tri.condi_pensionista order by id_con');
+        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','ecc2','pismat2','pisecs2','ecc3','condi_pen'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create(Request $request)
     {
         $predio=new Predios;

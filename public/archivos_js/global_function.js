@@ -405,9 +405,21 @@ function mostraralertas(texto)
 var focoglobal = "";
 function mostraralertasconfoco(texto, foco)
 {
-    $("#alertdialog").html('<p>' + texto + '</p>');
-    $("#alertdialog").dialog('open');
-    focoglobal = foco;
+    $.SmartMessageBox({
+            title : "Alerta del Sistema!",
+            content : texto,
+            buttons : '[Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+
+                    $(foco).focus();
+            }
+    });
+    $("#bot1-Msg1").focus();
+    e.preventDefault();
+//    $("#alertdialog").html('<p>' + texto + '</p>');
+//    $("#alertdialog").dialog('open');
+//    focoglobal = foco;
 }
 function ajustar(tam, num)
 {

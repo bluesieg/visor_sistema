@@ -181,20 +181,20 @@
             height: '200px', autowidth: true,
             toolbarfilter: true,
             colNames: ['cod_obra','Código', 'Descripción', 'año de antiguedad', 'MEP','ECS','ECC','lARGO','ANCHO','ALTO','UND.MED','PROD.TOTAL'],
-            rowNum: 20, sortname: 'cod_obra', sortorder: 'desc', viewrecords: true, caption: 'Instalación del Predio', align: "center",
+            rowNum: 20, sortname: 'id_inst', sortorder: 'desc', viewrecords: true, caption: 'Instalación del Predio', align: "center",
             colModel: [
                 {name: 'cod_obra', index: 'cod_obra', hidden: true},
-                {name: 'cod_inst', index: 'cod_inst', align: 'center', width: 90},
-                {name: 'des', index: 'des', align: 'center', width: 100},
-                {name: 'anio', index: 'anio', align: 'center', width: 120},
-                {name: 'mep', index: 'mel', align: 'center', width: 80},
-                {name: 'ecs', index: 'ecs', align: 'center', width: 80},
-                {name: 'ecc', index: 'ecc', align: 'center', width: 80},
+                {name: 'cod_inst', index: 'cod_inst', align: 'center', width: 50},
+                {name: 'des', index: 'des', align: 'center', width: 250},
+                {name: 'anio', index: 'anio', align: 'center', width: 100},
+                {name: 'mep', index: 'mel', align: 'center', width: 50},
+                {name: 'ecs', index: 'ecs', align: 'center', width: 50},
+                {name: 'ecc', index: 'ecc', align: 'center', width: 50},
                 {name: 'dim_lar', index: 'dim_lar', align: 'center', width: 80},
                 {name: 'dim_anch', index: 'dim_anch', align: 'center', width: 80},
                 {name: 'dim_alt', index: 'dim_alt', align: 'center', width: 80},
                 {name: 'uni_med', index: 'uni_med', align: 'center', width: 80},
-                {name: 'tot_inst', index: 'tot_inst', align: 'center', width: 85},
+                {name: 'tot_inst', index: 'tot_inst', align: 'right', width: 85},
             ],
             pager: '#pager_table_instal',
             rowList: [13, 20],
@@ -532,8 +532,6 @@
                                         <button  type="button" id="btnmodpre" class="btn btn-labeled bg-color-blue txt-color-white" onclick="dlgUpdate();">
                                             <span class="cr-btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Predio
                                         </button>
-                                        
-                                        
                             </ul>
                     </div> 
                     <div class="col-xs-12" style="margin-top: 5px; margin-bottom: 10px">
@@ -553,6 +551,18 @@
                                 <li class="">
                                     <a href="#s3" data-toggle="tab" aria-expanded="false">
                                         Condominios
+                                        <i class="fa fa-fw fa-lg fa-gear"></i>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#s4" data-toggle="tab" aria-expanded="false">
+                                        Arbitrios Municipales
+                                        <i class="fa fa-fw fa-lg fa-gear"></i>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#s5" data-toggle="tab" aria-expanded="false">
+                                        Pensionista
                                         <i class="fa fa-fw fa-lg fa-gear"></i>
                                     </a>
                                 </li>
@@ -633,6 +643,83 @@
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </span>
                                                 <label>Borrar Cond</label>
+                                            </button>
+                                        </div>
+                                </div>
+                                <div id="s4" class="tab-pane fade" style="height: 300px"></div>
+                                <div id="s5" class="tab-pane fade" style="height: 300px">
+                                    <div class="col-xs-10" style="padding: 0px;"> 
+                                        <div class="widget-body">
+                                        <div  class="smart-form">
+                                            <div class="panel-group">                
+                                                <div class="panel panel-success" >
+                                                    <div class="panel-heading bg-color-success">.:: Condición de Inafecto, Exonerado y Beneficiario ::.</div>
+                                                    <div class="panel-body cr-body">
+                                                        
+                                                        <div class='col-lg-3 pd_dlg_cr'>
+                                                            <label class="label">Condicion de Propiedad:</label>                                   
+                                                            <select id="s5_sel_condi"  class="form-control">
+                                                                @foreach ($condi_pen as $condi_pen)
+                                                                <option value='{{$condi_pen->id_con}}' >{{$condi_pen->desc_con}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xs-12"></div>
+                                                        <div class='col-lg-7 pd_dlg_cr'>
+                                                            <label class="label">Base Legal:</label>
+                                                            <label class="input">
+                                                                <input id="s5_inp_basleg" type="text"  class="input-sm" maxlength="50" >
+                                                            </label>
+                                                        </div>
+                                                        <div class='col-lg-3 '>
+                                                            <label class="label">Expediente N°:</label>
+                                                            <label class="input">
+                                                                <input id="s5_inp_exp" type="text"  class="input-sm"  maxlength="10">
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-xs-12"></div>
+                                                        <div class='col-lg-3 pd_dlg_cr'>
+                                                            <label class="label">Resolución N°:</label>
+                                                            <label class="input">
+                                                                <input id="s5_inp_reso" type="text"  class="input-sm" maxlength="10" >
+                                                            </label>
+                                                        </div>
+                                                        <div class='col-lg-3 '>
+                                                            <label class="label">Fecha Resolución:</label>
+                                                            <label class="input">
+                                                                <input id="s5_inp_fechres" type="text"  class="input-sm" data-mask="99/99/9999" data-mask-placeholder="-" >
+                                                            </label>
+                                                        </div>
+                                                        <div class='col-lg-2 '>
+                                                            <label class="label">Año Inicio:</label>
+                                                            <label class="input">
+                                                                <input id="s5_inp_anini" type="text" maxlength="4"  >
+                                                            </label>
+                                                        </div>
+                                                        <div class='col-lg-2 '>
+                                                            <label class="label">Año Fin:</label>
+                                                            <label class="input">
+                                                                <input id="s5_inp_anfin" type="text" maxlength="4"  >
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>
+                                    </div>
+                                    <div class="col-xs-2" style="padding: 3px;">
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicksavePensi()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Grabar pens.</label>
+                                            </button>
+                                            <button id="btn_s5_delpen" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="clickdelPensi()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Borrar pens.</label>
                                             </button>
                                         </div>
                                 </div>
@@ -803,19 +890,20 @@
                             <input type="hidden" id="dlg_idinst" value="0">
                             <label class="label">Codigo:</label>
                             <label class="input">
-                                <input id="rinst_inp_cod" type="text"  class="input-sm" maxlength="2" disabled="" >
+                                <input id="rinst_inp_des_cod" type="text"  class="input-sm" maxlength="2" disabled="" >
                             </label>
                         </div>
                         <div class='col-lg-6'>
                             <label class="label">Descripción:</label>
                             <label class="input">
+                                <input id="hidden_rinst_inp_des" type="hidden" value="0">
                                 <input id="rinst_inp_des" type="text"  class="input-sm" maxlength="150" >
                             </label>
                         </div>
                         <div class='col-lg-2'>
                             <label class="label">Unidad de Medida:</label>
                             <label class="input">
-                                <input id="rinst_inp_undmed" type="text"  class="input-sm" maxlength="3">
+                                <input id="rinst_inp_undmed" type="text"  class="input-sm" disabled="">
                             </label>
                         </div>
                         <div class='col-lg-2'>
@@ -879,19 +967,19 @@
                         <div class='col-lg-3'>
                             <label class="label">Largo:</label>
                             <label class="input">
-                                <input id="rinst_inp_largo" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" >
+                                <input id="rinst_inp_largo" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
                             </label>
                         </div>
                         <div class='col-lg-3'>
                             <label class="label">Ancho:</label>
                             <label class="input">
-                                <input id="rinst_inp_ancho" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" >
+                                <input id="rinst_inp_ancho" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
                             </label>
                         </div>
                         <div class='col-lg-3'>
                             <label class="label">Alto:</label>
                             <label class="input">
-                                <input id="rinst_inp_alto" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" >
+                                <input id="rinst_inp_alto" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
                             </label>
                         </div>
                         

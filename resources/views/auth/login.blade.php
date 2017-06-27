@@ -64,7 +64,7 @@
                                 <label class="label">Usuario</label>
                                 <label class="input"> <i class="icon-append fa fa-user"></i>
                                     <input id="usuario" type="text" class="form-control" name="usuario" value="{{ old('usuario') }}" required autofocus>
-                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>Porfavor Ingresa tu Usuario</b></label>
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Ingrese su Usuario</b></label>
                                     @if ($errors->has('usuario'))
                                         <span class="help-block"><strong>{{ $errors->first('usuario') }}</strong></span>
                                     @endif
@@ -73,7 +73,7 @@
                                 <label class="label">Password</label>
                                 <label class="input"> <i class="icon-append fa fa-lock"></i>
                                     <input id="password" type="password" class="form-control" name="password" required>
-                                    <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i>Ingrese el Password</b> </label>
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Ingrese el Password</b> </label>
                                     @if ($errors->has('password'))
                                         <span class="help-block"><strong>{{ $errors->first('password') }}</strong></span>
                                     @endif                                

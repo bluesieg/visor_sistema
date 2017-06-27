@@ -55,7 +55,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento
     Route::get('get_all_cond_exonerac', 'General@get_cond_exonerac'); //llena combo condicion exonerac
     Route::get('autocompletar_direccion', 'General@autocompletar_direccion'); //autocompleta el input text avenida,jiro, calle de contribuyentes
-    Route::get('autocompletar_tipo_uso', 'General@autocompletar_tipo_uso'); //autocompleta el input text avenida,jiro, calle de contribuyentes
+    Route::get('autocompletar_tipo_uso', 'General@autocompletar_tipo_uso'); //autocompleta tipos de uso
+    Route::get('autocompletar_insta', 'General@autocompletar_instalaciones'); //autocompleta tipos de uso
     Route::get('autocomplete_nom_via', 'configuracion\Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
@@ -105,11 +106,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('predios_urbanos', 'PredioController');
         Route::resource('pisos_predios', 'PisosController');
         Route::resource('condominios_predios', 'CondominiosController');
+        Route::resource('instalaciones_predios', 'InstalacionesController');
+        Route::resource('pensionista_predios', 'PensionistaController');
         Route::get('gridpredio','PredioController@listpredio');//llena grid de predios
         Route::get('gridpisos/{id}','PisosController@listpisos');//llena grid de pisos
         Route::get('gridcondos/{id}','CondominiosController@listcondos');//llena grid de pisos
         Route::get('gridinsta/{id}','InstalacionesController@listinsta');//llena grid de pisos
-        Route::get('selmzna','CController@ListManz');//llena combo manzanas
+        Route::get('selmzna','PredioController@ListManz');//llena combo manzanas
     });
     Route::get('$',function(){ echo 0;});//url auxiliar
 

@@ -24,43 +24,54 @@ class InstalacionesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $insta=new Instalaciones;
+        $insta->id_instal = $request['inst'];
+        $insta->anio = $request['anio'];
+        $insta->dim_lar = $request['largo'];
+        $insta->dim_anch = $request['ancho'];
+        $insta->dim_alt = $request['alto'];
+        $insta->mep = $request['mep'];
+        $insta->ecs = $request['ecs'];
+        $insta->ecc = $request['ecc'];
+        $insta->id_pre = $request['id_pre'];
+        $insta->save();
+        return $insta->id_inst;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $instvw= DB::table('adm_tri.vw_instalaciones')->where('id_inst',$id)->get();
+        return $instvw;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
-        //
+        $insta=new Instalaciones;
+        $val=  $insta::where("id_inst","=",$id )->first();
+        if(count($val)>=1)
+        {
+            $val->id_instal = $request['inst'];
+            $val->anio = $request['anio'];
+            $val->dim_lar = $request['largo'];
+            $val->dim_anch = $request['ancho'];
+            $val->dim_alt = $request['alto'];
+            $val->mep = $request['mep'];
+            $val->ecs = $request['ecs'];
+            $val->ecc = $request['ecc'];
+            
+            $val->save();
+        }
+        return "edit".$id;
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -88,7 +99,7 @@ class InstalacionesController extends Controller
     public function listinsta($id)
     {
         header('Content-type: application/json');
-        $totalg = DB::select("select count(cod_obra) as total from adm_tri.vw_instalaciones where id_pre='$id'");
+        $totalg = DB::select("select count(id_inst) as total from adm_tri.vw_instalaciones where id_pre='$id'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -110,16 +121,18 @@ class InstalacionesController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pre='$id' order by cod_obra asc");
+        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pre='$id' order by id_inst asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->cod_obra;
+            $Lista->rows[$Index]['id'] = $Datos->id_inst;
             $Lista->rows[$Index]['cell'] = array(
-                trim($Datos->cod_obra),"",
+                trim($Datos->id_inst),
+                trim($Datos->cod_instal),
+                trim($Datos->descrip_instal),
                 trim($Datos->anio),
                 trim($Datos->mep),
                 trim($Datos->ecs),
@@ -127,7 +140,7 @@ class InstalacionesController extends Controller
                 trim($Datos->dim_lar),
                 trim($Datos->dim_anch),
                 trim($Datos->dim_alt),
-                trim($Datos->uni_med),
+                trim($Datos->unid_medida),
                 trim($Datos->tot_inst),
             );
         }

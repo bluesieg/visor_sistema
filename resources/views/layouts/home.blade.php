@@ -21,7 +21,7 @@
         <link rel="shortcut icon" href="img/favicon/favi.ico" type="image/x-icon">
         <link rel="icon" href="img/favicon/favi.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+        <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">-->
 
         <link rel="apple-touch-icon" href="{{ asset('img/splash/sptouch-icon-iphone.png') }}">
         <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/splash/touch-icon-ipad.png') }}">
@@ -49,41 +49,8 @@
                 <span id="logo"> <img src="img/logo_cc_2.png" alt="SmartAdmin"> </span> 
 
             </div>
-            @if (Auth::guest())
-            <div class="pull-right" style="margin-top: 8px">
-                <a href="{{ route('login') }}" class="btn btn-default ">Iniciar Sesión</a>                
-            </div>  
-            @else
-            <div class="pull-right">
-                <div id="hide-menu" class="btn-header pull-right">
-                    <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Colapsar Menu"><i class="fa fa-reorder"></i></a> </span>
-                </div> 
-                <div id="logout" class="btn-header transparent pull-right">
-                    <span> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="Salir" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> 
-                        <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    </span>
-                </div>     
-                <ul class="header-dropdown-list">
-                    <li class="">
-                        <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
-                            <img src="img/avatars/sunny.png" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
-                            <span> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down"></i> 
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Cambiar Password</a>
-                            </li>
-                            <div class="divider"></div>
-                            <li>
-                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>    
-            @endif
+            
+              
         </header>
         <!-- Dialogo de alertas -->
         <div id="alertdialog" style="display: none;" ></div>
@@ -99,23 +66,15 @@
         <div class="page-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
-                    <span class="txt-color-white">Maynsa<span class="hidden-xs"> Sistema Web</span> © Arequipa-2017</span>
+                    <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>
                 </div>
             </div>            
         </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script>
-                        if (!window.jQuery) {
-                            document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
-                        }
-        </script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-        <script>
-                        if (!window.jQuery.ui) {
-                            document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-                        }
-        </script>
+         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+       
+        <script src="{{ asset('js/libs/jquery-ui-1.10.3.min.js') }}"></script>
+        
 
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>-->
 
@@ -142,50 +101,9 @@
 
         <script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>
 
-        @if (!Auth::guest()) 
-<!--        <input type="hidden" id="usuario_id" value="{{ Auth::user()->id }}" >
-        <input type="hidden" id="usuario" value="{{ Auth::user()->ape_nom }}" >-->
-        <!--<input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">-->
-
-        <script>
-            $(document).ready(function () {                
-                pageSetUp();
-                $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-                    _title: function (title) {
-                        if (!this.options.title) {
-                            title.html("&#160;");
-                        } else {
-                            title.html(this.options.title);
-                        }
-                    }
-                }));
-                jconfirm.defaults = {
-                    closeIcon: true,
-                    type: 'green', 
-
-                };
-                $("#alertdialog").dialog({
-                        autoOpen: false,modal:true,title: "<div class='widget-header'><h4>.: Mensaje del Sistema :.</h4></div>", buttons: [ { html: '<span class="btn-label"><i class="glyphicon glyphicon-check"></i></span>&nbsp; Aceptar',
-                        "class": "btn btn-labeled bg-color-blue txt-color-white", click: function() { $( this ).dialog( "close" );  if(focoglobal!=""){ foco(focoglobal);} focoglobal="";} } ]
-                });
-            });                       
-        </script>
-        @endif
+       
 
         @yield('page-js-script')
 
-<!--        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-            _gaq.push(['_trackPageview']);
-            (function () {
-                var ga = document.createElement('script');
-                ga.type = 'text/javascript';
-                ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(ga, s);
-            })();
-        </script>-->
     </body>
 </html>

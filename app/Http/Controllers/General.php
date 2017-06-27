@@ -76,6 +76,23 @@ class General extends Controller {
         return response()->json($todo);
 
     }
+    function autocompletar_instalaciones(Request $request){
+        $data = $request->all();
+        $Consulta = DB::table('catastro.instalaciones')->where('anio',date("Y"))->get();  
+
+        $todo=array();
+        foreach($Consulta as $Datos)
+        {
+            $Lista=new \stdClass();           
+            $Lista->value=$Datos->id_instal;
+            $Lista->label=  trim($Datos->descrip_instal);           
+            $Lista->codi=  trim($Datos->cod_instal);           
+            $Lista->und=  trim($Datos->unid_medida);           
+            array_push($todo,$Lista);
+        }        
+        return response()->json($todo);
+
+    }
     /*****************************************COMBO  DEPARTAMENTO / PROVINCIA / DISTRITO **************************************/
     public function get_dpto() {
         $Consulta = DB::table('maysa.dpto')->get();
