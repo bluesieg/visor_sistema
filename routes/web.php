@@ -46,10 +46,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'], function() {
 
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
-    Route::get('/usuarios', 'Usuarios@getAllUsuarios')->name('usuarios'); //vw_usuarios
-
-    Route::post('usuario_save', 'Usuarios@insert_update_Usuarios');
+    Route::get('/usuarios', 'Usuarios@vw_usuarios_show')->name('usuarios'); //vw_usuarios
+    /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
+    Route::post('usuario_save', 'Usuarios@insert_Usuario');
+    Route::post('usuario_update', 'Usuarios@update_Usuario');
     Route::post('usuario_delete', 'Usuarios@eliminar_usuario'); //eliminar usuario
+    Route::get('usuarios_validar_user','Usuarios@validar_user');
+    Route::get('usuarios_validar_dni','Usuarios@validar_dni');
+    Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
 
     /*     * **************************AUTOLLENADO DE COMBOS********************************************************************* */
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento
@@ -96,12 +100,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('emi_rec_pag', 'Emision_rec_Pago@vw_show')->name('emision_rec_pago'); // VW_EMISION_REC_PAGO
         
     });
-    Route::group(['namespace' => 'caja'], function() {
-        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA
-        
-    });
-    
-    
+//    Route::group(['namespace' => 'caja'], function() {
+//        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
+//    });
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
         Route::resource('pisos_predios', 'PisosController');

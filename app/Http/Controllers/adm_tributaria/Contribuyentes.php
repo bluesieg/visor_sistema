@@ -41,15 +41,16 @@ class Contribuyentes extends Controller
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        
+        
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->id_pers;
+            $Lista->rows[$Index]['id'] = $Datos->id_pers;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_pers),
                 trim($Datos->id_persona),
                 trim($Datos->tipo_doc),
                 trim($Datos->nro_doc),
-                trim($Datos->contribuyente), 
+                trim(str_replace("-", "",$Datos->contribuyente)), 
                 trim($Datos->cod_via),
                 trim($Datos->nom_via),
                 trim($Datos->tlfno_fijo),
@@ -71,7 +72,7 @@ class Contribuyentes extends Controller
             $Lista->ape_mat         =  trim($Datos->ape_mat);
             $Lista->nombres         =  trim($Datos->nombres);
             $Lista->sexo            =  trim($Datos->sexo);
-            $Lista->fnac            =  trim($Datos->fnac);
+            $Lista->fnac            =  date('d-m-Y',strtotime($Datos->fnac));
             $Lista->tipo_persona    =  trim($Datos->tipo_persona);
             $Lista->tipo_doc        =  trim($Datos->tipo_doc);
             $Lista->raz_soc         =  trim($Datos->raz_soc);

@@ -68,10 +68,13 @@
                 <ul class="header-dropdown-list">
                     <li class="">
                         <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
-                            <img src="img/avatars/sunny.png" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
+                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
                             <span> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down"></i> 
                         </a>
                         <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a onclick="cambiar_foto_usuario();" class="padding-10 padding-top-0 padding-bottom-0" style="cursor: pointer;margin-bottom: 4px;"><i class="fa fa-cog"></i> Cambiar Foto</a>
+                            </li>                            
                             <li>
                                 <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Cambiar Password</a>
                             </li>
@@ -87,12 +90,13 @@
         </header>
         <!-- Dialogo de alertas -->
         <div id="alertdialog" style="display: none;" ></div>
+        
         @if (!Auth::guest())
         <aside id="left-panel" style="background: #4caf50 !important">        
             <div class="login-info">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                        <img src="img/avatars/sunny.png" alt="me" class="online" /> 
+                        <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" class="online" /> 
                         <span>
                             {{ Auth::user()->usuario }}
                         </span>
@@ -123,7 +127,7 @@
                             <li>
                                 <a href="#" title="Configuracion del IPM."><i class="fa fa-cube"></i>Config. IPM</a>
                             </li>
-                            <li class="">
+                            <li id="li_config_usuarios">
                                 <a href="{{ route('usuarios') }}" title="Usuarios"><i class="fa fa-cube"></i>Usuarios</a>
                             </li>                        
                             <li>
@@ -168,20 +172,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="">
-                        <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Modulo Caja</span></a>
-                        <ul id="menu_mod_caja">
-                            <li id="li_mod_caja_gen">
-                                <a href="{{ route('mod_caj_gen') }}" title="Generica"><i class="fa fa-gear"></i> <span class="menu-item-parent">Generica</span></a>
-                            </li>
-                            <li class="">
-                                <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Prebuilt Skins</span></a>
-                            </li>
-                            <li>
-                                <a href="applayout.html"><i class="fa fa-cube"></i> App Settings</a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
             </nav>
             <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
@@ -200,6 +190,31 @@
                     <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>
                 </div>
             </div>            
+        </div>
+        <!--************************                  CAMBIAR FOTO USUARIO         *******************************-->
+        <script>
+            var global_id_user_login = {!! json_encode((array)auth()->id()) !!};
+        </script>
+        <div id="dialog_Cambiar_Foto_Usuario" style="display: none">
+            <div class="widget-body">
+                <div  class="smart-form">
+                    <div class="panel-group">                
+                        <div class="panel panel-success" style="border: 0px !important;">
+                            <div class="panel-heading bg-color-success">.:: Selecciona Tu Foto ::.</div>
+                            <div class="panel-body">
+                                <form id="form_cambiar_foto" name="form_cambiar_foto">
+                                <div class="text-center col col-12" style="margin-top: 10px;">                            
+                                    <img id="vw_usuario_cambiar_foto_img" src="{{asset('img/avatars/male.png')}}" name="vw_usuario_cambiar_foto_img" size="2048" style="width: 233px;height: 230px;border: 1px solid #fff; outline: 1px solid #bfbfbf;margin-bottom: 14px;">
+                                    <label class="label">Seleccionar Foto:</label>
+                                    <label class="input"> 
+                                        <input type="file" id="vw_usuario_cambiar_cargar_foto" name="vw_usuario_cambiar_cargar_foto" accept="image/png, image/jpeg, image/jpg">
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>                 
+                </div>        
+            </div>
         </div>
 
         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
@@ -228,9 +243,9 @@
         <script src="{{ asset('js/pdf/jspdf.debug.js') }}"></script>
         <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
 
-        <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
+        <!--<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>--> 
 
-        <script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>
+        <!--<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
 
         @if (!Auth::guest()) 
 <!--        <input type="hidden" id="usuario_id" value="{{ Auth::user()->id }}" >

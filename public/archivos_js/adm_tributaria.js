@@ -2,9 +2,6 @@
 
 
 function open_dialog_new_edit_Contribuyente(tipo, id) {
-
-    limpiar_ctrl('dialog_new_edit_Contribuyentes');
-    
     $("#dialog_new_edit_Contribuyentes").dialog({
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " CONTRIBUYENTE :.</h4></div>",
@@ -29,6 +26,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
             document.getElementById('contrib_dpto').options.length = 1;
             document.getElementById('contrib_prov').options.length = 1;
             document.getElementById('contrib_dist').options.length = 1;
+            limpiar_dlg_contrib();
         }
     }).dialog('open');
     $("#vw_contrib_btn_con_ruc").hide();
@@ -87,6 +85,32 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
 
 
 function save_edit_contribuyentes(tipo, id) {
+    nro_doc = $("#txt_nro_doc").val();
+    tipo_doc = $("#cb_tip_doc_1").val();
+    if (tipo_doc == '00' && nro_doc.length!=11) {
+        mostraralertasconfoco('* Escriba un Numero RUC de 11 digitos...', 'txt_nro_doc');
+        return false;
+    }
+    
+    if (tipo_doc == '02' && nro_doc.length!=8) {                  
+        mostraralertasconfoco('* Escriba un Numero DNI de 8 digitos...', 'txt_nro_doc');
+        return false;
+    }
+    ape_pat=$("#contrib_ape_pat").val();
+    if(ape_pat==''){
+        mostraralertasconfoco('* El Campo Nombres es Obligatorio.', 'contrib_ape_pat');
+        return false;
+    }
+    nombres = $("#contrib_nombres").val();
+    if (nombres == '') {
+        mostraralertasconfoco('* El Campo Nombres es Obligatorio.', 'contrib_nombres');
+        return false;
+    }
+    raz_soc=$("#contrib_raz_soc").val();
+    if (tipo_doc == '00' && (raz_soc == '-' || raz_soc == '')) {
+        mostraralertasconfoco('* El Campo Razon Social es Obligatorio..', 'contrib_raz_soc');
+        return false;
+    }
 
     if (tipo === 'NUEVO' && id === undefined) {
         $.ajax({
@@ -168,8 +192,7 @@ function save_edit_contribuyentes(tipo, id) {
                             id_via: $('#hiddentxt_av_jr_calle_psje').val(),
                             tip_doc_conv: $('#cb_tip_doc_2').val()
                         },
-                        success: function (data) {
-                            mostraralertas('* El registro ha sido modificado...');
+                        success: function (data) {                            
                             fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
                             dialog_close('dialog_new_edit_Contribuyentes');
                             MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
@@ -220,22 +243,27 @@ function eliminar_contribuyente(id) {
     });
 }
 
-function filtro_tipo_doc(tipo){
-    if(tipo=='00' || tipo =='2'){
+function filtro_tipo_doc(tipo) {
+    if (tipo == '00' || tipo == '2') {
         $("#vw_contrib_btn_con_dni").hide();
         $("#vw_contrib_btn_con_ruc").show();
         $("input[name=radio_tip_per][value=2]").prop('checked', true);
-        $("#cb_tip_doc_1").val('00');
-        $("#contrib_ape_pat").val('');
-        $("#contrib_ape_mat").val('-');
-        $("#contrib_nombres").val('');
-    }else if(tipo=='02' || tipo=='1'){
+        $("#cb_tip_doc_1").val('00');        
+        $("#contrib_ape_mat,#contrib_ape_pat,#contrib_nombres").val('-');       
+    } else if (tipo == '02' || tipo == '1') {
         $("#vw_contrib_btn_con_dni").show();
         $("#vw_contrib_btn_con_ruc").hide();
         $("input[name=radio_tip_per][value=1]").prop('checked', true);
         $("#cb_tip_doc_1").val('02');
         $("#contrib_raz_soc").val('-');
     }
+}
+
+function limpiar_dlg_contrib(){
+    $("#txt_nro_doc,#contrib_fch_nac,#txt_av_jr_calle_psje").val('');
+    $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres,#contrib_conviviente").val('-');
+    $("#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_nro_mun,#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_nro_doc_conv").val(0);
+    $("#contrib_est_civil").val('select');
 }
 
 

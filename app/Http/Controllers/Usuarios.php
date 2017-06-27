@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 class Usuarios extends Controller {
 
-    public function getAllUsuarios() {
-        $table = DB::select('select * from usuarios limit 10');
-//        dd($table);
-        return view('configuracion/vw_usuarios')->with([
-                    'Usuarios' => $table]
-        );
+    public function vw_usuarios_show() {
+        return view('configuracion/vw_usuarios');
     }
 
     public function getAllUsuarios2() {
@@ -62,7 +58,7 @@ class Usuarios extends Controller {
                 trim($Datos->ape_nom),
                 trim($Datos->usuario),
                 trim($Datos->nivel),
-                trim($Datos->fch_nac)
+                trim(date('d-m-Y', strtotime($Datos->fch_nac)))
             );
         }
 
@@ -71,92 +67,101 @@ class Usuarios extends Controller {
 //        dd($table);
     }
 
-    public function insert_update_Usuarios(Request $request) {
-        header('Content-type: application/json');
-        $data = $request->all();
+    public function insert_Usuario(Request $request) {
+
+        $file = $request->file('vw_usuario_cargar_foto');
+//        $size = $request->file('vw_usuario_cargar_foto')->getSize();
+//        $tmp_name=$request->file('vw_usuario_cargar_foto')->getPath();
+
+        $file2 = \File::get($file);
+//        echo $file2;
+//        echo "<img src='data:image/png;base64,".$file2."'>";
+
+        $data = array();
+        $data['dni'] = $request['vw_usuario_txt_dni'];
+        $data['ape_nom'] = strtoupper($request['vw_usuario_txt_ape_nom']);
+        $data['usuario'] = strtoupper($request['vw_usuario_txt_usuario']);
+        $data['password'] = bcrypt($request['vw_usuario_txt_password']);
+        $data['nivel'] = $request['vw_usuario_txt_nivel'];
+        $data['fch_nac'] = date('d-m-Y H:i:s', strtotime($request['vw_usuario_txt_fch_nac']));
+        $data['cad_lar'] = strtoupper($request['vw_usuario_txt_ape_nom']) . ' ' . $request['vw_usuario_txt_dni'] . ' ' . strtoupper($request['vw_usuario_txt_usuario']);
 
 
-        if ($this->validar_user($data['usuario'])) {//valida si el usuario ya existe
-            return response()->json([
-                        'msg' => 'Usuario',
-                        'valor' => $data['usuario'] . ' Existe...'
-            ]);
+        $data['foto'] = base64_encode($file2);
+//        echo $data['foto'];
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $data['updated_at'] = date("Y-m-d H:i:s");
+//
+        $insert = DB::table('usuarios')->insert($data);
+
+        if ($insert) {
+            return response()->json(['msg' => 'si']);
         } else {
-            return response()->json([
-                        'msg' => 'Usuario',
-                        'valor' => $data['usuario'] . ' No Existe...'
-            ]);
+            return response()->json(['msg' => 'no']);
         }
-//        if ($this->validar_dni($data['dni'])) {//valida si el dni ya existe
-//            return response()->json([
-//                        'msg' => 'DNI',
-//                        'valor' => $data['dni']
-//            ]);
-//        }
-//        if (isset($data['id']) && $this->update_usuario($request->all())) {//update
-//            return response()->json([
-//                        'msg' => 'Usuario',
-//                        'valor' => strtoUpper($data['usuario'])
-//            ]);
-//        }
-//        if ($this->insert_usuario($request->all())) {
-//            return response()->json([
-//                        'msg' => 'Usuario',
-//                        'valor' => strtoUpper($data['usuario'])
-//            ]);
-//        }
     }
 
-    public function validar_user($user) {
-        $usuario = DB::table('usuarios')->select('usuario', 'id')->where('usuario', $user)->get();
-        if ($usuario->usuario != '')
-            return true;
-        else
-            return false;
+    function get_datos_usuario(Request $request) {
+        $usuario = DB::table('usuarios')->where('id', $request['id'])->get();
+
+        $Lista = new \stdClass();
+        foreach ($usuario as $Datos) {
+            $Lista->id = trim($Datos->id);
+            $Lista->dni = trim($Datos->dni);
+            $Lista->ape_nom = trim($Datos->ape_nom);
+            $Lista->usuario = trim($Datos->usuario);
+            $Lista->nivel = trim($Datos->nivel);
+            $Lista->fch_nac = date('d-m-Y', strtotime($Datos->fch_nac));
+//            $Lista->foto = trim($Datos->foto);
+        }
+        return response()->json($Lista);
     }
 
-    public function validar_dni($dni) {
-        $doc_dni = DB::table('usuarios')->select('dni', 'id')->where('dni', '=', $dni)->get();
-        if ($doc_dni)
-            return false;
-        else
-            return true;
+    public function validar_user(Request $request) {
+//        isset($Consulta[0]->id_pers)
+        $usuario = DB::table('usuarios')->select('usuario')->where('usuario', $request['usuario'])->get();
+        if (isset($usuario[0]->usuario)) {
+            return response()->json(['msg' => 'si']);
+        } else {
+            return response()->json(['msg' => 'no']);
+        }
     }
 
-    public function insert_usuario(array $data) {
-        $user = array(
-            'ape_nom' => strtoUpper(trim($data['ape_nom'])),
-            'usuario' => strtoUpper(trim($data['usuario'])),
-            'fono' => strtoUpper(trim($data['fono'])),
-            'cad_lar' => strtoUpper(trim($data['ape_nom'])) . " " . strtoUpper(trim($data['usuario'])),
-            'rol' => 'USUARIO',
-            'created_at' => date("d-m-Y H:i:s"),
-            'updated_at' => date("d-m-Y H:i:s"),
-        );
-        $insert = DB::table('usuarios')->insert($user);
-        if ($insert)
-            return true;
-        else
-            return false;
+    public function validar_dni(Request $request) {
+        $doc_dni = DB::table('usuarios')->select('dni')->where('dni', '=', $request['dni'])->get();
+        if (isset($doc_dni[0]->dni)) {
+            return response()->json(['msg' => 'si']);
+        } else {
+            return response()->json(['msg' => 'no']);
+        }
     }
 
-    public function update_usuario(array $data, $id) {
-        $user = array(
-            'ape_nom' => strtoUpper(trim($data['ape_nom'])),
-            'usuario' => strtoUpper(trim($data['usuario'])),
-            'fono' => strtoUpper(trim($data['fono'])),
-            'cas_id' => $data['casa'],
-            'password' => bcrypt(trim($data['contra'])),
-            'estado' => $data['estado'],
-            'cad_lar' => strtoUpper(trim($data['ape_nom'])) . " " . strtoUpper(trim($data['usuario'])),
-            'rol' => 'USUARIO',
-            'updated_at' => date("Y-m-d H:i:s")
-        );
-        $insert = DB::table('usuarios')->where('id', $id)->update($user);
-        if ($insert)
-            return true;
-        else
-            return false;
+    function update_Usuario(Request $request) {
+//        echo $request['vw_usuarios_id'];
+//        $file = $request->file('vw_usuario_cargar_foto');
+//        $file2 = \File::get($file);
+
+
+        $data = $request->all();
+//        $data['dni'] = $request['vw_usuario_txt_dni'];
+//        $data['ape_nom'] = strtoupper($request['vw_usuario_txt_ape_nom']);
+//        $data['usuario'] = strtoupper($request['vw_usuario_txt_usuario']);
+//        $data['password'] = bcrypt($request['vw_usuario_txt_password']);
+//        $data['nivel'] = $request['vw_usuario_txt_nivel'];
+//        $data['fch_nac'] = date('d-m-Y', strtotime($request['fch_nac']));
+        $data['cad_lar'] = strtoupper($request['ape_nom']) . ' ' . $request['dni'] . ' ' . strtoupper($request['usuario']);
+
+
+//        $data['foto'] = base64_encode($file2);
+        $data['created_at'] = date("d-m-Y H:i:s");
+        $data['updated_at'] = date("d-m-Y H:i:s");
+        
+        $update = DB::table('usuarios')->where('id',$request['id'])->update($data);
+        if ($update) {
+            return response()->json(['msg' => 'si']);
+        } else {
+            return response()->json(['msg' => 'no']);
+        }
     }
 
     function eliminar_usuario(Request $data) {
@@ -176,6 +181,23 @@ class Usuarios extends Controller {
             return response()->json([
                         'usuario' => $user[0],
             ]);
+        }
+    }
+    
+    function cambiar_foto_usuario(Request $request){
+        $file = $request->file('vw_usuario_cambiar_cargar_foto');
+        $file2 = \File::get($file);        
+        
+        $id = Auth::user()->id;
+        $foto = base64_encode($file2);
+        
+//        echo $file.'<br>'.$id.'<br>'.$foto;
+////        $data = $request->all();
+        $update = DB::table('usuarios')->where('id',$id)->update(['foto'=>$foto]);
+        if ($update) {
+            return response()->json(['msg' => 'si']);
+        } else {
+            return response()->json(['msg' => 'no','id'=>$id]);
         }
     }
 

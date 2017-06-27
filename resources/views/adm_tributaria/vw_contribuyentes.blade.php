@@ -9,7 +9,7 @@
     }
     .smart-form .label {  
         margin-bottom: 0px;   
-    }
+    }    
 </style>
 <section id="widget-grid" class="">    
     <div class="row">
@@ -41,28 +41,6 @@
 @section('page-js-script')
 
 <script type="text/javascript">
-    function report_pdf() {
-
-        var pdf = new jsPDF();
-       
-//        var canvas = pdf.canvas;
-//        canvas.height = 72 * 11;
-//        canvas.width= 72 * 8.5;
-//        pdf.text(20, 20, 'Hello world!');
-//        pdf.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
-        
-//        pdf.text(20, 20, 'Do you like that?');
-
-        // can also be document.body
-        var html = '<html><body>Hello <strong> World</strong></body></html>';
-        pdf.addPage();
-
-        html2pdf(html, pdf, function(pdf) {
-                pdf.output('dataurlnewwindow');
-        });
-        
-
-    }
     $(document).ready(function () {
         $("#menu_admtri").show();
         $("#li_config_contribuyentes").addClass('cr-active');
@@ -92,6 +70,19 @@
             },
             ondblClickRow: function (Id) {
                 $("#btn_vw_contribuyentes_Editar").click();
+            },
+            gridComplete: function () {
+                var rows = $("#table_Contribuyentes").getDataIDs();
+                for (var i = 0; i < rows.length; i++) {
+                    var tipo_doc = $("#table_Contribuyentes").getCell(rows[i], "tipo_doc");
+                    if (tipo_doc == '02') {                        
+                        $("#table_Contribuyentes").jqGrid('setCell', rows[i],'tipo_doc', 'DNI');
+                    }
+                }
+                if (rows.length > 0) {
+                    var firstid = jQuery('#table_Contribuyentes').jqGrid('getDataIDs')[0];
+                    $("#table_Contribuyentes").setSelection(firstid);    
+                }
             }
         });
         $(window).on('resize.jqGrid', function () {
@@ -109,21 +100,32 @@
             <div class="panel-group">                
                 <div class="panel panel-success">
                     <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
-                    <div class="panel-body">
+                    <div class="panel-body cr-body">
                         <fieldset>
                             <div class="row">
-                                <section class="col col-3">
+                                <section class="col col-2">
                                     <label class="label">Tipo Documento:</label>                                   
                                     <label class="select">
                                         <select id="cb_tip_doc_1" onchange="filtro_tipo_doc(this.value);" name="input_form_contribuyentel" class="input-sm">
                                             <option value="select" selected="" disabled="">Documento</option>                                           
                                         </select><i></i> </label>                        
                                 </section>
-                                <section class="col col-3">
+                                <section class="col col-2">
                                     <label class="label">Nro. Documento:</label>
                                     <label class="input">
-                                        <input id="txt_nro_doc" type="text" placeholder="Nro. Documento" class="input-sm">
+                                        <input id="txt_nro_doc" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
                                     </label>                      
+                                </section>
+                                <section class="col col-2"> 
+                                    <label class="label">Reniec/Sunat</label>
+                                    <label class="input">
+                                        <a id="vw_contrib_btn_con_dni" onclick="fn_consultar_dni();">
+                                            <img src="{{asset('img/reniec.png')}}" width="61" title="RENIEC" style="border: 1px solid #fff; outline: 1px solid #bfbfbf;" />                                            
+                                        </a>
+                                        <a id="vw_contrib_btn_con_ruc" onclick="fn_consultar_ruc();">
+                                            <img src="{{asset('img/sunat.png')}}" width="64" title="SUNAT" style="border: 1px solid #fff; outline: 1px solid #bfbfbf;"/>                                            
+                                        </a>                                        
+                                    </label>
                                 </section>
                                 <section class="col col-6">
                                     <label class="label">Tipo de Persona:</label>
@@ -182,6 +184,7 @@
                                             <option value="1">Casado</option>
                                             <option value="2">Viudo</option>
                                             <option value="3">Divorciado</option>
+                                            <option value="4">Conviviente</option>
                                         </select><i></i> </label>
                                 </section>
                                 <section class="col col-3">
@@ -198,33 +201,23 @@
                                 </section>
                             </div>
                             <div class="row">
-                                <section class="col col-6">
+                                <div class="col col-6">
                                     <label class="label">Correo Electronico:</label>
                                     <label class="input">
                                         <input id="contrib_email" type="text" placeholder="Correo Electronico" class="input-sm">
-                                    </label>                        
-                                </section>                                
-                                <section class="col col-6"> 
-                                    <label class="label">Autocompletar: Reniec / Sunat</label>
+                                    </label>   
+                                </div>
+                                <div class="col col-6">
+                                    <label class="label">Razon Social:</label>
                                     <label class="input">
-                                        <a id="vw_contrib_btn_con_dni" onclick="fn_consultar_dni();">
-                                            <img src="{{asset('img/reniec.png')}}" width="71" title="RENIEC" style="border: 1px solid #fff; outline: 1px solid #bfbfbf;" />                                            
-                                        </a>
-                                        <a id="vw_contrib_btn_con_ruc" onclick="fn_consultar_ruc();">
-                                            <img src="{{asset('img/sunat.png')}}" width="74" title="SUNAT" style="border: 1px solid #fff; outline: 1px solid #bfbfbf;"/>                                            
-                                        </a>                                        
-                                    </label>
-                                </section>
-                            </div>                            
-                            <section>
-                                <label class="label">Razon Social:</label>
-                                <label class="input">
-                                    <input id="contrib_raz_soc" type="text" placeholder="Razon Social" class="input-sm">
-                                </label>                        
-                            </section>
+                                        <input id="contrib_raz_soc" type="text" placeholder="Razon Social" class="input-sm">
+                                    </label> 
+                                </div>
+                            </div>
                         </fieldset>
                     </div>
                 </div>
+
                 <div class="panel panel-success">
                     <div class="panel-heading bg-color-success">.:: Domicilio Fiscal en la Provincia ::.</div>
                     <div class="panel-body">
@@ -309,7 +302,7 @@
                                 <section class="col col-3">
                                     <label class="label">Nro.Documento:</label>
                                     <label class="input">
-                                        <input id="contrib_nro_doc_conv" type="text" placeholder="Nro. Documento" class="input-sm">
+                                        <input id="contrib_nro_doc_conv" type="text" placeholder="Nro. Documento" maxlength="8" class="input-sm">
                                     </label>
                                 </section>
                                 <section class="col col-6">
