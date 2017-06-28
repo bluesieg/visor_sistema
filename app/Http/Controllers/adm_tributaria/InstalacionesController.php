@@ -27,6 +27,15 @@ class InstalacionesController extends Controller
     public function create(Request $request)
     {
         $insta=new Instalaciones;
+        $cat_instal= DB::table('catastro.instalaciones')->where('id_instal',$request['inst'])->get()->first();
+        if(count($cat_instal)>=1)
+        {
+            $insta->val_unit=$cat_instal->precio;
+            if($cat_instal->unid_medida=="M2")
+            {
+                $insta->pro_tot =$request['alto']*$request['ancho'];
+            }
+        }
         $insta->id_instal = $request['inst'];
         $insta->anio = $request['anio'];
         $insta->dim_lar = $request['largo'];

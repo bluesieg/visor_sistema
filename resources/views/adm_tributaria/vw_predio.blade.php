@@ -384,8 +384,8 @@
                                     <div class='col-lg-2 pd_dlg_cr'>
                                         <label class="label">Estado de Construccion:</label>
                                         <select id='dlg_sel_estcon' class="form-control" >
-                                                @foreach ($ecc as $ecc)
-                                                <option value='{{$ecc->id_ecc}}' >{{$ecc->descripcion}}</option>
+                                                @foreach ($ecc as $eccpre)
+                                                <option value='{{$eccpre->id_ecc}}' >{{$eccpre->descripcion}}</option>
                                                 @endforeach
                                         </select>
                                     </div>
@@ -751,8 +751,8 @@
                         <div class='col-xs-3 pd_dlg_cr'>
                             <label class="label">Clasificación:</label>
                             <select id='rpiso_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_clasi')">
-                                @foreach ($pisclasi as $pisclasi)
-                                <option value='{{$pisclasi->id_cla_pre}}' descri="{{$pisclasi->desc_clasific}}" >{{$pisclasi->id_cla_pre}}</option>
+                                @foreach ($pisclasi as $pisclasi1)
+                                <option value='{{$pisclasi1->id_cla_pre}}' descri="{{$pisclasi1->desc_clasific}}" >{{$pisclasi1->id_cla_pre}}</option>
                                 @endforeach
                             </select>
                             
@@ -767,8 +767,8 @@
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Material:</label>
                             <select id='rpiso_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_mat')">
-                                @foreach ($pismat as $pismat)
-                                <option value='{{$pismat->id_mep}}' descri="{{$pismat->mep}}" >{{$pismat->id_mep}}</option>
+                                @foreach ($pismat as $pismat1)
+                                <option value='{{$pismat1->id_mep}}' descri="{{$pismat1->mep}}" >{{$pismat1->id_mep}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -782,8 +782,8 @@
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Conservación:</label>
                             <select id='rpiso_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econserv')">
-                                @foreach ($pisecs as $pisecs)
-                                <option value='{{$pisecs->id_ecs}}' descri="{{$pisecs->ecs}}" >{{$pisecs->id_ecs}}</option>
+                                @foreach ($pisecs as $pisecs1)
+                                <option value='{{$pisecs1->id_ecs}}' descri="{{$pisecs1->ecs}}" >{{$pisecs1->id_ecs}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -797,7 +797,7 @@
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Construcción:</label>
                             <select id='rpiso_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econstr')">
-                                @foreach ($ecc2 as $ecc2)
+                                @foreach ($ecc as $ecc2)
                                 <option value='{{$ecc2->id_ecc}}' descri="{{$ecc2->descripcion}}" >{{$ecc2->id_ecc}}</option>
                                 @endforeach
                             </select>
@@ -914,10 +914,26 @@
                         </div>
                         
                         <div col="col-xs-12"></div>
+                        <div class='col-xs-3 pd_dlg_cr'>
+                            <label class="label">Clasificación:</label>
+                            <select id='rinst_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_clasi')">
+                                @foreach ($pisclasi as $pisinst)
+                                <option value='{{$pisinst->id_cla_pre}}' descri="{{$pisinst->desc_clasific}}" >{{$pisinst->id_cla_pre}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_clasi_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Material:</label>
                             <select id='rinst_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_mat')">
-                                @foreach ($pismat2 as $pismat2)
+                                @foreach ($pismat as $pismat2)
                                 <option value='{{$pismat2->id_mep}}' descri="{{$pismat2->mep}}" >{{$pismat2->id_mep}}</option>
                                 @endforeach
                             </select>
@@ -932,7 +948,7 @@
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Conservación:</label>
                             <select id='rinst_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econserv')">
-                                @foreach ($pisecs2 as $pisecs2)
+                                @foreach ($pisecs as $pisecs2)
                                 <option value='{{$pisecs2->id_ecs}}' descri="{{$pisecs2->ecs}}" >{{$pisecs2->id_ecs}}</option>
                                 @endforeach
                             </select>
@@ -947,7 +963,7 @@
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Construcción:</label>
                             <select id='rinst_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econstr')">
-                                @foreach ($ecc3 as $ecc3)
+                                @foreach ($ecc as $ecc3)
                                 <option value='{{$ecc3->id_ecc}}' descri="{{$ecc3->descripcion}}" >{{$ecc3->id_ecc}}</option>
                                 @endforeach
                             </select>

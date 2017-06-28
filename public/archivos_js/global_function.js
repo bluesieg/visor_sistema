@@ -411,15 +411,43 @@ function mostraralertasconfoco(texto, foco)
             buttons : '[Aceptar]'
     }, function(ButtonPressed) {
             if (ButtonPressed === "Aceptar") {
-
                     $(foco).focus();
             }
     });
+    $("#bot1-Msg1").addClass('bg-color-green txt-color-white');
     $("#bot1-Msg1").focus();
-    e.preventDefault();
-//    $("#alertdialog").html('<p>' + texto + '</p>');
-//    $("#alertdialog").dialog('open');
-//    focoglobal = foco;
+    setTimeout(openPopup, 500);
+
+}
+function openPopup()
+{
+    $('body').keyup(function(e) {
+    if(e.keyCode == 13) {
+        $("#bot1-Msg1").trigger("click");
+        $('body').off('keyup');
+
+    }
+});
+}
+function MensajeExito(tit,cont,dura)
+{
+    $.smallBox({
+                    title : tit,
+                    content : "<i class='fa fa-clock-o'></i> <i>"+cont+"</i>",
+                    color : "#659265",
+                    iconSmall : "fa fa-check fa-2x fadeInRight animated",
+                    timeout : dura
+            });
+}
+function MensajeAlerta(tit,cont,dura)
+{
+    $.smallBox({
+                    title : tit,
+                    content : "<i class='fa fa-clock-o'></i> <i>"+cont+"</i>",
+                    color : "#C46A69",
+                    iconSmall : "fa fa-check fa-2x fadeInRight animated",
+                    timeout : dura
+            });
 }
 function ajustar(tam, num)
 {

@@ -197,7 +197,7 @@ function callpredtab()
         success: function(r) 
         {
             $('#dlg_idpre').val(r);
-            mostraralertas('Insertó Correctamente');
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?mnza='+$("#selmnza").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
             $( "#dlg_dni, #dlg_lot" ).prop( "disabled", true );
@@ -230,7 +230,7 @@ function callpredtab()
         confobr:$('input:radio[name=dlg_rd_confobr]:checked').val(),defra:$('input:radio[name=dlg_rd_defra]:checked').val()},
         success: function(r) 
         {
-            mostraralertas('Se Modificó Correctamente...');
+            MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?mnza='+$("#selmnza").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
 
@@ -330,8 +330,6 @@ function callpredtab()
             $("#dlg_reg_piso").dialog('close');
         }
         });
-        
-        
     }
     function pisoSave()
     {
@@ -355,7 +353,7 @@ function callpredtab()
         estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val(),id_pre:Id_pre},
         success: function(r) 
         {
-            mostraralertas('Insertó Correctamente');
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id_pre}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
             $("#dlg_reg_piso").dialog('close');
@@ -385,7 +383,7 @@ function callpredtab()
         estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val()},
         success: function(r) 
         {
-            mostraralertas('Modificó Correctamente');
+            MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
         },
@@ -484,7 +482,7 @@ function callpredtab()
         data:{contrib:$("#rcondo_inp_rsoc_hidden").val(),dir:$("#rcondo_inp_dir").val().toUpperCase(),porc:$("#rcondo_inp_porcent").val(),id_pre:Id_pre},
         success: function(r) 
         {
-            mostraralertas('Insertó Correctamente');
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id_pre}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_condo');
             $("#dlg_reg_condo").dialog('close');
@@ -509,7 +507,7 @@ function callpredtab()
         data:{contrib:$("#rcondo_inp_rsoc_hidden").val(),dir:$("#rcondo_inp_dir").val().toUpperCase(),porc:$("#rcondo_inp_porcent").val()},
         success: function(r) 
         {
-            mostraralertas('Se Modificó Correctamente');
+            MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_condo');
             $("#dlg_reg_condo").dialog('close');
@@ -563,12 +561,14 @@ function callpredtab()
         $("#rinst_inp_mat").val($("#rinst_inp_mat option:first").val());
         $("#rinst_inp_econserv").val($("#rinst_inp_econserv option:first").val());
         $("#rinst_inp_econstr").val($("#rinst_inp_econstr option:first").val());
+        $("#rinst_inp_clasi").val($("#rinst_inp_clasi option:first").val());
         creardlginst();
         $("#btninstsave").show();
         $("#btninstmod").hide();
         callchangeoption("rinst_inp_mat");
         callchangeoption("rinst_inp_econserv");
         callchangeoption("rinst_inp_econstr");
+        callchangeoption("rinst_inp_clasi");
         
     }
     function clickmodinst()
@@ -628,10 +628,11 @@ function callpredtab()
         type: 'GET',
         data:{inst:$("#hidden_rinst_inp_des").val(),anio:$("#rinst_inp_anio").val(),largo:$("#rinst_inp_largo").val(),
             ancho:$("#rinst_inp_ancho").val(),alto:$("#rinst_inp_alto").val(),mep:$("#rinst_inp_mat").val(),
-            ecs:$("#rinst_inp_econserv").val(),ecc:$("#rinst_inp_econstr").val(),id_pre:Id_pre},
+            ecs:$("#rinst_inp_econserv").val(),ecc:$("#rinst_inp_econstr").val(),id_pre:Id_pre,cla:$("#rinst_inp_clasi").val()},
         success: function(r) 
         {
-            mostraralertas('Insertó Correctamente');
+            
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+Id_pre}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_inst');
             $("#dlg_reg_inst").dialog('close');
@@ -659,7 +660,7 @@ function callpredtab()
             ecs:$("#rinst_inp_econserv").val(),ecc:$("#rinst_inp_econstr").val()},
         success: function(r) 
         {
-            mostraralertas('Se Modificó Correctamente');
+            MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_inst');
             $("#dlg_reg_condo").dialog('close');
@@ -698,13 +699,8 @@ function callpredtab()
             anfin:$("#s5_inp_anfin").val(),id_pre:Id_pre},
         success: function(r) 
         {
-            $.smallBox({
-                    title : "Insertó Correctamente",
-                    content : "<i class='fa fa-clock-o'></i> <i>Su Registro Fue Insertado con Éxito...</i>",
-                    color : "#659265",
-                    iconSmall : "fa fa-check fa-2x fadeInRight animated",
-                    timeout : 4000
-            });
+            
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('s5');
             $("#btn_s5_delpen").show();
         },
@@ -729,13 +725,7 @@ function callpredtab()
             {
                 $("#s5_sel_condi,#s5_inp_basleg,#s5_inp_exp,#s5_inp_reso,#s5_inp_fechres,#s5_inp_anini,#s5_inp_anfin").val("");
                 $("#btn_s5_delpen").hide();
-                $.smallBox({
-                        title : "Se Eliminó Correctamente",
-                        content : "<i class='fa fa-clock-o'></i> <i>Su Registro Fue eliminado Correctamente...</i>",
-                        color : "#C46A69",
-                        iconSmall : "fa fa-times fa-2x fadeInRight animated",
-                        timeout : 4000
-                });
+                MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
                 MensajeDialogLoadAjaxFinish('s5');
             },
             error: function(data) {
