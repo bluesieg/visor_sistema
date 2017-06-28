@@ -68,7 +68,7 @@
                 <ul class="header-dropdown-list">
                     <li class="">
                         <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
-                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
+                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
                             <span> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down"></i> 
                         </a>
                         <ul class="dropdown-menu pull-right">
@@ -96,8 +96,8 @@
             <div class="login-info">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                        <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" class="online" /> 
-                        <span>
+                        <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me"  class="online"/> 
+                        <span class="txt-color-white">
                             {{ Auth::user()->usuario }}
                         </span>
                         <i class="fa fa-angle-down"></i>
@@ -191,10 +191,7 @@
                 </div>
             </div>            
         </div>
-        <!--************************                  CAMBIAR FOTO USUARIO         *******************************-->
-        <script>
-            var global_id_user_login = {!! json_encode((array)auth()->id()) !!};
-        </script>
+        <!--************************                  CAMBIAR FOTO USUARIO         *******************************-->        
         <div id="dialog_Cambiar_Foto_Usuario" style="display: none">
             <div class="widget-body">
                 <div  class="smart-form">
@@ -242,7 +239,7 @@
         <script src="{{ asset('js/jquery-confirm.js')}}"></script>
         <script src="{{ asset('js/pdf/jspdf.debug.js') }}"></script>
         <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
-
+        <script src="{{ asset('archivos_js/configuracion.js') }}"></script>
         <!--<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>--> 
 
         <!--<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->

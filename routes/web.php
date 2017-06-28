@@ -43,17 +43,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 
-Route::group(['middleware' => 'auth'], function() {
-
+Route::group(['middleware' => 'auth'], function() {   
+    /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
     Route::get('/usuarios', 'Usuarios@vw_usuarios_show')->name('usuarios'); //vw_usuarios
-    /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::post('usuario_save', 'Usuarios@insert_Usuario');
     Route::post('usuario_update', 'Usuarios@update_Usuario');
     Route::post('usuario_delete', 'Usuarios@eliminar_usuario'); //eliminar usuario
     Route::get('usuarios_validar_user','Usuarios@validar_user');
     Route::get('usuarios_validar_dni','Usuarios@validar_dni');
     Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
+    Route::post('cambiar_foto_user','Usuarios@cambiar_foto_usuario');
 
     /*     * **************************AUTOLLENADO DE COMBOS********************************************************************* */
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento

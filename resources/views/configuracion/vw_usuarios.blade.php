@@ -89,49 +89,6 @@
         $(window).on('resize.jqGrid', function () {
             $("#table_Usuarios").jqGrid('setGridWidth', $("#content").width());
         });
-
-        foto_global='';
-        $(function () {
-            $('#vw_usuario_cargar_foto,#vw_usuario_cambiar_cargar_foto').change(function (e) {
-                if (validarImagen(e)) {
-                    addImage(e);
-                } else {
-                    $("#vw_usuario_foto_img,#vw_usuario_cambiar_foto_img").attr("src", "img/avatars/male.png");
-                    $("#vw_usuario_cargar_txt_foto,#vw_usuario_cambiar_cargar_foto").val('');
-                }
-            }); 
-
-            function addImage(e) {
-                var file = e.target.files[0],
-                        imageType = /image.*/;
-
-                if (!file.type.match(imageType)) {
-                    $("#vw_usuario_cargar_foto,#vw_usuario_cambiar_cargar_foto").val("");
-                    return mostraralertas('*Solo puede Seleccionar Imagenes JPG,JPEG, PNG');
-                }
-
-                var reader = new FileReader();
-                reader.onload = fileOnload;
-                reader.readAsDataURL(file);
-            }
-            function fileOnload(e) {
-                var result = e.target.result;
-                foto_global=result;
-                $('#vw_usuario_foto_img,#vw_usuario_cambiar_foto_img').attr("src", foto_global);
-            }
-
-        });
-
-        function validarImagen(e) {
-            var fileSize = e.target.files[0].size;
-            var siezekiloByte = parseInt(fileSize / 2000);
-            if (siezekiloByte > $('#vw_usuario_foto_img,#vw_usuario_cambiar_foto_img').attr('size')) {
-                mostraralertas("* La Imagen es muy grande, Tamaño Maximo 2MB");
-                return false;
-            } else {
-                return true;
-            }
-        }
     });
 </script>
 @stop
@@ -276,10 +233,6 @@
         </div>        
     </div>
 </div>
-
-<script src="{{ asset('archivos_js/configuracion.js') }}"></script>
-
-
 @endsection
 
 

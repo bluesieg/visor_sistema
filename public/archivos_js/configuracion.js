@@ -1,14 +1,50 @@
 
-function open_dialog_new_edit_Usuario() {
+$(document).ready(function () {
+    foto_global = '';
+    $(function () {
+        $('#vw_usuario_cargar_foto,#vw_usuario_cambiar_cargar_foto').change(function (e) {
+            if (validarImagen(e)) {
+                addImage(e);
+            } else {
+                $("#vw_usuario_foto_img,#vw_usuario_cambiar_foto_img").attr("src", "img/avatars/male.png");
+                $("#vw_usuario_cargar_txt_foto,#vw_usuario_cambiar_cargar_foto").val('');
+            }
+        });
 
-//    if (tipe == 'EDITAR') {
-//        var form_usuario = $('#form_user');
-//        form_usuario.attr("action", "usuario_update");
-//    } else 
-//    if (tipe == 'NUEVO') {
-//        var form_usuario = $('#form_user');
-//        form_usuario.attr("action", "usuario_save");
-//    }
+        function addImage(e) {
+            var file = e.target.files[0],
+                    imageType = /image.*/;
+
+            if (!file.type.match(imageType)) {
+                $("#vw_usuario_cargar_foto,#vw_usuario_cambiar_cargar_foto").val("");
+                return mostraralertas('*Solo puede Seleccionar Imagenes JPG,JPEG, PNG');
+            }
+
+            var reader = new FileReader();
+            reader.onload = fileOnload;
+            reader.readAsDataURL(file);
+        }
+        function fileOnload(e) {
+            var result = e.target.result;
+            foto_global = result;
+            $('#vw_usuario_foto_img,#vw_usuario_cambiar_foto_img').attr("src", foto_global);
+        }
+
+    });
+
+    function validarImagen(e) {
+        var fileSize = e.target.files[0].size;
+        var siezekiloByte = parseInt(fileSize / 2000);
+        if (siezekiloByte > $('#vw_usuario_foto_img,#vw_usuario_cambiar_foto_img').attr('size')) {
+            mostraralertas("* La Imagen es muy grande, Tamaño Maximo 2MB");
+            return false;
+        } else {
+            return true;
+        }
+    }
+});
+
+function open_dialog_new_edit_Usuario() {
 
     $("#dialog_new_edit_Usuario").dialog({
         autoOpen: false, modal: true, width: 550, show: {effect: "fade", duration: 300}, resizable: false,
@@ -177,10 +213,10 @@ function update_foto() {
         processData: false,
         contentType: false,
         success: function (data) {
-            if(data.msg=='si'){
+            if (data.msg == 'si') {
                 dialog_close('dialog_Cambiar_Foto_Usuario');
                 location.reload();
-            }else{
+            } else {
                 mostraralertas('* Error al cambiar la foto.');
             }
         },
@@ -198,14 +234,14 @@ function validar_usuario(usuario) {
             url: 'usuarios_validar_user?usuario=' + usuario.toUpperCase(),
             type: 'GET',
             success: function (data) {
+                MensajeDialogLoadAjaxFinish('vw_usuario_txt_usuario');
                 if (data.msg == 'si') {
                     $("#vw_usuario_txt_usuario").css({border: "1px solid #FF4040"});
                     mostraralertasconfoco('* El Usuario ' + ($('#vw_usuario_txt_usuario').val()).toUpperCase() + ' Ya Existe...', 'vw_usuario_txt_usuario');
                     memory_glob_usuario = $('#vw_usuario_txt_usuario').val();
                 } else if (data.msg == 'no') {
                     $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
-                }
-                MensajeDialogLoadAjaxFinish('vw_usuario_txt_usuario');
+                }                
             },
             error: function (data) {
                 mostraralertas('* Error al Valida Usuario...!');
@@ -222,14 +258,14 @@ function validar_dni(dni) {
             url: 'usuarios_validar_dni?dni=' + dni,
             type: 'GET',
             success: function (data) {
-                if (data.msg == 'si') {
+                MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
+                if (data.msg == 'si') {                    
                     $("#vw_usuario_txt_dni").css({border: "1px solid #FF4040"});
                     mostraralertasconfoco('* El Dni ' + $('#vw_usuario_txt_dni').val() + ' Ya Existe...', 'vw_usuario_txt_dni');
-                    memory_glob_dni = $('#vw_usuario_txt_dni').val();
+                    memory_glob_dni = $('#vw_usuario_txt_dni').val();                    
                 } else if (data.msg == 'no') {
-                    $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
+                    $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});                    
                 }
-                MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
             },
             error: function (data) {
                 mostraralertas('* Error al Valida Dni...!');
@@ -249,6 +285,8 @@ function limpiar_form_usuario() {
     $("#vw_usuario_txt_password").val('');
     $("#vw_usuario_txt_conf_pass").val('');
     $("#vw_usuario_txt_nivel").val('select');
+    $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
+    $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
 }
 
 function eliminar_usuario(id) {

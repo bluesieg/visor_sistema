@@ -128,7 +128,7 @@ class Usuarios extends Controller {
     }
 
     public function validar_dni(Request $request) {
-        $doc_dni = DB::table('usuarios')->select('dni')->where('dni', '=', $request['dni'])->get();
+        $doc_dni = DB::table('usuarios')->select('dni')->where('dni', $request['dni'])->get();
         if (isset($doc_dni[0]->dni)) {
             return response()->json(['msg' => 'si']);
         } else {
