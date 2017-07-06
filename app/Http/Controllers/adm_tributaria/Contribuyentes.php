@@ -60,6 +60,55 @@ class Contribuyentes extends Controller
         }
         return response()->json($Lista);
     }
+    public function get_cotrib_byname(Request $request) {
+        if($request['dat']=='0')
+        {
+            return 0;
+        }
+        else
+        {
+        header('Content-type: application/json');
+        $totalg = DB::select("select count(id_pers) as total from adm_tri.vw_contribuyentes where contribuyente like '%".$request['dat']."%'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('adm_tri.vw_contribuyentes')->where('contribuyente','like', '%'.strtoupper($request['dat']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_pers;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_pers),
+                trim($Datos->id_persona),
+                trim($Datos->nro_doc),
+                trim(str_replace("-", "",$Datos->contribuyente)), 
+            );
+        }
+        return response()->json($Lista);
+        }
+    }
     
     function llenar_form_contribuyentes(Request $request){
         
@@ -136,7 +185,14 @@ class Contribuyentes extends Controller
     }
     
     function get_autocomplete_contrib(Request $request) {
-        $Consulta = DB::table('adm_tri.vw_contribuyentes')->where('nro_doc', $request['doc'])->get();
+        if($request['doc']==0)
+        {
+            $Consulta = DB::table('adm_tri.vw_contribuyentes')->where('id_persona', $request['cod'])->get();
+        }
+        else
+        {
+            $Consulta = DB::table('adm_tri.vw_contribuyentes')->where('nro_doc', $request['doc'])->get();
+        }
         if (isset($Consulta[0]->id_pers)) {
             return response()->json([
                         'msg' => 'si',

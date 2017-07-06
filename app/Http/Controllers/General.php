@@ -77,7 +77,6 @@ class General extends Controller {
 
     }
     function autocompletar_instalaciones(Request $request){
-        $data = $request->all();
         $Consulta = DB::table('catastro.instalaciones')->where('anio',date("Y"))->get();  
 
         $todo=array();
@@ -85,12 +84,17 @@ class General extends Controller {
         {
             $Lista=new \stdClass();           
             $Lista->value=$Datos->id_instal;
-            $Lista->label=  trim($Datos->descrip_instal);           
+            $Lista->label=  trim($Datos->cod_instal)."-".trim($Datos->descrip_instal);           
             $Lista->codi=  trim($Datos->cod_instal);           
             $Lista->und=  trim($Datos->unid_medida);           
             array_push($todo,$Lista);
         }        
         return response()->json($todo);
+
+    }
+    function sel_viaby_sec(Request $request){
+        $Consulta = DB::table('catastro.vw_arancel')->where('anio',date("Y"))->where('sec',$request['sec'])->where('mzna',$request['mzna'])->get();  
+        return $Consulta;
 
     }
     /*****************************************COMBO  DEPARTAMENTO / PROVINCIA / DISTRITO **************************************/

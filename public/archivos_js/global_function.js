@@ -93,6 +93,7 @@ function soloNumeroTab(evt) {// con guin y slash ( - / )
     }
 }
 
+
 function dialog_close(div) {
     $('#' + div).dialog("close");
 }

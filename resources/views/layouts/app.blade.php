@@ -153,8 +153,8 @@
                             <li class="">
                                 <a href='#' title="Predios Rusticos"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
                             </li>
-                            <li class="">
-                                <a href="#" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
+                            <li id="li_impform">
+                                <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
                             </li>
                         </ul>	
                     </li>

@@ -2,12 +2,24 @@
 @section('content')
 <section id="widget-grid" class=""> 
 <div class='cr_content col-xs-12'>
-    <h1 class="txt-color-green"><b>Predios Urbanos...</b></h1>
-    <div class="col-lg-3 col-md-6 col-xs-12">
-        <div class='col-lg-4'>
-            <label class="control-label col-lg-4">Sector</label>
+    <div class="col-xs-12">
+        <div class="col-lg-9">
+            <h1 class="txt-color-green"><b>Predios Urbanos...</b></h1>
         </div>
-        <div class='col-lg-8'>
+        <div class="col-lg-3 col-md-6 col-xs-12">
+            <label class="control-label col-lg-6">Año de Trabajo</label>
+            <div class='col-lg-6'>
+                <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
+                @foreach ($anio_tra as $anio)
+                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <label class="control-label col-lg-12">Sector</label>
+        <div class='col-lg-12'>
             <select id='selsec' class="form-control col-lg-8" onchange="callpredtab()">
             @foreach ($sectores as $sectores)
             <option value='{{$sectores->id_sec}}' >{{$sectores->sector}}</option>
@@ -16,10 +28,8 @@
         </div>
     </div>
     <div class="col-lg-3 col-md-6 col-xs-12">
-        <div class='col-lg-4'>
-            <label class="control-label">Manzana</label>
-        </div>
-        <div class='col-lg-8' id="dvselmnza">
+        <label class="control-label col-lg-12">Manzana</label>
+        <div class='col-lg-12' id="dvselmnza">
             <select id="selmnza" class="form-control" onchange="callfilltab()">
             @foreach ($manzanas as $manzanas)
             <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
@@ -28,7 +38,7 @@
         </div>
     </div>
     <div class="col-lg-6 col-md-12 col-xs-12">
-        <ul id="sparks" style="margin: 0px !important">                                        
+        <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">                                        
                     <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="clicknewgrid();">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                     </button>
@@ -62,7 +72,7 @@
         $("#menu_admtri").show();
         $("#li_preurb").addClass('cr-active')
         jQuery("#table_predios").jqGrid({
-            url: 'gridpredio?mnza='+$("#selmnza").val(),
+            url: 'gridpredio?mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val(),
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
@@ -97,14 +107,7 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){clickmodgrid();}
         });
-        $("#dlg_inp_cvia").keypress(function (e) {
-            if (e.which == 13) {
-                
-                ajustar(5,'dlg_inp_cvia');
-                cod_via=$('#dlg_inp_cvia').val();
-                get_global_cod_via("dlg_inp_nvia",cod_via);
-            }
-        });
+        
         $("#dlg_dni").keypress(function (e) {
             if (e.which == 13) {
                 get_global_contri("dlg_contri",$("#dlg_dni").val());
@@ -295,14 +298,15 @@
                                     <div class="col-xs-1" style="padding-left:15px !important">
                                         <label class="label">Cod. Via:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_cvia" type="text" onkeypress="return soloDNI(event);" class="input-sm" onblur="ajustar(5,'dlg_inp_cvia')" >
-                                            <input type="hidden" id="id_via"/>
+                                            <input id="dlg_inp_nvia_des" type="text" onkeypress="return soloDNI(event);" class="input-sm" onblur="ajustar(5,'dlg_inp_nvia_des')" disabled="" >
                                         </label>
                                     </div>
                                     <div class="col-xs-3">
                                         <label class="label">Avenidad,Jirón, Calle o Pasaje:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_nvia" type="text"  class="input-sm" disabled="" >
+                                            <select id="dlg_inp_nvia"  class="form-control" onchange="callchangeoption('dlg_inp_nvia',1);" >
+                                                
+                                            </select>
                                         </label>
                                     </div>
                                     
@@ -377,7 +381,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-group col-xs-12 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                        <div class="panel-group col-xs-9 " style="margin-top: 5px; margin-bottom: 5px  ">                
                             <div class="panel panel-success">
                                 <div class="panel-heading bg-color-success">.:: Datos Relativos del Predio ::.</div>
                                 <div class="panel-body cr-body">
@@ -421,8 +425,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-group col-xs-3 " >                
-                            <div class="panel panel-success">
+                        <div class="panel-group col-xs-3 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                            <div class="panel panel-success cr-panel-sep">
                                 <div class="panel-heading bg-color-success">.:: Foma de Adquisición ::.</div>
                                 <div class="panel-body cr-body">
                                     <div class='col-lg-7 pd_dlg_cr'>
@@ -442,8 +446,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-group col-xs-3 " >                
-                            <div class="panel panel-success cr-panel-sep">
+                        
+                        <div class="panel-group col-xs-2 " >                
+                            <div class="panel panel-success">
                                 <div class="panel-heading bg-color-success">.:: Servicios Básicos ::.</div>
                                 <div class="panel-body cr-body">
                                     <div class='col-lg-5 pd_dlg_cr' >
@@ -522,7 +527,31 @@
                             </div>
                         </div>
                         
-                        
+                        <div class="panel-group col-xs-4 " >                
+                            <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">.:: Terreno ::.</div>
+                                <div class="panel-body cr-body">
+                                    <div class='col-lg-4 pd_dlg_cr' >
+                                        <label class="label">Arancel:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_aranc" type="text"  class="input-sm" disabled="">
+                                        </label>
+                                    </div>
+                                    <div class='col-lg-4'>
+                                        <label class="label">Area Terr.:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();">
+                                        </label>
+                                    </div>
+                                    <div class='col-lg-3'>
+                                        <label class="label">Val Terr.:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 cr-body">
                             <ul id="sparks">                                        
@@ -750,7 +779,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-xs-3 pd_dlg_cr'>
                             <label class="label">Clasificación:</label>
-                            <select id='rpiso_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_clasi')">
+                            <select id='rpiso_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_clasi',0)">
                                 @foreach ($pisclasi as $pisclasi1)
                                 <option value='{{$pisclasi1->id_cla_pre}}' descri="{{$pisclasi1->desc_clasific}}" >{{$pisclasi1->id_cla_pre}}</option>
                                 @endforeach
@@ -766,7 +795,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Material:</label>
-                            <select id='rpiso_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_mat')">
+                            <select id='rpiso_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_mat',0)">
                                 @foreach ($pismat as $pismat1)
                                 <option value='{{$pismat1->id_mep}}' descri="{{$pismat1->mep}}" >{{$pismat1->id_mep}}</option>
                                 @endforeach
@@ -781,7 +810,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Conservación:</label>
-                            <select id='rpiso_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econserv')">
+                            <select id='rpiso_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econserv',0)">
                                 @foreach ($pisecs as $pisecs1)
                                 <option value='{{$pisecs1->id_ecs}}' descri="{{$pisecs1->ecs}}" >{{$pisecs1->id_ecs}}</option>
                                 @endforeach
@@ -796,7 +825,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Construcción:</label>
-                            <select id='rpiso_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econstr')">
+                            <select id='rpiso_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econstr',0)">
                                 @foreach ($ecc as $ecc2)
                                 <option value='{{$ecc2->id_ecc}}' descri="{{$ecc2->descripcion}}" >{{$ecc2->id_ecc}}</option>
                                 @endforeach
@@ -916,7 +945,7 @@
                         <div col="col-xs-12"></div>
                         <div class='col-xs-3 pd_dlg_cr'>
                             <label class="label">Clasificación:</label>
-                            <select id='rinst_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_clasi')">
+                            <select id='rinst_inp_clasi' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_clasi',0)">
                                 @foreach ($pisclasi as $pisinst)
                                 <option value='{{$pisinst->id_cla_pre}}' descri="{{$pisinst->desc_clasific}}" >{{$pisinst->id_cla_pre}}</option>
                                 @endforeach
@@ -932,7 +961,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Material:</label>
-                            <select id='rinst_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_mat')">
+                            <select id='rinst_inp_mat' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_mat',0)">
                                 @foreach ($pismat as $pismat2)
                                 <option value='{{$pismat2->id_mep}}' descri="{{$pismat2->mep}}" >{{$pismat2->id_mep}}</option>
                                 @endforeach
@@ -947,7 +976,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Conservación:</label>
-                            <select id='rinst_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econserv')">
+                            <select id='rinst_inp_econserv' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econserv',0)">
                                 @foreach ($pisecs as $pisecs2)
                                 <option value='{{$pisecs2->id_ecs}}' descri="{{$pisecs2->ecs}}" >{{$pisecs2->id_ecs}}</option>
                                 @endforeach
@@ -962,7 +991,7 @@
                         <div class="col-xs-12"></div>
                         <div class='col-lg-3 pd_dlg_cr'>
                             <label class="label">Estado Construcción:</label>
-                            <select id='rinst_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econstr')">
+                            <select id='rinst_inp_econstr' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econstr',0)">
                                 @foreach ($ecc as $ecc3)
                                 <option value='{{$ecc3->id_ecc}}' descri="{{$ecc3->descripcion}}" >{{$ecc3->id_ecc}}</option>
                                 @endforeach

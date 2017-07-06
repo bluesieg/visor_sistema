@@ -33,8 +33,13 @@ class InstalacionesController extends Controller
             $insta->val_unit=$cat_instal->precio;
             if($cat_instal->unid_medida=="M2")
             {
-                $insta->pro_tot =$request['alto']*$request['ancho'];
+                $insta->pro_tot =$request['largo']*$request['ancho'];
             }
+            if($cat_instal->unid_medida=="ML")
+            {
+                $insta->pro_tot =$request['largo']+$request['ancho'];
+            }
+            $insta->val_obra = $insta->pro_tot*$insta->val_unit;
         }
         $insta->id_instal = $request['inst'];
         $insta->anio = $request['anio'];
@@ -44,7 +49,10 @@ class InstalacionesController extends Controller
         $insta->mep = $request['mep'];
         $insta->ecs = $request['ecs'];
         $insta->ecc = $request['ecc'];
+        $insta->id_cla = $request['cla'];
         $insta->id_pre = $request['id_pre'];
+        $insta->antiguedad = date("Y")-$request['anio'];
+        
         $insta->save();
         return $insta->id_inst;
     }
@@ -52,7 +60,7 @@ class InstalacionesController extends Controller
   
     public function store(Request $request)
     {
-        //
+        return "llego store";
     }
 
     public function show($id)
@@ -67,6 +75,20 @@ class InstalacionesController extends Controller
         $val=  $insta::where("id_inst","=",$id )->first();
         if(count($val)>=1)
         {
+            $cat_instal= DB::table('catastro.instalaciones')->where('id_instal',$request['inst'])->get()->first();
+            if(count($cat_instal)>=1)
+            {
+                $val->val_unit=$cat_instal->precio;
+                if($cat_instal->unid_medida=="M2")
+                {
+                    $val->pro_tot =$request['largo']*$request['ancho'];
+                }
+                if($cat_instal->unid_medida=="ML")
+                {
+                    $insta->pro_tot =$request['largo']+$request['ancho'];
+                }
+                $val->val_obra = $val->pro_tot*$val->val_unit;
+            }
             $val->id_instal = $request['inst'];
             $val->anio = $request['anio'];
             $val->dim_lar = $request['largo'];
@@ -75,6 +97,8 @@ class InstalacionesController extends Controller
             $val->mep = $request['mep'];
             $val->ecs = $request['ecs'];
             $val->ecc = $request['ecc'];
+            $val->id_cla = $request['cla'];
+            $val->antiguedad = date("Y")-$request['anio'];
             
             $val->save();
         }

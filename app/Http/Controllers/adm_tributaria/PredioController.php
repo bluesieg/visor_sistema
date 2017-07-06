@@ -9,13 +9,9 @@ use App\Models\Predios;
 
 class PredioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores = DB::select('select * from catastro.sectores');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=1 ');
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
@@ -27,7 +23,7 @@ class PredioController extends Controller
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
         $condi_pen = DB::select('select * from adm_tri.condi_pensionista order by id_con');
-        return view('adm_tributaria/vw_predio', compact('sectores','manzanas','condicion','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','condi_pen'));
+        return view('adm_tributaria/vw_predio', compact('anio_tra','sectores','manzanas','condicion','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','condi_pen'));
     }
 
     
@@ -66,27 +62,19 @@ class PredioController extends Controller
         $predio->licen_const = $request['liccon'];
         $predio->conform_obra = $request['confobr'];
         $predio->declar_fabrica = $request['defra'];
+        $predio->are_terr = $request['areterr'];
+        $predio->arancel = $request['aranc'];
+        $predio->val_ter = $request['areterr']*$request['aranc'];
+        
         $predio->save();
         return $predio->id_pred;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         echo "store";
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $prediovw= DB::table('adm_tri.vw_predi_urba')->where('id_pred',$id)->get();
@@ -105,12 +93,6 @@ class PredioController extends Controller
         return $prediovw;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Request $request,$id)
     {
         $predio=new Predios;
@@ -140,30 +122,20 @@ class PredioController extends Controller
             $val->licen_const = $request['liccon'];
             $val->conform_obra = $request['confobr'];
             $val->declar_fabrica = $request['defra'];
+            $val->are_terr = $request['areterr'];
+            $val->arancel = $request['aranc'];
+            $val->val_ter = $request['areterr']*$request['aranc'];
             $val->save();
    
         }
         return "edit".$id;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         return "update";
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         echo "destroy";
@@ -186,8 +158,17 @@ class PredioController extends Controller
     public function listpredio(Request $request)
     {
         header('Content-type: application/json');
-        $secmn= $request['mnza'];
-        $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where id_mzna='$secmn' and anio='".date("Y")."'");
+        if($request['mnza']=='0'&&$request['ctr']>0)
+        {
+            $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
+            $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
+        
+        }
+        else
+        {
+            $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where id_mzna='".$request['mnza']."' and anio='".$request['an']."'");
+            $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_mzna='".$request['mnza']."' and anio='".$request['an']."'");
+        }
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -209,7 +190,6 @@ class PredioController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_mzna='$secmn' and anio='".date("Y")."'");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -237,4 +217,27 @@ class PredioController extends Controller
         }
         return response()->json($Lista);
     }
+    public function imprimir_formatos()
+    {
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('adm_tributaria/imp_formatos', compact('anio_tra'));
+    }
+
+    public function reporte($tip) 
+    {
+        $date = date('Y');
+        if($tip=='HR'||$tip=='hr')
+        {
+            $view =  \View::make('adm_tributaria.reportes.hr', compact('date'))->render();
+        }
+        if($tip=='PU'||$tip=='pu')
+        {
+            $view =  \View::make('adm_tributaria.reportes.pu', compact('date'))->render();
+        }
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view)->setPaper('a4');
+        return $pdf->stream('invoice');
+    }
+
+    
 }

@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('autocompletar_direccion', 'General@autocompletar_direccion'); //autocompleta el input text avenida,jiro, calle de contribuyentes
     Route::get('autocompletar_tipo_uso', 'General@autocompletar_tipo_uso'); //autocompleta tipos de uso
     Route::get('autocompletar_insta', 'General@autocompletar_instalaciones'); //autocompleta tipos de uso
+    Route::get('sel_viaby_sec', 'General@sel_viaby_sec'); //seleccionas vias por mazana y sector
     Route::get('autocomplete_nom_via', 'configuracion\Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
@@ -75,6 +76,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('contribuyente_update', 'adm_tributaria\Contribuyentes@modificar_contribuyente'); //update contribuyente
     Route::post('contribuyente_delete', 'adm_tributaria\Contribuyentes@eliminar_contribuyente'); //eliminar contribuyente
     Route::get('autocomplete_contrib', 'adm_tributaria\Contribuyentes@get_autocomplete_contrib'); //eliminar contribuyente
+    Route::get('obtiene_cotriname', 'adm_tributaria\Contribuyentes@get_cotrib_byname'); //eliminar contribuyente
     /*     * ******************************************VALORES ARANCELARIOS******************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {
         Route::get('val_arancel', 'Valores_Arancelarios@vw_val_arancel')->name('val_aran'); // VW_ARANCELES
@@ -109,11 +111,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('condominios_predios', 'CondominiosController');
         Route::resource('instalaciones_predios', 'InstalacionesController');
         Route::resource('pensionista_predios', 'PensionistaController');
-        Route::get('gridpredio','PredioController@listpredio');//llena grid de predios
-        Route::get('gridpisos/{id}','PisosController@listpisos');//llena grid de pisos
-        Route::get('gridcondos/{id}','CondominiosController@listcondos');//llena grid de pisos
-        Route::get('gridinsta/{id}','InstalacionesController@listinsta');//llena grid de pisos
+        Route::get('gridpredio','PredioController@listpredio');
+        Route::get('gridpisos/{id}','PisosController@listpisos');
+        Route::get('gridcondos/{id}','CondominiosController@listcondos');
+        Route::get('gridinsta/{id}','InstalacionesController@listinsta');
         Route::get('selmzna','PredioController@ListManz');//llena combo manzanas
+        Route::get('adm_impform/','PredioController@imprimir_formatos');//llena combo manzanas
+        Route::get('pdf/{tip}','PredioController@reporte');//llena combo manzanas
     });
     Route::get('$',function(){ echo 0;});//url auxiliar
 
