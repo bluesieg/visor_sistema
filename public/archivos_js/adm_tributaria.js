@@ -41,6 +41,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
         valores_defaul_form(0);//0 form contribuyentes
         MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
         $('#contrib_dist').val('040101');
+        $("#contrib_fch_nac").val('01/01/1900');
     } else if (tipo == 'EDITAR') {
         $("#txt_av_jr_calle_psje").val($.trim($("#table_Contribuyentes").getCell(id, "nom_via")));
         $.ajax({
@@ -148,12 +149,14 @@ function save_edit_contribuyentes(tipo, id) {
             success: function (data) {
                 dialog_close('dialog_new_edit_Contribuyentes');
                 fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
+                MensajeExito('Nuevo Contribuyente', 'El Contribuyente Ha sido Insertado.');
             },
             error: function (data) {
                 mostraralertas('* Contactese con el Administrador...');
             }
         });
     } else if (tipo === 'EDITAR' && id != undefined) {
+        raz_soc = $.trim($("#table_Contribuyentes").getCell(id, "contribuyente"));
         MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
         $.confirm({
             title: '.:Cuidado... !',
@@ -192,20 +195,22 @@ function save_edit_contribuyentes(tipo, id) {
                             id_via: $('#hiddentxt_av_jr_calle_psje').val(),
                             tip_doc_conv: $('#cb_tip_doc_2').val()
                         },
-                        success: function (data) {                            
+                        success: function (data) {
+                            MensajeExito('Editar Contribuyente', 'Contribuyente: '+ raz_soc + '- Ha sido Modificado.');
                             fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
                             dialog_close('dialog_new_edit_Contribuyentes');
                             MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
                         },
                         error: function (data) {
                             mostraralertas('* Contactese con el Administrador...');
+                            MensajeAlerta('Editar Contribuyente','Ocurrio un Error en la Operacion.');
                             dialog_close('dialog_new_edit_Contribuyentes');
                             MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
                         }
                     });
                 },
                 Cancelar: function () {
-                    $.alert('* Cancelado !');
+                    MensajeAlerta('Editar Contribuyente','Operacion Cancelada.');
                 }
             }
         });
@@ -226,17 +231,19 @@ function eliminar_contribuyente(id) {
                     type: 'POST',
                     data: {id: id},
                     success: function (data) {
-                        $.alert(raz_soc + '- Ha sido Eliminado');
+//                        $.alert(raz_soc + '- Ha sido Eliminado');                        
                         fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
                         dialog_close('dialog_new_edit_Contribuyentes');
+                        MensajeExito('Eliminar Contribuyente', raz_soc + '- Ha sido Eliminado');
                     },
                     error: function (data) {
-                        mostraralertas('* Error al Eliminar Contribuyente...');
+                        MensajeAlerta('Eliminar Contribuyente', raz_soc + '- No se pudo Eliminar.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
                     }
                 });
             },
             Cancelar: function () {
-                mostraralertas('* Cancelado ...!');
+                MensajeAlerta('Eliminar Contribuyente','Operacion Cancelada.');
             }
 
         }

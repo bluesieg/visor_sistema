@@ -1,41 +1,45 @@
 @extends('layouts.app')
 @section('content')
 <style>
-#vw_em_rec_txt_detalle_total{
-    background: #80B23E;
-    color: white;
-    border: 0px !important;
-    font-size: 12px;
-}
+    #vw_em_rec_txt_detalle_total{
+        background: #80B23E;
+        color: white;
+        border: 0px !important;
+        font-size: 12px;
+    }
 </style>
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Emision de Recibos de Pago...</b></h1>
+                <h1 class="txt-color-green"><b>Caja - Movimientos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                    </b></h1>
+
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-3">
-                                <label>Fecha:</label>
-                                <label class="input">
-                                    <input id="vw_emision_reg_pag_fil_fecha" type="text" data-mask="99/99/9999" data-mask-placeholder=".." value="<?php echo date('d-m-Y') ?>">
+                                <label>Tipo de Recibo:</label>
+                                <label class="select">
+                                    <select class="input-sm">
+                                        <option value="select" selected="" disabled="">Seleccione</option>
+                                    </select><i></i>
                                 </label>
                             </div>
-                            <button onclick="buscar_val_arancel();" style="display: none;" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                <span class="btn-label"><i class="fa fa-search"></i></span>Buscar
-                            </button>
+                            RESPONSABLE: 
+                            <span class="label bg-color-white txt-color-pink" style="font-size: 15px;text-transform: uppercase;border-radius: 2px;background: #FAF4F7 !important">{{ Auth::user()->ape_nom }}</span>
+                            
+
                             <button onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Rec. Impuesto Predial
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Editar" onclick="open_dialog_new_edit_Val_Arancel('EDITAR');" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Fraccionamiento
+                            <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Cerrar Caja
                             </button>
-                            <button onclick="dialog_emi_rec_pag_varios();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-tasks"></i></span>Varios
-                            </button>
-                            <button id="btn_vw_valores_arancelarios_Eliminar" onclick="eliminar_val_arancel();" type="button" class="btn btn-labeled btn-danger">
-                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Anular
+                            <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                             </button>
                         </div>
                     </div>
@@ -43,8 +47,8 @@
             </div>                   
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <table id="table_Resumen_Recibos"></table>
-            <div id="pager_table_Resumen_Recibos"></div>
+            <table id="t_Caja_Resumen_Recibos"></table>
+            <div id="p_t_Caja_Resumen_Recibos"></div>
         </article>
     </div>
 </section>
@@ -53,11 +57,11 @@
 <script type="text/javascript">
     sumTotal = 0;
     $(document).ready(function () {
-        $("#menu_tesoreria").show();
-        $("#li_tesoreria_emi_rec_pag").addClass('cr-active');
+        $("#menu_caja").show();
+        $("#li_menu_caja_movimientos").addClass('cr-active');
 //        fecha = $("#vw_emision_reg_pag_fil_fecha").val();
-        jQuery("#table_Resumen_Recibos").jqGrid({
-            url: 'grid_Resumen_recibos?fecha='+$("#vw_emision_reg_pag_fil_fecha").val(),
+        jQuery("#tabla_Caja_Movimientos").jqGrid({
+            url: 'grid_Caja_Movimientos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
@@ -80,10 +84,10 @@
                 if (rows.length > 0) {
                     var firstid = jQuery('#table_Resumen_Recibos').jqGrid('getDataIDs')[0];
                     $("#table_Resumen_Recibos").setSelection(firstid);
-                }                
+                }
                 var sum = jQuery("#table_Resumen_Recibos").getGridParam('userData').sum_total;
 //                alert(sum);
-            },            
+            },
             ondblClickRow: function (Id) {}
         });
 
@@ -101,7 +105,7 @@
                 autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
             }
         });
-    });   
+    });
 </script>
 @stop
 <div id="vw_emision_rec_pag_varios" style="display: none">
@@ -166,7 +170,7 @@
                                                 </thead>
                                                 <tbody></tbody>
                                             </table>
-                                            
+
                                             <table class="table table-sm">
                                                 <thead>
                                                     <tr>

@@ -88,6 +88,11 @@
         $(window).on('resize.jqGrid', function () {
             $("#table_Contribuyentes").jqGrid('setGridWidth', $("#content").width());
         });
+        $("#txt_nro_doc").keypress(function (e) {
+            if (e.which == 13) {                
+                fn_consultar_dni();
+            }
+        });
     });
 </script>
 @stop

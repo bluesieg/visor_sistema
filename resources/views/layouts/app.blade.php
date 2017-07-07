@@ -7,7 +7,7 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Maynsa</title>
+        <title>MDCC</title>
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 
@@ -69,7 +69,7 @@
                     <li class="">
                         <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
                             <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
-                            <span> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down"></i> 
+                            <span style="color: black"> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down" style="color: black"></i> 
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li>
@@ -92,83 +92,88 @@
         <div id="alertdialog" style="display: none;" ></div>
         
         @if (!Auth::guest())
-        <aside id="left-panel" style="background: #4caf50 !important">        
-            <div class="login-info">
+        <aside id="left-panel" style="background: #41BE82 !important">        
+            <div class="login-info" style="background: #37A26F;border-bottom: 3px solid #f2f2f2;">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
-                    <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                        <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me"  class="online"/> 
-                        <span class="txt-color-white">
+                    <a>
+                        <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
+                        <span style="color: white;">
                             {{ Auth::user()->usuario }}
                         </span>
-                        <i class="fa fa-angle-down"></i>
+                        <!--<i class="fa fa-angle-down" style="color: white;"></i>-->
                     </a> 
                 </span>
             </div>
             <nav >
                 <ul>
                     <li class="">
-                        <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cogs"></i> <span class="menu-item-parent">Configuracion</span></a>
+                        <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cog fa-spin"></i> <span class="menu-item-parent">Configuracion</span></a>
                         <ul id="menu_configuracion">
                             <li id="li_config_uit">
-                                <a href="{{ route('uit') }}" title="Dashboard"><i class="fa fa-gear"></i>UIT</a>
+                                <a href="{{ route('uit') }}" title="Dashboard"><i class="fa fa-money"></i>UIT</a>
                             </li>
                             <li id="li_config_val_ara">
-                                <a href="{{route('val_aran')}}" title="Dashboard"><i class="fa fa-picture-o"></i> Valores Arancelarios</a>
+                                <a href="{{route('val_aran')}}" title="Dashboard"><i class="fa fa-dollar"></i>Valores Arancelarios</a>
                             </li>
                             <li class="">
-                                <a href="skins.html" title="Dashboard"><i class="fa fa-picture-o"></i> Depreciacion</a>
+                                <a href="skins.html" title="Dashboard"><i class="fa fa-sort-amount-desc"></i>Depreciacion</a>
                             </li>
                             <li id="li_config_val_unit">
-                                <a href="{{route('valores_unitarios')}}" title="Valores Unitario"><i class="fa fa-cube"></i>Valores Unitario</a>
+                                <a href="{{route('valores_unitarios')}}" title="Valores Unitario"><i class="fa fa-dollar"></i>Valores Unitarios</a>
                             </li>
                             <li id="li_config_oficinas">
-                                <a href="{{ route('oficinas') }}" title="Oficinas"><i class="fa fa-cube"></i>Oficinas</a>
+                                <a href="{{ route('oficinas') }}" title="Oficinas"><i class="fa fa-laptop"></i>Oficinas</a>
                             </li>
                             <li>
-                                <a href="#" title="Configuracion del IPM."><i class="fa fa-cube"></i>Config. IPM</a>
+                                <a href="#" title="Configuracion del IPM."><i class="fa fa-cogs"></i>Config. IPM</a>
                             </li>
                             <li id="li_config_usuarios">
-                                <a href="{{ route('usuarios') }}" title="Usuarios"><i class="fa fa-cube"></i>Usuarios</a>
+                                <a href="{{ route('usuarios') }}" title="Usuarios"><i class="fa fa-group"></i>Usuarios</a>
                             </li>                        
                             <li>
-                                <a href="#" title="Usos Predio"><i class="fa fa-cube"></i>Usos Predio</a>
+                                <a href="#" title="Usos Predio"><i class="fa fa-home"></i>Usos Predio</a>
                             </li>
                             <li>
                                 <a href="#" title="Naturaleza del Contrato"><i class="fa fa-cube"></i>Nat. del Contrato</a>
                             </li>
                             <li>
-                                <a href="#" title="Documento de Transferencia"><i class="fa fa-cube"></i>Doc. Transferencia</a>
+                                <a href="#" title="Documento de Transferencia"><i class="fa fa-file-text"></i>Doc. Transferencia</a>
                             </li>
                         </ul>
                     </li>
                     <li class="">
-                        <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
+                        <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
                         <ul id="menu_admtri">
                             <li id="li_config_contribuyentes">
-                                <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
+                                <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
                             </li>
                             <li id="li_preurb">
-                                <a href="predios_urbanos" title="Predios Urbanos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
+                                <a href="predios_urbanos" title="Predios Urbanos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
                             </li>
                             <li class="">
-                                <a href='#' title="Predios Rusticos"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
+                                <a href='#' title="Predios Rusticos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-tree-deciduous"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
                             </li>
                             <li id="li_impform">
-                                <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
+                                <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
                             </li>
                         </ul>	
                     </li>
                     <li class="">
-                        <a href="#"><i class="fa fa-lg fa-fw fa-cube"></i> <span class="menu-item-parent">Tesoreria</span></a>
+                        <a href="#"><i class="fa fa fa-lg fa-fw fa-fax"></i> <span class="menu-item-parent">Tesoreria</span></a>
                         <ul id="menu_tesoreria">
                             <li id="li_tesoreria_emi_rec_pag">
-                                <a href="{{ route('emision_rec_pago') }}" title="Emision de Recibos de Pago"><i class="fa fa-gear"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
+                                <a href="emi_recibo_master" title="Emision de Recibos de Pago"><i class="fa fa-lg fa-fw fa-file-text"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
                             </li>
                             <li class="">
-                                <a href="skins.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Prebuilt Skins</span></a>
+                                <a href="#" title="Generar Recibos"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Generar Recibos</span></a>
                             </li>
-                            <li>
-                                <a href="applayout.html"><i class="fa fa-cube"></i> App Settings</a>
+                        </ul>
+                            </li>
+                    <li class="">
+                        <a href="#"><i class="fa fa-lg fa-fw fa-usd"></i> <span class="menu-item-parent">Caja</span></a>
+                        <ul id="menu_caja">
+                            <li id="li_menu_caja_movimientos">
+                                <a href="caja_movimient" title="Movimientos"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Movimientos</span></a>
                             </li>
                         </ul>
                     </li>
@@ -184,7 +189,7 @@
             </div>
         </div>
 
-        <div class="page-footer">
+        <div class="page-footer" style="background: #01A858;">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
                     <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>

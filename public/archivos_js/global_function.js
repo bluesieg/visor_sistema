@@ -393,6 +393,28 @@ function fn_consultar_ruc() {
         return false;
     }
 }
+function formato_numero(numero, decimales, separador_decimal, separador_miles) { // v2007-08-06
+    numero = parseFloat(numero);
+    if (isNaN(numero)) {
+        return "";
+    }
+
+    if (decimales !== undefined) {
+        // Redondeamos
+        numero = numero.toFixed(decimales);
+    }
+    // Convertimos el punto en separador_decimal
+    numero = numero.toString().replace(".", separador_decimal !== undefined ? separador_decimal : ",");
+
+    if (separador_miles) {
+        // Añadimos los separadores de miles
+        var miles = new RegExp("(-?[0-9]+)([0-9]{3})");
+        while (miles.test(numero)) {
+            numero = numero.replace(miles, "$1" + separador_miles + "$2");
+        }
+    }
+    return numero;
+}
 
 /**********MENSAJES DEL SISTEMA*****************************************/
 
@@ -437,7 +459,7 @@ function MensajeExito(tit,cont,dura)
                     content : "<i class='fa fa-clock-o'></i> <i>"+cont+"</i>",
                     color : "#659265",
                     iconSmall : "fa fa-check fa-2x fadeInRight animated",
-                    timeout : dura
+                    timeout : dura || 5000
             });
 }
 function MensajeAlerta(tit,cont,dura)
@@ -447,7 +469,7 @@ function MensajeAlerta(tit,cont,dura)
                     content : "<i class='fa fa-clock-o'></i> <i>"+cont+"</i>",
                     color : "#C46A69",
                     iconSmall : "fa fa-check fa-2x fadeInRight animated",
-                    timeout : dura
+                    timeout : dura || 5000
             });
 }
 function ajustar(tam, num)

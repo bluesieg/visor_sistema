@@ -99,12 +99,16 @@ Route::group(['middleware' => 'auth'], function() {
     });
     /******************** ********    TESORERIA     ****   EMISION DE RECIBOS DE PAGO            ************************************/
     Route::group(['namespace' => 'tesoreria'], function() {
-        Route::get('emi_rec_pag', 'Emision_rec_Pago@vw_show')->name('emision_rec_pago'); // VW_EMISION_REC_PAGO
+        Route::resource('emi_recibo_master', 'Recibos_MasterController');
+        Route::resource('emi_recibo_detalle', 'Recibos_DetalleController');
+        Route::get('grid_Resumen_recibos','Recibos_MasterController@tabla_Resumen_recibos');
+        Route::get('autocompletar_tributo','Recibos_MasterController@completar_tributo');// recibos varios
         
     });
-//    Route::group(['namespace' => 'caja'], function() {
+    Route::group(['namespace' => 'caja'], function() {
 //        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
-//    });
+        Route::resource('caja_movimient','Caja_MovimientosController');
+    });
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
         Route::resource('pisos_predios', 'PisosController');
