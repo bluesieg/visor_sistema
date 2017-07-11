@@ -61,7 +61,7 @@ function callpredtab()
         $("#dlg_mzna").val($("#selmnza option:selected").text());
         $('#dlg_dni,#dlg_contri').val("");
         $('#dlg_inp_condos').val("");
-        $("#dlg_inp_areter").val(0);
+        $("#dlg_inp_areter,#dlg_inp_arecomter").val(0);
         $('#dlg_inp_nvia_des,#dlg_inp_nvia,#dlg_inp_n,#dlg_inp_mz,#dlg_inp_lt,#dlg_inp_zn').val("");
         $('#dlg_inp_secc,#dlg_inp_piso,#dlg_inp_dpto,#dlg_inp_tdastand,#dlg_inp_refe, #dlg_inp_fech').val("");
         $("#s5_sel_condi,#s5_inp_basleg,#s5_inp_exp,#s5_inp_reso,#s5_inp_fechres,#s5_inp_anini,#s5_inp_anfin").val("");
@@ -80,6 +80,7 @@ function callpredtab()
         if($('#dlg_inp_luz').val()==""){$('#dlg_inp_luz').val('-');}
         if($('#dlg_inp_agua').val()==""){$('#dlg_inp_agua').val('-');}
         if($('#dlg_inp_areter').val()==""){$('#dlg_inp_areter').val(0);}
+        if($('#dlg_inp_arecomter').val()==""){$('#dlg_inp_arecomter').val(0);}
         if($('#dlg_inp_aranc').val()==""){$('#dlg_inp_aranc').val(0);}
     }
     
@@ -136,7 +137,37 @@ function callpredtab()
                 $("#dlg_inp_aranc").val(r[0].arancel);
                 $("#dlg_inp_valterr").val(r[0].val_ter);
                 $("#dlg_inp_areter").val(r[0].are_terr);
+                $("#dlg_inp_arecomter").val(r[0].are_com_terr);
                 MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+                jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
+                jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id}).trigger('reloadGrid');
+                jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+Id}).trigger('reloadGrid');
+                $.ajax({url: 'pensionista_predios/'+Id,
+                type: 'GET',
+                success: function(r) 
+                {
+                    if(r!=0)
+                    {
+                        $("#s5_sel_condi").val(r[0].id_con);
+                        $("#s5_inp_basleg").val(r[0].bas_leg);
+                        $("#s5_inp_exp").val(r[0].nro_exp);
+                        $("#s5_inp_reso").val(r[0].nro_res);
+                        $("#s5_inp_fechres").val(r[0].fec_res);
+                        $("#s5_inp_anini").val(r[0].ani_ini);
+                        $("#s5_inp_anfin").val(r[0].ani_fin);
+                        $("#btn_s5_delpen").show();
+                    }
+                    else
+                    {
+                        $("#btn_s5_delpen").hide();
+                    }
+                },
+                error: function(data) {
+                    mostraralertas("hubo un error, Comunicar al Administrador");
+                    console.log('error');
+                    console.log(data);
+                }
+                });
 
         },
         error: function(data) {
@@ -146,35 +177,8 @@ function callpredtab()
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
         }
         }); 
-        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
-        jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id}).trigger('reloadGrid');
-        jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+Id}).trigger('reloadGrid');
-        $.ajax({url: 'pensionista_predios/'+Id,
-        type: 'GET',
-        success: function(r) 
-        {
-            if(r!=0)
-            {
-                $("#s5_sel_condi").val(r[0].id_con);
-                $("#s5_inp_basleg").val(r[0].bas_leg);
-                $("#s5_inp_exp").val(r[0].nro_exp);
-                $("#s5_inp_reso").val(r[0].nro_res);
-                $("#s5_inp_fechres").val(r[0].fec_res);
-                $("#s5_inp_anini").val(r[0].ani_ini);
-                $("#s5_inp_anfin").val(r[0].ani_fin);
-                $("#btn_s5_delpen").show();
-            }
-            else
-            {
-                $("#btn_s5_delpen").hide();
-            }
-        },
-        error: function(data) {
-            mostraralertas("hubo un error, Comunicar al Administrador");
-            console.log('error');
-            console.log(data);
-        }
-        });
+        
+        
 
     }
     function dlgSave()
@@ -198,7 +202,7 @@ function callpredtab()
         uprearb:$("#dlg_sel_uspprearb").val(),ifor:$("#dlg_sel_foradq").val(),ffor:$("#dlg_inp_fech").val(),
         luz:$("#dlg_inp_luz").val(),agua:$("#dlg_inp_agua").val(),liccon:$('input:radio[name=dlg_rd_lcons]:checked').val(),
         confobr:$('input:radio[name=dlg_rd_confobr]:checked').val(),defra:$('input:radio[name=dlg_rd_defra]:checked').val(),
-        areterr:$("#dlg_inp_areter").val(),aranc:$("#dlg_inp_aranc").val()},
+        areterr:$("#dlg_inp_areter").val(),arecomter:$("#dlg_inp_arecomter").val(),aranc:$("#dlg_inp_aranc").val()},
         success: function(r) 
         {
             $('#dlg_idpre').val(r);
@@ -233,7 +237,7 @@ function callpredtab()
         uprearb:$("#dlg_sel_uspprearb").val(),ifor:$("#dlg_sel_foradq").val(),ffor:$("#dlg_inp_fech").val(),
         luz:$("#dlg_inp_luz").val(),agua:$("#dlg_inp_agua").val(),liccon:$('input:radio[name=dlg_rd_lcons]:checked').val(),
         confobr:$('input:radio[name=dlg_rd_confobr]:checked').val(),defra:$('input:radio[name=dlg_rd_defra]:checked').val(),
-        areterr:$("#dlg_inp_areter").val(),aranc:$("#dlg_inp_aranc").val()},
+        areterr:$("#dlg_inp_areter").val(),arecomter:$("#dlg_inp_arecomter").val(),aranc:$("#dlg_inp_aranc").val()},
         success: function(r) 
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
@@ -758,7 +762,7 @@ function callpredtab()
     function validarvalter()
     {
         if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
-        $("#dlg_inp_valterr").val($("#dlg_inp_aranc").val()*$("#dlg_inp_areter").val());
+        $("#dlg_inp_valterr").val($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat($("#dlg_inp_arecomter").val())));
     }
     autocompletar=0;
     function auto_input(textbox,url,extra){
@@ -808,7 +812,14 @@ function callpredtab()
                 } 
                 MensajeDialogLoadAjaxFinish(sel_input);
                 $("#"+sel_input).val(valor);
-                callchangeoption(sel_input,1);
+                if(valor==0)
+                {
+                    callchangeoption(sel_input,1);
+                }
+                else
+                {
+                    $("#"+sel_input+"_des").val($("#"+sel_input+" option:selected").attr("descri"));
+                }
              }
      });
 }

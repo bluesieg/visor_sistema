@@ -531,22 +531,28 @@
                             <div class="panel panel-success cr-panel-sep">
                                 <div class="panel-heading bg-color-success">.:: Terreno ::.</div>
                                 <div class="panel-body cr-body">
-                                    <div class='col-lg-4 pd_dlg_cr' >
+                                    <div class='col-lg-2 pd_dlg_cr' >
                                         <label class="label">Arancel:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_aranc" type="text"  class="input-sm" disabled="">
-                                        </label>
-                                    </div>
-                                    <div class='col-lg-4'>
-                                        <label class="label">Area Terr.:</label>
-                                        <label class="input">
-                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();">
+                                            <input id="dlg_inp_aranc" type="text"  class="input-sm" disabled="" style="text-align: right">
                                         </label>
                                     </div>
                                     <div class='col-lg-3'>
+                                        <label class="label">Area Terr.:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
+                                        </label>
+                                    </div>
+                                    <div class='col-lg-3'>
+                                        <label class="label">Area comun Terr.:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
+                                        </label>
+                                    </div>
+                                    <div class='col-lg-2'>
                                         <label class="label">Val Terr.:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="">
+                                            <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="" style="text-align: right; width: 100px">
                                         </label>
                                     </div>
                                 </div>

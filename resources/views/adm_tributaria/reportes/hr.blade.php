@@ -8,7 +8,7 @@
   <body>
     <main>
       <div id="details" class="clearfix">
-        <div id="invoice">
+          <div id="invoice" >
           <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
           
           
@@ -20,13 +20,20 @@
           <div class="lado" style="text-align: right !important"><div class="resaltado" >HR</div>HOJA RESUMEN</div>
           <div Class="asunto">DECLARACION JURADA DE AUTOVALUO</div>
           <div class="subasunto">LEY TRIBUTARIA MUNICIPAL/DECRETO LEGISLATIVO 776</div>
-          <div class="lado2">
-                IDENTIFICACION DEL CONTRIBUYENTE: Si es casado anotar datos del Conyugue
+          <table border="0" cellspacing="0" cellpadding="0" style="margin: 0px;">
+              <tr>
+                  <td style="width:75%;vertical-align: bottom; border: 0px; padding: 0px;">
+                    IDENTIFICACION DEL CONTRIBUYENTE: Si es casado anotar datos del Conyugue
+                  </td>
+                  <td style="text-align: center;border: 0px">
+                      <div class="cabdiv">COD. CONTRIBUYENTE</div>
+                      <div class="cuerdiv">{{ $sql->id_persona }}</div>
+                  </td>
+              </tr>
           </div>
-          <div class="lado">
-                <div class="cabdiv">COD. CONTRIBUYENTE</div>
-                <div class="cuerdiv">{{ $sql->id_persona }}</div>
-          </div>
+        
+                
+          </table>
         </div>
       </div>
       <table border="0" cellspacing="0" cellpadding="0">
@@ -135,7 +142,7 @@
         </tbody>
         
       </table>
-        <div class="lado3" style="height: 385px; border-bottom: 1px solid #333">
+        <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
             INFORMACION ADICIONAL. 
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
         <thead>
@@ -152,7 +159,7 @@
               <td>{{ $loop->iteration }}</td>
               <td>{{$pre->tp}}</td>
               <td>{{$pre->cod_cat." - ".$pre->nom_via_puhr}}</td>
-              <td style="text-align: right; padding-right: 5px;">{{$pre->base_impon}}</td>
+              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon,2)}}</td>
             </tr>
             @endforeach
         </tbody>
@@ -165,7 +172,7 @@
                   <td style="width: 50%; border:0px;" rowspan="3"></td>
                   <td class="nro">18</td>
                   <th style="width: 22.5%">BASE IMPONIBLE</th>
-                  <td style="text-align: center;">{{$sql_pre->sum('base_impon') }}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon'),2) }}</td>
               </tr>
               <tr>
                   <td class="nro">19</td>

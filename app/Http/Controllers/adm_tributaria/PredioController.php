@@ -12,7 +12,7 @@ class PredioController extends Controller
     public function index()
     {
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        $sectores = DB::select('select * from catastro.sectores');
+        $sectores = DB::select('select * from catastro.sectores order by id_sec');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=1 ');
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
         $ecc = DB::select('select * from adm_tri.ecc order by id_ecc ');
@@ -63,8 +63,9 @@ class PredioController extends Controller
         $predio->conform_obra = $request['confobr'];
         $predio->declar_fabrica = $request['defra'];
         $predio->are_terr = $request['areterr'];
+        $predio->are_com_terr = $request['arecomter'];
         $predio->arancel = $request['aranc'];
-        $predio->val_ter = $request['areterr']*$request['aranc'];
+        $predio->val_ter = ($request['areterr']+$request['arecomter'])*$request['aranc'];
         $predio->tip_pre_u_r = 1;
         $predio->save();
         return $predio->id_pred;
@@ -123,8 +124,9 @@ class PredioController extends Controller
             $val->conform_obra = $request['confobr'];
             $val->declar_fabrica = $request['defra'];
             $val->are_terr = $request['areterr'];
+            $val->are_com_terr = $request['arecomter'];
             $val->arancel = $request['aranc'];
-            $val->val_ter = $request['areterr']*$request['aranc'];
+            $val->val_ter = ($request['areterr']+$request['arecomter'])*$request['aranc'];
             $val->save();
    
         }
@@ -234,8 +236,9 @@ class PredioController extends Controller
         }
         if($tip=='PU'||$tip=='pu')
         {
-            $sql=DB::table('adm_tri.vw_predi_urba')->where('id_pred',$id)->where('anio',$an)->get()->first();
-            $view =  \View::make('adm_tributaria.reportes.pu', compact('sql'))->render();
+            $sql=DB::table('adm_tri.vw_pred_pu')->where('id_pred',$id)->where('anio',$an)->get()->first();
+            $sql_pis    =DB::table('adm_tri.vw_pisos')->where('id_predio',$id)->orderBy('num_pis')->get();
+            $view =  \View::make('adm_tributaria.reportes.pu', compact('sql','sql_pis'))->render();
         }
         if(count($sql)>=1)
         {

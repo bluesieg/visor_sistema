@@ -25,17 +25,17 @@
               </td>
               <td style="width: 40%;  border: 0px; padding: 10px 0px 0px 80px;"><div class="resaltado" >PU</div></td>
                 <td style="width: 15%; padding: 0px; border: 0px;text-align: center;font-size: 0.9em; " >
-                <div class="cabdiv" style="width: 100%;">código contribuyente</div>
-                <div class="cuerdiv" style="width: 100%;">{{ $sql->id_persona }}</div>
+                <div class="cabdiv" style="width: 100%; font-size: 0.9em !important">código contribuyente</div>
+                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{ $sql->id_persona }}</div>
               </td>
               <td style="width: 15%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
-                <div class="cabdiv" style="width: 100%;">código del predio</div>
-                <div class="cuerdiv" style="width: 100%;">-</div>
+                <div class="cabdiv" style="width: 100%;font-size: 0.9em !important">código del predio</div>
+                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{ $sql->cod_cat }}</div>
               </td>
               
               <td style="width: 10%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
-                <div class="cabdiv" style="width: 100%;">ANEXO</div>
-                <div class="cuerdiv" style="width: 100%;">-</div>
+                <div class="cabdiv" style="width: 100%;font-size: 0.9em !important">ANEXO</div>
+                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">-</div>
               </td>
               
               
@@ -56,7 +56,7 @@
             DATOS DEL CONTRIBUYENTE / CONYUGUE:.      
         </div>
         
-       <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
+       <table border="0" cellspacing="0" cellpadding="0" >
         <thead>
           <tr>
               <th style="width: 20%">DNI/RUC</th>
@@ -66,12 +66,12 @@
         </thead>
         <tbody>
           <tr>
-              <td></td>
-              <td></td>
+              <td>{{$sql->nro_doc}}</td>
+              <td>{{$sql->contribuyente}}</td>
           </tr>
           <tr>
-              <td></td>
-              <td></td>
+              <td>{{$sql->nro_doc_conv}}</td>
+              <td>{{$sql->conviviente}}</td>
           </tr>
         </tbody>
 
@@ -80,7 +80,7 @@
             UBICACION DEL PREDIO:    
         </div>
         
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
+        <table border="0" cellspacing="0" cellpadding="0" >
         <thead>
           <tr>
               <th style="width: 30%">HABILITACION URBANA</th>
@@ -94,12 +94,12 @@
         </thead>
         <tbody>
           <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{$sql->habilitacion}}</td>
+              <td>{{$sql->calle}}</td>
+              <td>{{$sql->nro_mun}}</td>
+              <td>{{$sql->nro_int}}</td>
+              <td>{{$sql->mzna_dist}}</td>
+              <td>{{$sql->lote_dist}}</td>
           </tr>
           
         </tbody>
@@ -118,14 +118,18 @@
         </thead>
         <tbody>
           <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{$sql->cond_prop_descripc}}</td>
+              <td>{{$sql->descripcion}}</td>
+              <td>{{$sql->uso_predio}}</td>
           </tr>
           
         </tbody>
 
       </table>
+      <div style="height: 410px">
+        <div class="lado3" >
+            INFORMACION DE PISOS:    
+        </div>
         <table border="0" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
@@ -133,46 +137,39 @@
               <th style="width: 4%">CLAS</th>
               <th style="width: 4%">MAT</th>
               <th style="width: 4%">EST</th>
-              <th style="width: 2%">1</th>
-              <th style="width: 2%">2</th>
-              <th style="width: 2%">3</th>
-              <th style="width: 2%">4</th>
-              <th style="width: 2%">5</th>
-              <th style="width: 2%">6</th>
-              <th style="width: 2%">7</th>
+              <th style="width: 8%">CATEGORIAS</th>
               <th style="width: 10%">VALOR UNIT M2</th>
-              <th style="width: 10%">DEPREC (%)</th>
+              <th style="width: 8%">INCRE.</th>
+              <th style="width: 8%">DEPREC (%)</th>
               <th style="width: 10%">VALOR UNIT DEPREC.</th>
               <th style="width: 10%">AREA CONST.</th>
+              <th style="width: 10%">AREA COMUN</th>
               <th style="width: 15%">VALOR TOTAL S/.</th>
               
           </tr>
           
         </thead>
         <tbody>
+          @foreach ($sql_pis as $pis)
           <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{$pis->num_pis}}</td>
+              <td>{{$pis->clas}}</td>
+              <td>{{$pis->mep}}</td>
+              <td>{{$pis->esc}}</td>
+              <td style="padding-left: 2px;">{{$pis->est_mur.$pis->est_tch.$pis->aca_pis.$pis->aca_pta.$pis->aca_rev.$pis->aca_ban.$pis->ins_ele}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_cons,2)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->inc_pis)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{$pis->por_dep."%"}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{ number_format($pis->val_uni_dep,2)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->area_const,2)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_areas_com,2)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_const_tot,2)}}</td>
           </tr>
-          
+          @endforeach
         </tbody>
 
       </table>
-        <div style="height: 350px"></div>
+        </div>
         <table border="0" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
@@ -189,22 +186,34 @@
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
               <tr>
-                  <th style="width: 20%">AREA TERRENO</th>
-                  <TD style="width: 5%; border: 0px;"></TD>
-                  <th style="width: 20%">ARANCEL * M2</th>
-                  <TD STYLE="width: 20%;border: 0px;"></TD>
-                  <td rowspan="3" STYLE="border: 0px; vertical-align: top;">VALOR DE LA CONSTRUCCION:<br>VALOR DE OTRAS INSTALAC. :<br>VALOR TOTAL DEL TERRENO.<br>TOTAL AVALUO:</td>
+                  <th style="width: 15%">AREA TERRENO</th>
+                  <TD style="width: 2%; border: 0px;"></TD>
+                  <th style="width: 15%">AREA T. COMUN</th>
+                  <TD style="width: 2%; border: 0px;"></TD>
+                  <th style="width: 15%">ARANCEL * M2</th>
+                  <TD STYLE="width: 11%;border: 0px;"></TD>
+                  <td rowspan="4" STYLE="border: 0px; vertical-align: top;">
+                      <table>
+                          <tr><td>VALOR DE LA CONSTRUCCION</td><td style="text-align: right;padding-right: 5px; font-size: 1.1em">{{number_format($sql->val_const,2)}}</td></tr>
+                          <tr><td>VALOR DE OTRAS INSTALAC.</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->val_obr_cmp,2)}}</td></tr>
+                          <tr><td>VALOR TOTAL DEL TERRENO</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->val_ter,2)}}</td></tr>
+                          <tr><td>TOTAL AVALUO</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->base_impon,2)}}</td></tr>
+
+                      </table>
+                  </td>
               </tr>
             </thead>
             <tbody>
               <tr>
-                  <td></td>
-                  <td STYLE="border: 0px;"></td>
-                  <td></td>
+                  <td style="text-align: right;padding-right: 5px">{{number_format($sql->are_terr,2)}}</td>
+                  <td STYLE="border: 0px;">+</td>
+                  <td style="text-align: right;padding-right: 5px">{{number_format($sql->are_com_terr,2)}}</td>
+                  <td STYLE="border: 0px;">*</td>
+                  <td style="text-align: right;padding-right: 5px">{{number_format($sql->arancel,2)}}</td>
                   <td STYLE="border: 0px;"></td>
               </tr>
               <tr>
-                  <td colspan="3" style="border:0px"></td>
+                  <td colspan="5" style="border:0px"></td>
                   
               </tr>
 
