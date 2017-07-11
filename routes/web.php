@@ -108,6 +108,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'caja'], function() {
 //        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
         Route::resource('caja_movimient','Caja_MovimientosController');
+        Route::get('grid_Caja_Movimientos','Caja_MovimientosController@get_grid_Caja_Mov');
     });
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');

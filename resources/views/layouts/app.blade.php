@@ -69,7 +69,7 @@
                     <li class="">
                         <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
                             <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
-                            <span style="color: black"> {{ Auth::user()->usuario }} </span> <i class="fa fa-angle-down" style="color: black"></i> 
+                            <span style="color: black">BIENVENIDO, {{ Auth::user()->ape_nom }} </span> <i class="fa fa-angle-down" style="color: black"></i> 
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li>
@@ -98,7 +98,7 @@
                     <a>
                         <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
                         <span style="color: white;">
-                            {{ Auth::user()->usuario }}
+                            Usuario:{{ Auth::user()->usuario }}
                         </span>
                         <!--<i class="fa fa-angle-down" style="color: white;"></i>-->
                     </a> 
@@ -189,7 +189,7 @@
             </div>
         </div>
 
-        <div class="page-footer">
+        <div class="page-footer" style="background: #01A858;">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
                     <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>

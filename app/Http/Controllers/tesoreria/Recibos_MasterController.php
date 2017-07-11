@@ -19,7 +19,7 @@ class Recibos_MasterController extends Controller
     {
         date_default_timezone_set('America/Lima');
         $data = new Recibos_Master();        
-        $data->nro_recibo_mtr=6;
+        $data->nro_recibo_mtr=7;
         $data->periodo    = date('Y');
         $data->fecha      = date('d-m-Y');
         $data->hora       = date('h:i:s A');

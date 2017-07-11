@@ -124,6 +124,16 @@ function save_nuevo_usuario() {
         mostraralertasconfoco('* Ingrese un Usuario de 3 a mas caracteres...', 'vw_usuario_txt_usuario');
         return false;
     }
+    pass = ($("#vw_usuario_txt_password").val()).trim();
+    confir_pass = ($("#vw_usuario_txt_conf_pass").val()).trim();
+    if (pass != confir_pass) {
+        mostraralertasconfoco('* Las Contraseñas no Coinciden', 'vw_usuario_txt_password');
+        return false;
+    }
+    if ($("#vw_usuario_txt_nivel") == 'select') {
+        mostraralertasconfoco('* Seleccione un Nivel...', 'vw_usuario_txt_nivel');
+        return false;
+    }
     var filesSelected = $("#vw_usuario_cargar_foto").val();
     if (filesSelected == '') {
         mostraralertasconfoco('* Seleccione una Foto', 'vw_usuario_cargar_foto');
@@ -241,7 +251,7 @@ function validar_usuario(usuario) {
                     memory_glob_usuario = $('#vw_usuario_txt_usuario').val();
                 } else if (data.msg == 'no') {
                     $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
-                }                
+                }
             },
             error: function (data) {
                 mostraralertas('* Error al Valida Usuario...!');
@@ -259,12 +269,12 @@ function validar_dni(dni) {
             type: 'GET',
             success: function (data) {
                 MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
-                if (data.msg == 'si') {                    
+                if (data.msg == 'si') {
                     $("#vw_usuario_txt_dni").css({border: "1px solid #FF4040"});
                     mostraralertasconfoco('* El Dni ' + $('#vw_usuario_txt_dni').val() + ' Ya Existe...', 'vw_usuario_txt_dni');
-                    memory_glob_dni = $('#vw_usuario_txt_dni').val();                    
+                    memory_glob_dni = $('#vw_usuario_txt_dni').val();
                 } else if (data.msg == 'no') {
-                    $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});                    
+                    $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
                 }
             },
             error: function (data) {
@@ -289,23 +299,32 @@ function limpiar_form_usuario() {
     $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
 }
 
-function eliminar_usuario(id) {
-
-    $.dialog({
-        title: 'Cuidado!',
-        content: 'dialog_new_edit_Usuario',
-        type: 'green'
+function eliminar_usuario() {
+    id=$('#table_Usuarios').jqGrid ('getGridParam', 'selrow');
+    $.confirm({
+        title: '.:Cuidado... !',
+        content: 'Los Cambios no se podran revertir...',
+        buttons: {
+            Confirmar: function () {
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: 'POST',
+                    url: 'usuario_delete',
+                    data: {id: id},
+                    success: function (data) {
+                        fn_actualizar_grilla('table_Usuarios','list_usuarios');
+                        dialog_close('dialog_new_edit_Usuario');                        
+                    }, error: function (data) {
+                        dialog_close('dialog_new_edit_Usuario');
+                        MensajeAlerta('* Error.', 'Contactese con el Administrador.');
+                    }
+                });
+            },
+            Cancelar: function () {
+                MensajeAlerta('Eliminar Usuario..', 'Operacion Cancelada.');
+            }
+        }
     });
-//    mensaje_confirm(':.CUIDADO ...!!!','* Esta seguro que decea Modificar Contribuyente.<br>* Los cambios no se podran revertir.',id);
-//    $.ajax({
-//        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//        type: 'POST',
-//        url: 'usuario_delete',
-//        data: {id: id},
-//        success: function (data) {
-//            dialog_close('dialog_new_edit_Usuario');
-//        }, error: function (data) {
-//            dialog_close('dialog_new_edit_Usuario');
-//        }
-//    });
+
+
 }

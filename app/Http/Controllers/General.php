@@ -151,5 +151,4 @@ class General extends Controller {
 //        dd(DB::getQueryLog($table));
 //        dd($table);
     }
-    
 }

@@ -85,7 +85,7 @@ class Usuarios extends Controller {
         $data['nivel'] = $request['vw_usuario_txt_nivel'];
         $data['fch_nac'] = date('d-m-Y H:i:s', strtotime($request['vw_usuario_txt_fch_nac']));
         $data['cad_lar'] = strtoupper($request['vw_usuario_txt_ape_nom']) . ' ' . $request['vw_usuario_txt_dni'] . ' ' . strtoupper($request['vw_usuario_txt_usuario']);
-
+        $data['contrasena']= $this->encripta_pass($request['vw_usuario_txt_password']);
 
         $data['foto'] = base64_encode($file2);
 //        echo $data['foto'];
@@ -143,12 +143,7 @@ class Usuarios extends Controller {
 
 
         $data = $request->all();
-//        $data['dni'] = $request['vw_usuario_txt_dni'];
-//        $data['ape_nom'] = strtoupper($request['vw_usuario_txt_ape_nom']);
-//        $data['usuario'] = strtoupper($request['vw_usuario_txt_usuario']);
-//        $data['password'] = bcrypt($request['vw_usuario_txt_password']);
-//        $data['nivel'] = $request['vw_usuario_txt_nivel'];
-//        $data['fch_nac'] = date('d-m-Y', strtotime($request['fch_nac']));
+
         $data['cad_lar'] = strtoupper($request['ape_nom']) . ' ' . $request['dni'] . ' ' . strtoupper($request['usuario']);
 
 
@@ -190,15 +185,54 @@ class Usuarios extends Controller {
         
         $id = Auth::user()->id;
         $foto = base64_encode($file2);
-        
-//        echo $file.'<br>'.$id.'<br>'.$foto;
-////        $data = $request->all();
+
         $update = DB::table('usuarios')->where('id',$id)->update(['foto'=>$foto]);
         if ($update) {
             return response()->json(['msg' => 'si']);
         } else {
             return response()->json(['msg' => 'no','id'=>$id]);
         }
+    }
+    
+    public function encripta_pass($c){        
+        $tam=strlen($c)-1;
+        
+        $array = str_split($c);
+        
+        $ch=$array[0];
+        $array[0]=$array[$tam];
+        $array[$tam]=$ch;
+        $n_p=array();
+       
+        $j=122;
+        for($i=0;$i<=$tam;$i++){            
+            $n_p[$i]=chr($j).$array[$i];
+            $j--;
+        }
+        array_push($n_p,chr($j));
+        
+        $c = implode("", $n_p);
+        return $c;
+        
+    }
+    public function desencripta_pass($c){
+        $tam=strlen($c)-1;
+        $array = str_split($c);
+        $n_p=array();
+        for($i=1;$i<=$tam;$i++){
+            if($i%2<>0){
+                $n_p[$i]=$array[$i];
+            }
+        }
+        $c = implode("", $n_p);
+        $array = str_split($c);
+        $tam=count($array)-1;
+        $ch=$array[0];
+        $array[0]=$array[$tam];
+        $array[$tam]=$ch;
+        
+        $c = implode("", $array);
+        return $c;
     }
 
 }

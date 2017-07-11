@@ -61,7 +61,7 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
-            rowNum: 20, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Instalación del Predio', align: "center",
+            rowNum: 20, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Resumen Recibos', align: "center",
             colModel: [
                 {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},

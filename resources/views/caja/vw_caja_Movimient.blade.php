@@ -12,27 +12,21 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Caja - Movimientos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-                    </b></h1>
-
+                <h1 class="txt-color-green"><b>Caja - Movimientos</b></h1>
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-3">
                                 <label>Tipo de Recibo:</label>
                                 <label class="select">
-                                    <select class="input-sm">
-                                        <option value="select" selected="" disabled="">Seleccione</option>
+                                    <select id="vw_caja_mov_txt_tipo_recibo" class="input-sm">                                       
+                                        @foreach ($est_recibos as $est_recibos)
+                                        <option value='{{$est_recibos->id_est_rec}}' >{{$est_recibos->estad_recibo}}</option>
+                                        @endforeach                                        
                                     </select><i></i>
                                 </label>
-                            </div>
-                            RESPONSABLE: 
-                            <span class="label bg-color-white txt-color-pink" style="font-size: 15px;text-transform: uppercase;border-radius: 2px;background: #FAF4F7 !important">{{ Auth::user()->ape_nom }}</span>
-                            
-
-                            <button onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            </div>                            
+                            <button onclick="dialog_caja_mov_realizar_pago();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
                             </button>
                             <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
@@ -45,10 +39,10 @@
                     </div>
                 </div> 
             </div>                   
-        </div>
+        </div>        
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <table id="t_Caja_Resumen_Recibos"></table>
-            <div id="p_t_Caja_Resumen_Recibos"></div>
+            <table id="tabla_Caja_Movimientos"></table>
+            <div id="pag_tabla_Caja_Movimientos"></div>
         </article>
     </div>
 </section>
@@ -61,11 +55,11 @@
         $("#li_menu_caja_movimientos").addClass('cr-active');
 //        fecha = $("#vw_emision_reg_pag_fil_fecha").val();
         jQuery("#tabla_Caja_Movimientos").jqGrid({
-            url: 'grid_Caja_Movimientos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val(),
+            url: 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
-            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
-            rowNum: 20, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Instalación del Predio', align: "center",
+            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Forma Pago', 'Hora Pago', 'Total'],
+            rowNum: 15, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Caja Movimientos', align: "center",
             colModel: [
                 {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
@@ -73,42 +67,40 @@
                 {name: 'fecha', index: 'fecha', align: 'center', width: 80},
                 {name: 'glosa', index: 'glosa', width: 250},
                 {name: 'estad_recibo', index: 'estad_recibo', width: 60},
-                {name: 'descrip_caja', index: 'descrip_caja', width: 50},
+                {name: 'tipo_pago', index: 'descrip_caja', width: 50},
                 {name: 'hora_pago', index: 'hora_pago', align: 'center', width: 50},
                 {name: 'total', index: 'total', align: 'center', width: 80, sorttype: 'number', formatter: 'number', formatoptions: {decimalPlaces: 3}}
             ],
-            pager: '#pager_table_Resumen_Recibos',
+            pager: '#pag_tabla_Caja_Movimientos',
             rowList: [15, 25],
             gridComplete: function () {
-                var rows = $("#table_Resumen_Recibos").getDataIDs();
+                var rows = $("#tabla_Caja_Movimientos").getDataIDs();
                 if (rows.length > 0) {
-                    var firstid = jQuery('#table_Resumen_Recibos').jqGrid('getDataIDs')[0];
-                    $("#table_Resumen_Recibos").setSelection(firstid);
+                    var firstid = jQuery('#tabla_Caja_Movimientos').jqGrid('getDataIDs')[0];
+                    $("#tabla_Caja_Movimientos").setSelection(firstid);
                 }
-                var sum = jQuery("#table_Resumen_Recibos").getGridParam('userData').sum_total;
-//                alert(sum);
             },
             ondblClickRow: function (Id) {}
         });
 
         $(window).on('resize.jqGrid', function () {
-            $("#table_Resumen_Recibos").jqGrid('setGridWidth', $("#content").width());
+            $("#tabla_Caja_Movimientos").jqGrid('setGridWidth', $("#content").width());
         });
-        $("#vw_emision_reg_pag_fil_fecha").keypress(function (e) {
-            if (e.which == 13) {
-                fn_actualizar_grilla('table_Resumen_Recibos', 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val());
-            }
-        });
-        $("#vw_emi_rec_txt_tributo").keypress(function (e) {
-            if (e.which == 13 && !e.shiftKey) {
-                event.preventDefault();
-                autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
-            }
-        });
+//        $("#vw_emision_reg_pag_fil_fecha").keypress(function (e) {
+//            if (e.which == 13) {
+//                fn_actualizar_grilla('table_Resumen_Recibos', 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val());
+//            }
+//        });
+//        $("#vw_emi_rec_txt_tributo").keypress(function (e) {
+//            if (e.which == 13 && !e.shiftKey) {
+//                event.preventDefault();
+//                autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
+//            }
+//        });
     });
 </script>
 @stop
-<div id="vw_emision_rec_pag_varios" style="display: none">
+<div id="vw_caja_mov_realizar_pago" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">
@@ -117,77 +109,41 @@
                     <div class="panel-body">                        
                         <fieldset>
                             <section>
-                                <label class="label">Tributo:</label>
-                                <label class="textarea">
-                                    <textarea id="vw_emi_rec_txt_tributo" type="text" rows="2" placeholder="Tributo" class="input-sm text-uppercase"></textarea>
+                                <label class="label">Nro Recibo:</label>
+                                <label class="input">
+                                    <input id="vw_caja_mov_txt_nro_recibo" type="text" placeholder="000000" disabled="">
                                 </label>                      
                             </section>
                             <section>
-                                <label class="label">Glosa:</label>
-                                <label class="textarea">
-                                    <textarea id="vw_emi_rec_txt_glosa" rows="2" placeholder="descripcion de recibo" class="input-sm text-uppercase"></textarea>                                    
+                                <label class="label">Usuario:</label>
+                                <label class="input">
+                                    <input id="vw_caja_mov_txt_usuario" type="text" value="{{ Auth::user()->ape_nom }}" class="text-uppercase" disabled="">
                                 </label>                      
+                            </section>
+                            <section>
+                                <label class="label">Descripción:</label>
+                                <label class="textarea">
+                                    <textarea id="vw_caja_mov_txt_descripcion" rows="2" placeholder="descripcion de recibo" class="text-uppercase"></textarea>
+                                </label>
                             </section>
                             <div class="row">
-                                <section class="col col-3" style="padding-right: 5px">                                    
-                                    <label class="label">Cod. Tributo:</label>
+                                <section class="col col-6" style="padding-right: 5px">                                    
+                                    <label class="label">Total a Pagar S/.:</label>
                                     <label class="input">
-                                        <input id="hiddenvw_emi_rec_txt_tributo" type="text" placeholder="000000" class="input-sm" disabled="">
+                                        <input id="vw_caja_mov_txt_tot_pagar" type="text" placeholder="000.000" class="input-sm" disabled="">
                                     </label>                        
                                 </section>
-                                <section class="col col-3" style="padding-left: 5px;padding-right: 5px">
-                                    <input type="hidden">
-                                    <label class="label">Cantidad:</label>
-                                    <label class="input">
-                                        <input id="vw_emi_rec_txt_cantidad" onkeypress="return soloDNI(event);" type="text" placeholder="00" class="input-sm">
-                                    </label>                        
-                                </section>
-                                <section class="col col-3" style="padding-left: 5px;padding-right: 5px">
-                                    <label class="label">Valor S/.:</label>
-                                    <label class="input">
-                                        <input id="vw_emi_rec_txt_valor" type="text" placeholder="000.00" class="input-sm" disabled="">
+                                <section class="col col-6" style="padding-left: 5px;">                                    
+                                    <label class="label">Tipo de Pago:</label>
+                                    <label class="select">
+                                    <select id="vw_caja_mov_txt_tip_pago" class="input-sm">                                       
+                                        @foreach ($tipo_pago as $tipo_pago)
+                                        <option value='{{$tipo_pago->id_tip_pago}}' >{{$tipo_pago->tipo_pago}}</option>
+                                        @endforeach                                        
+                                    </select><i></i>
                                     </label>                      
-                                </section>
-                                <section class="col col-3 text-center" style="padding-left: 5px">
-                                    <label class="label">&nbsp;</label>
-                                    <a onclick="detalle_recibo();" class="btn btn-primary btn-sm">Agregar / Insertar</a>                    
-                                </section>                                
-                            </div> 
-                            <section>
-                                <div class="panel panel-success" style="border: 0px !important; margin-top: 8px;">
-                                    <div class="panel-heading bg-color-primary">.:: Detalle de Recibo ::.</div>
-                                    <div class="panel-body">
-
-                                        <div style="border: 1px solid #DDD; margin-bottom: 6px;">
-                                            <table id="t_dina_det_recibo" class="table table-bordered table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="1%" align="center">N</th>
-                                                        <th width="79%">Tributo</th>
-                                                        <th width="15%" align="right">Costo</th>
-                                                        <th width="5%" align="center">Elim.</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-
-                                            <table class="table table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="1%" align="center"></th>
-                                                        <th width="79%" style="text-align: right">Total S/.</th>
-                                                        <th width="15%" style="border-top: 2px solid #017E42;">
-                                                            <label class='input'><input id="vw_em_rec_txt_detalle_total" type="text" value="000.000" class="input-xs text-align-right" disabled=""></label>
-                                                        </th>
-                                                        <th width="5%" align="center"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+                                </section>                                                            
+                            </div>                            
                         </fieldset>
                     </div>
                 </div>
@@ -197,5 +153,5 @@
     </div>
 </div>
 
-<script src="{{ asset('archivos_js/tesoreria/emision_rec_pago.js') }}"></script>
+<script src="{{ asset('archivos_js/caja/Caja_Movimientos.js') }}"></script>
 @endsection

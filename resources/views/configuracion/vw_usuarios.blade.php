@@ -40,7 +40,7 @@
                             <button onclick="dlg_Editar_Usuario();" id="btn_vw_usuarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
-                            <button id="btn_vw_usuarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                            <button onclick="eliminar_usuario();" id="btn_vw_usuarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 
                             <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">

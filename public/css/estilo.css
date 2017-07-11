@@ -109,8 +109,8 @@ nav ul li a {
 }
 #header {
     
-    //background-image: linear-gradient(to bottom,  #41BE82,#B1DD77);
-    //background-image: linear-gradient(to bottom,  #01A858,#f0f0f0);
+    /*background-image: linear-gradient(to bottom,  #41BE82,#B1DD77);*/
+    /*background-image: linear-gradient(to bottom,  #01A858,#f0f0f0);*/
     background: url(../img/mybg.png) #fff;
     background-repeat: repeat-x;    
 }
@@ -129,7 +129,7 @@ nav ul li a {
 .ui-jqgrid .ui-jqgrid-titlebar {
     background-color: blue;
     background: #01a858;
-    //background-image: linear-gradient(to bottom,#41be82,#43755d); /*COLOR HEADER TITLE*/
+    /*background-image: linear-gradient(to bottom,#41be82,#43755d); /*COLOR HEADER TITLE*/
     background-repeat: repeat-x;
     border-left: 0 none;
     border-right: 0 none;
