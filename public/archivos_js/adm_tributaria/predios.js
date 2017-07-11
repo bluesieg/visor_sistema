@@ -282,6 +282,7 @@ function callpredtab()
             mostraralertas("Primero Guardar Predio...");
             return false;
         }
+       
         $("#rpiso_inp_nro,#rpiso_inp_fech,#rpiso_inp_econstr,#rpiso_inp_estruc,#rpiso_inp_aconst,#rpiso_inp_acomun").val("")
         $("#rpiso_inp_clasi").val($("#rpiso_inp_clasi option:first").val());
         $("#rpiso_inp_mat").val($("#rpiso_inp_mat option:first").val());

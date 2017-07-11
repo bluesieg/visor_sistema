@@ -15,7 +15,7 @@
           <div class="lado" style="text-align: left !important; padding-top: 20px;">GERENCIA DE RENTAS</div>
           <div class="lado">
               <div class="sub">IMPUESTO PREDIAL</div>
-              <div class="date">AÑO: {{ $date }}</div>
+              <div class="date">AÑO: {{ date("Y") }}</div>
           </div>
           <div class="lado" style="text-align: right !important"><div class="resaltado" >HR</div>HOJA RESUMEN</div>
           <div Class="asunto">DECLARACION JURADA DE AUTOVALUO</div>
@@ -25,7 +25,7 @@
           </div>
           <div class="lado">
                 <div class="cabdiv">COD. CONTRIBUYENTE</div>
-                <div class="cuerdiv">XXXXXXXXXXXXXX</div>
+                <div class="cuerdiv">{{ $sql->id_persona }}</div>
           </div>
         </div>
       </div>
@@ -33,18 +33,19 @@
         <thead>
           <tr>
               <td class="nro">1</td>
-              <th>TIPO PERSONA</th>
+              <th style="width: 12%">TIPO PERSONA</th>
               <td class="nro">2</td>
-            <th>NUMERO DE DOCUMENTO</th>
-            <td class="nro">3</td>
-            <th>APELLIDOS y NOMBRES / RAZON SOCIAL</th>
+            <th style="width: 20%">NUMERO DE DOCUMENTO</th>
+            <td class="nro" >3</td>
+            <th style="width: 60%">APELLIDOS y NOMBRES / RAZON SOCIAL</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
+              <td colspan="2" style="text-align: center">{{ $sql->tipo_persona }}</td>
+              <td colspan="2" style="text-align: center">{{ $sql->nro_doc }}</td>
+              <td colspan="2" style="text-align: center">{{ $sql->contribuyente }}</td>
+              
             </tr>
         </tbody>
 <!--        <tfoot>
@@ -61,18 +62,18 @@
         <thead>
           <tr>
               <td class="nro">4</td>
-              <th>TD</th>
+              <th style="width: 12%">TD</th>
               <td class="nro">5</td>
-            <th>NUMERO DE DOCUMENTO</th>
+            <th style="width: 20%">NUMERO DE DOCUMENTO</th>
             <td class="nro">6</td>
-            <th>CONYUGE / REPRESENTANTE LEGAL</th>
+            <th style="width: 60%">CONYUGE / REPRESENTANTE LEGAL</th>
           </tr>
         </thead>
         <tbody>
             <tr>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
+              <td colspan="2" style="text-align: center"></td>
+              <td colspan="2" style="text-align: center">{{$sql->nro_doc_conv}}</td>
+              <td colspan="2" style="text-align: center">{{$sql->conviviente}}</td>
             </tr>
         </tbody>
 
@@ -86,21 +87,21 @@
           <tr>
               <td class="nro">7</td>
               <th style="width: 15.16%">DEPARTAMENTO</th>
-              <td style="width: 15.16%"></td>
+              <td style="width: 15.16%; text-align: center">{{$sql->dpto}}</td>
               <td class="nro">8</td>
               <th style="width: 15.16%">PROVINCIA</th>
-              <td style="width: 15.16%"></td>
+              <td style="width: 15.16%; text-align: center">{{$sql->provinc}}</td>
               <td class="nro">9</td>
               <th style="width: 15.16%">DISTRITO</th>
-              <td colspan="2"></td>
+              <td colspan="2" style="text-align: center">{{$sql->distrit}}</td>
           </tr>
           <tr>
               <td class="nro">10</td>
               <th>MANZANA URBANA</th>
-              <td></td>
+              <td style="text-align: center">{{$sql->manz}}</td>
               <td class="nro">11</td>
               <th>LOTE URBANO</th>
-              <td></td>
+              <td style="text-align: center">{{$sql->lote}}</td>
               <td class="nro">12</td>
               <th>SUB LOTE URBANO</th>
               <td colspan="2" ></td>
@@ -114,17 +115,17 @@
               <th>NUMERO INTERIOR/DPTO</th>
           </tr>
           <tr>
-              <td colspan="6"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
+              <td colspan="6">{{$sql->dom_fiscal}}</td>
+              <td colspan="2" style="text-align: center;">{{$sql->nro_mun}}</td>
+              <td colspan="2" style="text-align: center;"></td>
           </tr>
           <tr>
               <td class="nro">16</td>
               <th>CORREO ELECTRONICO</th>
-              <td colspan="4"></td>
+              <td colspan="4">{{$sql->email}}</td>
               <td class="nro">17</td>
               <th>N° DE TELEFONO</th>
-              <td colspan="2"></td>
+              <td colspan="2">{{$sql->tlfono_celular}}</td>
           </tr>
         </thead>
         <tbody>
@@ -135,7 +136,27 @@
         
       </table>
         <div class="lado3" style="height: 385px; border-bottom: 1px solid #333">
-            INFORMACION ADICIONAL.     
+            INFORMACION ADICIONAL. 
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
+        <thead>
+            <tr >
+              <th style="width: 10%;">N° Anexo</th>
+              <th style="width: 10%">Tip Pred</th>
+              <th style="width: 60%">DIRECCION DEL PREDIO</th>
+              <th style="width: 20%">VALOR AFECTO</th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach ($sql_pre as $pre)
+            <tr>
+              <td>{{ $loop->iteration }}</td>
+              <td>{{$pre->tp}}</td>
+              <td>{{$pre->cod_cat." - ".$pre->nom_via_puhr}}</td>
+              <td style="text-align: right; padding-right: 5px;">{{$pre->base_impon}}</td>
+            </tr>
+            @endforeach
+        </tbody>
+      </table>
         </div>
         
         <table border="0" cellspacing="0" cellpadding="0" >
@@ -144,7 +165,7 @@
                   <td style="width: 50%; border:0px;" rowspan="3"></td>
                   <td class="nro">18</td>
                   <th style="width: 22.5%">BASE IMPONIBLE</th>
-                  <td></td>
+                  <td style="text-align: center;">{{$sql_pre->sum('base_impon') }}</td>
               </tr>
               <tr>
                   <td class="nro">19</td>
@@ -164,7 +185,7 @@
               <tr>
                   <td class="nro">21</td>
                   <th rowspan="2" style="width: 15%; border-left: 0px;">total predios declarados</th>
-                  <td rowspan="2" style="width: 10%">0</td>
+                  <td rowspan="2" style="width: 10%; font-size: 1.2em; text-align: center">{{$sql_pre->count()}}</td>
                   <td rowspan="3" style="border-top:0px; border-bottom:0px; border-left: 0px;"></td>
                   <th rowspan="3" style="width: 20%; border-left: 0px;">DECLARO BAJO JURAMENTO QUE LOS DATOS CONSIGNADOS EN ESTA DECLARACION SON VERDADEROS</th>
                   <td rowspan="2" style="width: 20%; border-bottom: 0px;"></td>

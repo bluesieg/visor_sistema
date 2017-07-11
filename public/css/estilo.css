@@ -105,11 +105,13 @@ nav ul li a {
 
 
 .page-footer {
-    background:#407040;    
+    background:#43755d;    
 }
 #header {
-    background-color: #f3f3f3;
-    background-image: linear-gradient(to bottom,  #41BE82,#B1DD77);
+    
+    //background-image: linear-gradient(to bottom,  #41BE82,#B1DD77);
+    //background-image: linear-gradient(to bottom,  #01A858,#f0f0f0);
+    background: url(../img/mybg.png) #fff;
     background-repeat: repeat-x;    
 }
 .fixed-header #header {
@@ -126,7 +128,8 @@ nav ul li a {
 
 .ui-jqgrid .ui-jqgrid-titlebar {
     background-color: blue;
-    background-image: linear-gradient(to bottom, #80B23E, #B1DD77); /*COLOR HEADER TITLE*/
+    background: #01a858;
+    //background-image: linear-gradient(to bottom,#41be82,#43755d); /*COLOR HEADER TITLE*/
     background-repeat: repeat-x;
     border-left: 0 none;
     border-right: 0 none;
@@ -136,7 +139,7 @@ nav ul li a {
     position: relative;
 }
 .ui-jqgrid .ui-jqgrid-title {
-    color: #306D30;
+    color: #ffffff;
     font-size: 17px;
 }
 
@@ -148,7 +151,7 @@ nav ul li a {
 }
 
 .ui-jqgrid {
-    border: 1px solid #97D149 !important;
+    border: 1px solid #43755d !important;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -169,7 +172,7 @@ nav ul li a {
 }
 
 .ui-jqgrid .ui-jqgrid-pager {    
-    background-color: #97D149 !important; 
+    background-color: #ecebeb !important;
     padding: 0px !important;
 }
 .ui-jqgrid .ui-jqgrid-pager {

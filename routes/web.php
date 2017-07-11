@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('gridinsta/{id}','InstalacionesController@listinsta');
         Route::get('selmzna','PredioController@ListManz');//llena combo manzanas
         Route::get('adm_impform/','PredioController@imprimir_formatos');//llena combo manzanas
-        Route::get('pdf/{tip}','PredioController@reporte');//llena combo manzanas
+        Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');//llena combo manzanas
     });
     Route::get('$',function(){ echo 0;});//url auxiliar
 

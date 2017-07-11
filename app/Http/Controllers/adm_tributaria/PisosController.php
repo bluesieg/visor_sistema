@@ -48,6 +48,8 @@ class PisosController extends Controller
         $pisos->num_pis = $totapisos[0]->total+1;
         $pisos->id_predio = $request['id_pre'];
         $pisos->save();
+        DB::select("select adm_tri.fn_count_pisos(".$request['id_pre'].")");
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return $pisos->id_pisos;
     }
 
@@ -104,6 +106,8 @@ class PisosController extends Controller
             $val->area_const = $request['aconst'];
             $val->val_areas_com = $request['acomun'];
             $val->save();
+            DB::select("select adm_tri.fn_count_pisos(".$val->id_predio.")");
+            DB::select("select adm_tri.actualiza_base_predio(".$val->id_predio.")");
         }
         return "edit".$id;
     }

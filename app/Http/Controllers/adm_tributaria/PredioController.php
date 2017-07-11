@@ -45,7 +45,7 @@ class PredioController extends Controller
         $predio->id_contrib = $request['contrib'];
         $predio->id_exon = 1;
         $predio->id_cond_esp_exon = 1;
-        $predio->id_hab_urb = 1;
+        $predio->id_hab_urb = 2;
         $predio->mzna = $request['mzna'];
         $predio->sec = $request['sec'];
         $predio->lote = $request['lote'];
@@ -65,7 +65,7 @@ class PredioController extends Controller
         $predio->are_terr = $request['areterr'];
         $predio->arancel = $request['aranc'];
         $predio->val_ter = $request['areterr']*$request['aranc'];
-        
+        $predio->tip_pre_u_r = 1;
         $predio->save();
         return $predio->id_pred;
     }
@@ -223,20 +223,28 @@ class PredioController extends Controller
         return view('adm_tributaria/imp_formatos', compact('anio_tra'));
     }
 
-    public function reporte($tip) 
+    public function reporte($tip,$id,$an,$contri) 
     {
-        $date = date('Y');
+        
         if($tip=='HR'||$tip=='hr')
         {
-            $view =  \View::make('adm_tributaria.reportes.hr', compact('date'))->render();
+            $sql=DB::table('adm_tri.vw_contrib_hr')->where('id_pers',$contri)->get()->first();
+            $sql_pre=DB::table('adm_tri.vw_predi_urba')->where('id_pers',$contri)->where('anio',$an)->get();
+            $view =  \View::make('adm_tributaria.reportes.hr', compact('sql','sql_pre'))->render();
         }
         if($tip=='PU'||$tip=='pu')
         {
-            $view =  \View::make('adm_tributaria.reportes.pu', compact('date'))->render();
+            $sql=DB::table('adm_tri.vw_predi_urba')->where('id_pred',$id)->where('anio',$an)->get()->first();
+            $view =  \View::make('adm_tributaria.reportes.pu', compact('sql'))->render();
         }
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($view)->setPaper('a4');
-        return $pdf->stream('invoice');
+        if(count($sql)>=1)
+        {
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream($tip.$an);
+        }
+        else
+        {   return 'No hay datos';}
     }
 
     

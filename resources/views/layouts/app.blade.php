@@ -189,7 +189,7 @@
             </div>
         </div>
 
-        <div class="page-footer" style="background: #01A858;">
+        <div class="page-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
                     <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>

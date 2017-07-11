@@ -6,7 +6,7 @@
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
   </head>
   <body>
-       <div class="datehead">AÑO: {{ $date }}</div>
+       <div class="datehead">AÑO: {{ $sql->anio }}</div>
 
     <main>
       <div id="details" class="clearfix">
@@ -26,7 +26,7 @@
               <td style="width: 40%;  border: 0px; padding: 10px 0px 0px 80px;"><div class="resaltado" >PU</div></td>
                 <td style="width: 15%; padding: 0px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%;">código contribuyente</div>
-                <div class="cuerdiv" style="width: 100%;">-</div>
+                <div class="cuerdiv" style="width: 100%;">{{ $sql->id_persona }}</div>
               </td>
               <td style="width: 15%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%;">código del predio</div>

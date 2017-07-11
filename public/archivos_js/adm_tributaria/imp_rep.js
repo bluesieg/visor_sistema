@@ -37,7 +37,15 @@ function callfilltab()
 }
 function abrir_rep(tip)
 {
-    window.open('pdf/'+tip);
+    Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+    if(Id==null)
+    {
+        mostraralertas("No hay Predio seleccionado para impresión");
+        return false;
+    }
+    window.open('pre_rep/'+tip+'/'+Id+'/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val());
+    
+    
 }
 function fn_bus_contrib()
 {
@@ -58,4 +66,13 @@ function fn_bus_contrib()
         title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
         }).dialog('open');
        
+}
+function fn_bus_contrib_list(per)
+{
+    $("#dlg_contri_hidden").val(per);
+    $("#dlg_dni").val($('#table_contrib').jqGrid('getCell',per,'id_per'));
+    $("#dlg_contri").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
+    jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?mnza=0&ctr='+per+'&an='+$("#selantra").val()}).trigger('reloadGrid');
+    $("#dlg_bus_contr").dialog("close");
+    
 }

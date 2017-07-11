@@ -24,7 +24,7 @@
                 <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;" autofocus="focus" >
             </div>
             <div class='col-lg-3' style="padding: 0px;">
-                <button type="button" class="btn btn-labeled bg-color-blueDark txt-color-white" onclick="fn_bus_contrib()">
+                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_bus_contrib()">
                     <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                 </button>
             </div>
@@ -37,7 +37,7 @@
         </article>
         <div class="col-xs-12" style="padding: 0px; margin-top: 5px;">
             <ul style="padding: 0px;">                                        
-                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="abrir_rep('HR');">
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="abrir_rep('HR');">
                             <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir HR
                         </button>
                         <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="abrir_rep('PU');">
@@ -90,6 +90,7 @@
                     var firstid = jQuery('#table_predios').jqGrid('getDataIDs')[0];
                             $("#table_predios").setSelection(firstid);    
                         }
+                     
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
@@ -116,19 +117,29 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                             $("#table_contrib").setSelection(firstid);    
                         }
-                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":fn_selcontrb( rowid ) } ); 
+                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
         });
         $("#dlg_dni").keypress(function (e) {
             if (e.which == 13) {
                 traer_contri_cod("dlg_contri",$("#dlg_dni").val());
             }
         });
+        var globalvalidador=0;
         $("#dlg_contri").keypress(function (e) {
             if (e.which == 13) {
-                fn_bus_contrib();
+                if(globalvalidador==0)
+                {
+                    fn_bus_contrib();
+                    globalvalidador=1;
+                }
+                else
+                {
+                    globalvalidador=0;
+                }
+                
             }
         });
        
