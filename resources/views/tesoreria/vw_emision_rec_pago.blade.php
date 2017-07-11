@@ -101,6 +101,15 @@
                 autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
             }
         });
+        $("#vw_emi_rec_txt_cantidad").keypress(function (e) {
+            if (e.which == 13 && !e.shiftKey) {
+                if($("#hiddenvw_emi_rec_txt_tributo").val()==''){
+                    mostraralertasconfoco('Ingrese un Tributo','#hiddenvw_emi_rec_txt_tributo');
+                    return false;
+                }else detalle_recibo();
+            }
+        });
+        
     });   
 </script>
 @stop

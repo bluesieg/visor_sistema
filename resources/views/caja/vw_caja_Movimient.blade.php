@@ -12,14 +12,16 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Caja - Movimientos</b></h1>
+                <h1 class="txt-color-green"><b>
+                        <!--<input type="hidden" id="vw_caja_id_cajero" value="{{$cajero[0]->id_caj}}">-->
+                        <input type="text" id="vw_caja_mov_cajero" class="input-sm" value="{{$cajero[0]->descrip_caja}}" style="font-size:20px;border: 0px" readonly=""></b></h1>
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-3">
                                 <label>Tipo de Recibo:</label>
                                 <label class="select">
-                                    <select id="vw_caja_mov_txt_tipo_recibo" class="input-sm">                                       
+                                    <select onchange="select_tipo_recibo(this.value);" id="vw_caja_mov_txt_tipo_recibo" class="input-sm">                                       
                                         @foreach ($est_recibos as $est_recibos)
                                         <option value='{{$est_recibos->id_est_rec}}' >{{$est_recibos->estad_recibo}}</option>
                                         @endforeach                                        
@@ -32,7 +34,7 @@
                             <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Cerrar Caja
                             </button>
-                            <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                            <button onclick="imp_pago_rec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                             </button>
                         </div>
@@ -49,11 +51,12 @@
 @section('page-js-script')
 
 <script type="text/javascript">
+    
+    var id_caja={!! json_encode($cajero[0]->id_caj) !!};
     sumTotal = 0;
     $(document).ready(function () {
         $("#menu_caja").show();
         $("#li_menu_caja_movimientos").addClass('cr-active');
-//        fecha = $("#vw_emision_reg_pag_fil_fecha").val();
         jQuery("#tabla_Caja_Movimientos").jqGrid({
             url: 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val(),
             datatype: 'json', mtype: 'GET',
@@ -80,7 +83,7 @@
                     $("#tabla_Caja_Movimientos").setSelection(firstid);
                 }
             },
-            ondblClickRow: function (Id) {}
+            ondblClickRow: function (Id) {dialog_caja_mov_realizar_pago();}
         });
 
         $(window).on('resize.jqGrid', function () {
@@ -115,7 +118,7 @@
                                 </label>                      
                             </section>
                             <section>
-                                <label class="label">Usuario:</label>
+                                <label class="label">Usuario / Cajero:</label>
                                 <label class="input">
                                     <input id="vw_caja_mov_txt_usuario" type="text" value="{{ Auth::user()->ape_nom }}" class="text-uppercase" disabled="">
                                 </label>                      
@@ -123,7 +126,7 @@
                             <section>
                                 <label class="label">Descripción:</label>
                                 <label class="textarea">
-                                    <textarea id="vw_caja_mov_txt_descripcion" rows="2" placeholder="descripcion de recibo" class="text-uppercase"></textarea>
+                                    <textarea id="vw_caja_mov_txt_descripcion" rows="2" placeholder="descripcion de recibo" class="text-uppercase" disabled=""></textarea>
                                 </label>
                             </section>
                             <div class="row">
@@ -152,6 +155,14 @@
         </div>        
     </div>
 </div>
-
+<div id="vw_caja_mov_confirm_pago_reporte" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                
+            </div>
+        </div>
+    </div>
+</div>
 <script src="{{ asset('archivos_js/caja/Caja_Movimientos.js') }}"></script>
 @endsection
