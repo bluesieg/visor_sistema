@@ -5,21 +5,30 @@ namespace App\Http\Controllers\tesoreria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades;
 use App\Models\Recibos_Master;
+use App\Models\Personas;
 use Illuminate\Support\Facades\Auth;
 
 class Recibos_MasterController extends Controller
 {    
-    public function index()
+    public function index(Request $request)
     {
-        return view('tesoreria/vw_emision_rec_pago');
+        $tip_doc = DB::table('adm_tri.tipo_documento')->get();
+        $anio = DB::table('adm_tri.vw_uit')->select('anio')->orderBy('anio','desc')->get();
+        
+//        $request->session()->get('key');
+//        $request->session()->put('key', 'value');
+        
+        return view('tesoreria/vw_emision_rec_pago',compact('tip_doc','anio'));
+        
     }
     
     public function create(Request $request)
     {
         date_default_timezone_set('America/Lima');
-        $data = new Recibos_Master();        
-        $data->nro_recibo_mtr=8;
+        $data = new Recibos_Master();
+        $data->nro_recibo_mtr=0;
         $data->periodo    = date('Y');
         $data->fecha      = date('d-m-Y');
         $data->hora       = date('h:i:s A');
@@ -30,10 +39,21 @@ class Recibos_MasterController extends Controller
         $data->glosa      = $request['glosa'];
         $data->total      = $request['total'];
         $data->id_tip_pago= 0;
-        $data->id_contrib = 0;
+        $data->id_contrib = $request['id_pers'];
         $data->id_tribut_master=0;
         $data->cod_fracc  = 0;
         $data->n_cuot     = 0;
+        $data->clase_recibo=$request['clase_recibo'];
+        if(isset($request['pred_check'])){
+            $data->pred_check = $request['pred_check'];
+        }else{
+            $data->pred_check = 0;
+        }
+        if(isset($request['form_pred_check'])){
+            $data->form_pred_check = $request['form_pred_check'];
+        }else{
+            $data->form_pred_check = 0;
+        }
         $data->save();        
         return $data->id_rec_mtr;
     }
@@ -42,50 +62,74 @@ class Recibos_MasterController extends Controller
     {
         //
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
+    }
+    
+    function tabla_cta_cte_2(Request $request){
+        $id_pers = $request['id_pers'];
+        $ano_cta = $request['ano_cta'];
+        $totalg = DB::select("select count(id_pers) as total from adm_tri.vw_cta_cte2 where id_pers='".$id_pers."' and ano_cta='".$ano_cta."'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_pers',$id_pers)->where('ano_cta',$ano_cta)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        $cont=0;
+        foreach ($sql as $Index => $Datos) {
+            $cont++;
+            $Lista->rows[$Index]['id'] = $Datos->id_tribu;
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->id_pers,
+                trim($Datos->descrip_tributo),
+                trim($Datos->ivpp),
+                trim($Datos->saldo),                
+                trim($Datos->abo1_cta),                
+                trim($Datos->abo2_cta),
+                trim($Datos->abo3_cta),
+                trim($Datos->abo4_cta)               
+            );
+        }        
+        return response()->json($Lista);
     }
     
     function tabla_Resumen_recibos(Request $request){
@@ -159,5 +203,23 @@ class Recibos_MasterController extends Controller
             array_push($todo, $Lista);
         }
         return response()->json($todo);
+    }
+    
+    function buscar_persona(Request $request){
+        $nro_doc= $request['nro_doc'];
+        $persona = DB::table('adm_tri.personas')->where('pers_nro_doc',$nro_doc)->first();
+        if(isset($persona->pers_raz_soc)){
+            return response()->json(['raz_soc'=>$persona->pers_raz_soc,'msg'=>'si','id_pers'=>$persona->id_pers]);
+        }else{
+            return response()->json(['msg'=>'no']);
+        }
+    }
+    
+    function insert_new_persona(Request $request){        
+        $personas = new Personas();
+        $personas->pers_raz_soc=$request['pers_raz_soc'];        
+        $personas->pers_nro_doc= $request['pers_nro_doc'];
+        $personas->save();        
+        return $personas->id_pers;
     }
 }

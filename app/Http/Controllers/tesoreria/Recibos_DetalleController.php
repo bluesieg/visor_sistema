@@ -33,6 +33,8 @@ class Recibos_DetalleController extends Controller
         $rec_det->id_ofi=0;
         $rec_det->id_trib=$request->id_trib;
         $rec_det->monto=$request->monto;
+        $rec_det->cant=$request->cant;
+        $rec_det->p_unit=$request->p_unit;
         $rec_det->save();
         
         return $rec_det->id_rec_det;

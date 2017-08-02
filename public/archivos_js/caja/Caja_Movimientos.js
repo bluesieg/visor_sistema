@@ -1,7 +1,7 @@
 
 function dialog_caja_mov_realizar_pago(){
     id_recibo = $('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');
-    if($("#vw_caja_mov_txt_tipo_recibo").val()!=1){
+    if($("#vw_caja_mov_txt_tipo_recibo").val()!=1 || id_recibo==null){
         return false;
     }
     
@@ -11,7 +11,7 @@ function dialog_caja_mov_realizar_pago(){
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Confirmar Pago",
                 "class": "btn btn-primary",
-                click: function () {
+                click: function () {                    
                     confirmar_Pago(id_recibo);
                 }
             }, {
@@ -30,27 +30,70 @@ function dialog_caja_mov_realizar_pago(){
     $("#vw_caja_mov_txt_descripcion").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "glosa"));
     $("#vw_caja_mov_txt_tot_pagar").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "total"));
 }
+function select_id_caja(caja){
+    id_caja = caja;
+}
 function confirmar_Pago(id_recibo){
+    id_caja = $("#vw_caja_id_cajero").val();
+    
     $.ajax({
         url: 'caja_movimient/'+id_recibo+'/edit',
         type: 'GET',
         data: {
             id_tip_pago:$("#vw_caja_mov_txt_tip_pago").val(),
-            id_caja:id_caja
+            id_caja:id_caja,
+            id_pers:$("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib")
         },
         success: function (data) {
-            fn_actualizar_grilla('tabla_Caja_Movimientos', 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val());
-            dialog_close('vw_caja_mov_realizar_pago');
-            MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
+            if(data){
+                imp_pago_rec(id_recibo);
+                fn_actualizar_grilla('tabla_Caja_Movimientos', 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val());
+//                printTrigger('imp_pago_rec?id_rec='+id_recibo);                
+//                dialog_close('vw_caja_mov_realizar_pago');
+//                MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
+            }
         },
         error: function (data) {
-            MensajeAlerta('Error', 'Contactese con el Administrador');
+            MensajeAlerta('Error de Red.', 'Contactese con el Administrador');
         }
     });
 }
 
-function imp_pago_rec(){
-    window.open('imp_pago_rec');
+function imp_pago_rec(id_recibo){
+//    window.open('imp_pago_rec');
+    $("#vw_caja_mov_confirm_pago_reporte").dialog({
+        autoOpen: false, modal: true, width: 850,height:600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:RECIBO:.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Confirmar e Imprimir",
+                "class": "btn btn-primary",
+                click: function () {
+//                    printTrigger('imp_pago_rec?id_rec='+id_recibo);
+                    dialog_close('vw_caja_mov_confirm_pago_reporte');
+                    dialog_close('vw_caja_mov_realizar_pago');
+                    MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
+                }
+            }]        
+    }).dialog('open');
+    
+    $('#print_recibo_pagado').attr('src','imp_pago_rec?id_rec='+id_recibo);
+    
+}
+function printTrigger(url) {    
+        var iframe = this._printIframe;
+        if (!this._printIframe) {
+          iframe = this._printIframe = document.createElement('iframe');
+          document.body.appendChild(iframe);
+
+          iframe.style.display = 'none';
+          iframe.onload = function() {
+            setTimeout(function() {
+              iframe.focus();
+              iframe.contentWindow.print();
+            }, 1);
+          };
+        }        
+    iframe.src = url;
 }
 
 function select_tipo_recibo(id_tip_recibo){

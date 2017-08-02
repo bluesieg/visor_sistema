@@ -50,7 +50,7 @@
             height: 'auto', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pers', 'Codigo', ' Tip. Doc', 'N°. Documento', 'Contribuyente o Razon Social', 'Cod. Via', 'Calle / Via', 'Fono. Fijo', 'Celular'],
-            rowNum: 13, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE CONTRIBUYENTES REGISTRADOS', align: "center",
+            rowNum: 20, sortname: 'id_pers', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE CONTRIBUYENTES REGISTRADOS', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
                 {name: 'id_persona', index: 'id_persona', align: 'left', width: 80},
@@ -63,7 +63,7 @@
                 {name: 'tlfono_celular', index: 'tlfono_celular', width: 80}
             ],
             pager: '#pager_table_Contribuyentes',
-            rowList: [13, 20],
+            rowList: [20, 30, 50],
             onSelectRow: function (Id) {
                 $('#btn_vw_contribuyentes_Editar').attr('onClick', 'open_dialog_new_edit_Contribuyente("' + 'EDITAR' + '",' + Id + ')');
                 $('#btn_vw_contribuyentes_Eliminar').attr('onClick', 'eliminar_contribuyente(' + Id + ')');

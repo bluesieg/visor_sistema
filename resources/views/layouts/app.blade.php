@@ -175,6 +175,9 @@
                             <li id="li_menu_caja_movimientos">
                                 <a href="caja_movimient" title="Movimientos"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Movimientos</span></a>
                             </li>
+                            <li id="li_menu_caja_est_cta">
+                                <a href="estado_de_cta" title="Estado de Cuentas"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Estado de Cuentas</span></a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -191,7 +194,7 @@
 
         <div class="page-footer" style="background: #01A858;">
             <div class="row">
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-xs-12 col-sm-12">
                     <span class="txt-color-white">Municipalidad Distrital de Cerro Colorado © Arequipa - Perú &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="http://www.mdcc.gob.pe" target="blank"style="color: white">www.municerrocolorado.gob.pe</a>
                 </div>
             </div>            

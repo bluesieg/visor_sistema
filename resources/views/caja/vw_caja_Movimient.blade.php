@@ -13,8 +13,10 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
                 <h1 class="txt-color-green"><b>
-                        <!--<input type="hidden" id="vw_caja_id_cajero" value="{{$cajero[0]->id_caj}}">-->
-                        <input type="text" id="vw_caja_mov_cajero" class="input-sm" value="{{$cajero[0]->descrip_caja}}" style="font-size:20px;border: 0px" readonly=""></b></h1>
+                    CAJA:
+                    <input type="hidden" id="vw_caja_id_cajero">
+                    <input type="text" id="vw_caja_mov_cajero" class="input-sm" style="font-size:20px;border: 0px" disabled="">
+                </b></h1>
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
@@ -44,7 +46,11 @@
         </div>        
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <table id="tabla_Caja_Movimientos"></table>
-            <div id="pag_tabla_Caja_Movimientos"></div>
+            <div id="pag_tabla_Caja_Movimientos">
+                <div style="float: right; font-weight: bold;">
+                    Total S/. <input type="text" id="vw_caja_movimientos_total_global" class="input-sm text-right" style="width: 143px; height: 25px;padding-right: 4px;" readonly="">
+                </div>
+            </div>
         </article>
     </div>
 </section>
@@ -52,7 +58,7 @@
 
 <script type="text/javascript">
     
-    var id_caja={!! json_encode($cajero[0]->id_caj) !!};
+    var id_caja = 0;
     sumTotal = 0;
     $(document).ready(function () {
         $("#menu_caja").show();
@@ -61,18 +67,18 @@
             url: 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
-            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Forma Pago', 'Hora Pago', 'Total'],
+            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
             rowNum: 15, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Caja Movimientos', align: "center",
             colModel: [
                 {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
-                {name: 'nro_recibo_mtr', index: 'nro_recibo_mtr', align: 'center', width: 60},
-                {name: 'fecha', index: 'fecha', align: 'center', width: 80},
+                {name: 'nro_recibo_mtr', index: 'nro_recibo_mtr', hidden: true},
+                {name: 'fecha', index: 'fecha', align: 'center', width: 60},
                 {name: 'glosa', index: 'glosa', width: 250},
                 {name: 'estad_recibo', index: 'estad_recibo', width: 60},
-                {name: 'tipo_pago', index: 'descrip_caja', width: 50},
+                {name: 'descrip_caja', index: 'descrip_caja', width: 130},
                 {name: 'hora_pago', index: 'hora_pago', align: 'center', width: 50},
-                {name: 'total', index: 'total', align: 'center', width: 80, sorttype: 'number', formatter: 'number', formatoptions: {decimalPlaces: 3}}
+                {name: 'total', index: 'total', align: 'right', width: 80, sorttype: 'number', formatter: 'number', formatoptions: {decimalPlaces: 3}}
             ],
             pager: '#pag_tabla_Caja_Movimientos',
             rowList: [15, 25],
@@ -82,10 +88,16 @@
                     var firstid = jQuery('#tabla_Caja_Movimientos').jqGrid('getDataIDs')[0];
                     $("#tabla_Caja_Movimientos").setSelection(firstid);
                 }
+                var sum = jQuery("#tabla_Caja_Movimientos").getGridParam('userData').sum_total;
+                if(sum==undefined){
+                    $("#vw_caja_movimientos_total_global").val('0000.00');
+                }else{
+                    $("#vw_caja_movimientos_total_global").val(formato_numero(sum,2,'.',','));
+                }  
             },
             ondblClickRow: function (Id) {dialog_caja_mov_realizar_pago();}
         });
-
+        
         $(window).on('resize.jqGrid', function () {
             $("#tabla_Caja_Movimientos").jqGrid('setGridWidth', $("#content").width());
         });
@@ -99,7 +111,26 @@
 //                event.preventDefault();
 //                autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
 //            }
-//        });
+//        
+          $("#dialog_select_caja").dialog({
+            autoOpen: false, modal: true, height: 250, width: 400, 
+            show: {effect: "fade", duration: 300}, resizable: false,
+            closeOnEscape: false,
+            title: "<div class='widget-header'><h4>&nbsp&nbsp.: CAJAS :.</h4></div>",
+            buttons: [{
+                    html: "<i class='fa fa-save'></i>&nbsp; Aceptar",
+                    "class": "btn btn-primary",
+                    click: function () {
+//                        fn_session_almacen();                      
+                        $("#vw_caja_id_cajero").val($("#vw_caj_movimientos_select_caja").val());
+                        $("#vw_caja_mov_cajero").val($("#vw_caj_movimientos_select_caja :selected").text());
+                        dialog_close('dialog_select_caja');
+                    }
+                }],            
+            open: function (event,ui){
+                $(this).parent().children().children('.ui-dialog-titlebar-close').hide();
+            }
+        }).dialog('open');
     });
 </script>
 @stop
@@ -110,13 +141,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading bg-color-success">.:: Datos de Recibo ::.</div>
                     <div class="panel-body">                        
-                        <fieldset>
-                            <section>
-                                <label class="label">Nro Recibo:</label>
-                                <label class="input">
-                                    <input id="vw_caja_mov_txt_nro_recibo" type="text" placeholder="000000" disabled="">
-                                </label>                      
-                            </section>
+                        <fieldset>                            
                             <section>
                                 <label class="label">Usuario / Cajero:</label>
                                 <label class="input">
@@ -159,7 +184,32 @@
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">
-                
+                <iframe id="print_recibo_pagado" width="820" height="490" frameborder="0" allowfullscreen></iframe> 
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_select_caja" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important;">
+                    <div class="panel-heading bg-color-success">.:: CAJAS REGISTRADAS ::.</div>
+                    <div class="panel-body">
+                        <fieldset> 
+                            <section style="margin-top: 17px;"> 
+                                <label class="label"><h2>Seleccione Caja</h2></label>
+                                <label class="select">
+                                    <select id="vw_caj_movimientos_select_caja" class="input-lg">                                       
+                                        @foreach ($cajas as $cajas)
+                                        <option value='{{$cajas->id_caj}}' >{{$cajas->direc_caja}}</option>
+                                        @endforeach                                          
+                                    </select><i></i>
+                                </label>                      
+                            </section>         
+                        </fieldset>
+                    </div>
+                </div>               
             </div>
         </div>
     </div>

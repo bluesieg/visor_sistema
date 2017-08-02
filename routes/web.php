@@ -13,7 +13,7 @@ $this->get('logout', 'Auth\LoginController@logout')->name('logout');
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 //$this->post('register', 'Auth\RegisterController@register');
 //Route::post('registro','Usuarios@postRegistro')->name('registro_user');
-    Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
+Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
     Route::get('uit', 'configuracion\Oficinas_Uit@get_alluit')->name('uit'); // tabla..
     Route::get('list_uit', 'configuracion\Oficinas_Uit@index'); // tabla grilla uit
     Route::post('uit_save', 'configuracion\Oficinas_Uit@insert'); // ruta para guardar
@@ -103,7 +103,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('emi_recibo_detalle', 'Recibos_DetalleController');
         Route::get('grid_Resumen_recibos','Recibos_MasterController@tabla_Resumen_recibos');
         Route::get('autocompletar_tributo','Recibos_MasterController@completar_tributo');// recibos varios
-        
+        Route::get('emi_recib_buscar_persona','Recibos_MasterController@buscar_persona');
+        Route::post('insert_new_persona','Recibos_MasterController@insert_new_persona');
+        ROute::get('get_grid_cta_cte2','Recibos_MasterController@tabla_cta_cte_2');
     });
     Route::group(['namespace' => 'caja'], function() {
 //        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
@@ -111,6 +113,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('imp_pago_rec','Caja_MovimientosController@reportes_caja_mov');
         Route::get('grid_Caja_Movimientos','Caja_MovimientosController@get_grid_Caja_Mov');
     });
+    Route::group(['namespace'=>'caja'],function(){///ESTADO DE CUENTAS
+        Route::resource('estado_de_cta','Caja_Est_CuentasController');
+        Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
+    });
+    
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
         Route::resource('pisos_predios', 'PisosController');

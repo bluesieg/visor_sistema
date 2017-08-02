@@ -55,7 +55,8 @@ class General extends Controller {
         foreach ($Consulta as $Datos) {
             $Lista = new \stdClass();
             $Lista->value = $Datos->id_via;
-            $Lista->label = trim($Datos->nom_via);
+            $Lista->label = trim($Datos->abrev).'-'.trim($Datos->nom_via);
+//            $Lista->llabel= trim($Datos->abrev).'-'.trim($Datos->nom_via);
             array_push($todo, $Lista);
         }
         return response()->json($todo);
