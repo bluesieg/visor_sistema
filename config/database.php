@@ -66,6 +66,19 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        
+        'fotos' => [
+            'driver' => 'pgsql',
+            'host' => env('FOTOS_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('FOTOS_DATABASE', 'forge'),
+            'username' => env('FOTOS_USERNAME', 'forge'),
+            'password' => env('FOTOS_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

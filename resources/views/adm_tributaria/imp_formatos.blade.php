@@ -43,7 +43,7 @@
                         <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="abrir_rep('PU');">
                             <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir PU
                         </button>
-                        <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                        <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white" onclick="abrir_rep('PR');">
                             <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir PR
                         </button>
             </ul>
@@ -59,12 +59,12 @@
         $("#menu_admtri").show();
         $("#li_impform").addClass('cr-active')
         jQuery("#table_predios").jqGrid({
-            url: 'gridpredio?mnza=0&ctr=0',
+            url: 'gridpredio?mnza=0&ctr=0&tpre=0',
             datatype: 'json', mtype: 'GET',
             height: '200px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pred','t_pred', 'Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct'],
-            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
+            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos/Rusticos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
                 {name: 'tp', index: 'tp', align: 'center', width: 50},

@@ -30,8 +30,9 @@ class PisosController extends Controller
         $totapisos = DB::select("select count(id_pisos) as total from adm_tri.pisos where id_predio='".$request['id_pre']."'");
         $pisos->anio = date("Y");
         $pisos->cod_piso = $request['nro'];
-        $pisos->fch_const = $request['fech'];
-        $pisos->ant_ano = date("Y") - substr($request['fech'],-4);
+        $pisos->ani_const = $request['fech'];
+        $pisos->fch_const = "01/01/".$request['fech'];
+        $pisos->ant_ano = date("Y") - $request['fech'];
         $pisos->clas = "0".$request['clasi'];
         $pisos->mep = $request['mep'];
         $pisos->esc = $request['estconserv'];
@@ -90,8 +91,9 @@ class PisosController extends Controller
         if(count($val)>=1)
         {
             $val->cod_piso = $request['nro'];
-            $val->fch_const = $request['fech'];
-            $val->ant_ano = date("Y") - substr($request['fech'],-4);
+            $val->ani_const = $request['fech'];
+            $val->fch_const = "01/01/".$request['fech'];
+            $val->ant_ano = date("Y") - $request['fech'];
             $val->clas = "0".$request['clasi'];
             $val->mep = $request['mep'];
             $val->esc = $request['estconserv'];

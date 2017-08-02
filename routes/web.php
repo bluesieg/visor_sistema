@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('autocompletar_tipo_uso', 'General@autocompletar_tipo_uso'); //autocompleta tipos de uso
     Route::get('autocompletar_insta', 'General@autocompletar_instalaciones'); //autocompleta tipos de uso
     Route::get('sel_viaby_sec', 'General@sel_viaby_sec'); //seleccionas vias por mazana y sector
+    Route::get('sel_cat_gruterr', 'General@sel_cat_gruterr'); //seleccionas vias por mazana y sector
     Route::get('autocomplete_nom_via', 'configuracion\Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
@@ -120,17 +121,20 @@ Route::group(['middleware' => 'auth'], function() {
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
+        Route::resource('predios_rural', 'PredioRuralController');
         Route::resource('pisos_predios', 'PisosController');
         Route::resource('condominios_predios', 'CondominiosController');
         Route::resource('instalaciones_predios', 'InstalacionesController');
         Route::resource('pensionista_predios', 'PensionistaController');
+        Route::resource('arbitrios_municipales', 'ArbitriosController');
         Route::get('gridpredio','PredioController@listpredio');
         Route::get('gridpisos/{id}','PisosController@listpisos');
         Route::get('gridcondos/{id}','CondominiosController@listcondos');
         Route::get('gridinsta/{id}','InstalacionesController@listinsta');
-        Route::get('selmzna','PredioController@ListManz');//llena combo manzanas
-        Route::get('adm_impform/','PredioController@imprimir_formatos');//llena combo manzanas
-        Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');//llena combo manzanas
+        Route::get('gridarbitrios','ArbitriosController@listarbitrios');
+        Route::get('selmzna','PredioController@ListManz');
+        Route::get('adm_impform/','PredioController@imprimir_formatos');
+        Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
     });
     Route::get('$',function(){ echo 0;});//url auxiliar
 

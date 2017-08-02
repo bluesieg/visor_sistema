@@ -39,6 +39,10 @@ class InstalacionesController extends Controller
             {
                 $insta->pro_tot =$request['largo']+$request['ancho'];
             }
+            if($cat_instal->unid_medida=="UND")
+            {
+                $insta->pro_tot =$request['cant'];
+            }
             $insta->val_obra = $insta->pro_tot*$insta->val_unit;
         }
         $insta->id_instal = $request['inst'];
@@ -85,7 +89,11 @@ class InstalacionesController extends Controller
                 }
                 if($cat_instal->unid_medida=="ML")
                 {
-                    $insta->pro_tot =$request['largo']+$request['ancho'];
+                    $val->pro_tot =$request['largo']+$request['ancho'];
+                }
+                if($cat_instal->unid_medida=="UND")
+                {
+                    $val->pro_tot =$request['cant'];
                 }
                 $val->val_obra = $val->pro_tot*$val->val_unit;
             }

@@ -150,6 +150,9 @@
                             <li id="li_preurb">
                                 <a href="predios_urbanos" title="Predios Urbanos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
                             </li>
+                            <li id="li_arbmun">
+                                <a href="arbitrios_municipales" title="Arbítrios Municipales"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Arbítrios Muni.</span></a>
+                            </li>
                             <li class="">
                                 <a href='#' title="Predios Rusticos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-tree-deciduous"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
                             </li>

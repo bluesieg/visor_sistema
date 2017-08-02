@@ -1,12 +1,11 @@
 @extends('layouts.app')
 @section('content')
 <section id="widget-grid" class=""> 
+    
 <div class='cr_content col-xs-12'>
     <div class="col-xs-12">
-        <div class="col-lg-9">
-            <h1 class="txt-color-green"><b>Predios Urbanos...</b></h1>
-        </div>
-        <div class="col-lg-3 col-md-6 col-xs-12">
+        <div class="col-lg-9 col-md-6 col-xs-6"></div>
+        <div class="col-lg-3 col-md-6 col-xs-6">
             <label class="control-label col-lg-6">Año de Trabajo</label>
             <div class='col-lg-6'>
                 <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
@@ -17,25 +16,9 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-xs-12">
-        <label class="control-label col-lg-12">Sector</label>
-        <div class='col-lg-12'>
-            <select id='selsec' class="form-control col-lg-8" onchange="callpredtab()">
-            @foreach ($sectores as $sectores)
-            <option value='{{$sectores->id_sec}}' >{{$sectores->sector}}</option>
-            @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-xs-12">
-        <label class="control-label col-lg-12">Manzana</label>
-        <div class='col-lg-12' id="dvselmnza">
-            <select id="selmnza" class="form-control" onchange="callfilltab()">
-            @foreach ($manzanas as $manzanas)
-            <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
-            @endforeach
-            </select>
-        </div>
+    
+    <div class="col-lg-6 col-xs-12">
+            <h1 class="txt-color-green"><b>Predios Rusticos...</b></h1>
     </div>
     <div class="col-lg-6 col-md-12 col-xs-12">
         <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">                                        
@@ -70,14 +53,14 @@
     
     $(document).ready(function () {
         $("#menu_admtri").show();
-        $("#li_preurb").addClass('cr-active')
+        $("#li_preru").addClass('cr-active')
         jQuery("#table_predios").jqGrid({
-            url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val(),
+            url: 'gridpredio?tpre=2&mnza=0&ctr=0&an='+$("#selantra").val(),
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pred','t_pred', 'Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct'],
-            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
+            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Rusticos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
                 {name: 'tp', index: 'tp', align: 'center', width: 50},
@@ -220,32 +203,12 @@
     });
 </script>
 @stop
-<script src="{{ asset('archivos_js/adm_tributaria/predios.js') }}"></script>
+<script src="{{ asset('archivos_js/adm_tributaria/predios_ru.js') }}"></script>
 <div id="dlg_reg_dj" style="display: none;">
                     <div class="widget-body">
                     <div  class="smart-form">
-                        <div class="panel-group">                
-                            <div class="panel panel-success">
-                                <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class="col-xs-4"></div>
-                                    <div class="text-center col-xs-1" >
-                                        <input type="hidden" id="dlg_idpre" value="0">
-                                        <label class="label col-xs-12 text-center">Sector:</label>
-                                        <input class="text-center col-xs-12 form-control" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
-                                    </div>
-                                    <div class="text-center col-xs-1" >
-                                        <label class="label col-xs-12 text-center">Manzana:</label>
-                                        <input class="text-center col-xs-12 form-control" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
-                                    </div>
-                                    <div class="text-center col-xs-1 " >
-                                        <label class="label col-xs-12 text-center">Lote:</label>
-                                        <input class="text-center col-xs-12 form-control" id="dlg_lot" type="text" name="dlg_lot" disabled="" maxlength="3" onkeypress="return soloDNI(event);" onBlur="ajustar(2,'dlg_lot')">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
+                        
+                        <input id="dlg_idpre" type="hidden" value="0"/>
                         <div class="panel-group col-xs-8 " style="margin-top: 5px">                
                             <div class="panel panel-success">
                                 <div class="panel-heading bg-color-success">.:: Datos del Propietario ::.</div>
@@ -290,102 +253,94 @@
                             </div>
                         </div>
                         
-                        <div class="panel-group col-xs-8 " style="margin-top: 5px;  ">                
+                        <div class="panel-group col-xs-12 " style="margin-top: 5px;  ">                
                             <div class="panel panel-success ">
                                 <div class="panel-heading bg-color-success">.:: Ubicación del Predio ::.</div>
                                 <div class="panel-body cr-body">
                                    
-                                    <div class="col-xs-1" style="padding-left:15px !important">
-                                        <label class="label">Cod. Via:</label>
+                                    
+                                    <div class="col col-4" style="padding-right: 3px;">
+                                        <label class="label">Valle Lugar:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_nvia_des" type="text" onkeypress="return soloDNI(event);" class="input-sm" onblur="ajustar(5,'dlg_inp_nvia_des')" disabled="" >
+                                            <input id="dlg_inp_valle" type="text"  class="input-sm" maxlength="100">
                                         </label>
                                     </div>
-                                    <div class="col-xs-3">
-                                        <label class="label">Avenidad,Jirón, Calle o Pasaje:</label>
+                                    <div class="col col-3 pdboth_dlg_cr">
+                                        <label class="label">Carretera:</label>
                                         <label class="input">
-                                            <select id="dlg_inp_nvia"  class="form-control" onchange="callchangeoption('dlg_inp_nvia',1);" >
-                                                
-                                            </select>
+                                            <input id="dlg_inp_carre" type="text"  class="input-sm" maxlength="100">
+                                        </label>
+                                    </div>
+                                    <div class="col col-1 pdboth_dlg_cr">
+                                        <label class="label">KM:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_km" type="text"  class="input-sm" maxlength="5">
+                                        </label>
+                                    </div>
+                                    <div class="col col-4 pdboth_dlg_cr" style="padding-right: 10px !important;">
+                                        <label class="label">Nombre Predio:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_nompre" type="text"  class="input-sm" maxlength="50">
+                                        </label>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-group col-xs-12 " style="margin-top: 5px;  ">                
+                            <div class="panel panel-success ">
+                                <div class="panel-heading bg-color-success">.:: Predios Colindantes ::.</div>
+                                <div class="panel-body cr-body">
+                                    <div class="col col-3 " style="padding-right: 5px">
+                                        <label class="label">NORTE:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_norte" type="text"  class="input-sm" maxlength="50" placeholder="Nombre o Propietario predio Norte">
+                                        </label>
+                                    </div>
+                                    <div class="col col-3 pdboth_dlg_cr" style="padding-right: 5px">
+                                        <label class="label">SUR:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_sur" type="text"  class="input-sm" maxlength="50" placeholder="Nombre o Propietario predio Sur">
+                                        </label>
+                                    </div>
+                                    <div class="col col-3 pdboth_dlg_cr" style="padding-right: 5px">
+                                        <label class="label">ESTE:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_este" type="text"  class="input-sm" maxlength="50" placeholder="Nombre o Propietario predio Este">
+                                        </label>
+                                    </div>
+                                    <div class="col col-3 pdboth_dlg_cr" style="padding-right: 10px !important;">
+                                        <label class="label">OESTE:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_oeste" type="text"  class="input-sm" maxlength="50" placeholder="Nombre o Propietario predio Oeste">
                                         </label>
                                     </div>
                                     
-                                    <div class="col-xs-7 " style="padding: 0px !important; margin:0px !important">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label class="label ">N°</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_n" type="text"  class="input-sm" maxlength="19">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="label ">mz</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_mz" type="text"  class="input-sm" maxlength="5">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="label ">LT</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_lt" type="text"  class="input-sm" maxlength="5">
-                                                    </label>
-                                                </td>
-                                        
-                                                <td>
-                                                    <label class="label ">ZN</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_zn" type="text"  class="input-sm" maxlength="15">
-                                                    </label>
-                                                </td>
-                                                <td>    
-                                                    <label class="label ">SECC</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_secc" type="text"  class="input-sm" maxlength="15">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="label ">PISO</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_piso" type="text"  class="input-sm" maxlength="2">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="label ">DPTO</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_dpto" type="text"  class="input-sm" maxlength="5">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="label ">TDA/STAND</label>
-                                                    <label class="input">
-                                                        <input id="dlg_inp_tdastand" type="text"  class="input-sm">
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-group col-xs-4 " style="margin-top: 5px; ">                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">.:: Referencia ::.</div>
+                        <div class="panel-group col-xs-12 " style="margin-top: 5px;  ">                
+                            <div class="panel panel-success ">
+                                <div class="panel-heading bg-color-success">.:: Datos Relativos Al Terreno ::.</div>
                                 <div class="panel-body cr-body">
-                                    <div class="pd_dlg_cr" >
-                                        <label class="label">Referencia:</label>
-                                        <label class="input">
-                                            <input id="dlg_inp_refe" type="text"  class="input-sm" maxlength="150">
-                                        </label>
+                                    <div class='col col-2' >
+                                        <label class="label">Tipo Terreno:</label>
+                                        <select id='dlg_sel_tterr' class="form-control" >
+                                                @foreach ($tipoterr as $tter)
+                                                <option value='{{$tter->id_tip_pre_rus}}' >{{$tter->tipo_predio_rustico}}</option>
+                                                @endforeach
+                                        </select>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-group col-xs-9 " style="margin-top: 5px; margin-bottom: 5px  ">                
-                            <div class="panel panel-success">
-                                <div class="panel-heading bg-color-success">.:: Datos Relativos del Predio ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class='col-lg-2 pd_dlg_cr'>
+                                    <div class='col col-2 pdboth_dlg_cr' >
+                                        <label class="label">Uso Terreno:</label>
+                                        <select id='dlg_sel_uterr' class="form-control" >
+                                                @foreach ($usoterr as $uter)
+                                                <option value='{{$uter->id_uso_pr}}' >{{$uter->uso_pr_rus}}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                    <div class='col col-2 pdboth_dlg_cr'>
                                         <label class="label">Estado de Construccion:</label>
                                         <select id='dlg_sel_estcon' class="form-control" >
                                                 @foreach ($ecc as $eccpre)
@@ -393,7 +348,7 @@
                                                 @endforeach
                                         </select>
                                     </div>
-                                    <div class='col-lg-2 '>
+                                    <div class='col col-3 pdboth_dlg_cr '>
                                         <label class="label">Tipo de Predio:</label>
                                         <select id='dlg_sel_tippre' class="form-control" >
                                             @foreach ($tpre as $tpre)
@@ -401,24 +356,20 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class='col-lg-1 '>
-                                        <label class="label">Cod. Uso:</label>
-                                        <label class="input">
-                                            <input id="dlg_inp_usopre_cod" type="text"  class="input-sm" disabled="">
-                                        </label>
-                                    </div>
-                                    <div class='col-lg-6 '>
-                                        <label class="label">Uso Predio(catastro):</label>
-                                        <label class="input">
-                                            <input type="hidden" id="hidden_dlg_inp_usopre">
-                                            <input id="dlg_inp_usopre" type="text"  class="input-sm" placeholder="Escribir Uso Predio">
-                                        </label>
+                                    <div class='col col-3 pdboth_dlg_cr' style="padding-right: 10px !important;">
+                                        <label class="label">Uso del Predio(Arbitrios):</label>
+                                        <select id='dlg_sel_uspprearb' class="form-control" >
+                                            @foreach ($upa as $upa)
+                                            <option value='{{$upa->id_uso_arb}}' >{{$upa->uso_arbitrio}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-group col-xs-3 " style="margin-top: 5px; margin-bottom: 5px  ">                
-                            <div class="panel panel-success cr-panel-sep">
+                        
+                        <div class="panel-group col-xs-4 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                            <div class="panel panel-success">
                                 <div class="panel-heading bg-color-success">.:: Foma de Adquisición ::.</div>
                                 <div class="panel-body cr-body">
                                     <div class='col-lg-7 pd_dlg_cr'>
@@ -439,112 +390,42 @@
                             </div>
                         </div>
                         
-                        <div class="panel-group col-xs-2 " >                
-                            <div class="panel panel-success">
-                                <div class="panel-heading bg-color-success">.:: Servicios Básicos ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class='col-lg-5 pd_dlg_cr' >
-                                        <label class="label">Luz:</label>
-                                        <label class="input">
-                                            <input id="dlg_inp_luz" type="text"  class="input-sm" maxlength="10" >
-                                        </label>
-                                    </div>
-                                    <div class='col-lg-5'>
-                                        <label class="label">Agua:</label>
-                                        <label class="input">
-                                            <input id="dlg_inp_agua" type="text"  class="input-sm" maxlength="10">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-group col-xs-2 " >                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">.:: Licencia de Construcción ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class="col-lg-1"></div>
-                                    <div class='col-lg-5 '>
-                                        <label class="col-xs-4 cr-lb-radio">Si:</label>
-                                        <div class="col-xs-5">
-                                            <input name="dlg_rd_lcons" type="radio" value="1" >
-                                        </div>
-                                    </div>
-                                    <div class='col-lg-5 ' >
-                                        <label class="col-xs-4 cr-lb-radio">No:</label>
-                                        <div class="col-xs-5">
-                                            <input name="dlg_rd_lcons" type="radio" checked="" value="0">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-group col-xs-2 " >                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">.:: Conformidad de Obra ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class="col-lg-1"></div>
-                                    <div class='col-lg-5 '>
-                                        <label class="col-xs-4 cr-lb-radio">Si:</label>
-                                        <div class="col-xs-5">
-                                        <input name="dlg_rd_confobr" type="radio" value="1" >
-                                        </div>
-                                    </div>
-                                    <div class='col-lg-5 ' >
-                                        <label class="col-xs-4 cr-lb-radio">No:</label>
-                                        <div class="col-xs-5">
-                                            <input name="dlg_rd_confobr" type="radio" checked="" value="0">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-group col-xs-2 " >                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">.:: Declaratoria de Fábrica ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class="col-lg-1"></div>
-                                    <div class='col-lg-5 '>
-                                        <label class="col-xs-4 cr-lb-radio">Si:</label>
-                                        <div class="col-xs-5">
-                                            <input name="dlg_rd_defra" type="radio" value="1" >
-                                        </div>
-                                    </div>
-                                    <div class='col-lg-5 ' >
-                                        <label class="col-xs-4 cr-lb-radio">No:</label>
-                                        <div class="col-xs-5">
-                                            <input name="dlg_rd_defra" type="radio" checked="" value="0" >
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         
-                        <div class="panel-group col-xs-4 " >                
+                        <div class="panel-group col-xs-7 " style="margin-top: 5px; margin-bottom: 5px  " >                
                             <div class="panel panel-success cr-panel-sep">
                                 <div class="panel-heading bg-color-success">.:: Terreno ::.</div>
                                 <div class="panel-body cr-body">
-                                    <div class='col-lg-2 pd_dlg_cr' >
+                                    <div class='col col-3' style="padding-right: 3px;" >
+                                        <label class="label">Grupo Tierras:</label>
+                                        <select id='dlg_sel_gpoterr' class="form-control" onchange="llamarcambio();">
+                                                @foreach ($gpoterr as $gter)
+                                                <option value='{{$gter->id_gpo}}' >{{$gter->gpo_descrip}}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                    <div class='col col-3 pdboth_dlg_cr'  >
+                                        <label class="label">Categoria Tierras:</label>
+                                        <select id='dlg_sel_gpocatterr' class="form-control" onchange="callchangeoption('dlg_sel_gpocatterr',1);" >
+                                                
+                                        </select>
+                                    </div>
+                                    <div class=' col col-2 pdboth_dlg_cr' >
                                         <label class="label">Arancel:</label>
                                         <label class="input">
                                             <input id="dlg_inp_aranc" type="text"  class="input-sm" disabled="" style="text-align: right">
                                         </label>
                                     </div>
-                                    <div class='col-lg-3'>
-                                        <label class="label">Area Terr.:</label>
+                                    <div class='col col-2 pdboth_dlg_cr'>
+                                        <label class="label">Hectareas.:</label>
                                         <label class="input">
                                             <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
                                         </label>
                                     </div>
-                                    <div class='col-lg-3'>
-                                        <label class="label">Area comun Terr.:</label>
-                                        <label class="input">
-                                            <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
-                                        </label>
-                                    </div>
-                                    <div class='col-lg-2'>
+                                    
+                                    <div class='col col-2 pdboth_dlg_cr' style="padding-right: 10px !important;">
                                         <label class="label">Val Terr.:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="" style="text-align: right; width: 100px">
+                                            <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="" style="text-align: right;">
                                         </label>
                                     </div>
                                 </div>
@@ -762,9 +643,9 @@
                             </label>
                         </div>
                         <div class='col-lg-3 '>
-                            <label class="label">Año de construccion:</label>
+                            <label class="label">Fecha:</label>
                             <label class="input">
-                                <input id="rpiso_inp_fech" type="text"  class="input-sm" maxlength="4" >
+                                <input id="rpiso_inp_fech" type="text"  class="input-sm" data-mask="99/99/9999" data-mask-placeholder="-" >
                             </label>
                         </div>
                         <div class="col-xs-12"></div>
@@ -1023,7 +904,9 @@
                                 <input id="rinst_inp_canti" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
                             </label>
                         </div>
+                       
                     </div>
+                    
                 </div>
             </div>
         </div>

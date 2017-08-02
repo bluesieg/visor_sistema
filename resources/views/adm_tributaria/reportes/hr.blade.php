@@ -177,12 +177,12 @@
               <tr>
                   <td class="nro">19</td>
                   <th>IMPUESTO ANUAL</th>
-                  <td></td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql->ivpp,2)}}</td>
               </tr>
               <tr>
                   <td class="nro">20</td>
                   <th>IMPUESTO TRIMESTRAL</th>
-                  <td></td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format(($sql->ivpp/4),2)}}</td>
               </tr>
             </thead>
         </table>

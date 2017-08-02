@@ -28,7 +28,7 @@ function callfilltab()
 {
     if($("#dlg_contri_hidden").val()>0)
     {
-        jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?mnza=0&ctr='+$("#dlg_contri_hidden").val()+'&an='+$("#selantra").val()}).trigger('reloadGrid');
+        jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=0&mnza=0&ctr='+$("#dlg_contri_hidden").val()+'&an='+$("#selantra").val()}).trigger('reloadGrid');
     }
     else
     {
@@ -41,6 +41,16 @@ function abrir_rep(tip)
     if(Id==null)
     {
         mostraralertas("No hay Predio seleccionado para impresión");
+        return false;
+    }
+    if(tip=="PR" && $('#table_predios').jqGrid('getCell',Id,'tp')!="RUS")
+    {
+        mostraralertas("El predio seleccionado no es Rustico.");
+        return false;
+    }
+    if(tip=="PU" && $('#table_predios').jqGrid('getCell',Id,'tp')!="URB")
+    {
+        mostraralertas("El predio seleccionado no es Urbano.");
         return false;
     }
     window.open('pre_rep/'+tip+'/'+Id+'/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val());
@@ -72,7 +82,7 @@ function fn_bus_contrib_list(per)
     $("#dlg_contri_hidden").val(per);
     $("#dlg_dni").val($('#table_contrib').jqGrid('getCell',per,'id_per'));
     $("#dlg_contri").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
-    jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?mnza=0&ctr='+per+'&an='+$("#selantra").val()}).trigger('reloadGrid');
+    jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=0&mnza=0&ctr='+per+'&an='+$("#selantra").val()}).trigger('reloadGrid');
     $("#dlg_bus_contr").dialog("close");
     
 }
