@@ -1,5 +1,6 @@
 function limpiararb()
 {
+    $("#sel_mes_ini").val(1);
     $("#sel_bar_frecu,#sel_ressol_frecu,#sel_seren_cat,#sel_parq_cat,#sel_ressol_tp").val(0);
     $("#inp_bar_frent,#sel_bar_frecu_cos,#inp_bar_costot,#inp_bar_costri,#inp_bar_cosmes").val("");
     $("#inp_ressol_area,#sel_ressol_frecu_cos,#inp_ressol_costot,#inp_ressol_costri,#inp_ressol_cosmes").val("");
@@ -16,7 +17,6 @@ function traer_contri_cod(input, doc) {
             if (data.msg == 'si') {
                 $("#" + input + "_hidden").val(data.id_pers);
                 $("#" + input).val(data.contribuyente);
-                
             } else {
                 $("#" + input + "_hidden").val(0);
                 $("#" + input).val("");
@@ -25,7 +25,6 @@ function traer_contri_cod(input, doc) {
             }
             MensajeDialogLoadAjaxFinish(input);
             callfilltab();
-
         },
         error: function (data) {
             mostraralertas('* Error Interno !  Comuniquese con el Administrador...');
@@ -35,6 +34,10 @@ function traer_contri_cod(input, doc) {
 }
 function callfilltab()
 {
+    obtener_barrido_fec();
+    obtener_serenazgo_fec();
+    getfrecparques();
+    $("#table_arbitrios").jqGrid("clearGridData", true);
     if($("#dlg_contri_hidden").val()>0)
     {
         jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza=0&ctr='+$("#dlg_contri_hidden").val()+'&an='+$("#selantra").val()}).trigger('reloadGrid');
@@ -43,6 +46,72 @@ function callfilltab()
     {
         $("#table_predios").jqGrid("clearGridData", true);
     }
+}
+function obtener_barrido_fec()
+{
+     MensajeDialogLoadAjax("sel_bar_frecu", '.:: Cargando ...');
+    $.ajax({url: 'getfrecbarrido/'+$("#selantra").val(),
+        type: 'GET',
+        success: function(data) 
+        {
+            $("#sel_bar_frecu").html("");
+            $("#sel_bar_frecu").append($('<option>',{value:0,text: "--Seleccione--", costo:0}));
+            for (var i=0; i < data.length; i++)
+            {
+                $("#sel_bar_frecu").append($('<option>',{value:data[i].id_bar_cal,text: data[i].frecuencia+"-Veces por Semana", costo:data[i].costo}));
+            } 
+            MensajeDialogLoadAjaxFinish("sel_bar_frecu");
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            }
+        });
+}
+function obtener_serenazgo_fec()
+{
+     MensajeDialogLoadAjax("sel_seren_cat", '.:: Cargando ...');
+    $.ajax({url: 'getfrecserenazgo/'+$("#selantra").val(),
+        type: 'GET',
+        success: function(data) 
+        {
+            $("#sel_seren_cat").html("");
+            $("#sel_seren_cat").append($('<option>',{value:0,text: "--Seleccione--", costo:0}));
+            for (var i=0; i < data.length; i++)
+            {
+                $("#sel_seren_cat").append($('<option>',{value:data[i].id_seren,text: data[i].categoria, costo:data[i].costo}));
+            } 
+            MensajeDialogLoadAjaxFinish("sel_seren_cat");
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            }
+        });
+}
+function getfrecparques()
+{
+     MensajeDialogLoadAjax("sel_parq_cat", '.:: Cargando ...');
+    $.ajax({url: 'getfrecparques/'+$("#selantra").val(),
+        type: 'GET',
+        success: function(data) 
+        {
+            $("#sel_parq_cat").html("");
+            $("#sel_parq_cat").append($('<option>',{value:0,text: "--Seleccione--", costo:0}));
+            for (var i=0; i < data.length; i++)
+            {
+                $("#sel_parq_cat").append($('<option>',{value:data[i].id_par_jar,text: data[i].categoria, costo:data[i].costo}));
+            } 
+            MensajeDialogLoadAjaxFinish("sel_parq_cat");
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            }
+        });
 }
 function fn_bus_contrib()
 {
@@ -75,6 +144,7 @@ function fn_bus_contrib_list(per)
 }
 function create_arb()
 {
+    $("#tit_anio").html("<b>Arbitrios para el Año "+$("#selantra").val()+"...</b>")
     limpiararb();
     $("#dlg_new_arbi").dialog({
         autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
@@ -95,29 +165,56 @@ function new_arb()
     MensajeDialogLoadAjax('dlg_new_arbi', '.:: Cargando ...');
         $.ajax({url: 'arbitrios_municipales/'+Id,
         type: 'GET',
-        data:{an:$("#selantra").val()},
+        data:{an:$("#selantra").val(),new:1},
         success: function(r) 
         {
-            if(r[0].id_predio==0)
-            {
-                $("#btnupdatearb").show();
-                $("#btnsavearb").hide();
-                $("#inp_hidd_arb").val(r[0].id_arb);
-                $("#sel_bar_frecu").val(r[0].frecu_bar);
-                $("#inp_bar_frent").val(r[0].frentera);
-                change_select('sel_bar_frecu',1);
-                $("#inp_ressol_area").val(r[0].area_const);
-                call_frec_rrs(r[0].id_rrs);
-                $("#sel_seren_cat").val(r[0].id_seren);
-                $("#sel_parq_cat").val(r[0].id_par_jar);
-            }
-            else
-            {
-                $("#inp_hidd_arb").val(0);
-                $("#btnupdatearb").hide();
-                $("#btnsavearb").show();
-                $("#inp_ressol_area").val(r[0].area_const);
-            }
+            getpisos(0);
+            $("#inp_hidd_arb").val(0);
+            $("#btnupdatearb").hide();
+            $("#btnsavearb").show();
+            $("#inp_ressol_area").val(r[0].area_const);
+            $("#sel_mes_ini, #sel_pis_uso").prop( "disabled", false );
+            MensajeDialogLoadAjaxFinish('dlg_new_arbi');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_new_arbi');
+            $("#dlg_new_arbi").dialog('close');
+        }
+        });
+}
+function mod_arb()
+{
+    limpiararb();
+    Id=$('#table_arbitrios').jqGrid ('getGridParam', 'selrow');
+    if(Id==null)
+    {
+        mostraralertas("No hay Arbitrio seleccionado");
+        return false;
+    }
+    create_arb();
+    MensajeDialogLoadAjax('dlg_new_arbi', '.:: Cargando ...');
+        $.ajax({url: 'arbitrios_municipales/'+Id,
+        type: 'GET',
+        data:{an:$("#selantra").val(),new:0},
+        success: function(r) 
+        {
+            getpisos(r[0].id_pisos);
+            $("#btnupdatearb").show();
+            $("#btnsavearb").hide();
+            $("#inp_hidd_arb").val(r[0].id_arb);
+            $("#sel_bar_frecu").val(r[0].frecu_bar);
+            $("#inp_bar_frent").val(r[0].frentera);
+            change_select('sel_bar_frecu',1);
+            $("#inp_ressol_area").val(r[0].area_const);
+            $("#sel_ressol_tp").val(r[0].id_uso_arb);
+            call_frec_rrs(r[0].id_rrs);
+            $("#sel_seren_cat").val(r[0].id_seren);
+            $("#sel_parq_cat").val(r[0].id_par_jar);
+            $("#sel_mes_ini").val(r[0].ini_mes);
+            $("#sel_mes_ini, #sel_pis_uso").prop( "disabled", true );
             MensajeDialogLoadAjaxFinish('dlg_new_arbi');
         },
         error: function(data) {
@@ -134,18 +231,27 @@ function savearb()
 {
     pred=$('#table_predios').jqGrid ('getGridParam', 'selrow');
     cod=$('#table_predios').jqGrid ('getCell', pred, 'cod_cat');
+    if($("#inp_bar_cosmes").val()==""){$("#inp_bar_cosmes").val(0)};
+    if($("#inp_ressol_cosmes").val()==""){$("#inp_ressol_cosmes").val(0)};
+    if($("#inp_seren_cosmes").val()==""){$("#inp_seren_cosmes").val(0)};
+    if($("#inp_parq_mes").val()==""){$("#inp_parq_mes").val(0)};
+    if($("#inp_ressol_area").val()==""){$("#inp_ressol_area").val(0)};
     MensajeDialogLoadAjax('dlg_new_arbi', '.:: Guardando ...');
     $.ajax({url: 'arbitrios_municipales/create',
     type: 'GET',
     data:{barfrec:$("#sel_bar_frecu").val(),barfrent:$("#inp_bar_frent").val(),pred:pred,cod:cod,
-            an:$("#selantra").val(),rrsfrec:$("#sel_ressol_frecu").val(),seren:$("#sel_seren_cat").val(),
-            parjar:$("#sel_parq_cat").val()},
+            an:$("#selantra").val(),usorrs:$("#sel_ressol_tp").val(),rrsfrec:$("#sel_ressol_frecu").val(),seren:$("#sel_seren_cat").val(),
+            parjar:$("#sel_parq_cat").val(),contrib:$("#dlg_contri_hidden").val(),
+            mesbar:$("#inp_bar_cosmes").val(),mesrrs:$("#inp_ressol_cosmes").val(),
+            messeren:$("#inp_seren_cosmes").val(),mesparjar:$("#inp_parq_mes").val(),inimes:$("#sel_mes_ini").val(),
+            pis_uso:$("#sel_pis_uso").val(),area:$("#inp_ressol_area").val()},
     success: function(r) 
     {
         $('#dlg_idpre').val(r);
         MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        //jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
+        llenararbitrios();
         MensajeDialogLoadAjaxFinish('dlg_new_arbi');
+        $("#dlg_new_arbi").dialog('close');
         
     },
     error: function(data) {
@@ -163,12 +269,12 @@ function updatearb()
     $.ajax({url: 'arbitrios_municipales/'+id+'/edit',
     type: 'GET',
     data:{barfrec:$("#sel_bar_frecu").val(),barfrent:$("#inp_bar_frent").val(),rrsuso:$("#sel_ressol_tp").val(),
-        rrsfrec:$("#sel_ressol_frecu").val(),seren:$("#sel_seren_cat").val(),parjar:$("#sel_parq_cat").val()},
+        rrsfrec:$("#sel_ressol_frecu").val(),usorrs:$("#sel_ressol_tp").val(),seren:$("#sel_seren_cat").val(),parjar:$("#sel_parq_cat").val()},
     success: function(r) 
     {
         $('#dlg_idpre').val(r);
         MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        //jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
+        llenararbitrios();
         MensajeDialogLoadAjaxFinish('dlg_new_arbi');
         
     },
@@ -184,7 +290,6 @@ function llenararbitrios()
 {
     pred=$('#table_predios').jqGrid ('getGridParam', 'selrow');
     jQuery("#table_arbitrios").jqGrid('setGridParam', {url: 'gridarbitrios?pre='+pred+'&an='+$("#selantra").val()}).trigger('reloadGrid');
-
 }
 function change_select(input,tip)
 {
@@ -193,6 +298,10 @@ function change_select(input,tip)
         $("#"+input+"_cos").val($("#"+input+" option:selected").attr("costo"));
     }
     calculos(tip);
+}
+function cambiarpis()
+{
+     $("#inp_ressol_area").val($("#sel_pis_uso option:selected").attr("costo"));
 }
 function calculos(tip)
 {
@@ -254,6 +363,36 @@ function call_frec_rrs(valu)
             console.log('error');
             console.log(data);
             
+        }
+        });
+}
+
+function getpisos(valor)
+{
+    $("#sel_pis_uso").html("");
+    MensajeDialogLoadAjax('sel_pis_uso', '.:: Cargando ...');
+    Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+    $.ajax({url: 'gridpisos/'+Id,
+        type: 'GET',
+        data:{page:1,limit:1,sidx:'cod_piso',sord:'asc',rows:1},
+        success: function(r) 
+        {
+            total=0;
+            $("#sel_pis_uso").append($('<option>',{value:0,text: "Todos",costo:0}));
+            for (var i=0; i < r['rows'].length; i++)
+            {
+                total=parseFloat(total)+parseFloat(r['rows'][i].cell[13]);
+                $("#sel_pis_uso").append($('<option>',{value:r['rows'][i].cell[0],text: r['rows'][i].cell[1], costo:r['rows'][i].cell[13]}));
+            }
+            $("#sel_pis_uso").find('option[value="0"]').attr('costo',total);
+            MensajeDialogLoadAjaxFinish('sel_pis_uso');
+            $("#sel_pis_uso").val(valor);
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('sel_pis_uso');
         }
         });
 }

@@ -306,6 +306,10 @@ nav ul li a {
 {
     margin-left: 5px !important;
 }
+.cr_toogle label
+{
+    color: #000000;
+}
 
 html input[disabled] {
     cursor: default;    

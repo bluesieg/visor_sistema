@@ -127,6 +127,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('instalaciones_predios', 'InstalacionesController');
         Route::resource('pensionista_predios', 'PensionistaController');
         Route::resource('arbitrios_municipales', 'ArbitriosController');
+        Route::get('getfrecbarrido/{an}','ArbitriosController@barrido_by_an');
+        Route::get('getfrecserenazgo/{an}','ArbitriosController@serenazgo_by_an');
+        Route::get('getfrecparques/{an}','ArbitriosController@paques_by_an');
+        Route::get('getfrecrrs','ArbitriosController@frec_rrs');
         Route::get('gridpredio','PredioController@listpredio');
         Route::get('gridpisos/{id}','PisosController@listpisos');
         Route::get('gridcondos/{id}','CondominiosController@listcondos');

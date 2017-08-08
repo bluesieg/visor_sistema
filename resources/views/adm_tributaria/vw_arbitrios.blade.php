@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 <section id="widget-grid" class=""> 
-    <div class='cr_content col-xs-12 ' style="padding-bottom: 5px;">
-        <h1 class="txt-color-green" style="margin-bottom: 0px;"><b>Arbítrios Municipales...</b></h1>
+    <div class='cr_content col-xs-12 ' style="padding-bottom: 0px;">
+        <h1 class="txt-color-green" style="margin-bottom: 0px;margin-top: 2px"><b>Arbítrios Municipales...</b></h1>
 
         <div class="col-xs-12 cr-body" style="margin-top: 10px;">
             <label class="control-label col-lg-2">Código Contribuyente:</label>
@@ -51,7 +51,6 @@
 
 @section('page-js-script')
 <script type="text/javascript">
-    
     $(document).ready(function (){
         $("#menu_admtri").show();
         $("#li_arbmun").addClass('cr-active')
@@ -90,14 +89,14 @@
                         }
                 },
             onSelectRow: function (Id){llenararbitrios();},
-            ondblClickRow: function (Id){new_arb();}
+            ondblClickRow: function (Id){}
         });
         jQuery("#table_arbitrios").jqGrid({
             url: 'gridarbitrios?pre=0&an=0',
             datatype: 'json', mtype: 'GET',
-            height: '50px', autowidth: true,
+            height: '80px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_arb','Cod. Predio', 'Año', 'Frec. Barrido', 'Costo Barrido','Frecu. Recojo Residuos',
+            colNames: ['id_arb','Cod. Predio', 'Año','Piso', 'Frec. Barrido', 'Costo Barrido','Frecu. Recojo Residuos',
                 'Costo Recojo Residuos','Cat. Parques y Jadines',
             'Costo Parq. y Jard.','Cat. Serenazgo','Costo Serenazgo'],
             rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Lista De Predios Urbanos', align: "center",
@@ -105,6 +104,7 @@
                 {name: 'id_arb', index: 'id_arb', hidden: true},
                 {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 50},
                 {name: 'anio', index: 'anio', align: 'center', width: 50},
+                {name: 'cod_piso', index: 'cod_piso', align: 'center', width: 50},
                 {name: 'frecu_bar', index: 'frecu_bar', align: 'center', width: 50},
                 {name: 'cos_bar', index: 'cos_bar', align: 'center', width: 50},
                 {name: 'frecu_rrs', index: 'frecu_rrs', align: 'center', width: 50},
@@ -125,7 +125,7 @@
                         
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){new_arb();}
+            ondblClickRow: function (Id){mod_arb();}
         });
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
@@ -177,7 +177,6 @@
        
         
     });
-    
 </script>
 @stop
 <script src="{{ asset('archivos_js/adm_tributaria/arbitrios.js') }}"></script>
@@ -189,6 +188,39 @@
 </div> 
 <div id="dlg_new_arbi" style="display: none;">
     <input type="hidden" id="inp_hidd_arb" value="0" />
+    <div class="col-xs-6">
+        <div class="panel-body" style="padding-left: 0px;" >
+             <label class="label col-xs-4 text-align-left" style="font-size: 1.4em; color:black; padding: 0px;">Mes de Inicio</label>
+                <div class="col-xs-4" style="padding: 0px">
+                    <select id="sel_mes_ini"  class="form-control">
+                        <option value='1'>Enero</option>
+                        <option value='2'>Febrero</option>
+                        <option value='3'>Marzo</option>
+                        <option value='4'>Abril</option>
+                        <option value='5'>Mayo</option>
+                        <option value='6'>Junio</option>
+                        <option value='7'>Julio</option>
+                        <option value='8'>Agosto</option>
+                        <option value='9'>Septiembre</option>
+                        <option value='10'>Octubre</option>
+                        <option value='11'>Noviembre</option>
+                        <option value='12'>Diciembre</option>
+                    </select>
+                </div>
+         </div>
+        <div class="panel-body" style="padding-left: 0px;" >
+             <label class="label col-xs-4 text-align-left" style="font-size: 1.4em; color:black; padding: 0px;">Piso de uso</label>
+                <div class="col-xs-4" style="padding: 0px">
+                    <select id="sel_pis_uso"  class="form-control" onchange="cambiarpis()">
+                        <option value='0'>Todos</option>
+                    </select>
+                </div>
+         </div>
+    </div>
+    <div class="col-xs-6 text-align-right">
+        <h1 id="tit_anio" class="txt-color-green" style="margin-bottom: 0px;"> </h1>
+    </div>
+    <div class="col-xs-12">
     <div class="jarviswidget jarviswidget-color-green" id="wid-id-10" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
         <header>
                 <span class="widget-icon"> <i class="fa fa-list-alt"></i> </span>
@@ -268,7 +300,7 @@
                                 <div class="col-xs-2" style="padding: 0px" >
                                     <label class="label col-xs-12 text-align-left" style="padding-left: 15px;">Area Construida(m2)</label>
                                     <label class="input col-xs-12">
-                                        <input id="inp_ressol_area" type="text"  class="form-control text-align-right"  onkeypress="return soloNumeroTab(event);" disabled="">
+                                        <input id="inp_ressol_area" type="text"  class="form-control text-align-right"  onkeypress="return soloNumeroTab(event);" >
                                     </label>
                                 </div>
                                 <div class="col-xs-2" style="padding: 0px">
@@ -383,6 +415,7 @@
         </div>
         <!-- end widget div -->
      </div>
+    </div>
     <div class="col-xs-12 text-align-right" style="padding: 0px; margin-top: 5px;">
         <ul style="padding: 0px;">                                        
             <button id="btnsavearb" type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="savearb()">

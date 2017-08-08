@@ -103,7 +103,8 @@ class Contribuyentes extends Controller
                 trim($Datos->id_pers),
                 trim($Datos->id_persona),
                 trim($Datos->nro_doc),
-                trim(str_replace("-", "",$Datos->contribuyente)), 
+                trim(str_replace("-", "",$Datos->contribuyente)),
+                trim($Datos->dom_fiscal),
             );
         }
         return response()->json($Lista);
