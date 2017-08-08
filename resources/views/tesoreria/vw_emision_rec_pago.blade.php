@@ -25,8 +25,11 @@
                             <button onclick="" style="display: none;" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="fa fa-search"></i></span>Buscar
                             </button>
+                            <button onclick="dialog_emi_rec_pag_arbitrios();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Arbitrios
+                            </button>
                             <button onclick="dialog_emi_rec_pag_imp_predial();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Rec. Impuesto Predial
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Impuesto Predial
                             </button>
                             <button id="btn_vw_valores_arancelarios_Editar" onclick="" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Fraccionamiento
@@ -207,7 +210,18 @@
                     globalvalidador=0;
                 }                
             }
-        });        
+        });
+        var globalvalidador_2=0;
+        $("#vw_emi_rec_arbitrios_contrib").keypress(function (e) {
+            if (e.which == 13) {
+                if(globalvalidador_2==0){
+                    fn_bus_contrib_arb();
+                    globalvalidador_2=1;
+                }else{
+                    globalvalidador_2=0;
+                }                
+            }
+        });
     });
     
     window.addEventListener('load', function(){
@@ -363,8 +377,8 @@
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
                                         <select onchange="" id="vw_emi_rec_imp_pre_anio" class="input-sm">                                       
-                                        @foreach ($anio as $anio)                                        
-                                        <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                        @foreach ($anio as $anio1)                                        
+                                        <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
                                         @endforeach                                    
                                     </select><i></i>                        
                                 </section>
@@ -421,12 +435,165 @@
         </div>        
     </div>
 </div>
+<div id="vw_emision_rec_pag_arbitrios" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
+                    <div class="panel-body cr-body">
+                        <fieldset>
+                            <div class="row">                                
+                                <section class="col col-2" style="padding-right: 5px;">
+                                    <input type="hidden" id="vw_emi_rec_arbitrios_id_pers">
+                                    <label class="label">Cod Contrib:</label>
+                                    <label class="input">
+                                        <input id="vw_emi_rec_arbitrios_cod_contrib" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-8" style="padding-left: 5px;padding-right:5px; ">
+                                    <label class="label">Contribuyente:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_emi_rec_arbitrios_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
+                                    </label>
+                                </section>
+                                <section class="col col-2" style="padding-left:5px">
+                                    <label class="label">Año:</label>                                   
+                                    <label class="select">
+                                        <select onchange="" id="vw_emi_rec_arbitrios_anio" class="input-sm">                                       
+                                        @foreach ($anio as $anio2)                                        
+                                        <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
+                                        @endforeach                                    
+                                    </select><i></i>                        
+                                </section>
+                            </div>                            
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="panel panel-success" style="border: 0px !important">                    
+                    <div class="panel-body">    
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important">
+                            <table id="table_Predios_Arbitrios"></table>
+                            <div id="pager_table_Predios_Arbitrios"></div>
+                        </article>
+                    </div>
+                </div>
+                <div class="panel panel-success" style="border: 0px !important">                    
+                    <div class="panel-body">    
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important">
+                            <table id="table_cta_Arbitrios"></table>
+                            <div id="pager_table_cta_Arbitrios">
+                                <div style="float: right; font-weight: bold;">
+                                    Total S/. <input type="text" id="vw_emision_rec_Arbitrios_tot" class="input-xm text-right" style="width: 100px; height: 21px;padding-right: 4px;margin-bottom: -3px;" readonly="">
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>                   
+        </div>        
+    </div>
+</div>
+<div id="vw_emision_rec_pag_arbitrios_fraccionamiento" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos del Convenio ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-2" style="padding-right: 5px;">                                    
+                                    <label class="label">Fecha:</label>
+                                    <label class="input">
+                                        <input id="vw_emi_rec_arbitrios_fracc_fecha" data-mask="99/99/9999" data-mask-placeholder=".." value="<?php date_default_timezone_set('America/Lima');echo date('d-m-Y') ?>" type="text" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-2" style="padding-right: 5px;padding-left: 5px;">                                    
+                                    <label class="label">Total:</label>
+                                    <label class="input">
+                                        <input id="vw_emi_rec_arbitrios_fracc_tot" value="10093.64" type="text" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-1" style="padding-left: 5px;padding-right:5px; ">
+                                    <label class="label">Tim:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_emi_rec_arbitrios_fracc_tim" value="{{$cfracc[0]->tif}}" type="text" class="input-sm" disabled="">
+                                    </label>
+                                </section>
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
+                                    <label class="label">N°Cuotas Aprob:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_emi_rec_arbitrios_fracc_n_cuo" onkeypress="return soloDNI(event);" type="text" class="input-sm">
+                                    </label>                       
+                                </section>
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
+                                    <label class="label">Inicial:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_emi_rec_arbitrios_fracc_inicial" onkeypress="return soloNumeroTab(event);" type="text" class="input-sm">
+                                    </label>                       
+                                </section>
+                                <section class="col col-3" style="padding-left:5px">
+                                      <label class="label">&nbsp;</label>
+                                        <a onclick="realizar_table_fracc();" class="btn btn-primary btn-sm">Ver Fraccionamiento</a>                    
+                                </section>
+                            </div>                            
+                        </fieldset>
+                    </div>
+                </div>
+                
+                <div class="panel panel-success" style="border: 0px !important;height: 350px;">
+                    <div class="panel-heading bg-color-success">.:: Vista Fraccionamiento ::.</div>
+                    <div class="panel-body">    
+                        <div style="border: 1px solid #DDD; margin-bottom: 6px;">
+                            <table id="t_dina_conve_fracc" class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th width="2%" align="center">N</th>
+                                        <th width="20%" style="text-align: center">SALDO</th>
+                                        <th width="20%" style="text-align: center">AMORTIZACION</th>
+                                        <th width="20%" style="text-align: center">INTERES</th>
+                                        <th width="20%" style="text-align: center">TOTAL</th>
+                                        <th width="20%" style="text-align: center">Fecha Vence</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th width="2%" align="center"></th>
+                                        <th width="20%" style="text-align: right">Totales S/.</th>
+                                        <th width="20%" style="border-top: 2px solid #017E42;">
+                                            <label class='input'><input id="vw_em_rec_fracc_tot_amor" type="text" value="000.000" class="input-xs text-align-right" disabled=""></label>
+                                        </th>
+                                        <th width="20%" style="border-top: 2px solid #017E42;">
+                                            <label class='input'><input id="vw_em_rec_fracc_tot_inter" type="text" value="000.000" class="input-xs text-align-right" disabled=""></label>
+                                        </th>
+                                        <th width="20%" style="border-top: 2px solid #017E42;">
+                                            <label class='input'><input id="vw_em_rec_fracc_tot_cc" type="text" value="000.000" class="input-xs text-align-right" disabled=""></label>
+                                        </th>
+                                        <th width="20%" align="center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>                   
+        </div>        
+    </div>
+</div>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>
         <div id="pager_table_contrib"></div>
     </article>
 </div>
+<script src="{{ asset('js/moment.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_varios.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_imp_predial.js') }}"></script>
+<script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_arbitrios.js') }}"></script>
 @endsection

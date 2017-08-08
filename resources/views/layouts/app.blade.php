@@ -127,6 +127,9 @@
                             <li>
                                 <a href="#" title="Configuracion del IPM."><i class="fa fa-cogs"></i>Config. IPM</a>
                             </li>
+                            <li id="li_config_fraccionamiento">
+                                <a href="config_fraccionamiento" title="Configuracion Convenio de Fraccionamiento"><i class="fa fa-cogs"></i>Fraccionamiento</a>
+                            </li>
                             <li id="li_config_usuarios">
                                 <a href="{{ route('usuarios') }}" title="Usuarios"><i class="fa fa-group"></i>Usuarios</a>
                             </li>                        
@@ -159,6 +162,9 @@
                             <li id="li_impform">
                                 <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
                             </li>
+                            <li id="li_fraccionamiento" style="border-top: 2px solid greenyellow;">
+                                <a href="conve_fraccionamiento" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Fraccionamiento</span></a>
+                            </li>
                         </ul>	
                     </li>
                     <li class="">
@@ -180,7 +186,7 @@
                             </li>
                             <li id="li_menu_caja_est_cta">
                                 <a href="estado_de_cta" title="Estado de Cuentas"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Estado de Cuentas</span></a>
-                            </li>
+                            </li>                            
                         </ul>
                     </li>
                 </ul>
@@ -233,7 +239,7 @@
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>-->
 
         <script src="{{ asset('archivos_js/global_function.js') }}"></script>
-
+        <script src="{{ asset('js/moment.js') }}"></script>
         <script src="{{ asset('js/app.config.js') }}"></script>
         <script src="{{ asset('js/app.min.js') }}"></script>
         <script src="{{ asset('js/block_ui.js') }}"></script>

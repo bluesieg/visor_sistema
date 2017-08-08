@@ -163,7 +163,7 @@ function calc_tot_a_pagar_form(num){
 }
 
 function calcular_tot_a_pagar(){
-    alert($("#vw_emi_rec_imp_pred_hora_act").val());
+//    alert($("#vw_emi_rec_imp_pred_hora_act").val());
 }
 
 function fn_bus_contrib(){

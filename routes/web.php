@@ -35,7 +35,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //    return view('fnewUsuario');
 //});
 
-//Route::get('via', 'General@prueba');
+Route::get('fracc', 'General@fraccionamiento');
 
 //Route::get('/usuarios', function () {
 //    return view("administracion/vw_usuarios");
@@ -106,7 +106,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('autocompletar_tributo','Recibos_MasterController@completar_tributo');// recibos varios
         Route::get('emi_recib_buscar_persona','Recibos_MasterController@buscar_persona');
         Route::post('insert_new_persona','Recibos_MasterController@insert_new_persona');
-        ROute::get('get_grid_cta_cte2','Recibos_MasterController@tabla_cta_cte_2');
+        Route::get('get_grid_cta_cte2','Recibos_MasterController@tabla_cta_cte_2');
+        Route::get('grid_pred_arbitrios','Recibos_MasterController@tabla_cta_arbitrios');
+        Route::get('grid_cta_pago_arbitrios','Recibos_MasterController@cta_pago_arbitrios');
     });
     Route::group(['namespace' => 'caja'], function() {
 //        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
@@ -118,6 +120,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
         Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
     });
+    Route::group(['namespace' => 'configuracion'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
+        Route::resource('config_fraccionamiento','Fraccionamiento');        
+    });    
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
@@ -139,6 +144,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('selmzna','PredioController@ListManz');
         Route::get('adm_impform/','PredioController@imprimir_formatos');
         Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
+        /*////****************    FRACCIONAMIENTO      **********************/
+        Route::resource('conve_fraccionamiento','ConvenioController');
+        Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
     });
     Route::get('$',function(){ echo 0;});//url auxiliar
 

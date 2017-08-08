@@ -152,4 +152,44 @@ class General extends Controller {
 //        dd(DB::getQueryLog($table));
 //        dd($table);
     }
+    
+    function fraccionamiento(){
+        $tim=1.2/100;
+        $tif=0.8*$tim;
+        
+        $total=10093.64;
+        $inicial=3000.00;
+        $n_cuotas=6;
+        
+        $pot= pow(2, 3);
+        
+        $deuda_total=$total-$inicial;
+        
+        $cc=(($tif*pow(1+$tif,$n_cuotas))/(pow(1+$tif,$n_cuotas)-1))*$deuda_total;
+        
+        echo 'TIM: '.$tim.'<br>TIF: '.$tif.'<br>';
+        echo 'Total: '.$total.'<br>';
+        echo 'Inicial: '.$inicial.'<br>';
+        echo 'N° Cuotas: '.$n_cuotas.'<br>';
+        echo 'Total: '.$pot.'<br>';
+        echo 'Deuda: '.$deuda_total.'<br>'; 
+        echo 'Cuota C: '.number_format($cc,2,'.','').'<br>';
+        
+        $amor=0;$saldo=0;$interes=0;$deuda=0;
+        
+        for($i=1;$i<=$n_cuotas;$i++){
+           
+            
+            if($i==1){$saldo=$total-$inicial;}
+            $interes=$tif*$saldo;
+            $amor=$cc-$interes;
+            $deuda=$saldo-$amor;
+            $saldo=$deuda;
+            echo $i.'-'.number_format($deuda,2).'-'.round($amor,2).'-'.round($interes,2).'-'.round($cc,2).'<br>';
+        }
+        
+        dd($tif);
+        
+        
+    }
 }

@@ -6,8 +6,7 @@
 }
 
 .ui-dialog .ui-widget-header{
-    background: #01A858;
-    height: 35px;
+    background: #01A858;    
 }
 .ui-dialog .ui-dialog-title {
     color: #ffffff;
@@ -126,8 +125,7 @@ nav ul li a {
     width: 155px;
 }
 
-.ui-jqgrid .ui-jqgrid-titlebar {
-    background-color: blue;
+.ui-jqgrid .ui-jqgrid-titlebar {    
     background: #01a858;
     /*background-image: linear-gradient(to bottom,#41be82,#43755d); /*COLOR HEADER TITLE*/
     background-repeat: repeat-x;
@@ -135,7 +133,7 @@ nav ul li a {
     border-right: 0 none;
     border-top: 0 none;
     font-size: 12px;
-    padding: 8px 10px;
+    padding: 3px 10px;
     position: relative;
 }
 .ui-jqgrid .ui-jqgrid-title {

@@ -132,6 +132,128 @@ class Recibos_MasterController extends Controller
         return response()->json($Lista);
     }
     
+    function tabla_cta_arbitrios(Request $request){
+        $id_contrib = $request['id_contrib'];
+        
+        $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where id_contrib='".$id_contrib."' and tip_pre_u_r=1");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$id_contrib)->where('tip_pre_u_r',1)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        $cont=0;
+        foreach ($sql as $Index => $Datos) {
+            $cont++;
+            $Lista->rows[$Index]['id'] = $Datos->id_pred;
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->id_pred,
+                trim($Datos->id_contrib),                
+                $Datos->sec,
+                $Datos->mzna,
+                $Datos->lote,
+                trim($Datos->contribuyente),
+                trim($Datos->tp),
+                trim($Datos->descripcion),                
+                trim($Datos->val_ter),                
+                trim($Datos->val_const)                       
+            );
+        }        
+        return response()->json($Lista);
+    }
+    
+    function cta_pago_arbitrios(Request $request){
+        $id_contrib = $request['id_contrib'];
+        $id_pred = $request['id_pred'];
+        $totalg = DB::select("select count(id_pgo_arb) as total from arbitrios.vw_cta_arbitrios where id_contri='".$id_contrib."' and id_pred='".$id_pred."'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contri',$id_contrib)->where('id_pred',$id_pred)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        $cont=0;
+        foreach ($sql as $Index => $Datos) {
+            $cont++;
+            $Lista->rows[$Index]['id'] = $Datos->id_cta_arb;
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->id_cta_arb,
+                trim($Datos->id_pgo_arb),
+                trim($Datos->id_contri),                
+                trim($Datos->descripcion),                
+                trim($Datos->pgo_ene),                
+                trim($Datos->abo_ene),
+                trim($Datos->pgo_feb),                
+                trim($Datos->abo_feb), 
+                trim($Datos->pgo_mar),                
+                trim($Datos->abo_mar), 
+                trim($Datos->pgo_abr),                
+                trim($Datos->abo_abr), 
+                trim($Datos->pgo_may),                
+                trim($Datos->abo_may), 
+                trim($Datos->pgo_jun),                
+                trim($Datos->abo_jun), 
+                trim($Datos->pgo_jul),                
+                trim($Datos->abo_jul), 
+                trim($Datos->pgo_ago),                
+                trim($Datos->abo_ago), 
+                trim($Datos->pgo_sep),                
+                trim($Datos->abo_sep), 
+                trim($Datos->pgo_oct),                
+                trim($Datos->abo_oct),
+                trim($Datos->pgo_nov),                
+                trim($Datos->abo_nov), 
+                trim($Datos->pgo_dic),                
+                trim($Datos->abo_dic),
+                "<input type='checkbox' onclick='check_anio(".$Datos->id_cta_arb.",this)'>".$Datos->ani_total,
+                $Datos->deuda_arb
+            );
+        }        
+        return response()->json($Lista);
+    }
+    
     function tabla_Resumen_recibos(Request $request){
         $fecha = $request['fecha'];
         $totalg = DB::select("select count(id_rec_mtr) as total from tesoreria.vw_recibos_resumen where fecha='" . $fecha . "'");
