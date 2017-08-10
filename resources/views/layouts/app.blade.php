@@ -157,13 +157,21 @@
                                 <a href="arbitrios_municipales" title="Arbítrios Municipales"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Arbítrios Muni.</span></a>
                             </li>
                             <li class="">
-                                <a href='#' title="Predios Rusticos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-tree-deciduous"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
+                                <a href='predios_rural' title="Predios Rusticos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-tree-deciduous"></i> <span class="menu-item-parent">Pred. Rusticos</span></a>                            
                             </li>
                             <li id="li_impform">
                                 <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
                             </li>
                             <li id="li_fraccionamiento" style="border-top: 2px solid greenyellow;">
                                 <a href="conve_fraccionamiento" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Fraccionamiento</span></a>
+                            </li>
+                        </ul>	
+                    </li>
+                    <li class="">
+                        <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fiscalización</span></a>
+                        <ul id="menu_fisca">
+                            <li id="li_fis_op">
+                                <a href='fiscalizacion' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
                             </li>
                         </ul>	
                     </li>

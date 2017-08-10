@@ -276,7 +276,7 @@ function llamarcambio()
         success: function(r) 
         {
             $("#rpiso_inp_nro").val(r[0].cod_piso);
-            $("#rpiso_inp_fech").val(r[0].fch_const);
+            $("#rpiso_inp_fech").val(r[0].ani_const);
             $("#rpiso_inp_clasi").val(parseInt(r[0].clas));
             $("#rpiso_inp_mat").val(r[0].mep);
             $("#rpiso_inp_econserv").val(r[0].esc);

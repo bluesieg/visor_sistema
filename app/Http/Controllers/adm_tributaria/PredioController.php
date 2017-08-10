@@ -65,6 +65,7 @@ class PredioController extends Controller
         $predio->val_ter = ($request['areterr']+$request['arecomter'])*$request['aranc'];
         $predio->tip_pre_u_r = 1;
         $predio->save();
+        DB::select("select adm_tri.calcular_ivpp($predio->anio,$predio->id_contrib)");
         return $predio->id_pred;
     }
     public function store(Request $request)
@@ -121,6 +122,7 @@ class PredioController extends Controller
             $val->val_ter = ($request['areterr']+$request['arecomter'])*$request['aranc'];
             $val->save();
         }
+        DB::select("select adm_tri.calcular_ivpp($val->anio,$val->id_contrib)");
         return "edit".$id;
     }
     public function update(Request $request, $id)
@@ -157,26 +159,26 @@ class PredioController extends Controller
             if($request['tpre']=='0')
             {
                 $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
-                $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
+                $sql = DB::select("select id_pred,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
             }
             else
             {
                 if($request['ctr']=='0')
                 {
                     $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."'");
-                    $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."'");
+                    $sql = DB::select("select id_pred,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."'");
                 }
                 else
                 {
                     $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
-                    $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
+                    $sql = DB::select("select id_pred,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
                 }
             }
         }
         else
         {
             $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."'");
-            $sql = DB::select("select id_pred,tp,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."'");
+            $sql = DB::select("select id_pred,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."'");
         }
         $page = $_GET['page'];
         $limit = $_GET['rows'];
@@ -208,6 +210,8 @@ class PredioController extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_pred),
                 trim($Datos->tp),
+                trim($Datos->sec),
+                trim($Datos->mzna),
                 trim($Datos->lote),
                 trim($Datos->cod_cat),
                 trim($Datos->mzna_dist), 

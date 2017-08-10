@@ -77,7 +77,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('contribuyente_update', 'adm_tributaria\Contribuyentes@modificar_contribuyente'); //update contribuyente
     Route::post('contribuyente_delete', 'adm_tributaria\Contribuyentes@eliminar_contribuyente'); //eliminar contribuyente
     Route::get('autocomplete_contrib', 'adm_tributaria\Contribuyentes@get_autocomplete_contrib'); //eliminar contribuyente
-    Route::get('obtiene_cotriname', 'adm_tributaria\Contribuyentes@get_cotrib_byname'); //eliminar contribuyente
+    Route::get('obtiene_cotriname', 'adm_tributaria\Contribuyentes@get_cotrib_byname'); //
+    Route::get('obtiene_cotriop', 'adm_tributaria\Contribuyentes@get_cotrib_op'); //
     /*     * ******************************************VALORES ARANCELARIOS******************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {
         Route::get('val_arancel', 'Valores_Arancelarios@vw_val_arancel')->name('val_aran'); // VW_ARANCELES
@@ -148,6 +149,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('conve_fraccionamiento','ConvenioController');
         Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
     });
+    Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
+        Route::resource('fiscalizacion', 'FiscalizacionController');
+        Route::get('fis_rep/{tip}/{id}/{sec}/{man}','FiscalizacionController@reporte');
+    });  
     Route::get('$',function(){ echo 0;});//url auxiliar
 
 });

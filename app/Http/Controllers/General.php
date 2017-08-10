@@ -98,6 +98,11 @@ class General extends Controller {
         return $Consulta;
 
     }
+    function sel_cat_gruterr(Request $request)
+    {
+        $Consulta = DB::table('catastro.vw_arancel_pred_rust')->where('anio',$request['an'])->where('id_gpo_tierra',$request['val'])->get();  
+        return $Consulta;
+    }
     /*****************************************COMBO  DEPARTAMENTO / PROVINCIA / DISTRITO **************************************/
     public function get_dpto() {
         $Consulta = DB::table('maysa.dpto')->get();

@@ -5,28 +5,34 @@
         <h1 class="txt-color-green" style="margin-bottom: 0px;margin-top: 2px"><b>Arbítrios Municipales...</b></h1>
 
         <div class="col-xs-12 cr-body" style="margin-top: 10px;">
-            <label class="control-label col-lg-2">Código Contribuyente:</label>
-            <div class='col-lg-2'>
-                <input id="dlg_contri_hidden" type="hidden" value="0">
-                <input id="dlg_dni" type="text"  class="form-control" >
+            <div class="col-xs-4" style="padding: 0px;">
+                <label class="control-label col-lg-5" style="padding-right: 0px;">Código Contribuyente:</label>
+                <div class='col-lg-7'>
+                    <input id="dlg_contri_hidden" type="hidden" value="0">
+                    <input id="dlg_dni" type="text"  class="form-control" >
+                </div>
             </div>
-            <label class="control-label col-lg-1">Periodo:</label>
-            <div class='col-lg-2'>
-                <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
-                @foreach ($anio_tra as $anio)
-                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                @endforeach
-                </select>
+            <div class="col-xs-4" style="padding: 0px;">
+                <label class="control-label col-lg-2">Periodo:</label>
+                <div class='col-lg-5'>
+                    <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
+                    @foreach ($anio_tra as $anio)
+                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                    @endforeach
+                    </select>
+                </div>
             </div>
             <div class="col-xs-12" style="margin-bottom: 5px;"></div>
-            <label class="control-label col-lg-2">Contribuyente:</label>
-            <div class='col-lg-7' style="padding-right: 0px;">
-                <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;" autofocus="focus" >
-            </div>
-            <div class='col-lg-3' style="padding: 0px;">
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_bus_contrib()">
-                    <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
-                </button>
+            <div class="col-xs-10" style="padding: 0px;">
+                <label class="control-label col-lg-2">Contribuyente:</label>
+                <div class='col-lg-6' style="padding-right: 0px;">
+                    <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;" autofocus="focus" >
+                </div>
+                <div class='col-lg-3' style="padding: 0px;">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_bus_contrib()">
+                        <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -59,23 +65,22 @@
             datatype: 'json', mtype: 'GET',
             height: '100px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pred','t_pred', 'Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct'],
-            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Lista De Predios Urbanos', align: "center",
+            colNames: ['id_pred','Tipo','Sector','Manzana', 'Lote', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía'],
+            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos del Contribuyente', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
-                {name: 'tp', index: 'tp', align: 'center', width: 50},
-                {name: 'lote', index: 'lote', align: 'center', width: 50},
-                {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 80},
-                {name: 'mzna_dist', index: 'mzna_dist', align: 'center', width: 40},
-                {name: 'lote_dist', index: 'lote_dist', align: 'center', width: 40},
-                {name: 'nro_mun', index: 'nro_mun', width: 40,align: "right"},
-                {name: 'descripcion', index: 'descripcion', width: 100},
-                {name: 'contribuyente', index: 'contribuyente', width: 150},
-                {name: 'nom_via', index: 'nom_via', width: 100},
-                {name: 'id_via', index: 'id_via', hidden: true},
-                {name: 'are_terr', index: 'are_terr', width: 60,align: "right"},
-                {name: 'val_ter', index: 'val_ter', width: 60,align: "right"},
-                {name: 'val_const', index: 'val_const', width: 60, align: "right"},
+                {name: 'tp', index: 'tp', align: 'center', width: 30,hidden: true},
+                {name: 'sec', index: 'sec', align: 'center', width: 20},
+                {name: 'mnza', index: 'mnza', align: 'center', width: 20},
+                {name: 'lote', index: 'lote', align: 'center', width: 20},
+                {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 50},
+                {name: 'mzna_dist', index: 'mzna_dist', align: 'center', width: 20},
+                {name: 'lote_dist', index: 'lote_dist', align: 'center', width: 20},
+                {name: 'nro_mun', index: 'nro_mun', width: 20,align: "right"},
+                {name: 'descripcion', index: 'descripcion', hidden:true},
+                {name: 'contribuyente', index: 'contribuyente', width: 180},
+                {name: 'nom_via', index: 'nom_via', width: 70},
+               
                
             ],
             pager: '#pager_table_predios',
@@ -87,6 +92,7 @@
                             $("#table_predios").setSelection(firstid); 
                             llenararbitrios();
                         }
+                        $("#table_predios").jqGrid('setGridHeight',$(window).height()*0.15);
                 },
             onSelectRow: function (Id){llenararbitrios();},
             ondblClickRow: function (Id){}
@@ -99,7 +105,7 @@
             colNames: ['id_arb','Cod. Predio', 'Año','Piso', 'Frec. Barrido', 'Costo Barrido','Frecu. Recojo Residuos',
                 'Costo Recojo Residuos','Cat. Parques y Jadines',
             'Costo Parq. y Jard.','Cat. Serenazgo','Costo Serenazgo'],
-            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Lista De Predios Urbanos', align: "center",
+            rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Arbitrios del Predio Seleccionado', align: "center",
             colModel: [
                 {name: 'id_arb', index: 'id_arb', hidden: true},
                 {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 50},
@@ -122,7 +128,7 @@
                     var firstid = jQuery('#table_arbitrios').jqGrid('getDataIDs')[0];
                             $("#table_arbitrios").setSelection(firstid); 
                         }
-                        
+                    $("#table_arbitrios").jqGrid('setGridHeight',$(window).height()*0.12);    
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){mod_arb();}
@@ -154,6 +160,7 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
         });
+        
         $("#dlg_dni").keypress(function (e) {
             if (e.which == 13) {
                 traer_contri_cod("dlg_contri",$("#dlg_dni").val());

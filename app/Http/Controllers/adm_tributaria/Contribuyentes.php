@@ -60,6 +60,66 @@ class Contribuyentes extends Controller
         }
         return response()->json($Lista);
     }
+    public function get_cotrib_op(Request $request)  
+    {
+        if($request['dat']=='0'&&$request['sec']=='0'&&$request['manz'])
+        {
+            return 0;
+        }
+        else
+        {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+            if($request['sec']==0)
+            {
+                $totalg = DB::select('select count(id_pers) as total from adm_tri.vw_contribuyentes_vias where id_pers='.$request['dat']);
+                $sql = DB::table('adm_tri.vw_contribuyentes_vias')->where('id_pers',$request['dat'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }
+            else
+            {
+                $totalg = DB::select("select count(*) as total from adm_tri.vw_contribuyentes_po where sec='".$request['sec']."' and mzna='".$request['manz']."'");
+                $sql = DB::table('adm_tri.vw_contribuyentes_po')->where('sec',$request['sec'])->where('mzna',$request['manz'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }
+
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            
+
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+
+
+            foreach ($sql as $Index => $Datos) {
+                $Lista->rows[$Index]['id'] = $Datos->id_pers;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_pers),
+                    trim($Datos->id_persona),
+                    trim($Datos->tipo_doc),
+                    trim($Datos->nro_doc),
+                    trim(str_replace("-", "",$Datos->contribuyente)), 
+                );
+            }
+            return response()->json($Lista);
+        }
+    }
     public function get_cotrib_byname(Request $request) {
         if($request['dat']=='0')
         {

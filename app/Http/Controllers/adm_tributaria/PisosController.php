@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pisos;
-
+use App\Models\Predios;
 class PisosController extends Controller
 {
     /**
@@ -51,6 +51,9 @@ class PisosController extends Controller
         $pisos->save();
         DB::select("select adm_tri.fn_count_pisos(".$request['id_pre'].")");
         DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
+        $predio=new Predios;
+        $predio=  $predio::where("id_pred","=",$request['id_pre'] )->first();
+        DB::select("select adm_tri.calcular_ivpp($predio->anio,$predio->id_contrib)");
         return $pisos->id_pisos;
     }
 
@@ -74,7 +77,6 @@ class PisosController extends Controller
     public function show($id)
     {
         $pisovw= DB::table('adm_tri.vw_pisos')->where('id_pisos',$id)->get();
-        $pisovw[0]->fch_const=date("d/m/Y",strtotime(str_replace("/", "-", $pisovw[0]->fch_const)));
         return $pisovw;
     }
 
@@ -108,8 +110,12 @@ class PisosController extends Controller
             $val->area_const = $request['aconst'];
             $val->val_areas_com = $request['acomun'];
             $val->save();
+            
             DB::select("select adm_tri.fn_count_pisos(".$val->id_predio.")");
             DB::select("select adm_tri.actualiza_base_predio(".$val->id_predio.")");
+            $predio=new Predios;
+            $predio=  $predio::where("id_pred","=",$val->id_predio )->first();
+            DB::select("select adm_tri.calcular_ivpp($predio->anio,$predio->id_contrib)");
         }
         return "edit".$id;
     }
