@@ -160,7 +160,7 @@ class Caja_MovimientosController extends Controller {
 //        dd($recibo);
         $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion')->where('id_rec_master', $id_rec)->get();
         $soles= $this->num2letras(round($recibo[0]->total,2));
-        
+        date_default_timezone_set('America/Lima');
         $fecha_larga = $this->fecha_letras(date('d-m-Y')).' : '.date('h:i A');        
         
         $view = \View::make('caja.reportes.pago_recibo', compact('recibo','detalle','soles','fecha_larga'))->render();
@@ -176,8 +176,7 @@ class Caja_MovimientosController extends Controller {
     public function fecha_letras($date){
         $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-        
-        date_default_timezone_set('America/Lima');
+                
         $timestamp=strtotime($date);
         return $dias[date('w',$timestamp)].", ".date('d',$timestamp)." de ".$meses[date('n',$timestamp)-1]. " del ".date('Y',$timestamp);
     }

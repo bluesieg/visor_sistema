@@ -79,7 +79,20 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
-
+        
+        'mapa' => [
+            'driver' => 'pgsql',
+            'host' => env('MAPA_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('MAPA_DATABASE', 'forge'),
+            'username' => env('MAPA_USERNAME', 'forge'),
+            'password' => env('MAPA_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+        
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),

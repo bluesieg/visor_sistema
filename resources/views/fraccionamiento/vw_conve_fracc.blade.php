@@ -17,7 +17,7 @@
                     <div class="col-xs-12">
                         <div class="col-xs-2 col-sm-12 col-md-12 col-lg-3">
                             <label class="select">Filtro Año:</label>
-                            <select id="vw_val_arancel_cb_anio" class="input-sm">
+                            <select id="vw_conve_fracc_cb_anio" class="input-sm">
                                 @foreach ($anio as $anio1)
                                 <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
                                 @endforeach
@@ -39,8 +39,8 @@
             </div>                   
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <table id="table_Resumen_Recibos"></table>
-            <div id="pager_table_Resumen_Recibos">
+            <table id="table_Convenios"></table>
+            <div id="pager_table_Convenios">
                 <div style="float: right; font-weight: bold;">
                     Total S/. <input type="text" id="vw_emision_rec_pago_total_global" class="input-sm text-right" style="width: 143px; height: 21px;padding-right: 4px;" readonly="">
                 </div>                    
@@ -52,39 +52,32 @@
 
 <script type="text/javascript">    
     $(document).ready(function () {        
-        $("#menu_admtri").show();
+        $("#menu_fracc").show();
         $("#li_fraccionamiento").addClass('cr-active');
-        jQuery("#table_Resumen_Recibos").jqGrid({
-            url: 'grid_Resumen_recibos?fecha='+$("#vw_emision_reg_pag_fil_fecha").val(),
+        jQuery("#table_Convenios").jqGrid({
+            url: 'grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
-            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
-            rowNum: 20, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Resumen Recibos', align: "center",
-            colModel: [
-                {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
-                {name: 'id_contrib', index: 'id_contrib', hidden: true},
-                {name: 'nro_recibo_mtr', index: 'nro_recibo_mtr', hidden:true},
-                {name: 'fecha', index: 'fecha', align: 'center', width: 60},
-                {name: 'glosa', index: 'glosa', width: 250},
-                {name: 'estad_recibo', index: 'estad_recibo', width: 60},
-                {name: 'descrip_caja', index: 'descrip_caja', width: 130},
-                {name: 'hora_pago', index: 'hora_pago', align: 'center', width: 50},
-                {name: 'total', index: 'total', align: 'right', width: 80, sorttype: 'number', formatter: 'number', formatoptions: {decimalPlaces: 3}}
+            colNames: ['Nro.Convenio', 'Año','id_contrib', 'Fecha', 'Interes', 'N° Cuotas', 'Estado', 'Total'],
+            rowNum: 20, sortname: 'id_conv', sortorder: 'desc', viewrecords: true, caption: 'Resumen Recibos', align: "center",
+            colModel: [                
+                {name: 'nro_convenio', index: 'nro_convenio',align: 'center',width: 80},
+                {name: 'anio', index: 'anio',width: 80,align: 'center'},
+                {name: 'id_contribuyente', index: 'id_contribuyente', hidden:true},
+                {name: 'fec_reg', index: 'fec_reg', width: 80,align: 'center'},
+                {name: 'interes', index: 'interes',align: 'center', width: 80},
+                {name: 'nro_cuotas', index: 'nro_cuotas', width: 80,align: 'center'},
+                {name: 'estado', index: 'estado', align: 'center', width: 80},
+                {name: 'total_convenio', index: 'total_convenio', align: 'right', width: 80}                
             ],
-            pager: '#pager_table_Resumen_Recibos',
+            pager: '#pager_table_Convenios',
             rowList: [15, 25],
             gridComplete: function () {
-                var rows = $("#table_Resumen_Recibos").getDataIDs();
+                var rows = $("#table_Convenios").getDataIDs();
                 if (rows.length > 0) {
-                    var firstid = jQuery('#table_Resumen_Recibos').jqGrid('getDataIDs')[0];
-                    $("#table_Resumen_Recibos").setSelection(firstid);
-                }                
-                var sum = jQuery("#table_Resumen_Recibos").getGridParam('userData').sum_total;
-                if(sum==undefined){
-                    $("#vw_emision_rec_pago_total_global").val('0000.00');
-                }else{
-                    $("#vw_emision_rec_pago_total_global").val(formato_numero(sum,2,'.',','));
-                }                
+                    var firstid = jQuery('#table_Convenios').jqGrid('getDataIDs')[0];
+                    $("#table_Convenios").setSelection(firstid);
+                }               
             },            
             ondblClickRow: function (Id) {}
         });
@@ -116,11 +109,11 @@
             ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
         });
         $(window).on('resize.jqGrid', function () {
-            $("#table_Resumen_Recibos").jqGrid('setGridWidth', $("#content").width());
+            $("#table_Convenios").jqGrid('setGridWidth', $("#content").width());
         });
-        $("#vw_emision_reg_pag_fil_fecha").keypress(function (e) {
+        $("#vw_conve_fracc_fracc_n_cuo").keypress(function (e) {
             if (e.which == 13) {
-                fn_actualizar_grilla('table_Resumen_Recibos', 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val());
+                realizar_table_fracc();
             }
         });
         var globalvalidador=0;
@@ -143,7 +136,7 @@
             <div class="panel-group">
                 <div class="panel panel-success">
                     <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
-                    <div class="panel-body cr-body">
+                    <div class="panel-body">
                         <fieldset>
                             <div class="row">                                
                                 <section class="col col-2" style="padding-right: 5px;">
@@ -203,46 +196,82 @@
                     <div class="panel-body">
                         <fieldset>
                             <div class="row">
-                                <section class="col col-2" style="padding-right: 5px;">                                    
+                                <section class="col col-3" style="padding-right: 5px;">                                    
                                     <label class="label">Fecha:</label>
                                     <label class="input">
-                                        <input id="vw_conve_fracc_fracc_fecha" data-mask="99/99/9999" data-mask-placeholder=".." value="<?php date_default_timezone_set('America/Lima');echo date('d-m-Y') ?>" type="text" class="input-sm">
+                                        <input id="vw_conve_fracc_fracc_fecha" value="<?php date_default_timezone_set('America/Lima');echo date('d-m-Y') ?>" type="text" class="input-sm" disabled="">
                                     </label>                      
                                 </section>
-                                <section class="col col-2" style="padding-right: 5px;padding-left: 5px;">                                    
+                                <section class="col col-3" style="padding-right: 5px;padding-left: 5px;">                                    
                                     <label class="label">Total:</label>
                                     <label class="input">
                                         <input id="vw_conve_fracc_fracc_tot" type="text" class="input-sm" disabled="">
                                     </label>                      
                                 </section>
-                                <section class="col col-1" style="padding-left: 5px;padding-right:5px; ">
+                                <section class="col col-2" style="padding-left: 5px;padding-right:5px;">
                                     <label class="label">Tim:</label>
                                     <label class="input">                                        
                                         <input id="vw_conve_fracc_fracc_tim" value="{{$cfracc[0]->tif}}" type="text" class="input-sm" disabled="">
                                     </label>
                                 </section>
-                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
-                                    <label class="label">N Cuo.</label>
+                                <section class="col col-1" style="padding-right:5px;padding-left:5px; ">                                    
+                                    <label class="label">%:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="vw_conve_fracc_fracc_porc_cuo_ini_min">
+                                        <input id="vw_conve_fracc_fracc_porc_cuo_ini" onkeypress="return soloNumeroTab(event);" type="text" onblur="calc_inicial(this.value);" class="input-sm"> 
+                                    </label>                      
+                                </section>
+                                <section class="col col-3" style="padding-left:5px;">
+                                    <label>Tipo Fraccionamiento:</label>
+                                    <label class="select">
+                                        <select id="vw_conve_fracc_fracc_tip_fracc" onchange="sel_tip_fracc(this.options[this.selectedIndex].innerHTML);" class="input-sm">
+                                            @foreach ($tip_f as $tip_f)
+                                            <option value='{{$tip_f->id_tip_f}}' >{{$tip_f->tipo}} - {{round($tip_f->porcent)}}%</option>
+                                            @endforeach
+                                        </select><i></i></label>                                    
+                                </section>                                
+                            </div>
+                            <div class="row">                               
+                                <section class="col col-3" style="padding-right:5px;">                                    
+                                    <label class="label">Inicial:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_conve_fracc_fracc_inicial" onkeypress="return soloNumeroTab(event);" onblur="calc_deuda(this.value);" type="text" class="input-sm"> 
+                                    </label>                      
+                                </section>
+                                <section class="col col-1" style="padding-right:5px;padding-left:5px;">
+                                    <label class="label">Cuotas:</label>
                                     <label class="input">                                        
                                         <input id="vw_conve_fracc_fracc_n_cuo" onkeypress="return soloDNI(event);" type="text" class="input-sm">
                                     </label>                       
-                                </section>
-                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
-                                    <label class="label">Inicial:</label>
+                                </section>                                                                
+                                <section class="col col-2" style="padding-right:5px;padding-left:5px;">
+                                    <label class="label">Deuta Total:</label>
                                     <label class="input">                                        
-                                        <input id="vw_conve_fracc_fracc_inicial" onkeypress="return soloNumeroTab(event);" type="text" class="input-sm">
+                                        <input id="vw_conve_fracc_fracc_deuda" type="text" class="input-sm" disabled="">
+                                    </label>                       
+                                </section>
+                                <section class="col col-3" style="padding-left:5px;">
+                                    <label class="label">Cod.Convenio:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_conve_fracc_fracc_cod_conve" type="text" class="input-sm" maxlength="10">
                                     </label>                       
                                 </section>
                                 <section class="col col-3" style="padding-left:5px">
                                       <label class="label">&nbsp;</label>
                                         <a onclick="realizar_table_fracc();" class="btn btn-primary btn-sm">Ver Fraccionamiento</a>                    
                                 </section>
-                            </div>                            
+                            </div>
+                            <section>
+                                <label class="label">Glosa:</label>
+                                <label class="input">                                        
+                                    <input id="vw_conve_fracc_fracc_glosa" type="text" class="input-sm text-uppercase" maxlength="300">
+                                </label>
+                            </section>
                         </fieldset>
                     </div>
                 </div>
                 
-                <div class="panel panel-success" style="border: 0px !important;height: 350px;">
+                <div class="panel panel-success" style="border: 0px !important;height: 325px; overflow-y: scroll">
                     <div class="panel-heading bg-color-success">.:: Vista Fraccionamiento ::.</div>
                     <div class="panel-body">    
                         <div style="border: 1px solid #DDD; margin-bottom: 6px;">

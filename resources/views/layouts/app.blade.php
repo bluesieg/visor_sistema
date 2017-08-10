@@ -15,6 +15,10 @@
         <link href="{{ asset('css/smartadmin-production.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/smartadmin-skins.min.css') }}" rel="stylesheet">
 
+		<link rel="stylesheet" href="{{ asset('layers/ol.css')}}" />
+		<script src="{{ asset('layers/ol.js')}}"></script>
+        <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+
         <link rel="shortcut icon" href="{{ asset('img/favicon/favi.ico') }}" type="image/x-icon">
         <link rel="icon" href="{{ asset('img/favicon/favi.ico') }}" type="image/x-icon">
 
@@ -174,6 +178,14 @@
                                 <a href='fiscalizacion' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
                             </li>
                         </ul>	
+                    </li> 
+                    <li class="">
+                        <a href="#" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fraccionamento</span></a>
+                        <ul id="menu_fracc">                            
+                            <li id="li_fraccionamiento">
+                                <a href="conve_fraccionamiento" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Fraccionamiento</span></a>
+                            </li>
+                        </ul>	
                     </li>
                     <li class="">
                         <a href="#"><i class="fa fa fa-lg fa-fw fa-fax"></i> <span class="menu-item-parent">Tesoreria</span></a>
@@ -185,7 +197,7 @@
                                 <a href="#" title="Generar Recibos"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Generar Recibos</span></a>
                             </li>
                         </ul>
-                            </li>
+                    </li>
                     <li class="">
                         <a href="#"><i class="fa fa-lg fa-fw fa-usd"></i> <span class="menu-item-parent">Caja</span></a>
                         <ul id="menu_caja">
@@ -195,6 +207,15 @@
                             <li id="li_menu_caja_est_cta">
                                 <a href="estado_de_cta" title="Estado de Cuentas"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Estado de Cuentas</span></a>
                             </li>                            
+                        </ul>
+                    </li>
+                    <li class="">
+                        <a href="#" title="Cartografia Base"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">Cartografia Base</span></a>
+                        <ul id="manu_cart_base">                            
+                            <li id="li_ver_cart">
+                                <a href="cartografia" title="Ver Cartografia"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Cartografia</span></a>
+                            </li>
+                        
                         </ul>
                     </li>
                 </ul>

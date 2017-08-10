@@ -44,6 +44,19 @@ Route::get('fracc', 'General@fraccionamiento');
 
 
 Route::group(['middleware' => 'auth'], function() {   
+/******************** ********    MAP CONTROLLER   ******************  **********/
+    Route::group(['namespace'=>'map'],function(){
+
+        Route::get('/cartografia', 'MapController@index')->name('home');
+        Route::get('/getlimites', 'MapController@get_limites')->name('get.limites');
+        Route::get('/getsectores', 'MapController@get_sectores')->name('get.sectores');
+        Route::get('/getmznas', 'MapController@get_manzanas')->name('get.manzanas');
+        Route::post('/geogetmznas_x_sector', 'MapController@geogetmznas_x_sector');
+        Route::post('/get_centro_sector', 'MapController@get_centro_sector');
+        Route::post('/mznas_x_sector', 'MapController@mznas_x_sector');
+
+
+    });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
     Route::get('/usuarios', 'Usuarios@vw_usuarios_show')->name('usuarios'); //vw_usuarios
@@ -121,8 +134,14 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
         Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
     });
-    Route::group(['namespace' => 'configuracion'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
-        Route::resource('config_fraccionamiento','Fraccionamiento');        
+    Route::group(['namespace' => 'fraccionamiento'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
+        Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');
+        
+        Route::resource('conve_fraccionamiento','ConvenioController');
+        Route::resource('convenio_detalle','Convenio_DetalleController');
+        Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
+        Route::get('grid_Convenios','ConvenioController@grid_all_convenios');
+        Route::get('imp_cronograma_Pago_Fracc','ConvenioController@crono_pago_fracc');
     });    
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
@@ -145,8 +164,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('selmzna','PredioController@ListManz');
         Route::get('adm_impform/','PredioController@imprimir_formatos');
         Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
-        /*////****************    FRACCIONAMIENTO      **********************/
-        Route::resource('conve_fraccionamiento','ConvenioController');
         Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
     });
     Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
