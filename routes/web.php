@@ -169,6 +169,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
         Route::resource('fiscalizacion', 'FiscalizacionController');
         Route::get('fis_rep/{tip}/{id}/{sec}/{man}','FiscalizacionController@reporte');
+        Route::get('obtiene_op', 'FiscalizacionController@getOP'); //
+        Route::get('obtiene_con_sec', 'FiscalizacionController@getcontrbsec'); //
+
     });  
     Route::get('$',function(){ echo 0;});//url auxiliar
 

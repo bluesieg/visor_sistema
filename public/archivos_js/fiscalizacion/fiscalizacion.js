@@ -21,7 +21,7 @@ function fn_bus_contrib()
 {
     if($("#dlg_contri").val()=="")
     {
-        mostraralertasconfoco("Ingresar Información de busqueda","#dlg_contri"); 
+        mostraralertasconfoco("Ingresar Información del Contribuyente para busqueda","#dlg_contri"); 
         return false;
     }
     if($("#dlg_contri").val().length<4)
@@ -60,7 +60,7 @@ function traer_contri_cod(input, doc) {
             } else {
                 $("#" + input + "_hidden").val(0);
                 $("#" + input).val("");
-                $("#table_personas").jqGrid("clearGridData", true);
+                $("#table_op").jqGrid("clearGridData", true);
                 mostraralertas('* El Documento Ingresado no Existe, registre al contribuyente o intente con otro número ... !');
             }
             MensajeDialogLoadAjaxFinish(input);
@@ -74,41 +74,71 @@ function traer_contri_cod(input, doc) {
 }
 function call_list_contrib(tip)
 {
+    $("#table_op").jqGrid("clearGridData", true);
     if(tip==1)
     {
-        jQuery("#table_personas").jqGrid('setGridParam', {url: 'obtiene_cotriop?dat='+$("#dlg_contri_hidden").val()+'&sec=0&manz=0'}).trigger('reloadGrid');
+        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op?dat='+$("#dlg_contri_hidden").val()+'&sec=0&manz=0&an='+$("#selancontri").val()}).trigger('reloadGrid');
     }
     else
     {
-        jQuery("#table_personas").jqGrid('setGridParam', {url: 'obtiene_cotriop?dat=0&sec='+$("#selsec option:selected").text()+'&manz='+$("#selmnza option:selected").text()}).trigger('reloadGrid');
+        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op?dat=0&sec='+$("#selsec option:selected").text()+'&manz='+$("#selmnza option:selected").text()+'&an='+$("#selancontri").val()}).trigger('reloadGrid');
     }
 }
 function generar_op(tip)
 {
-    Id=$('#table_personas').jqGrid ('getGridParam', 'selrow');
+    Id=$("#dlg_contri_hidden").val();
+    if(Id==0&&tip==1)
+    {
+        mostraralertas("No hay Contribuyente seleccionado para generar");
+        return false;
+    }
+    $("body").block({
+        message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>Generando</p>",
+        css: { border: '2px solid #006000',background:'white',width: '62%'}
+    });
+    sec=$("#selsec option:selected").text();
+    man=$("#selmnza option:selected").text();
+    if(tip==1)
+    {
+        Id_contrib=Id;
+        
+        $.ajax({url: 'fiscalizacion/create',
+        type: 'GET',
+        data:{per:Id_contrib,sec:sec,man:man,tip:tip},
+        success: function(r) 
+        {
+            window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            $('body').unblock();
+            call_list_contrib(1);
+        },
+        error: function(data) {
+            MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
+            $('body').unblock();
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+    if(tip==2)
+    {
+        jQuery("#table_contrib_bysec").jqGrid('setGridParam', {url: 'obtiene_con_sec?sec='+sec+'&man='+man+"&an="+$("#selantra").val()}).trigger('reloadGrid');
+        $("#dlg_ctrb_sector").dialog({
+        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Contribuyente por sector :.</h4></div>"       
+        }).dialog('open');
+    }
+}
+function verop(idop)
+{
+    Id=$('#table_op').jqGrid ('getGridParam', 'selrow');
     if(Id==null&&tip==1)
     {
         mostraralertas("No hay Contribuyente seleccionado para impresión");
         return false;
     }
-    MensajeDialogLoadAjax('widget-grid', '.:: Generando ...');
-    Id_contrib=$('#dlg_contri_hidden').val();
+    //MensajeDialogLoadAjax('widget-grid', '.:: Generando ...');
     sec=$("#selsec option:selected").text();
     man=$("#selmnza option:selected").text();
-    $.ajax({url: 'fiscalizacion/create',
-    type: 'GET',
-    data:{per:Id_contrib,sec:sec,man:man,tip:tip},
-    success: function(r) 
-    {
-        MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        MensajeDialogLoadAjaxFinish('widget-grid');
-        window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);
-    },
-    error: function(data) {
-        MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
-        MensajeDialogLoadAjaxFinish('widget-grid');
-        console.log('error');
-        console.log(data);
-    }
-    });
+    window.open('fis_rep/1/'+idop+'/'+sec+'/'+man);
 }
