@@ -54,6 +54,18 @@
             <center><b>DATOS DEL FRACCIONAMIENTO</b></center>
             <table class="table table-sm" style="font-size:14px;margin-top: 10px;">
                 <tr>
+                    <td><b>PERIODO FRACCIONADO:</b></td>
+                    <td>&nbsp;{{ $conv[0]->periodo}}<br/></td>
+                </tr>
+                <tr>
+                    <td><b>POR CONCEPTOS DE:</b></td>
+                    <td>&nbsp;DEUDA &nbsp;{{ $conv[0]->desc_tipo}}<br/></td>
+                </tr>
+                <tr>
+                    <td><b>TIPO FRACCIONAMIENTO:</b></td>
+                    <td>&nbsp;{{ $conv[0]->tip_fracc}}<br/></td>
+                </tr>
+                <tr>
                     <td><b>COD.CONVENIO:</b></td>
                     <td>&nbsp;{{ $conv[0]->cod_convenio}}<br/></td>
                 </tr>
@@ -63,14 +75,14 @@
                 </tr>
                 <tr>
                     <td><b>INICIAL:</b></td>
-                    <td>&nbsp;S/.{{ $conv[0]->cuota_inicial}}<br/></td>
+                    <td>&nbsp;S/.{{ $conv[0]->cuota_inicial}} &nbsp;({{ $conv[0]->porc_cuo_inic}}%)<br/></td>
                 </tr>
                 <tr>
-                    <td><b>TIM:</b></td>
+                    <td><b>TIF:</b></td>
                     <td>&nbsp;{{ $conv[0]->interes}}%<br/></td>
                 </tr>
                 <tr>
-                    <td><b>N° CUOTAS APROB.:</b></td>
+                    <td><b>N° CUOTAS APROBADAS:</b></td>
                     <td>&nbsp;{{ $conv[0]->nro_cuotas}}<br/></td>
                 </tr>
                 <tr>
@@ -114,8 +126,8 @@
                         <td width="10%" align="center"></td>
                         <td width="40%" align="center">TOTALES</td>               
                         <td width="40%" align="center">{{ $totales['tot_amo'] }}</td>
-                        <td width="40%" align="center">{{ $totales['tot_amo'] }}</td>
-                        <td width="40%" align="center">{{ $totales['tot_amo'] }}</td>                       
+                        <td width="40%" align="center">{{ $totales['tot_inter'] }}</td>
+                        <td width="40%" align="center">{{ $totales['tot_cc'] }}</td>                       
                         <td width="40%" align="center"></td>
                     </tr>                   
                 </table> 

@@ -23,15 +23,11 @@ class Caja_MovimientosController extends Controller {
         //
     }
 
-    public function store(Request $request) {
-        //
-    }
+    public function store(Request $request) {}
 
-    public function show($id) {
-        //
-    }
+    public function show($id) {}
     
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id){
         date_default_timezone_set('America/Lima');
         $recibo_master = new Recibos_Master();
         
@@ -48,7 +44,8 @@ class Caja_MovimientosController extends Controller {
             if ($query) {              
                 $function = DB::select('select tesoreria.nro_recibos_cjas(' . $request['id_caja'] . ',' . $id . ')');                
                 if($function){                    
-                    if($val->clase_recibo==0){
+                    if($val->clase_recibo==0)
+                    {
                         $chk = str_split(trim($val->pred_check));
                         $prim = $chk[0];
                         $ult = array_pop($chk);
@@ -69,20 +66,37 @@ class Caja_MovimientosController extends Controller {
                                         ->update(['abo'.$x.'_cta'=>($value_formato_pred/4),'fec_abo'.$x=>date('d-m-Y')]);
                             }
                         }
-                        
-                        
-                        return $id.'predial';
-                                                
-                    }else return $id.'varios';                    
+                        return $id.'predial';                                                
+                    }
+                    if($val->clase_recibo==3)
+                    {
+                        $chk = strlen(trim($val->fracc_check));
+                        if($chk=='1'){                            
+                            DB::table('fraccionamiento.detalle_convenio')->where('cod_conv_det',trim($val->cod_fracc))->where('nro_cuota',trim($val->fracc_check))
+                                    ->update(['estado' => 1,'fecha_q_pago'=> date('Y-m-d')]);                           
+                        }else{
+                            $array= explode('-',trim($val->fracc_check));
+                            $prim = $array[0];
+                            $ult = array_pop($array);
+                            for($i=$prim;$i<=$ult;$i++){                                
+                                DB::table('fraccionamiento.detalle_convenio')->where('cod_conv_det',trim($val->cod_fracc))->where('nro_cuota',$i)
+                                        ->update(['estado' => 1,'fecha_q_pago'=> date('Y-m-d')]);
+                            }
+                        }
+                        return $id.'fraccionamiento';
+                    }
+                    else return $id.'varios';                    
                 }
             }
         }
     }
 
-    public function update(Request $request, $id) {
-        //
+    public function update(Request $request, $id) {}
+    
+    function rec_fracc(){
+        
     }
-
+    
     public function destroy($id) {
         //
     }
@@ -143,7 +157,8 @@ class Caja_MovimientosController extends Controller {
                 trim($Datos->estad_recibo),
                 trim($Datos->descrip_caja),
                 trim($Datos->hora_pago),
-                trim($Datos->total)
+                trim($Datos->total),
+                trim($Datos->clase_recibo)
             );
         }
         return response()->json($Lista);
@@ -153,12 +168,20 @@ class Caja_MovimientosController extends Controller {
         $id_rec = $request['id_rec'];
         $recibo = DB::table('tesoreria.vw_caja_pago_recib')->where('id_rec_mtr', $id_rec)->get();
         
-        if($recibo[0]->clase_recibo==0){
+        if($recibo[0]->clase_recibo=='0'|| $recibo[0]->clase_recibo=='3'){
             $contrib = DB::table('adm_tri.vw_contribuyentes')->select('contribuyente')->where('id_pers',$recibo[0]->id_contrib)->first();
             $recibo[0]->pers_raz_soc= $contrib->contribuyente;
         }
+        
+        if($recibo[0]->clase_recibo=='3'){
+            $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion_fracc')->where('id_rec_master',$id_rec)->get();
+        }else{
+            $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion')->where('id_rec_master',$id_rec)->get();
+        }
 //        dd($recibo);
-        $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion')->where('id_rec_master', $id_rec)->get();
+//        echo $id_rec;
+//        
+//        dd($detalle);
         $soles= $this->num2letras(round($recibo[0]->total,2));
         date_default_timezone_set('America/Lima');
         $fecha_larga = $this->fecha_letras(date('d-m-Y')).' : '.date('h:i A');        

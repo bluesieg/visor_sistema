@@ -67,7 +67,7 @@
             url: 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
-            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
+            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total','clase_recibo'],
             rowNum: 15, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Caja Movimientos', align: "center",
             colModel: [
                 {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
@@ -78,7 +78,8 @@
                 {name: 'estad_recibo', index: 'estad_recibo', width: 60},
                 {name: 'descrip_caja', index: 'descrip_caja', width: 130},
                 {name: 'hora_pago', index: 'hora_pago', align: 'center', width: 50},
-                {name: 'total', index: 'total', align: 'right', width: 80, sorttype: 'number', formatter: 'number', formatoptions: {decimalPlaces: 3}}
+                {name: 'total', index: 'total', align: 'right', width: 80, sorttype: 'number', formatter: 'number', formatoptions: {decimalPlaces: 3}},
+                {name: 'clase_recibo', index: 'clase_recibo', hidden: true}
             ],
             pager: '#pag_tabla_Caja_Movimientos',
             rowList: [15, 25],
@@ -120,8 +121,7 @@
             buttons: [{
                     html: "<i class='fa fa-save'></i>&nbsp; Aceptar",
                     "class": "btn btn-primary",
-                    click: function () {
-//                        fn_session_almacen();                      
+                    click: function () {                  
                         $("#vw_caja_id_cajero").val($("#vw_caj_movimientos_select_caja").val());
                         $("#vw_caja_mov_cajero").val($("#vw_caj_movimientos_select_caja :selected").text());
                         dialog_close('dialog_select_caja');

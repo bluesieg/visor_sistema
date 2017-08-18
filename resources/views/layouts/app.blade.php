@@ -72,7 +72,11 @@
                 <ul class="header-dropdown-list">
                     <li class="">
                         <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
-                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">
+                            @if (Auth::user()->foto)
+                                <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">                           
+                            @else
+                                <img src="{{asset('img/avatars/male.png')}}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">                           
+                            @endif
                             <span style="color: black">BIENVENIDO, {{ Auth::user()->ape_nom }} </span> <i class="fa fa-angle-down" style="color: black"></i> 
                         </a>
                         <ul class="dropdown-menu pull-right">
@@ -100,7 +104,12 @@
             <div class="login-info" style="background: #37A26F;border-bottom: 3px solid #f2f2f2;">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a>
-                        <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
+                        @if (Auth::user()->foto)
+                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
+                        @else
+                            <img src="{{asset('img/avatars/male.png')}}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
+                        @endif
+                        
                         <span style="color: white;">
                             Usuario:{{ Auth::user()->usuario }}
                         </span>
@@ -165,9 +174,6 @@
                             </li>
                             <li id="li_impform">
                                 <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
-                            </li>
-                            <li id="li_fraccionamiento" style="border-top: 2px solid greenyellow;">
-                                <a href="conve_fraccionamiento" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Fraccionamiento</span></a>
                             </li>
                         </ul>	
                     </li>

@@ -68,12 +68,15 @@ class Usuarios extends Controller {
     }
 
     public function insert_Usuario(Request $request) {
-
-        $file = $request->file('vw_usuario_cargar_foto');
+        
+        if($request->file('vw_usuario_cargar_foto')){
+            $file = $request->file('vw_usuario_cargar_foto');
 //        $size = $request->file('vw_usuario_cargar_foto')->getSize();
 //        $tmp_name=$request->file('vw_usuario_cargar_foto')->getPath();
 
-        $file2 = \File::get($file);
+            $file2 = \File::get($file);
+        }        
+       
 //        echo $file2;
 //        echo "<img src='data:image/png;base64,".$file2."'>";
 
@@ -86,8 +89,13 @@ class Usuarios extends Controller {
         $data['fch_nac'] = date('d-m-Y H:i:s', strtotime($request['vw_usuario_txt_fch_nac']));
         $data['cad_lar'] = strtoupper($request['vw_usuario_txt_ape_nom']) . ' ' . $request['vw_usuario_txt_dni'] . ' ' . strtoupper($request['vw_usuario_txt_usuario']);
         $data['contrasena']= $this->encripta_pass($request['vw_usuario_txt_password']);
-
-        $data['foto'] = base64_encode($file2);
+        
+        if(isset($file2)){
+            $data['foto'] = base64_encode($file2);
+        }else{
+            $data['foto'] = '';
+        }
+        
 //        echo $data['foto'];
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['updated_at'] = date("Y-m-d H:i:s");

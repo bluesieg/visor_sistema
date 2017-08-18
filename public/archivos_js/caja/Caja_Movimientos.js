@@ -34,15 +34,18 @@ function select_id_caja(caja){
     id_caja = caja;
 }
 function confirmar_Pago(id_recibo){
-    id_caja = $("#vw_caja_id_cajero").val();
+//    rowId=$('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');    
+//    clase_recibo=$("#tabla_Caja_Movimientos").getCell(rowId, 'clase_recibo');
     
+    id_caja = $("#vw_caja_id_cajero").val();
+   
     $.ajax({
         url: 'caja_movimient/'+id_recibo+'/edit',
         type: 'GET',
         data: {
             id_tip_pago:$("#vw_caja_mov_txt_tip_pago").val(),
             id_caja:id_caja,
-            id_pers:$("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib")
+            id_pers:$("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib")            
         },
         success: function (data) {
             if(data){

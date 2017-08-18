@@ -108,20 +108,20 @@
                     <div class="panel-body cr-body">
                         <fieldset>
                             <div class="row">
-                                <section class="col col-2">
+                                <section class="col col-2" style="padding-right:5px;">
                                     <label class="label">Tipo Documento:</label>                                   
                                     <label class="select">
                                         <select id="cb_tip_doc_1" onchange="filtro_tipo_doc(this.value);" name="input_form_contribuyentel" class="input-sm">
                                             <option value="select" selected="" disabled="">Documento</option>                                           
                                         </select><i></i> </label>                        
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Nro. Documento:</label>
                                     <label class="input">
                                         <input id="txt_nro_doc" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
                                     </label>                      
                                 </section>
-                                <section class="col col-2"> 
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;"> 
                                     <label class="label">Reniec/Sunat</label>
                                     <label class="input">
                                         <a id="vw_contrib_btn_con_dni" onclick="fn_consultar_dni();">
@@ -132,16 +132,25 @@
                                         </a>                                        
                                     </label>
                                 </section>
-                                <section class="col col-6">
+                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Tipo de Persona:</label>
                                     <div class="inline-group">
                                         <label class="radio">
                                             <input type="radio" onclick="filtro_tipo_doc(this.value);"  name="radio_tip_per" value="1">
-                                            <i></i>Persona Natural</label>
+                                            <i></i>Natural</label>
                                         <label class="radio">
                                             <input type="radio" onclick="filtro_tipo_doc(this.value);"  name="radio_tip_per" value="2">
-                                            <i></i>Persona Juridica</label>                                       
+                                            <i></i>Juridica</label>                                       
                                     </div>
+                                </section>
+                                <section class="col col-3" style="padding-left:5px">
+                                    <label class="label">Tip. Contribuyente:</label>
+                                    <label class="select">
+                                        <select id="contrib_sexo" class="input-sm">
+                                            <option value="select" selected="" disabled="">Sexo</option>
+                                            <option value="1">Masculino</option>
+                                            <option value="0">Femenino</option>                                            
+                                        </select><i></i> </label>
                                 </section>
                             </div>
                             <div class="row">

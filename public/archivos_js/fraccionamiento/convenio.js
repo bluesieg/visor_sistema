@@ -2,24 +2,47 @@
 function dialog_conve_fracc() {
     $("#vw_conve_fracc").dialog({
         autoOpen: false, modal: true, width: 950, show: {effect: "fade", duration: 300}, resizable: false,
-        position: [210,50],
-        create: function (event) { $(event.target).parent().css('position', 'fixed');},
+        position: ['auto',50],        
         title: "<div class='widget-header'><h4>.: CONVENIO DE FRACCIONAMIENTO :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-fax'></i>&nbsp; Realizar Fraccionamiento",
                 "class": "btn btn-success",
-                click: function () {fraccionamiento();}
+                click: function () {
+                    if($("#vw_conve_fracc_id_pers").val()!=''){
+                        fraccionamiento();
+                    }else{
+                        mostraralertasconfoco('Ingrese un Contribuyente','#vw_conve_fracc_contrib');
+                    }                 
+                }
             },{
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
                 click: function () {$(this).dialog("close");}
             }],
-        open: function(){limpiar_form_conve();}       
+        open: function(){limpiar_form_principal();fn_actualizar_grilla('table_Deuda_Contrib_Arbitrios','grid_deu_contrib_arbitrios?id_contrib=0&desde=0&hasta=0');},
+        close: function(){limpiar_form_principal();fn_actualizar_grilla('table_Deuda_Contrib_Arbitrios','grid_deu_contrib_arbitrios?id_contrib=0&desde=0&hasta=0');}       
     }).dialog('open');
     
     grid_deuda_arbitrios();
 }
+
+global_tipo=0;
 function fraccionamiento(){
+    var Seleccionados = new Array();
+    $('input[type=checkbox][name=chk_2017]:checked').each(function() {
+        Seleccionados.push($(this).val());
+    });
+    s_ch= Seleccionados.length;
+    if(s_ch==2){
+        global_tipo=3;
+    }else{
+        global_tipo = Seleccionados.join('');
+    }    
+    if(global_tipo==''){
+        mostraralertasconfoco('Seleccione una Deuda para realizar el Fraccionamiento','#vw_conve_fracc_contrib');
+        return false;
+    }
+    
     $("#vw_conve_fracc_fraccionar").dialog({
         autoOpen: false, modal: true, width: 750, show: {effect: "fade", duration: 300}, resizable: false,        
         title: "<div class='widget-header'><h4>.: CONVENIO DE FRACCIONAMIENTO :.</h4></div>",
@@ -37,15 +60,23 @@ function fraccionamiento(){
                 click: function () {$(this).dialog("close");}
             }],
         open: function(){
+            limpiar_form_conve();
             $("#vw_conve_fracc_fracc_porc_cuo_ini,#vw_conve_fracc_fracc_porc_cuo_ini_min").val('20');
-        }       
+        },
+        close: function(){limpiar_form_conve();}
     }).dialog('open');
     $("#vw_conve_fracc_fracc_tot").val($("#vw_conve_fracc_ttotal").val().replace(',',''));    
     
     
 }
 
-function insert_convenio(){    
+function insert_convenio(){
+    var rowCount =  $("#t_dina_conve_fracc tr").length;
+    if(rowCount-1==0){
+        mostraralertas('Tabla de Fraccionamiento Vacia');
+        return false;
+    }
+    
     $.confirm({
         title: '.:Convenio:.',
         content: 'Realizar Convenio de Fraccionamiento',
@@ -59,7 +90,7 @@ function insert_convenio(){
                         nro_convenio     :1,            
                         cod_convenio     :$("#vw_conve_fracc_fracc_cod_conve").val(),
                         id_contribuyente :$("#vw_conve_fracc_id_pers").val(),            
-                        interes          :$("#vw_conve_fracc_fracc_tim").val(),
+                        interes          :$("#vw_conve_fracc_fracc_tif").val(),
                         nro_cuotas       :$("#vw_conve_fracc_fracc_n_cuo").val(),
                         total_convenio   :$("#vw_conve_fracc_fracc_tot").val().replace(',',''),
                         estado           :1,
@@ -67,7 +98,10 @@ function insert_convenio(){
                         period_desde     :($("#td_din_fecha_1").val()).substr(-4),
                         period_hast      :($("#td_din_fecha_"+$("#vw_conve_fracc_fracc_n_cuo").val()).val()).substr(-4),
                         porc_cuo_inic    :$("#vw_conve_fracc_fracc_porc_cuo_ini").val(),
-                        cuota_inicial    :$("#vw_conve_fracc_fracc_inicial").val()
+                        cuota_inicial    :$("#vw_conve_fracc_fracc_inicial").val(),
+                        id_tip_fracc     :$("#vw_conve_fracc_fracc_tip_fracc").val(),
+                        tipo             :global_tipo,
+                        periodo          :$("#vw_conve_fracc_anio_desde").val()+' al '+$("#vw_conve_fracc_anio_hasta").val()                        
                     },
                     success: function (data) {
                         if (data) {
@@ -93,12 +127,14 @@ function array_det_convenio(cod_conv_det) {
         btn_insert_det_conv(i, cod_conv_det);        
     }
     fn_actualizar_grilla('table_Convenios','grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val());
-    MensajeDialogLoadAjaxFinish('vw_conve_fracc_fraccionar');
-    dialog_close('vw_conve_fracc_fraccionar');
-    dialog_close('vw_conve_fracc');
+            
     setTimeout(function(){
-         window.open('imp_cronograma_Pago_Fracc?cod_conv_det='+cod_conv_det+'&id_contrib='+$("#vw_conve_fracc_id_pers").val());
-    }, 1000);
+        MensajeDialogLoadAjaxFinish('vw_conve_fracc_fraccionar');
+        window.open('imp_cronograma_Pago_Fracc?cod_conv_det='+cod_conv_det+'&id_contrib='+$("#vw_conve_fracc_id_pers").val());
+    }, 3000);
+      
+    dialog_close('vw_conve_fracc_fraccionar');
+    dialog_close('vw_conve_fracc');    
    
     MensajeExito('CONVENIO MDCC', 'El Convenio se Realizó Exitosamente.');
     
@@ -131,32 +167,58 @@ function btn_insert_det_conv(n_cuo, cod_conv_det) {
 
 function realizar_table_fracc(){
     
-    tif=parseFloat($("#vw_conve_fracc_fracc_tim").val())/100;
+    tif=parseFloat($("#vw_conve_fracc_fracc_tif").val())/100;
     total=parseFloat($("#vw_conve_fracc_fracc_tot").val());
     inicial=parseFloat($("#vw_conve_fracc_fracc_inicial").val());
     n_cuotas=parseFloat($("#vw_conve_fracc_fracc_n_cuo").val());
+//    cod_conv=$("#vw_conve_fracc_fracc_cod_conve").val();
+    glosa=$("#vw_conve_fracc_fracc_glosa").val();
     deuda_total=(total-inicial);
-
+    
+    if(isNaN(inicial)){
+        mostraralertasconfoco('Ingrese Monto Inicial: (0.00)','#vw_conve_fracc_fracc_inicial');
+        return false;
+    }
+    if(isNaN(n_cuotas)){
+        mostraralertasconfoco('Ingrese Numero de Cuotas','#vw_conve_fracc_fracc_n_cuo');
+        return false;
+    }
+//    if(cod_conv==''){
+//        mostraralertasconfoco('Ingrese Codigo Convenio','#vw_conve_fracc_fracc_cod_conve');
+//        return false;
+//    }
+    if(glosa==''){
+        mostraralertasconfoco('Ingrese Glosa','#vw_conve_fracc_fracc_glosa');
+        return false;
+    }
+    
     cc=((tif*Math.pow(1+tif,n_cuotas))/(Math.pow(1+tif,n_cuotas)-1))*deuda_total;
     fecha=$("#vw_conve_fracc_fracc_fecha").val();    
     
-    amor=0;saldo=0;interes=0;deuda=0;
+    amor=0;saldo=0;interes=0;deuda=0;saldo_1=0;
     t_deuda=0;t_amor=0;t_inter=0;t_cc=0;
     for(i=1;i<=n_cuotas;i++){
         
-        if(i==1){saldo=total-inicial;}
-        interes=tif*saldo;
-        amor=cc-interes;
-        deuda=saldo-amor;
-        saldo=deuda;
+        if(i==1){
+            saldo=total-inicial;
+            interes=tif*saldo;
+            amor=cc-interes;
+        }else{
+            saldo=saldo-amor;
+            interes=tif*saldo;
+            amor=cc-interes;
+        }
+        
+        
+//        saldo=deuda;
 //        if(deuda==-0.00){deuda=-1*(0.00);}
         $('#t_dina_conve_fracc').append(
         "<tr>\n\
             <td>" + i + "</td>\n\
-            <td><label class='input'><input id='td_din_saldo_" + i + "' type='text' value='" + formato_numero(Math.abs(saldo),2,'.') + "' disabled='' class='input-xs text-align-right'></label></td>\n\
-            <td><label class='input'><input id='td_din_amor_" + i + "' type='text' value='" + formato_numero(amor,2,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
-            <td><label class='input'><input id='td_din_inter_" + i + "' type='text' value='" + formato_numero(interes,2,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
-            <td><label class='input'><input id='td_din_cc_" + i + "' type='text' value='" + formato_numero(cc,2,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='td_din_saldo_" + i + "' type='text' value='" + formato_numero(saldo,3,'.') + "' disabled='' class='input-xs text-align-right'></label></td>\n\
+            <td><label class='input'><input id='td_din_amor_" + i + "' type='text' value='" + formato_numero(amor,3,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='td_din_inter_" + i + "' type='text' value='" + formato_numero(interes,3,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='td_din_cc_" + i + "' type='text' value='" + formato_numero(cc,3,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
             <td><label class='input'><input id='td_din_fecha_" + i + "' type='text' value='" + sumaFecha(i*30,fecha) + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
         </tr>");
 //        t_deuda=t_deuda+deuda;
@@ -181,7 +243,8 @@ function calc_inicial(value){
     
     $("#vw_conve_fracc_fracc_inicial").val(formato_numero(inicial,2,'.'));
 }
-function calc_deuda(value){    
+function calc_deuda(value){
+    value = value || parseFloat($("#vw_conve_fracc_fracc_inicial").val());
     total=parseFloat($("#vw_conve_fracc_fracc_tot").val());
     $("#vw_conve_fracc_fracc_deuda").val((total-value).toFixed(2));
 }
@@ -222,22 +285,23 @@ function fn_bus_contrib_list(per){
     
     $("#vw_conve_fracc_contrib").attr('maxlength',tam);
 //    id_pers=$('#table_contrib').jqGrid('getCell',per,'id_pers');
-//    fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_pers='+id_pers+'&ano_cta='+anio);
+    fn_actualizar_grilla('table_Deuda_Contrib_Arbitrios','grid_deu_contrib_arbitrios?id_contrib='+per+'&desde='+$("#vw_conve_fracc_anio_desde").val()+'&hasta='+$("#vw_conve_fracc_anio_hasta").val());
     $("#dlg_bus_contr").dialog("close");    
 }
 
 function grid_deuda_arbitrios(){
     jQuery("#table_Deuda_Contrib_Arbitrios").jqGrid({
-        url: 'grid_deu_contrib_arbitrios',
+        url: 'grid_deu_contrib_arbitrios?id_contrib=0&desde=0&hasta=0',
         datatype: 'json', mtype: 'GET',
         height: 100, autowidth: true,
-        colNames: ['tipo', 'Deuda','Año','Select'],
+        colNames: ['id_tipo','tipo', 'Deuda','Año','Select'],
         rowNum: 5, sortname: 'anio', sortorder: 'desc', viewrecords: true,caption:'Deuda Contribuyente', align: "center",
-        colModel: [            
+        colModel: [
+            {name: 'id_tipo', index: 'id_tipo', hidden:true},
             {name: 'tipo', index: 'tipo', width: 60},
-            {name: 'deuda_arb', index: 'deuda_arb', width: 60},
-            {name: 'anio', index: 'anio', width: 60},
-            {name: 'check', index: 'check', width: 60}
+            {name: 'deuda_arb', index: 'deuda_arb',align:'center', width: 60},
+            {name: 'anio_deu', index: 'anio',align:'center', width: 60},
+            {name: 'check', index: 'check',align:'center', width: 60}
         ],
         pager: '#pager_table_Deuda_Contrib_Arbitrios',
         rowList: [10, 20],
@@ -261,11 +325,26 @@ function check_tot_fracc(val,source){
     }
     $("#vw_conve_fracc_ttotal").val(formato_numero(tot_deuda,2,'.',','));
 }
-function limpiar_form_conve(){}
+function limpiar_form_principal(){
+    tot_deuda=0;
+    global_tipo=0;
+    $("#vw_conve_fracc_contrib,#vw_conve_fracc_cod_contrib,#vw_conve_fracc_domicilio").val('');
+}
+function limpiar_form_conve(){
+    $("#vw_conve_fracc_fracc_inicial,#vw_conve_fracc_fracc_n_cuo,#vw_conve_fracc_fracc_deuda,#vw_conve_fracc_fracc_glosa,#vw_conve_fracc_fracc_cod_conve").val('');
+    limpiar_vista_fraccionamiento();
+}
 
 function limpiar_vista_fraccionamiento(){
     $("#t_dina_conve_fracc > tbody > tr").remove();
     $("#vw_con_fracc_tot_amor,#vw_con_fracc_tot_inter,#vw_con_fracc_tot_cc").val('000.00');
+}
+
+function act_des_hast(){
+    per = $("#vw_conve_fracc_id_pers").val();
+    desde = $("#vw_conve_fracc_anio_desde").val();
+    hasta = $("#vw_conve_fracc_anio_hasta").val();
+    fn_actualizar_grilla('table_Deuda_Contrib_Arbitrios','grid_deu_contrib_arbitrios?id_contrib='+per+'&desde='+desde+'&hasta='+hasta);
 }
 
 sumaFecha = function(d, fecha){

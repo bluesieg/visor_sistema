@@ -11,7 +11,7 @@ class ConvenioController extends Controller
 {
 
     public function index(){
-        $cfracc=DB::table('fraccionamiento.config_fraccionamiento')->get();
+        $cfracc=DB::table('fraccionamiento.vw_config_fracc')->get();
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $tip_f= DB::select('select * from fraccionamiento.tipo_fracc');
         return view('fraccionamiento/vw_conve_fracc',compact('anio','cfracc','tip_f'));
@@ -35,6 +35,9 @@ class ConvenioController extends Controller
         $data->period_hast      = $request['period_hast'];
         $data->porc_cuo_inic    = $request['porc_cuo_inic'];
         $data->cuota_inicial    = $request['cuota_inicial'];
+        $data->id_tip_fracc     = $request['id_tip_fracc'];
+        $data->tipo             = $request['tipo'];
+        $data->periodo          = $request['periodo'];
         $data->save();        
         return $data->cod_convenio;
     }
@@ -65,8 +68,12 @@ class ConvenioController extends Controller
     }
     
     function list_deuda_contrib(Request $request){
-        header('Content-type: application/json');
-        $totalg = 2;
+        $id_contrib=$request['id_contrib'];
+        $desde=$request['desde'];        
+        $hasta=$request['hasta'];
+        $totalg = DB::select("select count(a.id_tipo)as total from fraccionamiento.fn_deuda_frac(138) a
+                    left join fraccionamiento.convenio b on a.id_contri=b.id_contribuyente and a.anio_deu::integer=b.anio
+                    where anio_deu between '".$desde."' and '".$hasta."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -76,7 +83,7 @@ class ConvenioController extends Controller
         if (!$sidx) {
             $sidx = 1;
         }
-        $count = $totalg;
+        $count = $totalg[0]->total;
         if ($count > 0) {
             $total_pages = ceil($count / $limit);
         }
@@ -87,28 +94,28 @@ class ConvenioController extends Controller
         if ($start < 0) {
             $start = 0;
         }
-
-        $sql = DB::select("select 'Arbitrios' as tipo, 
-            sum(deuda_arb) as deuda_arb, anio::character(4) from arbitrios.vw_cta_arbitrios where id_contri=138 
-            group by anio
-            union
-            select 'Predial' as tipo,ivpp, ano_cta as anio from adm_tri.vw_contrib_hr2 
-            where id_pers=138");
+        
+        $sql = DB::select("select a.*, b.tipo as conv_tipo from fraccionamiento.fn_deuda_frac(".$id_contrib.") a "
+                .'left join fraccionamiento.convenio b on a.id_contri=b.id_contribuyente and a.anio_deu::integer=b.anio '
+                . "where anio_deu between '".$desde."' and '".$hasta."'");
+//        $sql = DB::select('');
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
         
-        
+        $cc=0;
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->tipo;            
+            $cc++;
+            $Lista->rows[$Index]['id'] = $cc;            
             $Lista->rows[$Index]['cell'] = array(
+                $Datos->id_tipo,
                 trim($Datos->tipo),   
-                trim($Datos->deuda_arb),   
-                trim($Datos->anio),
-                "<input type='checkbox' name='chk_c_f' onclick='check_tot_fracc(".$Datos->deuda_arb.",this)'>",
+                trim($Datos->deuda),   
+                trim($Datos->anio_deu),
+                "<input type='checkbox' value='".$Datos->id_tipo."' name='chk_".$Datos->anio_deu."' onclick='check_tot_fracc(".$Datos->deuda.",this)'>",
             );
-        }
+        }        
         return response()->json($Lista);
     }
     
@@ -160,6 +167,104 @@ class ConvenioController extends Controller
         return response()->json($Lista);
     }
     
+    function fracc_de_contrib(Request $request){
+        $id_contrib=$request['id_contrib'];
+        $totalg = DB::select("select count(id_conv) as total from fraccionamiento.vw_convenios where id_contribuyente=".$id_contrib);
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('fraccionamiento.vw_convenios')->where('id_contribuyente',$id_contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        foreach ($sql as $Index => $Datos) {            
+            $Lista->rows[$Index]['id'] = $Datos->id_conv;
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->cod_convenio,
+                $Datos->nro_convenio,
+                $Datos->total_convenio,              
+                $Datos->cuota_inicial,
+                $Datos->periodo,
+                $Datos->desc_tipo,
+                $Datos->tip_fracc,
+                trim($Datos->est_actual),
+                date('d-m-Y',strtotime($Datos->fec_reg))
+            );
+        }        
+        return response()->json($Lista);
+    }
+    
+    function detalle_fracc(Request $request){
+        $cod_conv_det=$request['cod_conv_det'];
+        $totalg = DB::select("select count(id_det_conv) as total from fraccionamiento.vw_trae_cuota_conv where cod_conv_det='".$cod_conv_det."'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('fraccionamiento.vw_trae_cuota_conv')->where('cod_conv_det',$cod_conv_det)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        foreach ($sql as $Index => $Datos) {            
+            $Lista->rows[$Index]['id'] = $Datos->id_det_conv;
+            if($Datos->cod_estado=='0'){
+                $check="<input type='checkbox' value=".$Datos->nro_cuota." onclick='check_tot_mes(".$Datos->total.",this)'>";
+            }else{
+                $check="";
+            }
+            
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->nro_cuota,
+                $Datos->total,
+                $Datos->estado,              
+                $this->fecha_mes($Datos->fec_pago),
+                $check               
+            );
+        }        
+        return response()->json($Lista);
+    }
+    
     function crono_pago_fracc(Request $request){
         $cod_conv_det=$request['cod_conv_det'];
         $id_contrib=$request['id_contrib'];
@@ -167,6 +272,8 @@ class ConvenioController extends Controller
         date_default_timezone_set('America/Lima');
         $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_pers='.$id_contrib);
         $conv = DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
+        
+        
         
         $conv_det = DB::select("select * from fraccionamiento.vw_trae_cuota_conv where cod_conv_det='".$cod_conv_det."' order by nro_cuota asc");
                 
@@ -176,12 +283,31 @@ class ConvenioController extends Controller
             $Lista->nro_cuot = $Datos->nro_cuota;
             $Lista->saldo = number_format($Datos->saldo,2,'.','');
             $Lista->amor = number_format($Datos->monto,2,'.','');
-            $amo=$amo+number_format($Datos->monto,2,'.','');
+            $amo=$amo+number_format($Datos->monto,3,'.','');
             $Lista->inter =  number_format($Datos->interes,2,'.','');
-            $inter=$inter+number_format($Datos->interes,2,'.','');
+            $inter=$inter+number_format($Datos->interes,3,'.','');
             $Lista->total =  number_format($Datos->total,2,'.','');
-            $cc=$cc+number_format($Datos->total,2,'.','');
-            $fecha=explode("-", $Datos->fec_pago);
+            $cc=$cc+number_format($Datos->total,3,'.','');            
+            $Lista->fec_pago=$this->fecha_mes($Datos->fec_pago);
+            array_push($todo, $Lista);
+        }
+        $totales=array();
+        $totales['tot_amo']= number_format($amo,2,'.',',');
+        $totales['tot_inter']=number_format($inter,2,'.',',');
+        $totales['tot_cc']=number_format($cc,2,'.',',');
+        $fecha_larga = $this->fecha_letras(date('d-m-Y'));
+        $view = \View::make('fraccionamiento.reporte.cronogramaPagos',compact('contrib','conv','todo','fecha_larga','totales'))->render();
+//        return $view;
+
+        $pdf = \App::make('dompdf.wrapper');            
+        $pdf->loadHTML($view)->setPaper('a4');
+        return $pdf->stream();            
+
+    }
+    
+    public function fecha_mes($fecha){
+        $fecha=explode("-", $fecha);
+            
         $mes=$fecha[1];
         switch ($mes) {
             case '01':
@@ -221,24 +347,9 @@ class ConvenioController extends Controller
                 $fecha[1]='dic';
                 break;
         }
-        
-            $Lista->fec_pago = $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
-            array_push($todo, $Lista);
-        }
-        $totales=array();
-        $totales['tot_amo']=$amo;
-        $totales['tot_inter']=$inter;
-        $totales['tot_cc']=$cc;
-        $fecha_larga = $this->fecha_letras(date('d-m-Y'));
-        $view = \View::make('fraccionamiento.reporte.cronogramaPagos',compact('contrib','conv','todo','fecha_larga','totales'))->render();
-//        return $view;
-
-        $pdf = \App::make('dompdf.wrapper');            
-        $pdf->loadHTML($view)->setPaper('a4');
-        return $pdf->stream();            
-
+        return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
     }
-    
+
     public function fecha_letras($date){
         $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -247,4 +358,6 @@ class ConvenioController extends Controller
         $timestamp=strtotime($date);
         return $dias[date('w',$timestamp)].", ".date('d',$timestamp)." de ".$meses[date('n',$timestamp)-1]. " del ".date('Y',$timestamp);
     }
+    
+    
 }

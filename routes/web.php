@@ -142,6 +142,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
         Route::get('grid_Convenios','ConvenioController@grid_all_convenios');
         Route::get('imp_cronograma_Pago_Fracc','ConvenioController@crono_pago_fracc');
+        Route::get('grid_fracc_de_contrib','ConvenioController@fracc_de_contrib');
+        Route::get('grid_detalle_fracc','ConvenioController@detalle_fracc');
     });    
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
@@ -164,7 +166,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('selmzna','PredioController@ListManz');
         Route::get('adm_impform/','PredioController@imprimir_formatos');
         Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
-        Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
+        
     });
     Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
         Route::resource('fiscalizacion', 'FiscalizacionController');

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <style>
-#vw_em_rec_txt_detalle_total{
-    background: #80B23E;
-    color: white;
-    border: 0px !important;
-    font-size: 12px;
-}
+    #vw_em_rec_txt_detalle_total{
+        background: #80B23E;
+        color: white;
+        border: 0px !important;
+        font-size: 12px;
+    }
 </style>
 <section id="widget-grid" class="">    
     <div class="row">
@@ -31,7 +31,7 @@
                             <button onclick="dialog_emi_rec_pag_imp_predial();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Impuesto Predial
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Editar" onclick="" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button onclick="dialog_emi_rec_pag_fracc();" id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Fraccionamiento
                             </button>
                             <button onclick="dialog_emi_rec_pag_varios();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
@@ -59,11 +59,11 @@
 
 <script type="text/javascript">
     sumTotal = 0;
-    $(document).ready(function () {        
+    $(document).ready(function () {
         $("#menu_tesoreria").show();
         $("#li_tesoreria_emi_rec_pag").addClass('cr-active');
         jQuery("#table_Resumen_Recibos").jqGrid({
-            url: 'grid_Resumen_recibos?fecha='+$("#vw_emision_reg_pag_fil_fecha").val(),
+            url: 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
@@ -71,7 +71,7 @@
             colModel: [
                 {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
-                {name: 'nro_recibo_mtr', index: 'nro_recibo_mtr', hidden:true},
+                {name: 'nro_recibo_mtr', index: 'nro_recibo_mtr', hidden: true},
                 {name: 'fecha', index: 'fecha', align: 'center', width: 60},
                 {name: 'glosa', index: 'glosa', width: 250},
                 {name: 'estad_recibo', index: 'estad_recibo', width: 60},
@@ -86,14 +86,14 @@
                 if (rows.length > 0) {
                     var firstid = jQuery('#table_Resumen_Recibos').jqGrid('getDataIDs')[0];
                     $("#table_Resumen_Recibos").setSelection(firstid);
-                }                
+                }
                 var sum = jQuery("#table_Resumen_Recibos").getGridParam('userData').sum_total;
-                if(sum==undefined){
+                if (sum == undefined) {
                     $("#vw_emision_rec_pago_total_global").val('0000.00');
-                }else{
-                    $("#vw_emision_rec_pago_total_global").val(formato_numero(sum,2,'.',','));
-                }                
-            },            
+                } else {
+                    $("#vw_emision_rec_pago_total_global").val(formato_numero(sum, 2, '.', ','));
+                }
+            },
             ondblClickRow: function (Id) {}
         });
         jQuery("#table_contrib").jqGrid({
@@ -101,77 +101,79 @@
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pers','codigo','DNI/RUC','contribuyente'],
+            colNames: ['id_pers', 'codigo', 'DNI/RUC', 'contribuyente'],
             rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
-                {name: 'id_per', index: 'id_per', align: 'center',width: 100},
-                {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260}                
+                {name: 'id_per', index: 'id_per', align: 'center', width: 100},
+                {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 100},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 260}
             ],
             pager: '#pager_table_contrib',
             rowList: [13, 20],
             gridComplete: function () {
-                    var idarray = jQuery('#table_contrib').jqGrid('getDataIDs');
-                    if (idarray.length > 0) {
+                var idarray = jQuery('#table_contrib').jqGrid('getDataIDs');
+                if (idarray.length > 0) {
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
-                            $("#table_contrib").setSelection(firstid);    
-                        }
-                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
-                },
-            onSelectRow: function (Id){},
-            ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
+                    $("#table_contrib").setSelection(firstid);
+                }
+
+            },
+            onSelectRow: function (Id) {},
+            ondblClickRow: function (Id) {
+                fn_bus_contrib_list(Id)
+            }
         });
         jQuery("#table_cta_cte2").jqGrid({
             url: 'get_grid_cta_cte2?id_pers=0&ano_cta=0',
             datatype: 'json', mtype: 'GET',
             height: '120px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_tribu','Descripción','Total a Pagar','Saldo S/.','Trim I','Trim II','Trim III','Trim IV'],
+            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV'],
             rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
-                {name: 'id_tribu', index: 'id_tribu', hidden:true},
-                {name: 'descrip_tributo', index: 'descrip_tributo', width:292},
-                {name: 'ivpp', index: 'ivpp', align: 'center',width: 90},
-                {name: 'saldo', index: 'saldo', align: 'center',width: 70},
-                {name: 'abo1_cta', index: 'abo1_cta', align: 'right',width: 70},
-                {name: 'abo2_cta', index: 'abo2_cta', align: 'right',width: 70},
-                {name: 'abo3_cta', index: 'abo3_cta', align: 'right',width: 70},
-                {name: 'abo4_cta', index: 'abo4_cta', align: 'right',width: 70}
+                {name: 'id_tribu', index: 'id_tribu', hidden: true},
+                {name: 'descrip_tributo', index: 'descrip_tributo', width: 292},
+                {name: 'ivpp', index: 'ivpp', align: 'center', width: 90},
+                {name: 'saldo', index: 'saldo', align: 'center', width: 70},
+                {name: 'abo1_cta', index: 'abo1_cta', align: 'right', width: 70},
+                {name: 'abo2_cta', index: 'abo2_cta', align: 'right', width: 70},
+                {name: 'abo3_cta', index: 'abo3_cta', align: 'right', width: 70},
+                {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 70}
             ],
             pager: '#pager_table_cta_cte2',
             rowList: [5, 10],
-            gridComplete: function (){
-                var pre_x_trim=0;
+            gridComplete: function () {
+                var pre_x_trim = 0;
                 var idarray = jQuery('#table_cta_cte2').jqGrid('getDataIDs');
 
-                for (var i = 0; i < idarray.length; i++){                        
-                    for (var a = 1; a <= 4; a++){
-                        var val = $("#table_cta_cte2").getCell(idarray[i], 'abo'+a+'_cta');
+                for (var i = 0; i < idarray.length; i++) {
+                    for (var a = 1; a <= 4; a++) {
+                        var val = $("#table_cta_cte2").getCell(idarray[i], 'abo' + a + '_cta');
 
-                        if(val=='0.000' && idarray[i]==103){
-                            $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo'+a+'_cta', 
-                            "<input type='checkbox' name='chk_trim' value='"+a+"' id='chk_calc_pag_"+a+"' onchange='calc_tot_a_pagar("+a+")'>",{'text-align':'center'});
+                        if (val == '0.000' && idarray[i] == 103) {
+                            $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
+                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar(" + a + ")'>", {'text-align': 'center'});
                         }
-                        if(val=='0.000' && idarray[i]==104){
-                            $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo'+a+'_cta', 
-                            "<input type='checkbox' name='chk_trim_form' value='"+a+"' id='chk_calc_form_imp_"+a+"' onchange='calc_tot_a_pagar_form("+a+")' checked>",{'text-align':'center'});
+                        if (val == '0.000' && idarray[i] == 104) {
+                            $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
+                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_form(" + a + ")' checked>", {'text-align': 'center'});
                         }
                     }
                     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(idarray[i], 'ivpp'));
                 }
-                
-                pre_x_trim=formato_numero((pre_x_trim/4),2,'.',',');
+
+                pre_x_trim = formato_numero((pre_x_trim / 4), 2, '.', ',');
                 $("#vw_emis_re_pag_pre_x_trim").val(pre_x_trim);
-                form=$("#table_cta_cte2").getCell(104, 'saldo') || '0.00';
+                form = $("#table_cta_cte2").getCell(104, 'saldo') || '0.00';
                 $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(form);
                 if (idarray.length > 0) {
                     var firstid = jQuery('#table_cta_cte2').jqGrid('getDataIDs')[1];
-                        $("#table_cta_cte2").setSelection(firstid);    
-                }                    
+                    $("#table_cta_cte2").setSelection(firstid);
+                }
             },
-            onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            onSelectRow: function (Id) {},
+            ondblClickRow: function (Id) {}
         });
         $(window).on('resize.jqGrid', function () {
             $("#table_Resumen_Recibos").jqGrid('setGridWidth', $("#content").width());
@@ -189,46 +191,57 @@
         });
         $("#vw_emi_rec_txt_cantidad").keypress(function (e) {
             if (e.which == 13 && !e.shiftKey) {
-                if($("#hiddenvw_emi_rec_txt_tributo").val()==''){
-                    mostraralertasconfoco('Ingrese un Tributo','#hiddenvw_emi_rec_txt_tributo');
+                if ($("#hiddenvw_emi_rec_txt_tributo").val() == '') {
+                    mostraralertasconfoco('Ingrese un Tributo', '#hiddenvw_emi_rec_txt_tributo');
                     return false;
-                }else detalle_recibo();
+                } else
+                    detalle_recibo();
             }
         });
         $("#vw_emi_rec_txt_nro_doc").keypress(function (e) {
-            if (e.which == 13 && !e.shiftKey) {               
-                consultar_persona();               
+            if (e.which == 13 && !e.shiftKey) {
+                consultar_persona();
             }
         });
-        var globalvalidador=0;
+        var globalvalidador = 0;
         $("#vw_emi_rec_imp_pre_contrib").keypress(function (e) {
             if (e.which == 13) {
-                if(globalvalidador==0){
+                if (globalvalidador == 0) {
                     fn_bus_contrib();
-                    globalvalidador=1;
-                }else{
-                    globalvalidador=0;
-                }                
+                    globalvalidador = 1;
+                } else {
+                    globalvalidador = 0;
+                }
             }
         });
-        var globalvalidador_2=0;
+        var globalvalidador_2 = 0;
         $("#vw_emi_rec_arbitrios_contrib").keypress(function (e) {
             if (e.which == 13) {
-                if(globalvalidador_2==0){
+                if (globalvalidador_2 == 0) {
                     fn_bus_contrib_arb();
-                    globalvalidador_2=1;
-                }else{
-                    globalvalidador_2=0;
-                }                
+                    globalvalidador_2 = 1;
+                } else {
+                    globalvalidador_2 = 0;
+                }
+            }
+        });
+        var globalvalidador_3 = 0;
+        $("#vw_emi_rec_fracc_contrib").keypress(function (e) {
+            if (e.which == 13) {
+                if (globalvalidador_3 == 0) {
+                    fn_bus_contrib_fracc();
+                    globalvalidador_3 = 1;
+                } else {
+                    globalvalidador_3 = 0;
+                }
             }
         });
     });
-    
-    window.addEventListener('load', function(){
-        setInterval(function(){ 
-           document.getElementById('vw_emi_rec_imp_pred_hora_act').value=(new Date()).toTimeString().substr(0,8); 
-//           document.getElementById('vw_emi_rec_imp_pred_hora_act').value={!!json_encode(date('h:i A'))!!};
-        },1000);
+
+    window.addEventListener('load', function () {
+        setInterval(function () {
+            document.getElementById('vw_emi_rec_imp_pred_hora_act').value = (new Date()).toTimeString().substr(0, 8);
+        }, 1000);
     });
 </script>
 @stop
@@ -245,10 +258,10 @@
                                     <label class="label">Tipo Documento:</label>                                   
                                     <label class="select">
                                         <select onchange="emi_rec_select_tipo_recibo(this.value);" id="vw_emi_rec_txt_selec_tip_doc" class="input-sm">                                       
-                                        @foreach ($tip_doc as $tip_doc)                                        
-                                        <option value='{{$tip_doc->tip_doc}}' >{{$tip_doc->tipo_documento}}</option>
-                                        @endforeach                                        
-                                    </select><i></i>                        
+                                            @foreach ($tip_doc as $tip_doc)                                        
+                                            <option value='{{$tip_doc->tip_doc}}' >{{$tip_doc->tipo_documento}}</option>
+                                            @endforeach                                        
+                                        </select><i></i>                        
                                 </section>
                                 <section class="col col-2" style="padding-right:5px; padding-left: 5px;">
                                     <input type="hidden" id="vw_emi_rec_txt_id_pers">
@@ -325,7 +338,7 @@
                                                 </thead>
                                                 <tbody></tbody>
                                             </table>
-                                            
+
                                             <table class="table table-sm">
                                                 <thead>
                                                     <tr>
@@ -377,10 +390,10 @@
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
                                         <select onchange="" id="vw_emi_rec_imp_pre_anio" class="input-sm">                                       
-                                        @foreach ($anio as $anio1)                                        
-                                        <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
-                                        @endforeach                                    
-                                    </select><i></i>                        
+                                            @foreach ($anio as $anio1)                                        
+                                            <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
+                                            @endforeach                                    
+                                        </select><i></i>                        
                                 </section>
                             </div>                            
                         </fieldset>
@@ -406,7 +419,7 @@
                                 </section>                                
                                 <section class="col col-2" style="padding-left:5px">
                                     <label class="label">&nbsp;</label>
-                                        <a onclick="calcular_tot_a_pagar();" class="btn btn-primary btn-sm">Total a Pagar</a>
+                                    <a onclick="calcular_tot_a_pagar();" class="btn btn-primary btn-sm">Total a Pagar</a>
                                 </section>                             
                             </div>                            
                             <section>
@@ -461,10 +474,10 @@
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
                                         <select onchange="" id="vw_emi_rec_arbitrios_anio" class="input-sm">                                       
-                                        @foreach ($anio as $anio2)                                        
-                                        <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
-                                        @endforeach                                    
-                                    </select><i></i>                        
+                                            @foreach ($anio as $anio2)                                        
+                                            <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
+                                            @endforeach                                    
+                                        </select><i></i>                        
                                 </section>
                             </div>                            
                         </fieldset>
@@ -494,15 +507,71 @@
         </div>        
     </div>
 </div>
+<div id="vw_emision_rec_pag_fracc" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <div class="row">                                
+                                <section class="col col-2" style="padding-right: 5px;">
+                                    <input type="hidden" id="vw_emi_rec_fracc_id_pers">
+                                    <label class="label">Cod Contrib:</label>
+                                    <label class="input">
+                                        <input id="vw_emi_rec_fracc_cod_contrib" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-8" style="padding-left: 5px;">
+                                    <label class="label">Contribuyente:</label>
+                                    <label class="input">                                        
+                                        <input id="vw_emi_rec_fracc_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
+                                    </label>
+                                </section>                                
+                            </div>                            
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="panel panel-success" style="">
+                    <div class="panel-heading bg-color-success">.:: Datos del Convenio de Fraccionamiento ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <div class="row">                                
+                                <section class="col col-6" style="padding-right:5px;width: 60%">                                    
+                                    <!--<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important">-->
+                                        <table id="table_fracc_de_contrib"></table>
+                                        <div id="pag_table_fracc_de_contrib"></div>
+                                    <!--</article>-->               
+                                </section>
+                                <section class="col col-6" style="padding-left:5px;width: 40%">                                    
+                                    <!--<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important">-->
+                                        <table id="t_fracc_crono_contrib"></table>
+                                        <div id="pag_t_fracc_crono_contrib">
+                                            <div style="float: right; font-weight: bold;">
+                                                Total S/. <input type="text" id="t_fracc_pago_mes_total" class="input-sm text-right" style="width: 110px; height: 8px;padding-right: 4px;" readonly="">
+                                            </div>
+                                        </div>
+                                    <!--</article>-->
+                                </section>                                
+                            </div>                            
+                        </fieldset>
+                    </div>
+                </div>
 
+            </div>                   
+        </div>        
+    </div>
+</div>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>
         <div id="pager_table_contrib"></div>
     </article>
 </div>
-<script src="{{ asset('js/moment.js') }}"></script>
+
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_varios.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_imp_predial.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_arbitrios.js') }}"></script>
+<script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_fracc.js') }}"></script>
 @endsection

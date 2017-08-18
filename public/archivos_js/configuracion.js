@@ -130,20 +130,21 @@ function save_nuevo_usuario() {
         mostraralertasconfoco('* Las Contraseñas no Coinciden', 'vw_usuario_txt_password');
         return false;
     }
-    if ($("#vw_usuario_txt_nivel") == 'select') {
+    if ($("#vw_usuario_txt_nivel").val() == 'select') {
         mostraralertasconfoco('* Seleccione un Nivel...', 'vw_usuario_txt_nivel');
         return false;
     }
-    var filesSelected = $("#vw_usuario_cargar_foto").val();
-    if (filesSelected == '') {
-        mostraralertasconfoco('* Seleccione una Foto', 'vw_usuario_cargar_foto');
-        return false;
-    }
-
+//    var filesSelected = $("#vw_usuario_cargar_foto").val();
+//    if (filesSelected == '') {
+//        mostraralertasconfoco('* Seleccione una Foto', 'vw_usuario_cargar_foto');
+//        return false;
+//    }
+    
     if ($("#form_user").submit()) {
         dialog_close('dialog_new_edit_Usuario');
-        fn_actualizar_grilla('table_Usuarios', 'list_usuarios');
+        
     }
+    setTimeout(function(){ fn_actualizar_grilla('table_Usuarios', 'list_usuarios'); }, 2000);
 }
 function update_user() {
     dni = $.trim($("#vw_usuario_txt_dni_2").val());

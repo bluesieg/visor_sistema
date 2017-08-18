@@ -73,6 +73,15 @@
             pager: '#pager_table_Convenios',
             rowList: [15, 25],
             gridComplete: function () {
+//                $("#table_Convenios").closest(".ui-jqgrid").block({
+//                    message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Este Prestamo esta Cancelado</div>",
+//                    theme: true,
+//                    themedCSS:{
+//                        width: "40%",
+//                        left: "30%",
+//                        border: "3px solid #a00"
+//                    }
+//                });
                 var rows = $("#table_Convenios").getDataIDs();
                 if (rows.length > 0) {
                     var firstid = jQuery('#table_Convenios').jqGrid('getDataIDs')[0];
@@ -103,6 +112,8 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                             $("#table_contrib").setSelection(firstid);    
                         }
+                    
+                    
                     jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
                 },
             onSelectRow: function (Id){},
@@ -111,7 +122,7 @@
         $(window).on('resize.jqGrid', function () {
             $("#table_Convenios").jqGrid('setGridWidth', $("#content").width());
         });
-        $("#vw_conve_fracc_fracc_n_cuo").keypress(function (e) {
+        $("#vw_conve_fracc_fracc_n_cuo,#vw_conve_fracc_fracc_cod_conve").keypress(function (e) {
             if (e.which == 13) {
                 realizar_table_fracc();
             }
@@ -146,18 +157,27 @@
                                         <input id="vw_conve_fracc_cod_contrib" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
                                     </label>                      
                                 </section>
-                                <section class="col col-8" style="padding-left: 5px;padding-right:5px; ">
+                                <section class="col col-6" style="padding-left: 5px;padding-right:5px; ">
                                     <label class="label">Contribuyente:</label>
                                     <label class="input">                                        
                                         <input id="vw_conve_fracc_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
                                     </label>
                                 </section>
                                 <section class="col col-2" style="padding-left:5px">
-                                    <label class="label">Año:</label>                                   
+                                    <label class="label">Año Desde:</label>                                   
                                     <label class="select">
-                                        <select onchange="" id="vw_conve_fracc_anio" class="input-sm">                                       
+                                        <select onchange="act_des_hast();" id="vw_conve_fracc_anio_desde" class="input-sm">                                       
                                         @foreach ($anio as $anio2)                                        
                                         <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
+                                        @endforeach                                    
+                                    </select><i></i>                        
+                                </section>
+                                <section class="col col-2" style="padding-left:5px">
+                                    <label class="label">Año Hasta:</label>                                   
+                                    <label class="select">
+                                        <select onchange="act_des_hast();" id="vw_conve_fracc_anio_hasta" class="input-sm">                                       
+                                        @foreach ($anio as $anio3)                                        
+                                        <option value='{{$anio3->anio}}' >{{$anio3->anio}}</option>
                                         @endforeach                                    
                                     </select><i></i>                        
                                 </section>
@@ -209,9 +229,9 @@
                                     </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left: 5px;padding-right:5px;">
-                                    <label class="label">Tim:</label>
+                                    <label class="label">Tif:</label>
                                     <label class="input">                                        
-                                        <input id="vw_conve_fracc_fracc_tim" value="{{$cfracc[0]->tif}}" type="text" class="input-sm" disabled="">
+                                        <input id="vw_conve_fracc_fracc_tif" value="{{$cfracc[0]->tif}}" type="text" class="input-sm" disabled="">
                                     </label>
                                 </section>
                                 <section class="col col-1" style="padding-right:5px;padding-left:5px; ">                                    
@@ -241,7 +261,7 @@
                                 <section class="col col-1" style="padding-right:5px;padding-left:5px;">
                                     <label class="label">Cuotas:</label>
                                     <label class="input">                                        
-                                        <input id="vw_conve_fracc_fracc_n_cuo" onkeypress="return soloDNI(event);" type="text" class="input-sm">
+                                        <input id="vw_conve_fracc_fracc_n_cuo" onkeypress="return soloDNI(event);" onblur="calc_deuda();" type="text" class="input-sm">
                                     </label>                       
                                 </section>                                                                
                                 <section class="col col-2" style="padding-right:5px;padding-left:5px;">
@@ -321,7 +341,7 @@
         <div id="pager_table_contrib"></div>
     </article>
 </div>
-<script src="{{ asset('archivos_js/adm_tributaria/convenio.js') }}"></script>
+<script src="{{ asset('archivos_js/fraccionamiento/convenio.js') }}"></script>
 @endsection
 
 

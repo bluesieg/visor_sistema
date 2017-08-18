@@ -177,8 +177,9 @@ function fn_bus_contrib(){
         mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#dlg_contri"); 
         return false;
     }
-    jQuery("#table_contrib").jqGrid('setGridParam', {url: 'obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val()}).trigger('reloadGrid');
-
+    fn_actualizar_grilla('table_contrib','obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val());                  
+//    jQuery("#table_contrib").jqGrid('setGridParam', {url: 'obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val()}).trigger('reloadGrid');
+    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
     $("#dlg_bus_contr").dialog({
         autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       

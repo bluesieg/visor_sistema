@@ -41,7 +41,7 @@ class Recibos_MasterController extends Controller
         $data->id_tip_pago= 0;
         $data->id_contrib = $request['id_pers'];
         $data->id_tribut_master=0;
-        $data->cod_fracc  = 0;
+        $data->cod_fracc  = $request['cod_fracc'] ?? 0 ;
         $data->n_cuot     = 0;
         $data->clase_recibo=$request['clase_recibo'];
         if(isset($request['pred_check'])){
@@ -53,6 +53,11 @@ class Recibos_MasterController extends Controller
             $data->form_pred_check = $request['form_pred_check'];
         }else{
             $data->form_pred_check = 0;
+        }
+        if(isset($request['fracc_check'])){
+            $data->fracc_check = $request['fracc_check'];
+        }else{
+            $data->fracc_check = 0;
         }
         $data->save();        
         return $data->id_rec_mtr;
