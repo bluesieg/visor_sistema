@@ -16,14 +16,27 @@ class FiscalizacionController extends Controller
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores = DB::select('select * from catastro.sectores order by id_sec');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
-        
         return view('fiscalizacion/vw_fiscalizacion',compact('anio_tra','sectores','manzanas'));
     }
     public function create(Request $request)
     {
-        if($request['tip']=='1')
+        if($request['tip']=='1'||$request['tip']=='3')
         {
             return $this->create_by_user($request['per']);
+        }
+        if($request['tip']=='4')
+        {
+            $sql = DB::select("select id_contrib from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' group by id_contrib order by id_contrib");
+            $orden=0;
+            foreach ($sql as $contri)
+            {
+                $valor=$this->create_by_user($contri->id_contrib);
+                if($orden==0)
+                {
+                    $orden=$valor;
+                }
+            }
+            return $orden."-".$valor;
         }
     }
     public function create_by_user($per)
@@ -203,7 +216,9 @@ class FiscalizacionController extends Controller
                     trim($Datos->id_contrib),
                     trim($Datos->nro_doc),
                     trim($Datos->contribuyente),
-                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="verop('.trim($Datos->id_contrib).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver OP</button>',
+                    '<button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(3,'.$Datos->id_contrib.')">
+                    <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nueva OP
+                    </button>',
                 );
             }
             return response()->json($Lista);
@@ -212,7 +227,7 @@ class FiscalizacionController extends Controller
     
     public function reporte($tip,$id,$sec,$man) 
     {
-        if($tip=='1')
+        if($tip=='1'||$tip=='3')
         {
             $sql    =DB::table('fiscalizacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
             if(count($sql)>=1)
@@ -221,14 +236,27 @@ class FiscalizacionController extends Controller
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql->anio)->get()->first();
             }
             $view =  \View::make('fiscalizacion.reportes.op', compact('sql','UIT'))->render();
-        }
-        if(count($sql)>=1)
-        {
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("OP.pdf");
         }
-        else
-        {   return 'No hay datos';}
+        if($tip=='4')
+        {
+            $sql = DB::select("select * from fiscalizacion.vw_op_detalle where id_gen_fis between ". str_replace("-", " and ", $id));
+
+            if(count($sql)>=1)
+            {
+                for($i=0;$i<count($sql);$i++)
+                {
+                    $sql[$i]->fec_reg=$this->getCreatedAtAttribute($sql[$i]->fec_reg)->format('l d, F Y ');
+                }
+                $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();
+            }
+            $view =  \View::make('fiscalizacion.reportes.op_masivo', compact('sql','UIT'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->download("OP.pdf");
+        }
+        
     }
 }

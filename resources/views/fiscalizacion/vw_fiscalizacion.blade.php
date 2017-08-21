@@ -60,8 +60,8 @@
                 </button>
             </div>
             <div class='col-lg-3'style="padding: 0px;" >
-                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(2);">
-                    <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nuevas OP
+                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(2,0);">
+                    <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nuevas OP por Sector
                 </button>
             </div>
         </div>
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class='col-lg-3'style="padding: 0px;" >
-                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(1)">
+                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(1,0)">
                     <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nueva OP
                 </button>
             </div>
@@ -126,10 +126,8 @@
     </div>
     
 </section>
-
 @section('page-js-script')
 <script type="text/javascript">
-    
     $(document).ready(function (){
         $("#menu_fisca").show();
         $("#li_fis_op").addClass('cr-active')
@@ -191,15 +189,15 @@
         jQuery("#table_contrib_bysec").jqGrid({
             url: 'obtiene_con_sec?sec=0&man=0&an=0',
             datatype: 'json', mtype: 'GET',
-            height: '200px', autowidth: true,
+            height: '400px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_contrib','DNI/RUC','contribuyente','Generar Op'],
             rowNum: 20, sortname: 'id_contrib', sortorder: 'desc', viewrecords: true, caption: 'Contribuyentes por Sector', align: "center",
             colModel: [
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 160},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260},
-                {name: 'op', index: 'op', align: 'left',width: 200},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 330},
+                {name: 'op', index: 'op', align: 'left',width: 170},
             ],
             pager: '#pager_table_contrib_bysec',
             rowList: [13, 20],
@@ -234,10 +232,7 @@
                 
             }
         });
-       
-        
     });
-    
 </script>
 @stop
 <script src="{{ asset('archivos_js/fiscalizacion/fiscalizacion.js') }}"></script>
@@ -248,6 +243,13 @@
     </article>
 </div> 
 <div id="dlg_ctrb_sector" style="display: none;">
+    
+    <div class="col-lg-8">Contribuyentes por Sector, Manzana</div>
+    <div class="col-lg-4 text-right" >
+        <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(4,0)">
+            <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar OP Masiva
+        </button>
+    </div>
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib_bysec"></table>
         <div id="pager_table_contrib_bysec"></div>

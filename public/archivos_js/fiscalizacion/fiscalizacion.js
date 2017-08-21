@@ -84,24 +84,35 @@ function call_list_contrib(tip)
         jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op?dat=0&sec='+$("#selsec option:selected").text()+'&manz='+$("#selmnza option:selected").text()+'&an='+$("#selancontri").val()}).trigger('reloadGrid');
     }
 }
-function generar_op(tip)
+function generar_op(tip,ctb)
 {
-    Id=$("#dlg_contri_hidden").val();
-    if(Id==0&&tip==1)
+    Id_contrib=$("#dlg_contri_hidden").val();
+    if(Id_contrib==0&&tip==1)
     {
         mostraralertas("No hay Contribuyente seleccionado para generar");
         return false;
     }
-    $("body").block({
-        message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>Generando</p>",
-        css: { border: '2px solid #006000',background:'white',width: '62%'}
-    });
+    if(tip==3||tip==4)
+    {
+       Id_contrib=ctb;
+    }
+    
     sec=$("#selsec option:selected").text();
     man=$("#selmnza option:selected").text();
-    if(tip==1)
+    if(tip==1||tip==3||tip==4)
     {
-        Id_contrib=Id;
-        
+        if(tip==1)
+        {
+            $("body").block({
+            message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>Generando</p>",
+            css: { border: '2px solid #006000',background:'white',width: '62%'}
+            });
+        }
+        if(tip==3||tip==4)
+        {
+            MensajeDialogLoadAjax("dlg_ctrb_sector", '.:: Cargando ...');
+
+        }
         $.ajax({url: 'fiscalizacion/create',
         type: 'GET',
         data:{per:Id_contrib,sec:sec,man:man,tip:tip},
@@ -110,7 +121,8 @@ function generar_op(tip)
             window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             $('body').unblock();
-            call_list_contrib(1);
+            MensajeDialogLoadAjaxFinish("dlg_ctrb_sector");
+            call_list_contrib(tip);
         },
         error: function(data) {
             MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
