@@ -66,8 +66,8 @@
                     <td>&nbsp;{{ $conv[0]->tip_fracc}}<br/></td>
                 </tr>
                 <tr>
-                    <td><b>COD.CONVENIO:</b></td>
-                    <td>&nbsp;{{ $conv[0]->cod_convenio}}<br/></td>
+                    <td><b>NRO. CONVENIO:</b></td>
+                    <td>&nbsp;{{ $conv[0]->nro_conve2}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>TOTAL:</b></td>

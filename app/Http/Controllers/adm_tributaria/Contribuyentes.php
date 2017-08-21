@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 class Contribuyentes extends Controller
 {
     public function vw_contribuyentes() {
-        return view('adm_tributaria/vw_contribuyentes');
+        $tip_contrib=DB::select('select * from adm_tri.tipo_contribuyente');
+        return view('adm_tributaria/vw_contribuyentes',compact('tip_contrib'));
     }
     
     public function index() {
@@ -211,11 +212,10 @@ class Contribuyentes extends Controller
     public function insert_new_contribuyente(Request $request){
         header('Content-type: application/json');
         
-        
         $data = $request->all();        
         $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
         $data['id_persona'] = $id_persona;
-        $data['dpto'] = '0';
+//        $data['dpto'] = '0';
         
         $insert=DB::table('adm_tri.contribuyentes')->insert($data);
         
@@ -237,6 +237,8 @@ class Contribuyentes extends Controller
     function modificar_contribuyente(Request $request) {
         $data = $request->all(); 
         unset($data['id_pers']);
+        $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
+        $data['id_persona'] = $id_persona;
         $update=DB::table('adm_tri.contribuyentes')->where('id_pers',$request['id_pers'])->update($data);
         if ($update){  
             return response()->json([

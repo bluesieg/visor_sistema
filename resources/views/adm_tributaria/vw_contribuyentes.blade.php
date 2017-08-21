@@ -1,16 +1,5 @@
 @extends('layouts.app')
 @section('content')
-<style>    
-    .smart-form fieldset {    
-        padding: 5px 8px 0px;   
-    }
-    .smart-form section {
-        margin-bottom: 5px;    
-    }
-    .smart-form .label {  
-        margin-bottom: 0px;   
-    }    
-</style>
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -105,7 +94,7 @@
             <div class="panel-group">                
                 <div class="panel panel-success">
                     <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
-                    <div class="panel-body cr-body">
+                    <div class="panel-body">
                         <fieldset>
                             <div class="row">
                                 <section class="col col-2" style="padding-right:5px;">
@@ -132,7 +121,7 @@
                                         </a>                                        
                                     </label>
                                 </section>
-                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
+<!--                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Tipo de Persona:</label>
                                     <div class="inline-group">
                                         <label class="radio">
@@ -142,31 +131,31 @@
                                             <input type="radio" onclick="filtro_tipo_doc(this.value);"  name="radio_tip_per" value="2">
                                             <i></i>Juridica</label>                                       
                                     </div>
-                                </section>
-                                <section class="col col-3" style="padding-left:5px">
-                                    <label class="label">Tip. Contribuyente:</label>
+                                </section>-->
+                                <section class="col col-6" style="padding-left:5px">
+                                    <label class="label">Tipo de Contribuyente:</label>
                                     <label class="select">
-                                        <select id="contrib_sexo" class="input-sm">
-                                            <option value="select" selected="" disabled="">Sexo</option>
-                                            <option value="1">Masculino</option>
-                                            <option value="0">Femenino</option>                                            
+                                        <select id="vw_contrib_sel_tip_contrib" class="input-sm">
+                                            @foreach ($tip_contrib as $tip_contrib)
+                                            <option value='{{$tip_contrib->id_tip_contrib}}' >{{trim($tip_contrib->tipo_contrib)}}</option>
+                                            @endforeach                                            
                                         </select><i></i> </label>
                                 </section>
                             </div>
                             <div class="row">
-                                <section class="col col-3">
+                                <section class="col col-3"  style="padding-right:5px;">
                                     <label class="label">Apellido Paterno:</label>
                                     <label class="input">
                                         <input id="contrib_ape_pat" type="text" placeholder="Apellido Paterno" class="input-sm">
                                     </label>                        
                                 </section>
-                                <section class="col col-3">
+                                <section class="col col-3"  style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Apellido Materno:</label>
                                     <label class="input">
                                         <input id="contrib_ape_mat" type="text" placeholder="Apellido Materno" class="input-sm">
                                     </label>                      
                                 </section>
-                                <section class="col col-6">
+                                <section class="col col-6"  style="padding-left:5px;">
                                     <label class="label">Nombres:</label>
                                     <label class="input">
                                         <input id="contrib_nombres" type="text" placeholder="Nombres" class="input-sm">
@@ -174,7 +163,7 @@
                                 </section>
                             </div>
                             <div class="row">
-                                <section class="col col-2">
+                                <section class="col col-2"  style="padding-right:5px;">
                                     <label class="label">Sexo:</label>
                                     <label class="select">
                                         <select id="contrib_sexo" class="input-sm">
@@ -183,13 +172,13 @@
                                             <option value="0">Femenino</option>                                            
                                         </select><i></i> </label>                        
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2"  style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Fch.Nacimiento:</label>
                                     <label class="input">
                                         <input id="contrib_fch_nac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="dd-mm-yy" class="input-sm">
                                     </label>                      
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2"  style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Est.Civil:</label>
                                     <label class="select">
                                         <select id="contrib_est_civil" class="input-sm">
@@ -201,13 +190,13 @@
                                             <option value="4">Conviviente</option>
                                         </select><i></i> </label>
                                 </section>
-                                <section class="col col-3">
+                                <section class="col col-3"  style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Telefono Fijo:</label>
                                     <label class="input">
                                         <input id="contrib_tlfno_fijo" type="text" placeholder="Telefono Fijo" class="input-sm">
                                     </label>                      
                                 </section>
-                                <section class="col col-3">
+                                <section class="col col-3"  style="padding-left:5px;">
                                     <label class="label">Telefono Celular:</label>
                                     <label class="input">
                                         <input id="contrib_tlfono_celular" type="text" placeholder="Telefono Celular" class="input-sm">
@@ -215,18 +204,18 @@
                                 </section>
                             </div>
                             <div class="row">
-                                <div class="col col-6">
+                                <section class="col col-6"  style="padding-right:5px;">
                                     <label class="label">Correo Electronico:</label>
                                     <label class="input">
                                         <input id="contrib_email" type="text" placeholder="Correo Electronico" class="input-sm">
                                     </label>   
-                                </div>
-                                <div class="col col-6">
+                                </section>
+                                <section class="col col-6"  style="padding-left:5px;">
                                     <label class="label">Razon Social:</label>
                                     <label class="input">
                                         <input id="contrib_raz_soc" type="text" placeholder="Razon Social" class="input-sm">
                                     </label> 
-                                </div>
+                                </section>
                             </div>
                         </fieldset>
                     </div>
@@ -237,21 +226,21 @@
                     <div class="panel-body">
                         <fieldset>
                             <div class="row">
-                                <section class="col col-4">
+                                <section class="col col-4" style="padding-right:5px;">
                                     <label class="label">Departamento:</label>
                                     <label class="select">
                                         <select id="contrib_dpto" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_prov('contrib_prov', this.value);">
                                             <option value="select" selected="" disabled="">Departamento</option>                                           
                                         </select><i></i> </label>                        
                                 </section>
-                                <section class="col col-4">
+                                <section class="col col-4" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Provincia:</label>
                                     <label class="select">
                                         <select id="contrib_prov" name="input_form_contribuyentel" class="input-sm" onchange="llenar_combo_dist('contrib_dist', this.value);">
                                             <option value="select" selected="" disabled="">Provincia</option>                                            
                                         </select><i></i> </label>                     
                                 </section>
-                                <section class="col col-4">
+                                <section class="col col-4" style="padding-left:5px;">
                                     <label class="label">Distrito:</label>
                                     <label class="select">
                                         <select id="contrib_dist" name="input_form_contribuyentel" class="input-sm">
@@ -260,32 +249,32 @@
                                 </section>
                             </div>
                             <div class="row">
-                                <section class="col col-4">
+                                <section class="col col-4" style="padding-right:5px;">
                                     <label class="label">Avenida, Jiron, Calle o Pasaje.:</label>
                                     <label class="input">
                                         <input type="hidden" id="hiddentxt_av_jr_calle_psje">
                                         <input id="txt_av_jr_calle_psje" type="text" placeholder="Avenida, Jiron, Calle o Pasaje." class="input-sm">
                                     </label>
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">N°Muni:</label>
                                     <label class="input">
                                         <input id="contrib_nro_mun" type="text" placeholder="N°. Municipal" class="input-sm">
                                     </label>
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Dpto:</label>
                                     <label class="input">
                                         <input id="contrib_dpto_depa" type="text" placeholder="Dpto." class="input-sm">
                                     </label>
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Mzna:</label>
                                     <label class="input">
                                         <input id="contrib_manz" type="text" placeholder="Mzna." class="input-sm">
                                     </label>
                                 </section>
-                                <section class="col col-2">
+                                <section class="col col-2" style="padding-left:5px;">
                                     <label class="label">Lote:</label>
                                     <label class="input">
                                         <input id="contrib_lote" type="text" placeholder="Lote" class="input-sm">
@@ -306,20 +295,20 @@
                     <div class="panel-body">
                         <fieldset>
                             <div class="row">
-                                <section class="col col-3">
+                                <section class="col col-3" style="padding-right:5px;">
                                     <label class="label">Tipo Documento:</label>
                                     <label class="select">
                                         <select id="cb_tip_doc_2" name="input_form_contribuyentel" class="input-sm">
                                             <option value="select" selected="" disabled="">Documento</option>                                           
                                         </select><i></i></label>                        
                                 </section>                                
-                                <section class="col col-3">
+                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Nro.Documento:</label>
                                     <label class="input">
                                         <input id="contrib_nro_doc_conv" type="text" placeholder="Nro. Documento" maxlength="8" class="input-sm">
                                     </label>
                                 </section>
-                                <section class="col col-6">
+                                <section class="col col-6" style="padding-left:5px;">
                                     <label class="label">Apellidos y Nombres del Conyugue / Representante Legal:</label>
                                     <label class="input">
                                         <input id="contrib_conviviente" type="text" placeholder="Apellidos y Nombres del Conyugue / Representante Legal" class="input-sm">
@@ -333,8 +322,8 @@
                     <div class="panel-heading bg-color-success">.:: Condicion Especial del Contribuyente ::.</div>
                     <div class="panel-body">
                         <fieldset>
-                            <section class="col col-2"><label class="label">Condicion:</label></section>
-                            <section class="col col-10">                                
+                            <section class="col col-2" style="padding-right:5px;"><label class="label">Condicion:</label></section>
+                            <section class="col col-10" style="padding-left:5px;">                                
                                 <label class="select">
                                     <select id="contrib_id_cond_exonerac" name="input_form_contribuyentel" class="input-sm">
                                         <option value="select" selected="" disabled="">Condicion</option>                                            

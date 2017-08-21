@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Convenio;
+use App\Traits\DatesTranslator;
 
 class ConvenioController extends Controller
 {
-
+    use DatesTranslator;
     public function index(){
         $cfracc=DB::table('fraccionamiento.vw_config_fracc')->get();
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
@@ -22,8 +23,7 @@ class ConvenioController extends Controller
         date_default_timezone_set('America/Lima');
         $data = new Convenio();
         $data->nro_convenio     = $request['nro_convenio'];
-        $data->anio             = date('Y');
-        $data->cod_convenio     = $request['cod_convenio'];
+        $data->anio             = date('Y');        
         $data->id_contribuyente = $request['id_contribuyente'];
         $data->fec_reg          = date('d-m-Y');
         $data->interes          = $request['interes'];
@@ -39,7 +39,7 @@ class ConvenioController extends Controller
         $data->tipo             = $request['tipo'];
         $data->periodo          = $request['periodo'];
         $data->save();        
-        return $data->cod_convenio;
+        return $data->id_conv;
     }
 
     public function store(Request $request)
@@ -200,8 +200,7 @@ class ConvenioController extends Controller
         
         foreach ($sql as $Index => $Datos) {            
             $Lista->rows[$Index]['id'] = $Datos->id_conv;
-            $Lista->rows[$Index]['cell'] = array(
-                $Datos->cod_convenio,
+            $Lista->rows[$Index]['cell'] = array(                
                 $Datos->nro_convenio,
                 $Datos->total_convenio,              
                 $Datos->cuota_inicial,
@@ -216,8 +215,8 @@ class ConvenioController extends Controller
     }
     
     function detalle_fracc(Request $request){
-        $cod_conv_det=$request['cod_conv_det'];
-        $totalg = DB::select("select count(id_det_conv) as total from fraccionamiento.vw_trae_cuota_conv where cod_conv_det='".$cod_conv_det."'");
+        $id_conv=$request['id_conv'];
+        $totalg = DB::select("select count(id_conv_mtr) as total from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr='".$id_conv."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -239,7 +238,7 @@ class ConvenioController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('fraccionamiento.vw_trae_cuota_conv')->where('cod_conv_det',$cod_conv_det)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('fraccionamiento.vw_trae_cuota_conv')->where('id_conv_mtr',$id_conv)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -266,7 +265,7 @@ class ConvenioController extends Controller
     }
     
     function crono_pago_fracc(Request $request){
-        $cod_conv_det=$request['cod_conv_det'];
+        $id_conv=$request['id_conv'];
         $id_contrib=$request['id_contrib'];
         $amo=0;$inter=0;$cc=0;
         date_default_timezone_set('America/Lima');
@@ -275,7 +274,7 @@ class ConvenioController extends Controller
         
         
         
-        $conv_det = DB::select("select * from fraccionamiento.vw_trae_cuota_conv where cod_conv_det='".$cod_conv_det."' order by nro_cuota asc");
+        $conv_det = DB::select("select * from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr='".$id_conv."' order by nro_cuota asc");
                 
         $todo = array();
         foreach ($conv_det as $Datos) {
@@ -288,14 +287,14 @@ class ConvenioController extends Controller
             $inter=$inter+number_format($Datos->interes,3,'.','');
             $Lista->total =  number_format($Datos->total,2,'.','');
             $cc=$cc+number_format($Datos->total,3,'.','');            
-            $Lista->fec_pago=$this->fecha_mes($Datos->fec_pago);
+            $Lista->fec_pago=$this->getCreatedAtAttribute($Datos->fec_pago)->format('d-M-Y');/*$this->fecha_mes($Datos->fec_pago);*/
             array_push($todo, $Lista);
         }
         $totales=array();
         $totales['tot_amo']= number_format($amo,2,'.',',');
         $totales['tot_inter']=number_format($inter,2,'.',',');
         $totales['tot_cc']=number_format($cc,2,'.',',');
-        $fecha_larga = $this->fecha_letras(date('d-m-Y'));
+        $fecha_larga = $this->getCreatedAtAttribute(date('d-m-Y'))->format('l,d \d\e F \d\e\l Y');/*$this->fecha_letras(date('F j, Y'));*/
         $view = \View::make('fraccionamiento.reporte.cronogramaPagos',compact('contrib','conv','todo','fecha_larga','totales'))->render();
 //        return $view;
 

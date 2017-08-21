@@ -29,7 +29,10 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
             limpiar_dlg_contrib();
         }
     }).dialog('open');
+    $("#contrib_raz_soc").attr('disabled',true);
+    $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres").attr('disabled',false);
     $("#vw_contrib_btn_con_ruc").hide();
+    $("#vw_contrib_btn_con_dni").show();
     MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
     llenar_combo_tipo_documento('cb_tip_doc_1', 'cb_tip_doc_2');
     llenar_combo_cond_exonerac(0);
@@ -55,7 +58,8 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
                 $('#contrib_nombres').val(data.nombres);
                 $('#contrib_sexo').val(data.sexo);
                 $('#contrib_fch_nac').val(data.fnac);
-                $("input[name=radio_tip_per][value=" + data.tipo_persona + "]").prop('checked', true);
+                $('#vw_contrib_sel_tip_contrib').val(data.tipo_persona);
+//                $("input[name=radio_tip_per][value=" + data.tipo_persona + "]").prop('checked', true);
                 $('#contrib_raz_soc').val(data.raz_soc);
                 $('#contrib_tlfno_fijo').val(data.tlfno_fijo);
                 $('#contrib_tlfono_celular').val(data.tlfono_celular);
@@ -75,6 +79,7 @@ function open_dialog_new_edit_Contribuyente(tipo, id) {
                 $('#contrib_id_cond_exonerac').val(data.id_cond_exonerac);
                 $('#hiddentxt_av_jr_calle_psje').val(data.id_via);
                 $('#cb_tip_doc_2').val(data.tip_doc_conv);
+                
                 MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
             },
             error: function (data) {
@@ -126,7 +131,8 @@ function save_edit_contribuyentes(tipo, id) {
                 nombres: ($('#contrib_nombres').val()).toUpperCase() || '-',
                 sexo: $('#contrib_sexo').val(),
                 fnac: $('#contrib_fch_nac').val(),
-                tipo_persona: $('input:radio[name=radio_tip_per]:checked').val(),
+//                tipo_persona: $('input:radio[name=radio_tip_per]:checked').val(),
+                tipo_persona: $("#vw_contrib_sel_tip_contrib").val(),
                 raz_soc: ($('#contrib_raz_soc').val()).toUpperCase() || '-',
                 tlfno_fijo: $('#contrib_tlfno_fijo').val() || '0',
                 tlfono_celular: $('#contrib_tlfono_celular').val() || '0',
@@ -145,7 +151,7 @@ function save_edit_contribuyentes(tipo, id) {
                 id_dpto: $('#contrib_dpto').val(),
                 id_cond_exonerac: $('#contrib_id_cond_exonerac').val(),
                 id_via: $('#hiddentxt_av_jr_calle_psje').val(),
-                tip_doc_conv: $('#cb_tip_doc_2').val()
+                tip_doc_conv: $('#cb_tip_doc_2').val()                
             },
             success: function (data) {
                 dialog_close('dialog_new_edit_Contribuyentes');
@@ -177,7 +183,8 @@ function save_edit_contribuyentes(tipo, id) {
                             nombres: ($('#contrib_nombres').val()).toUpperCase() || '-',
                             sexo: $('#contrib_sexo').val(),
                             fnac: $('#contrib_fch_nac').val(),
-                            tipo_persona: $('input:radio[name=radio_tip_per]:checked').val(),
+//                            tipo_persona: $('input:radio[name=radio_tip_per]:checked').val(),
+                            tipo_persona: $("#vw_contrib_sel_tip_contrib").val(),
                             raz_soc: ($('#contrib_raz_soc').val()).toUpperCase() || '-',
                             tlfno_fijo: $('#contrib_tlfno_fijo').val() || '0',
                             tlfono_celular: $('#contrib_tlfono_celular').val() || '0',
@@ -196,6 +203,7 @@ function save_edit_contribuyentes(tipo, id) {
                             id_cond_exonerac: $('#contrib_id_cond_exonerac').val(),
                             id_via: $('#hiddentxt_av_jr_calle_psje').val(),
                             tip_doc_conv: $('#cb_tip_doc_2').val()
+//                            tipo_contrib: $("#vw_contrib_sel_tip_contrib").val()
                         },
                         success: function (data) {
                             MensajeExito('Editar Contribuyente', 'Contribuyente: '+ raz_soc + '- Ha sido Modificado.');
@@ -255,15 +263,21 @@ function filtro_tipo_doc(tipo) {
     if (tipo == '00' || tipo == '2') {
         $("#vw_contrib_btn_con_dni").hide();
         $("#vw_contrib_btn_con_ruc").show();
-        $("input[name=radio_tip_per][value=2]").prop('checked', true);
+        $("#vw_contrib_sel_tip_contrib").val(2);
+//        $("input[name=radio_tip_per][value=2]").prop('checked', true);
         $("#cb_tip_doc_1").val('00');        
-        $("#contrib_ape_mat,#contrib_ape_pat,#contrib_nombres").val('-');       
-    } else if (tipo == '02' || tipo == '1') {
+        $("#contrib_ape_mat,#contrib_ape_pat,#contrib_nombres").val('-');
+        $("#contrib_raz_soc").attr('disabled',false);
+        $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres").attr('disabled',true);
+    } else if (tipo == '02' || tipo == '1') {        
         $("#vw_contrib_btn_con_dni").show();
         $("#vw_contrib_btn_con_ruc").hide();
-        $("input[name=radio_tip_per][value=1]").prop('checked', true);
+        $("#vw_contrib_sel_tip_contrib").val(1);
+//        $("input[name=radio_tip_per][value=1]").prop('checked', true);
         $("#cb_tip_doc_1").val('02');
         $("#contrib_raz_soc").val('-');
+        $("#contrib_raz_soc").attr('disabled',true);
+        $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres").attr('disabled',false);
     }
 }
 

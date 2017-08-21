@@ -25,10 +25,9 @@ function grid_fracc_de_contrib(){
         url: 'grid_fracc_de_contrib?id_contrib=0',
         datatype: 'json', mtype: 'GET',
         height: 262, autowidth: true,
-        colNames: ['cod_convenio','Nro.', 'Total S/.', 'Inicial S/.', 'Periodo', 'Consepto', 'Tipo Fracc', 'Estado', 'Fecha'],
-        rowNum: 10, sortname: 'nro_convenio', sortorder: 'desc', viewrecords: true, caption: 'Fraccionamientos del Contribuyente', align: "center",
-        colModel: [
-            {name: 'cod_convenio', index: 'cod_convenio',hidden:true},
+        colNames: ['Nro.', 'Total S/.', 'Inicial S/.', 'Periodo', 'Consepto', 'Tipo Fracc', 'Estado', 'Fecha'],
+        rowNum: 10, sortname: 'nro_convenio', sortorder: 'asc', viewrecords: true, caption: 'Fraccionamientos del Contribuyente', align: "center",
+        colModel: [            
             {name: 'nro_convenio', index: 'nro_convenio',width: 60,align:'center'},
             {name: 'total_convenio', index: 'total_convenio',width: 70, align:'right'},
             {name: 'cuota_inicial', index: 'cuota_inicial', width: 70, align:'right'},
@@ -48,12 +47,12 @@ function grid_fracc_de_contrib(){
             }             
         },            
         ondblClickRow: function (Id) {
-            cod_convenio=$("#table_fracc_de_contrib").getCell(Id, "cod_convenio");            
-            fn_actualizar_grilla('t_fracc_crono_contrib','grid_detalle_fracc?cod_conv_det='+cod_convenio);
+//            cod_convenio=$("#table_fracc_de_contrib").getCell(Id, "cod_convenio");            
+            fn_actualizar_grilla('t_fracc_crono_contrib','grid_detalle_fracc?id_conv='+Id);
         }
     });
     jQuery("#t_fracc_crono_contrib").jqGrid({
-        url: 'grid_detalle_fracc?cod_conv_det=0',
+        url: 'grid_detalle_fracc?id_conv=0',
         datatype: 'json', mtype: 'GET',
         height: 325, autowidth: true,
         colNames: ['N°', 'Cuota Mensual', 'Estado', 'Fecha Pago', 'Selec.'],
@@ -64,8 +63,7 @@ function grid_fracc_de_contrib(){
             {name: 'estado', index: 'estado',width: 60, align:'center'},
             {name: 'fec_pago', index: 'fec_pago', width: 60, align:'center'},
             {name: 'seleccione', index: 'seleccione', align: 'center', width: 30}
-        ],
-        
+        ],        
         rowList: [12, 15],
         gridComplete: function () {
             var rows = $("#t_fracc_crono_contrib").getDataIDs();
@@ -97,7 +95,7 @@ function gen_rec_pago_fracc(){
             Confirmar: function () {
                 MensajeDialogLoadAjax('vw_emision_rec_pag_fracc', 'Generando Recibo...');
                 rowId=$('#table_fracc_de_contrib').jqGrid ('getGridParam', 'selrow');
-                cod_conv=$("#table_fracc_de_contrib").getCell(rowId, "cod_convenio");
+//                cod_conv=$("#table_fracc_de_contrib").getCell(rowId, "cod_convenio");
                 $.ajax({
                     url: 'emi_recibo_master/create',
                     type: 'GET',
@@ -108,7 +106,7 @@ function gen_rec_pago_fracc(){
                         id_pers:$("#vw_emi_rec_fracc_id_pers").val(),
                         clase_recibo:3,
                         fracc_check : cuota_checks,
-                        cod_fracc:cod_conv
+                        cod_fracc:rowId
                     },
                     success: function (data) {
                         if (data) {

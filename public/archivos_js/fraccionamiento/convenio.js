@@ -87,8 +87,7 @@ function insert_convenio(){
                     url: 'conve_fraccionamiento/create',
                     type: 'GET',
                     data: {
-                        nro_convenio     :1,            
-                        cod_convenio     :$("#vw_conve_fracc_fracc_cod_conve").val(),
+                        nro_convenio     :1,
                         id_contribuyente :$("#vw_conve_fracc_id_pers").val(),            
                         interes          :$("#vw_conve_fracc_fracc_tif").val(),
                         nro_cuotas       :$("#vw_conve_fracc_fracc_n_cuo").val(),
@@ -121,16 +120,16 @@ function insert_convenio(){
     });
     
 }
-function array_det_convenio(cod_conv_det) {
+function array_det_convenio(id_conv) {
     n_cuotas = $("#vw_conve_fracc_fracc_n_cuo").val();
     for (i = 1; i <= n_cuotas; i++) {
-        btn_insert_det_conv(i, cod_conv_det);        
+        btn_insert_det_conv(i, id_conv);        
     }
     fn_actualizar_grilla('table_Convenios','grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val());
             
     setTimeout(function(){
         MensajeDialogLoadAjaxFinish('vw_conve_fracc_fraccionar');
-        window.open('imp_cronograma_Pago_Fracc?cod_conv_det='+cod_conv_det+'&id_contrib='+$("#vw_conve_fracc_id_pers").val());
+        window.open('imp_cronograma_Pago_Fracc?id_conv='+id_conv+'&id_contrib='+$("#vw_conve_fracc_id_pers").val());
     }, 3000);
       
     dialog_close('vw_conve_fracc_fraccionar');
@@ -139,12 +138,12 @@ function array_det_convenio(cod_conv_det) {
     MensajeExito('CONVENIO MDCC', 'El Convenio se Realizó Exitosamente.');
     
 }
-function btn_insert_det_conv(n_cuo, cod_conv_det) {
+function btn_insert_det_conv(n_cuo, id_conv) {
     $.ajax({
         url: 'convenio_detalle/create',
         type: 'GET',
         data: {
-            cod_conv_det:cod_conv_det,
+            id_conv     :id_conv,
             nro_cuota   :n_cuo,
             monto       :$("#td_din_amor_"+n_cuo).val(),
             interes     :$("#td_din_inter_"+n_cuo).val(),

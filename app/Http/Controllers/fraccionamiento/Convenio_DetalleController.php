@@ -19,7 +19,7 @@ class Convenio_DetalleController extends Controller
     {
         date_default_timezone_set('America/Lima');
         $data = new ConvenioDetalle();
-        $data->cod_conv_det = $request['cod_conv_det'];
+        $data->id_conv_mtr  = $request['id_conv'];
         $data->nro_cuota    = $request['nro_cuota'];
         $data->monto        = $request['monto'];
         $data->interes      = $request['interes'];
@@ -70,7 +70,7 @@ class Convenio_DetalleController extends Controller
         $data->fecha_q_pago = $request['fecha_q_pago'];
         $data->saldo        = $request['saldo'];        
         $data->save();        
-        return $data->id_rec_mtr;
+        return $data->id_conv_mtr;
     }
 
     public function store(Request $request)
