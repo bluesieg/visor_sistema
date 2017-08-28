@@ -190,6 +190,7 @@ class FiscalizacionController extends Controller
             $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' group by id_contrib order by id_contrib");
             $sql = DB::select("select id_contrib,nro_doc, contribuyente from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' group by id_contrib,nro_doc, contribuyente order by id_contrib");
             
+            
 
             $total_pages = 0;
             if (!$sidx) {

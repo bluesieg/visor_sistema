@@ -44,21 +44,24 @@ class Recibos_MasterController extends Controller
         $data->cod_fracc  = $request['cod_fracc'] ?? 0 ;
         $data->n_cuot     = 0;
         $data->clase_recibo=$request['clase_recibo'];
-        if(isset($request['pred_check'])){
-            $data->pred_check = $request['pred_check'];
-        }else{
-            $data->pred_check = 0;
-        }
-        if(isset($request['form_pred_check'])){
-            $data->form_pred_check = $request['form_pred_check'];
-        }else{
-            $data->form_pred_check = 0;
-        }
-        if(isset($request['fracc_check'])){
-            $data->fracc_check = $request['fracc_check'];
-        }else{
-            $data->fracc_check = 0;
-        }
+        $data->pred_check = $request['pred_check'] ?? 0;
+        $data->form_pred_check = $request['form_pred_check'] ?? 0;
+        $data->fracc_check = $request['fracc_check'] ?? 0;
+//        if(isset($request['pred_check'])){
+//            $data->pred_check = $request['pred_check'];
+//        }else{
+//            $data->pred_check = 0;
+//        }
+//        if(isset($request['form_pred_check'])){
+//            $data->form_pred_check = $request['form_pred_check'];
+//        }else{
+//            $data->form_pred_check = 0;
+//        }
+//        if(isset($request['fracc_check'])){
+//            $data->fracc_check = $request['fracc_check'];
+//        }else{
+//            $data->fracc_check = 0;
+//        }
         $data->save();        
         return $data->id_rec_mtr;
     }
@@ -191,7 +194,8 @@ class Recibos_MasterController extends Controller
     function cta_pago_arbitrios(Request $request){
         $id_contrib = $request['id_contrib'];
         $id_pred = $request['id_pred'];
-        $totalg = DB::select("select count(id_pgo_arb) as total from arbitrios.vw_cta_arbitrios where id_contri='".$id_contrib."' and id_pred='".$id_pred."'");
+        $anio=$request['anio'];
+        $totalg = DB::select("select count(id_pgo_arb) as total from arbitrios.vw_cta_arbitrios where id_contri='".$id_contrib."' and id_pred='".$id_pred."' and anio=".$anio);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -213,7 +217,7 @@ class Recibos_MasterController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contri',$id_contrib)->where('id_pred',$id_pred)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contri',$id_contrib)->where('id_pred',$id_pred)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -252,8 +256,7 @@ class Recibos_MasterController extends Controller
                 trim($Datos->abo_nov), 
                 trim($Datos->pgo_dic),                
                 trim($Datos->abo_dic),
-                "<input type='checkbox' onclick='check_anio(".$Datos->id_cta_arb.",this)'>".$Datos->ani_total,
-                $Datos->deuda_arb
+                "<input type='checkbox' onclick='check_anio(".$Datos->id_cta_arb.",this,".$Datos->deuda_arb.")'>".$Datos->deuda_arb
             );
         }        
         return response()->json($Lista);

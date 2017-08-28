@@ -216,7 +216,7 @@ class ConvenioController extends Controller
     
     function detalle_fracc(Request $request){
         $id_conv=$request['id_conv'];
-        $totalg = DB::select("select count(id_conv_mtr) as total from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr='".$id_conv."'");
+        $totalg = DB::select("select count(id_conv_mtr) as total from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr=".$id_conv);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];

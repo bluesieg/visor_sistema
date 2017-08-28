@@ -103,7 +103,7 @@
                         <th width="40%" align="center">Saldo</th>
                         <th width="40%" align="center">Amortización</th>
                         <th width="40%" align="center">Interes</th>
-                        <th width="40%" align="center">Total</th>
+                        <th width="40%" align="center">Cuota Mensual</th>
                         <th width="40%" align="center">Fecha Vence</th>
                     </tr>
                 </thead>

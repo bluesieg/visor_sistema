@@ -1,5 +1,5 @@
 
-function dialog_emi_rec_pag_fracc() {
+function dialog_emi_rec_pag_fracc() {    
     $("#vw_emision_rec_pag_fracc").dialog({
         autoOpen: false, modal: true, width: 1350, show: {effect: "fade", duration: 300}, resizable: false,
         position: ['auto',20],        
@@ -103,7 +103,7 @@ function gen_rec_pago_fracc(){
                         id_est_rec: 1,
                         glosa: 'PAGO DE CUOTA Nro: '+cuota_checks,
                         total: $("#t_fracc_pago_mes_total").val().replace(',', ''),
-                        id_pers:$("#vw_emi_rec_fracc_id_pers").val(),
+                        id_pers:$("#vw_emi_rec_fracc_contrib_hidden").val(),
                         clase_recibo:3,
                         fracc_check : cuota_checks,
                         cod_fracc:rowId
@@ -181,7 +181,7 @@ function fn_bus_contrib_fracc(){
        
 }
 function fn_bus_contrib_list_fracc(per){
-    $("#vw_emi_rec_fracc_id_pers").val(per);
+    $("#vw_emi_rec_fracc_contrib_hidden").val(per);
     
     $("#vw_emi_rec_fracc_cod_contrib").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
     $("#vw_emi_rec_fracc_contrib").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
@@ -190,13 +190,13 @@ function fn_bus_contrib_list_fracc(per){
     
     $("#vw_emi_rec_fracc_contrib").attr('maxlength',tam);
 //    id_pers=$('#table_contrib').jqGrid('getCell',per,'id_pers');
-    fn_actualizar_grilla('table_fracc_de_contrib','grid_fracc_de_contrib?id_contrib='+$("#vw_emi_rec_fracc_id_pers").val());
+    fn_actualizar_grilla('table_fracc_de_contrib','grid_fracc_de_contrib?id_contrib='+$("#vw_emi_rec_fracc_contrib_hidden").val());
     $("#dlg_bus_contr").dialog("close");    
 }
 
 function limpiar_form_princ(){
     tot_mes=0;
-    $("#vw_emi_rec_fracc_contrib,#vw_emi_rec_fracc_cod_contrib,#vw_emi_rec_fracc_id_pers").val('');
+    $("#vw_emi_rec_fracc_contrib,#vw_emi_rec_fracc_cod_contrib,#vw_emi_rec_fracc_contrib_hidden").val('');
     fn_actualizar_grilla('table_fracc_de_contrib','grid_fracc_de_contrib?id_contrib=0');
-    fn_actualizar_grilla('t_fracc_crono_contrib','grid_detalle_fracc?cod_conv_det=0');
+    fn_actualizar_grilla('t_fracc_crono_contrib','grid_detalle_fracc?id_conv=0');    
 }

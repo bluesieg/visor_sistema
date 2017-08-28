@@ -123,15 +123,14 @@ function insert_convenio(){
 function array_det_convenio(id_conv) {
     n_cuotas = $("#vw_conve_fracc_fracc_n_cuo").val();
     for (i = 1; i <= n_cuotas; i++) {
-        btn_insert_det_conv(i, id_conv);        
+        console.log(i);
+        btn_insert_det_conv(i, id_conv);                       
     }
     fn_actualizar_grilla('table_Convenios','grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val());
-            
     setTimeout(function(){
         MensajeDialogLoadAjaxFinish('vw_conve_fracc_fraccionar');
-        window.open('imp_cronograma_Pago_Fracc?id_conv='+id_conv+'&id_contrib='+$("#vw_conve_fracc_id_pers").val());
-    }, 3000);
-      
+        window.open('imp_cronograma_Pago_Fracc?id_conv='+id_conv+'&id_contrib='+$("#vw_conve_fracc_id_pers").val());    
+    }, 3000);   
     dialog_close('vw_conve_fracc_fraccionar');
     dialog_close('vw_conve_fracc');    
    
@@ -207,8 +206,6 @@ function realizar_table_fracc(){
             interes=tif*saldo;
             amor=cc-interes;
         }
-        
-        
 //        saldo=deuda;
 //        if(deuda==-0.00){deuda=-1*(0.00);}
         $('#t_dina_conve_fracc').append(
@@ -243,6 +240,13 @@ function calc_inicial(value){
     $("#vw_conve_fracc_fracc_inicial").val(formato_numero(inicial,2,'.'));
 }
 function calc_deuda(value){
+    n_cuo=parseFloat($("#vw_conve_fracc_fracc_n_cuo").val());
+    limit=parseFloat($("#vw_conve_fracc_fracc_limit_cuo").val());
+    if(n_cuo>limit){
+        mostraralertasconfoco("Limite de Cuotas: " + limit,"#vw_conve_fracc_fracc_n_cuo");        
+        return false;
+    }
+    
     value = value || parseFloat($("#vw_conve_fracc_fracc_inicial").val());
     total=parseFloat($("#vw_conve_fracc_fracc_tot").val());
     $("#vw_conve_fracc_fracc_deuda").val((total-value).toFixed(2));

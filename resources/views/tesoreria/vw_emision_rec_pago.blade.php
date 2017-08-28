@@ -66,14 +66,14 @@
             url: 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
-            colNames: ['id_rec_mtr', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
+            colNames: ['ID', 'id_contrib', 'N°. Recibo', 'Fecha', 'Descripcion del Pago', 'Estado', 'Caja', 'Hora Pago', 'Total'],
             rowNum: 20, sortname: 'id_rec_mtr', sortorder: 'desc', viewrecords: true, caption: 'Resumen Recibos', align: "center",
             colModel: [
-                {name: 'id_rec_mtr', index: 'id_rec_mtr', hidden: true},
+                {name: 'id_rec_mtr', index: 'id_rec_mtr', width: 40, align: 'center'},
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
                 {name: 'nro_recibo_mtr', index: 'nro_recibo_mtr', hidden: true},
                 {name: 'fecha', index: 'fecha', align: 'center', width: 60},
-                {name: 'glosa', index: 'glosa', width: 250},
+                {name: 'glosa', index: 'glosa', width: 230},
                 {name: 'estad_recibo', index: 'estad_recibo', width: 60},
                 {name: 'descrip_caja', index: 'descrip_caja', width: 130},
                 {name: 'hora_pago', index: 'hora_pago', align: 'center', width: 50},
@@ -229,11 +229,18 @@
         $("#vw_emi_rec_fracc_contrib").keypress(function (e) {
             if (e.which == 13) {
                 if (globalvalidador_3 == 0) {
+                    tot_mes=0;
+                    $("#t_fracc_pago_mes_total").val('0.00');
                     fn_bus_contrib_fracc();
                     globalvalidador_3 = 1;
                 } else {
                     globalvalidador_3 = 0;
                 }
+            }
+        });
+        $("#vw_emi_rec_fracc_cod_contrib").keypress(function (e) {
+            if (e.which == 13) {
+                traer_contrib_cod("vw_emi_rec_fracc_contrib",$("#vw_emi_rec_fracc_cod_contrib").val());                
             }
         });
     });
@@ -473,7 +480,7 @@
                                 <section class="col col-2" style="padding-left:5px">
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
-                                        <select onchange="" id="vw_emi_rec_arbitrios_anio" class="input-sm">                                       
+                                        <select onchange="selanio_arbi_pred(this.value);" id="vw_emi_rec_arbitrios_anio" class="input-sm">                                       
                                             @foreach ($anio as $anio2)                                        
                                             <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
                                             @endforeach                                    
@@ -517,7 +524,7 @@
                         <fieldset>
                             <div class="row">                                
                                 <section class="col col-2" style="padding-right: 5px;">
-                                    <input type="hidden" id="vw_emi_rec_fracc_id_pers">
+                                    <!--<input type="hidden" id="vw_emi_rec_fracc_id_pers">-->
                                     <label class="label">Cod Contrib:</label>
                                     <label class="input">
                                         <input id="vw_emi_rec_fracc_cod_contrib" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
@@ -525,7 +532,8 @@
                                 </section>
                                 <section class="col col-8" style="padding-left: 5px;">
                                     <label class="label">Contribuyente:</label>
-                                    <label class="input">                                        
+                                    <label class="input">
+                                        <input type="hidden" id="vw_emi_rec_fracc_contrib_hidden">
                                         <input id="vw_emi_rec_fracc_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
                                     </label>
                                 </section>                                

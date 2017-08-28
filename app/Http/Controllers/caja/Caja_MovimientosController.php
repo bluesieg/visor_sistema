@@ -72,14 +72,14 @@ class Caja_MovimientosController extends Controller {
                     {
                         $chk = strlen(trim($val->fracc_check));
                         if($chk=='1'){                            
-                            DB::table('fraccionamiento.detalle_convenio')->where('cod_conv_det',trim($val->cod_fracc))->where('nro_cuota',trim($val->fracc_check))
+                            DB::table('fraccionamiento.detalle_convenio')->where('id_conv_mtr',trim($val->cod_fracc))->where('nro_cuota',trim($val->fracc_check))
                                     ->update(['estado' => 1,'fecha_q_pago'=> date('Y-m-d')]);                           
                         }else{
                             $array= explode('-',trim($val->fracc_check));
                             $prim = $array[0];
                             $ult = array_pop($array);
                             for($i=$prim;$i<=$ult;$i++){                                
-                                DB::table('fraccionamiento.detalle_convenio')->where('cod_conv_det',trim($val->cod_fracc))->where('nro_cuota',$i)
+                                DB::table('fraccionamiento.detalle_convenio')->where('id_conv_mtr',trim($val->cod_fracc))->where('nro_cuota',$i)
                                         ->update(['estado' => 1,'fecha_q_pago'=> date('Y-m-d')]);
                             }
                         }

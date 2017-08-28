@@ -238,6 +238,7 @@
                                     <label class="label">%:</label>
                                     <label class="input">
                                         <input type="hidden" id="vw_conve_fracc_fracc_porc_cuo_ini_min">
+                                        <input type="hidden" id="vw_conve_fracc_fracc_limit_cuo" value="{{$cfracc[0]->limit_cuotas}}">
                                         <input id="vw_conve_fracc_fracc_porc_cuo_ini" onkeypress="return soloNumeroTab(event);" type="text" onblur="calc_inicial(this.value);" class="input-sm"> 
                                     </label>                      
                                 </section>
@@ -302,7 +303,7 @@
                                         <th width="20%" style="text-align: center">SALDO</th>
                                         <th width="20%" style="text-align: center">AMORTIZACION</th>
                                         <th width="20%" style="text-align: center">INTERES</th>
-                                        <th width="20%" style="text-align: center">TOTAL</th>
+                                        <th width="20%" style="text-align: center">CUOTA MENSUAL</th>
                                         <th width="20%" style="text-align: center">Fecha Vence</th>
                                     </tr>
                                 </thead>

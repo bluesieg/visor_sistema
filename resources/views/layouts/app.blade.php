@@ -17,7 +17,6 @@
 
 		<link rel="stylesheet" href="{{ asset('layers/ol.css')}}" />
 		<script src="{{ asset('layers/ol.js')}}"></script>
-        <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
 
         <link rel="shortcut icon" href="{{ asset('img/favicon/favi.ico') }}" type="image/x-icon">
         <link rel="icon" href="{{ asset('img/favicon/favi.ico') }}" type="image/x-icon">
@@ -120,7 +119,7 @@
             <nav >
                 <ul>
                     <li class="">
-                        <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cog fa-spin"></i> <span class="menu-item-parent">Configuracion</span></a>
+                        <a href="#" title="Configuracion del Sistema"><i class="fa fa-lg fa-fw fa-cog fa-gears"></i> <span class="menu-item-parent">Configuracion</span></a>
                         <ul id="menu_configuracion">
                             <li id="li_config_uit">
                                 <a href="{{ route('uit') }}" title="Dashboard"><i class="fa fa-money"></i>UIT</a>
@@ -158,10 +157,10 @@
                         </ul>
                     </li>
                     <li class="">
-                        <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
+                        <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
                         <ul id="menu_admtri">
                             <li id="li_config_contribuyentes">
-                                <a href='{{ route('adm_contribuyentes') }}' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
+                                <a href='contribuyentes' title="Contribuyentes"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Contribuyentes</span></a>                            
                             </li>
                             <li id="li_preurb">
                                 <a href="predios_urbanos" title="Predios Urbanos"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Pred. Urbanos</span></a>
@@ -178,7 +177,7 @@
                         </ul>	
                     </li>
                     <li class="">
-                        <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fiscalización</span></a>
+                        <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Fiscalización</span></a>
                         <ul id="menu_fisca">
                             <li id="li_fis_op">
                                 <a href='fiscalizacion' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
@@ -200,7 +199,15 @@
                         <a href="#" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fraccionamento</span></a>
                         <ul id="menu_fracc">                            
                             <li id="li_fraccionamiento">
-                                <a href="conve_fraccionamiento" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Fraccionamiento</span></a>
+                                <a href="conve_fraccionamiento" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-outdent"></i> <span class="menu-item-parent">Fraccionamiento</span></a>
+                            </li>
+                        </ul>	
+                    </li>
+                    <li class="">
+                        <a href="#" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-rebel"></i> <span class="menu-item-parent">Cobranza Coactiva</span></a>
+                        <ul id="menu_coactiva">                            
+                            <li id="li_coactiva">
+                                <a href="coactiva" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Coactivas</span></a>
                             </li>
                         </ul>	
                     </li>

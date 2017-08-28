@@ -66,6 +66,30 @@ function valores_defaul_form(tip) {
     }
 }
 
+function traer_contrib_cod(input, doc) {    
+    MensajeDialogLoadAjax(input, '.:: Cargando ...');    
+    $.ajax({
+        url: 'autocomplete_contrib?doc=0&cod=' + doc,
+        type: 'GET',
+        success: function (data) {            
+            if (data.msg == 'si') {
+                $("#" + input + "_hidden").val(data.id_pers);
+                $("#" + input).val((data.contribuyente).replace('-',''));
+                $("#vw_emi_rec_fracc_contrib").attr('maxlength',(((data.contribuyente).replace('-','')).length)-1);                
+            } else {
+                $("#" + input + "_hidden").val(0);
+                $("#" + input).val("");                
+                mostraralertas('* El Documento Ingresado no Existe.<br>* Registre al contribuyente o intente con otro número ... !');                
+            }
+            MensajeDialogLoadAjaxFinish(input);
+        },
+        error: function (data) {
+            mostraralertas('* Error Interno !  Comuniquese con el Administrador...');
+            MensajeDialogLoadAjaxFinish(input);
+        }
+    });
+}
+
 function soloDNI(evt) {
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if ((charCode > 45 && charCode < 58) || (charCode > 36 && charCode < 41) || charCode == 9 || charCode == 8) {
@@ -283,7 +307,6 @@ function llenar_combo_dpto(input) {// 0 form contribuyentes
 global_prov = 0;
 function llenar_combo_prov(input, cod_dpto) {// 0 form contribuyentes
     cod_dpto = cod_dpto || "04";
-//    document.getElementById(input).options.length = 1;  
     $('#' + input).prop('options').length = 1;
     $.ajax({
         url: 'get_all_prov?cod_dpto=' + cod_dpto,
@@ -310,7 +333,6 @@ global_dist = 0;
 function llenar_combo_dist(input, cod_prov) {// 0 form contribuyentes
     cod_prov = cod_prov || "0401";
     $('#' + input).prop('options').length = 1;
-//    document.getElementById('contrib_dist').options.length = 1;
     $.ajax({
         url: 'get_all_dist?cod_prov=' + cod_prov,
         type: 'GET',
@@ -318,17 +340,6 @@ function llenar_combo_dist(input, cod_prov) {// 0 form contribuyentes
             for (i = 0; i <= data.length - 1; i++) {
                 $('#' + input).append('<option value=' + data[i].cod_dist + '>' + data[i].distrit + '</option>');
             }
-//            if (global_dist == 0) {
-//                global_dist = 1;
-//                $('#' + input).val('040101');
-//            } 
-//            else {
-//                if(tipo!='EDITAR'){
-//                setTimeout(function () {
-//                    $('#' + input).val('select');
-//                }, 1000);
-//                }                
-//            }
         },
         error: function (data) {
             mostraralertas('* Error al traer Distritos...!');
@@ -346,52 +357,41 @@ function fn_actualizar_grilla(grilla, url) {
 var global_captcha_reniec = 0;
 
 function fn_consultar_dni() {
-    tipo = $("#cb_tip_doc_1").val();
-    nro_doc = ($("#txt_nro_doc").val()).trim();
-    if (tipo == '02' && nro_doc != ''){
-        MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', 'Realizando Busqueda en Reniec...');
-        $.ajax({
-            type: 'GET',
-            url: 'http://py-devs.com/api/dni/' + nro_doc + '/?format=json',
-            datatype: 'json',
-            success: function (data) {
-                $("#contrib_ape_pat").val(data.ape_paterno);
-                $("#contrib_ape_mat").val(data.ape_materno);
-                $("#contrib_nombres").val(data.nombres);
-                MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
-            },
-            error: function (data) {
-                mostraralertas('* No se Encontró el DNI<br>Porfavor Ingrese los Datos Manualmente...');
-                MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
-            }
-        });
-    } else {
-        mostraralertasconfoco('* Ingrese Numero de Documento.<br>* Seleccione tipo de Documento.', '#txt_nro_doc');
-        return false;
-    }
+    nro_doc = ($("#pers_nro_doc").val()).trim();    
+    MensajeDialogLoadAjax('dialog_Personas', 'Realizando Busqueda en Reniec...');
+    $.ajax({
+        type: 'GET',
+        url: 'http://py-devs.com/api/dni/' + nro_doc + '/?format=json',
+        datatype: 'json',
+        success: function (data) {
+            $("#pers_pat").val(data.ape_paterno);
+            $("#pers_mat").val(data.ape_materno);
+            $("#pers_nombres").val(data.nombres);
+            MensajeDialogLoadAjaxFinish('dialog_Personas');
+        },
+        error: function (data) {
+            mostraralertas('* No se Encontró el DNI<br>* Porfavor Ingrese los Datos Manualmente...');
+            MensajeDialogLoadAjaxFinish('dialog_Personas');
+        }
+    });
+    
 }
 function fn_consultar_ruc() {
-    tipo = $("#cb_tip_doc_1").val();
-    nro_doc = ($("#txt_nro_doc").val()).trim();
-    if (nro_doc != '' && tipo == '00') {
-        MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', 'Realizando Busqueda en Sunat...');
-        $.ajax({
-            type: 'GET',
-            url: 'http://py-devs.com/api/ruc/' + nro_doc + '/?format=json',
-            datatype: 'json',
-            success: function (data) {
-                $("#contrib_raz_soc").val(data.nombre);
-                MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
-            },
-            error: function (data) {
-                mostraralertas('* No se Encontró el RUC<br>Porfavor Ingrese los Datos Manualmente...');
-                MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
-            }
-        });
-    } else {
-        mostraralertasconfoco('* Ingrese Numero de Documento.<br>* Seleccione tipo de Documento.', '#txt_nro_doc');
-        return false;
-    }
+    nro_doc = ($("#pers_nro_doc").val()).trim(); 
+    MensajeDialogLoadAjax('dialog_Personas', 'Realizando Busqueda en Sunat...');
+    $.ajax({
+        type: 'GET',
+        url: 'http://py-devs.com/api/ruc/' + nro_doc + '/?format=json',
+        datatype: 'json',
+        success: function (data) {
+            $("#pers_raz_soc").val(data.nombre);
+            MensajeDialogLoadAjaxFinish('dialog_Personas');
+        },
+        error: function (data) {
+            mostraralertas('* No se Encontró el RUC<br>Porfavor Ingrese los Datos Manualmente...');
+            MensajeDialogLoadAjaxFinish('dialog_Personas');
+        }
+    });    
 }
 function formato_numero(numero, decimales, separador_decimal, separador_miles) { // v2007-08-06
     numero = parseFloat(numero);

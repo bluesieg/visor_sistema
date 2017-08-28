@@ -1,230 +1,249 @@
 
-
-
-function open_dialog_new_edit_Contribuyente(tipo, id) {
+function open_dialog_new_edit_Contribuyente() {
     $("#dialog_new_edit_Contribuyentes").dialog({
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " CONTRIBUYENTE :.</h4></div>",
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: CONTRIBUYENTE :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
-                click: function () {
-                    save_edit_contribuyentes(tipo, id);
-                }
+                click: function () { new_contrib(); }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
-                click: function () {
-                    $(this).dialog("close");
-                }
+                click: function () { $(this).dialog("close"); }
             }],
-        close: function (event, ui) {
-            global_prov = 0;
-            document.getElementById('cb_tip_doc_1').options.length = 1;
-            document.getElementById('cb_tip_doc_2').options.length = 1;
-            document.getElementById('contrib_id_cond_exonerac').options.length = 1;
-            document.getElementById('contrib_dpto').options.length = 1;
-            document.getElementById('contrib_prov').options.length = 1;
-            document.getElementById('contrib_dist').options.length = 1;
-            limpiar_dlg_contrib();
-        }
+        close: function (event, ui) { limpiar_dlg_contrib(); },
+        open: function(){ limpiar_dlg_contrib(); }
     }).dialog('open');
-    $("#contrib_raz_soc").attr('disabled',true);
-    $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres").attr('disabled',false);
-    $("#vw_contrib_btn_con_ruc").hide();
-    $("#vw_contrib_btn_con_dni").show();
-    MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
-    llenar_combo_tipo_documento('cb_tip_doc_1', 'cb_tip_doc_2');
-    llenar_combo_cond_exonerac(0);
-    llenar_combo_dpto('contrib_dpto');
+    $("#cb_tip_doc_2").val('02');
+    $("#cb_tip_doc_1").val('02');
+    $("#contrib_dpto").val('04');
     llenar_combo_prov('contrib_prov');
     llenar_combo_dist('contrib_dist');
+    $("#contrib_dist").val('040104');
     autocompletar_av_jr_call('txt_av_jr_calle_psje');
-    if (tipo == 'NUEVO') {
-        valores_defaul_form(0);//0 form contribuyentes
-        MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
-        $('#contrib_dist').val('040101');
-        $("#contrib_fch_nac").val('01/01/1900');
-    } else if (tipo == 'EDITAR') {
-        $("#txt_av_jr_calle_psje").val($.trim($("#table_Contribuyentes").getCell(id, "nom_via")));
-        $.ajax({
-            url: 'llenar_form_contribuyentes?id_pers=' + id,
-            type: 'GET',
-            success: function (data) {
-                $('#cb_tip_doc_1').val(data.tipo_doc);
-                $('#txt_nro_doc').val(data.nro_doc);
-                $('#contrib_ape_pat').val(data.ape_pat);
-                $('#contrib_ape_mat').val(data.ape_mat);
-                $('#contrib_nombres').val(data.nombres);
-                $('#contrib_sexo').val(data.sexo);
-                $('#contrib_fch_nac').val(data.fnac);
-                $('#vw_contrib_sel_tip_contrib').val(data.tipo_persona);
-//                $("input[name=radio_tip_per][value=" + data.tipo_persona + "]").prop('checked', true);
-                $('#contrib_raz_soc').val(data.raz_soc);
-                $('#contrib_tlfno_fijo').val(data.tlfno_fijo);
-                $('#contrib_tlfono_celular').val(data.tlfono_celular);
-                $('#contrib_email').val(data.email);
-                $('#contrib_dom_fiscal').val(data.dom_fiscal);
-                $('#contrib_est_civil').val(data.est_civil);
-                $('#contrib_nro_doc_conv').val(data.nro_doc_conv);
-                $('#contrib_conviviente').val(data.conviviente);
-                $('#contrib_prov').val(data.id_prov);
-                $('#contrib_dist').val(data.id_dist);
-                $('#contrib_nro_mun').val(data.nro_mun);
-                $('#contrib_dpto_depa').val(data.dpto);
-                $('#contrib_manz').val(data.manz);
-                $('#contrib_lote').val(data.lote);
-//                $('#').val(data.activo);
-                $('#contrib_dpto').val(data.id_dpto);
-                $('#contrib_id_cond_exonerac').val(data.id_cond_exonerac);
-                $('#hiddentxt_av_jr_calle_psje').val(data.id_via);
-                $('#cb_tip_doc_2').val(data.tip_doc_conv);
-                
-                MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
-            },
-            error: function (data) {
-                mostraralertas('* Contactese con el Administrador...');
+}
+function fn_consultar_persona(num){ 
+    if(num==1){
+        nro_doc=$("#txt_nro_doc").val();
+    }else{
+        nro_doc=$("#contrib_nro_doc_conv").val();
+    }     
+    $.ajax({        
+        url: 'consultar_persona?nro_doc='+nro_doc,
+        type: 'GET',        
+        success: function (data) {
+            if(data){
+                if(num==1){
+                    $("#vw_contrib_contribuyente").val(data.contrib);
+                    $("#vw_contrib_id_pers").val(data.id_pers);
+                }else{
+                    $("#contrib_conviviente").val(data.contrib);
+                    $("#vw_contrib_id_conv").val(data.id_pers);
+                }                
+            }else{
+                MensajeExito('Personas','El Documento Ingresado no esta Registrado...');
+                dlg_new_persona(nro_doc);
             }
-        });
-    }
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });
 }
 
+function modificar_contrib(){
+    MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes','Cargando');
+    id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+    $("#dialog_new_edit_Contribuyentes").dialog({
+        autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: CONTRIBUYENTE :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar Modificaciones",
+                "class": "btn btn-success bg-color-green",
+                click: function () { update_contrib(); }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () { $(this).dialog("close"); }
+            }],
+        close: function (event, ui) { limpiar_dlg_contrib(); },
+        open: function(){ limpiar_dlg_contrib(); }
+    }).dialog('open');
+    llenar_combo_prov('contrib_prov');
+    llenar_combo_dist('contrib_dist');
+    
+    $("#cb_tip_doc_1").val($("#table_Contribuyentes").getCell(id_contrib, 'tipo_doc'));
+    $("#txt_nro_doc").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc'));
+    $("#vw_contrib_sel_tip_contrib").val($("#table_Contribuyentes").getCell(id_contrib, 'tipo_persona'));
+    $("#contrib_id_cond_exonerac").val($("#table_Contribuyentes").getCell(id_contrib, 'id_cond_exonerac'));
+    $("#vw_contrib_id_pers").val($("#table_Contribuyentes").getCell(id_contrib, 'id_pers'));
+    $("#vw_contrib_contribuyente").val($("#table_Contribuyentes").getCell(id_contrib, 'contribuyente'));
+    $("#contrib_est_civil").val($("#table_Contribuyentes").getCell(id_contrib, 'est_civil'));
+    $("#contrib_tlfno_fijo").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfno_fijo'));
+    $("#contrib_tlfono_celular").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfono_celular'));
+    $("#contrib_email").val($("#table_Contribuyentes").getCell(id_contrib, 'email'));
+    $("#contrib_dpto").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
+    $("#contrib_prov").val($("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));
+    $("#contrib_dist").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dist'));
+    $("#hiddentxt_av_jr_calle_psje").val($("#table_Contribuyentes").getCell(id_contrib, 'id_via'));
+    $("#txt_av_jr_calle_psje").val($("#table_Contribuyentes").getCell(id_contrib, 'nom_via'));
+    $("#contrib_nro_mun").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_mun'));
+    $("#contrib_dpto_depa").val($("#table_Contribuyentes").getCell(id_contrib, 'dpto'));
+    $("#contrib_manz").val($("#table_Contribuyentes").getCell(id_contrib, 'manz'));
+    $("#contrib_lote").val($("#table_Contribuyentes").getCell(id_contrib, 'lote'));
+    $("#contrib_dom_fiscal").val($("#table_Contribuyentes").getCell(id_contrib, 'dom_fis'));
+    $("#cb_tip_doc_2").val('02');
+    $("#contrib_nro_doc_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc_conv'));
+    $("#vw_contrib_id_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'id_conv'));
+    $("#contrib_conviviente").val($("#table_Contribuyentes").getCell(id_contrib, 'conviviente')); 
+    MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
+}
+function update_contrib(){
+    id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+    $.ajax({
+        url: 'contribuyentes/'+id_contrib+'/edit',
+        type: 'GET',
+        data:{   
+            tipo_doc:$("#cb_tip_doc_1").val(),
+            tipo_persona:$("#vw_contrib_sel_tip_contrib").val(),
+            nro_doc:$("#txt_nro_doc").val(),
+            tlfno_fijo:$("#contrib_tlfno_fijo").val() || '0', 
+            tlfono_celular:$("#contrib_tlfono_celular").val() || '0', 
+            email:$("#contrib_email").val() || '@',
+            est_civil:$("#contrib_est_civil").val() || '0',            
+            id_dpto:$("#contrib_dpto").val(),
+            id_prov:$("#contrib_prov").val(), 
+            id_dist:$("#contrib_dist").val(),            
+            nro_mun:$("#contrib_nro_mun").val() || '0',
+            dpto:$("#contrib_dpto_depa").val() || '0',
+            manz:$("#contrib_manz").val() || '0',
+            lote:$("#contrib_lote").val() || '0',
+            id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
+            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
+            id_pers:$("#vw_contrib_id_pers").val() || '0', 
+            id_conv:$("#vw_contrib_id_conv").val() || '0',
+            ref_dom_fis:$("#contrib_dom_fiscal").val() || '-'
+        },
+        success: function (data) {
+            dialog_close('dialog_new_edit_Contribuyentes');            
+            MensajeExito('Contribuyente','Se ha Modificado el Contribuyente...');
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });
+}
 
-function save_edit_contribuyentes(tipo, id) {
-    nro_doc = $("#txt_nro_doc").val();
-    tipo_doc = $("#cb_tip_doc_1").val();
-    if (tipo_doc == '00' && nro_doc.length!=11) {
-        mostraralertasconfoco('* Escriba un Numero RUC de 11 digitos...', 'txt_nro_doc');
+function dlg_new_persona(nro_doc){
+    $("#dialog_Personas").dialog({
+        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: PERSONAS :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () { new_persona(); }                
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () { $(this).dialog("close"); }
+            }],
+        close: function (event, ui) { limpiar_personas();},
+        open: function (){ limpiar_personas(); }
+    }).dialog('open');
+    $("#cb_tip_doc_3").val($("#cb_tip_doc_1").val());
+    $("#pers_nro_doc").val(nro_doc);
+    tipo = $("#cb_tip_doc_3").val();
+    if(tipo=='02'){
+        fn_consultar_dni();
+        $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
+//        $("#pers_pat,#pers_mat,#pers_nombres").val('');
+        $("#pers_raz_soc").removeAttr('disabled');        
+        $("#pers_raz_soc").attr('disabled',true);
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',8);        
+    }else if (tipo=='00'){
+        fn_consultar_ruc();
+        $("#pers_raz_soc").removeAttr('disabled');
+        $("#pers_raz_soc").val('');
+        $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',11);        
+    }
+}
+function new_persona(){
+    $.ajax({  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'insert_personas',
+        type: 'POST',
+        data:{
+            pers_ape_pat : $("#pers_pat").val() || '-',
+            pers_ape_mat : $("#pers_mat").val() || '-',
+            pers_nombres : $("#pers_nombres").val() || '-',
+            pers_raz_soc : $("#pers_raz_soc").val() || '-',
+            pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
+            pers_nro_doc : $("#pers_nro_doc").val() || '-',
+            pers_dom_fis : $("#pers_dom_fis").val() || '-',
+            pers_sexo : $("#pers_sexo").val() || '-',
+            pers_fnac : $("#pers_fnac").val() || '1600-01-01'
+        },
+        success: function (data) {
+            dialog_close('dialog_Personas');
+            fn_consultar_persona();
+            MensajeExito('Personas','Nueva Personas Guardada Correctamente...');
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });
+}
+function limpiar_personas(){
+    $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac,#pers_dom_fis").val('');
+}
+
+function new_contrib() { 
+    if ($("#txt_nro_doc").val() == '') {
+        mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
+        return false;
+    }
+    if ($("#vw_contrib_id_pers").val() == '') {
+        mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
         return false;
     }
     
-    if (tipo_doc == '02' && nro_doc.length!=8) {                  
-        mostraralertasconfoco('* Escriba un Numero DNI de 8 digitos...', 'txt_nro_doc');
-        return false;
-    }
-    ape_pat=$("#contrib_ape_pat").val();
-    if(ape_pat==''){
-        mostraralertasconfoco('* El Campo Nombres es Obligatorio.', 'contrib_ape_pat');
-        return false;
-    }
-    nombres = $("#contrib_nombres").val();
-    if (nombres == '') {
-        mostraralertasconfoco('* El Campo Nombres es Obligatorio.', 'contrib_nombres');
-        return false;
-    }
-    raz_soc=$("#contrib_raz_soc").val();
-    if (tipo_doc == '00' && (raz_soc == '-' || raz_soc == '')) {
-        mostraralertasconfoco('* El Campo Razon Social es Obligatorio..', 'contrib_raz_soc');
-        return false;
-    }
-
-    if (tipo === 'NUEVO' && id === undefined) {
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'insert_new_contribuyente',
-            type: 'POST',
-            data: {
-                tipo_doc: $('#cb_tip_doc_1').val(),
-                nro_doc: $('#txt_nro_doc').val(),
-                ape_pat: ($('#contrib_ape_pat').val()).toUpperCase() || '-',
-                ape_mat: ($('#contrib_ape_mat').val()).toUpperCase() || '-',
-                nombres: ($('#contrib_nombres').val()).toUpperCase() || '-',
-                sexo: $('#contrib_sexo').val(),
-                fnac: $('#contrib_fch_nac').val(),
-//                tipo_persona: $('input:radio[name=radio_tip_per]:checked').val(),
-                tipo_persona: $("#vw_contrib_sel_tip_contrib").val(),
-                raz_soc: ($('#contrib_raz_soc').val()).toUpperCase() || '-',
-                tlfno_fijo: $('#contrib_tlfno_fijo').val() || '0',
-                tlfono_celular: $('#contrib_tlfono_celular').val() || '0',
-                email: $('#contrib_email').val() || '@',
-                dom_fiscal: ($('#contrib_dom_fiscal').val()).toUpperCase() || '-',
-                est_civil: $('#contrib_est_civil').val(),
-                nro_doc_conv: $('#contrib_nro_doc_conv').val() || '0',
-                conviviente: ($('#contrib_conviviente').val()).toUpperCase() || '-',
-                id_prov: $('#contrib_prov').val(),
-                id_dist: $('#contrib_dist').val(),
-                nro_mun: $('#contrib_nro_mun').val() ||'0',
-                dpto: $("#contrib_dpto_depa").val() || '0',
-                manz: $('#contrib_manz').val() || '0',
-                lote: $('#contrib_lote').val() || '0',
-                activo: 1,
-                id_dpto: $('#contrib_dpto').val(),
-                id_cond_exonerac: $('#contrib_id_cond_exonerac').val(),
-                id_via: $('#hiddentxt_av_jr_calle_psje').val(),
-                tip_doc_conv: $('#cb_tip_doc_2').val()                
-            },
-            success: function (data) {
-                dialog_close('dialog_new_edit_Contribuyentes');
-                fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
-                MensajeExito('Nuevo Contribuyente', 'El Contribuyente Ha sido Insertado.');
-            },
-            error: function (data) {
-                mostraralertas('* Contactese con el Administrador...');
-            }
-        });
-    } else if (tipo === 'EDITAR' && id != undefined) {
-        raz_soc = $.trim($("#table_Contribuyentes").getCell(id, "contribuyente"));
-        MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
-        $.confirm({
-            title: '.:Cuidado... !',
-            content: 'Los Cambios no se podran revertir...',
-            buttons: {
-                Confirmar: function () {
-                    $.ajax({
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        url: 'contribuyente_update',
-                        type: 'POST',
-                        data: {
-                            id_pers: id,
-                            tipo_doc: $('#cb_tip_doc_1').val(),
-                            nro_doc: $('#txt_nro_doc').val(),
-                            ape_pat: ($('#contrib_ape_pat').val()).toUpperCase() || '-',
-                            ape_mat: ($('#contrib_ape_mat').val()).toUpperCase() || '-',
-                            nombres: ($('#contrib_nombres').val()).toUpperCase() || '-',
-                            sexo: $('#contrib_sexo').val(),
-                            fnac: $('#contrib_fch_nac').val(),
-//                            tipo_persona: $('input:radio[name=radio_tip_per]:checked').val(),
-                            tipo_persona: $("#vw_contrib_sel_tip_contrib").val(),
-                            raz_soc: ($('#contrib_raz_soc').val()).toUpperCase() || '-',
-                            tlfno_fijo: $('#contrib_tlfno_fijo').val() || '0',
-                            tlfono_celular: $('#contrib_tlfono_celular').val() || '0',
-                            email: $('#contrib_email').val() || '@',
-                            dom_fiscal: ($('#contrib_dom_fiscal').val()).toUpperCase() || '-',
-                            est_civil: $('#contrib_est_civil').val(),
-                            nro_doc_conv: $('#contrib_nro_doc_conv').val() || '0',
-                            conviviente: ($('#contrib_conviviente').val()).toUpperCase() || '-',
-                            id_prov: $('#contrib_prov').val(),
-                            id_dist: $('#contrib_dist').val(),
-                            nro_mun: $('#contrib_nro_mun').val() || '0',
-                            dpto: $("#contrib_dpto_depa").val() || '0',
-                            manz: $('#contrib_manz').val() || '0',
-                            lote: $('#contrib_lote').val() || '0',
-                            id_dpto: $('#contrib_dpto').val(),
-                            id_cond_exonerac: $('#contrib_id_cond_exonerac').val(),
-                            id_via: $('#hiddentxt_av_jr_calle_psje').val(),
-                            tip_doc_conv: $('#cb_tip_doc_2').val()
-//                            tipo_contrib: $("#vw_contrib_sel_tip_contrib").val()
-                        },
-                        success: function (data) {
-                            MensajeExito('Editar Contribuyente', 'Contribuyente: '+ raz_soc + '- Ha sido Modificado.');
-                            fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
-                            dialog_close('dialog_new_edit_Contribuyentes');
-                            MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
-                        },
-                        error: function (data) {
-                            mostraralertas('* Contactese con el Administrador...');
-                            MensajeAlerta('Editar Contribuyente','Ocurrio un Error en la Operacion.');
-                            dialog_close('dialog_new_edit_Contribuyentes');
-                            MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
-                        }
-                    });
-                },
-                Cancelar: function () {
-                    MensajeAlerta('Editar Contribuyente','Operacion Cancelada.');
-                }
-            }
-        });
-    }
+    $.ajax({  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'contribuyentes/create',
+        type: 'GET',
+        data:{   
+            tipo_doc:$("#cb_tip_doc_1").val(),
+            tipo_persona:$("#vw_contrib_sel_tip_contrib").val(),
+            nro_doc:$("#txt_nro_doc").val(),
+            tlfno_fijo:$("#contrib_tlfno_fijo").val() || '0', 
+            tlfono_celular:$("#contrib_tlfono_celular").val() || '0', 
+            email:$("#contrib_email").val() || '@',
+            est_civil:$("#contrib_est_civil").val() || '0',            
+            id_dpto:$("#contrib_dpto").val(),
+            id_prov:$("#contrib_prov").val(), 
+            id_dist:$("#contrib_dist").val(),            
+            nro_mun:$("#contrib_nro_mun").val() || '0',
+            dpto:$("#contrib_dpto_depa").val() || '0',
+            manz:$("#contrib_manz").val() || '0',
+            lote:$("#contrib_lote").val() || '0',
+            id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
+            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
+            id_pers:$("#vw_contrib_id_pers").val() || '0', 
+            id_conv:$("#vw_contrib_id_conv").val() || '0',
+            ref_dom_fis:$("#contrib_dom_fiscal").val() || '-'
+        },
+        success: function (data) {
+            dialog_close('dialog_new_edit_Contribuyentes');            
+            MensajeExito('Contribuyente','Se ha Guardado un Nuevo Contribuyente...');
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });   
 }
 
 function eliminar_contribuyente(id) {
@@ -254,37 +273,46 @@ function eliminar_contribuyente(id) {
             Cancelar: function () {
                 MensajeAlerta('Eliminar Contribuyente','Operacion Cancelada.');
             }
-
         }
     });
 }
 
-function filtro_tipo_doc(tipo) {
-    if (tipo == '00' || tipo == '2') {
-        $("#vw_contrib_btn_con_dni").hide();
-        $("#vw_contrib_btn_con_ruc").show();
-        $("#vw_contrib_sel_tip_contrib").val(2);
-//        $("input[name=radio_tip_per][value=2]").prop('checked', true);
-        $("#cb_tip_doc_1").val('00');        
-        $("#contrib_ape_mat,#contrib_ape_pat,#contrib_nombres").val('-');
-        $("#contrib_raz_soc").attr('disabled',false);
-        $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres").attr('disabled',true);
-    } else if (tipo == '02' || tipo == '1') {        
-        $("#vw_contrib_btn_con_dni").show();
-        $("#vw_contrib_btn_con_ruc").hide();
+function filtro_tipo_doc(tipo) {   
+    if(tipo=='02'){
         $("#vw_contrib_sel_tip_contrib").val(1);
-//        $("input[name=radio_tip_per][value=1]").prop('checked', true);
-        $("#cb_tip_doc_1").val('02');
-        $("#contrib_raz_soc").val('-');
-        $("#contrib_raz_soc").attr('disabled',true);
-        $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres").attr('disabled',false);
+        $("#txt_nro_doc").removeAttr('maxlength');
+        $("#txt_nro_doc").attr('maxlength',8);
+        $("#txt_nro_doc").val('');
+    }else if(tipo=='00'){
+        $("#txt_nro_doc").removeAttr('maxlength');
+        $("#txt_nro_doc").attr('maxlength',11);
+        $("#txt_nro_doc").val('');
+        $("#vw_contrib_sel_tip_contrib").val(2);
+    }
+}
+function filtro_tipo_doc_pers(tipo) {   
+    if(tipo=='02'){
+        $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
+//        $("#pers_pat,#pers_mat,#pers_nombres").val('');
+        $("#pers_raz_soc").attr('disabled',true);
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',8);
+        $("#pers_nro_doc").val('');
+        $("#pers_raz_soc").val('');
+    }else if(tipo=='00'){
+        $("#pers_raz_soc").removeAttr('disabled');
+        $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
+        
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',11);
+        $("#pers_nro_doc").val('');
+        $("#pers_pat,#pers_mat,#pers_nombres").val('');
     }
 }
 
 function limpiar_dlg_contrib(){
-    $("#txt_nro_doc,#contrib_fch_nac,#txt_av_jr_calle_psje").val('');
-    $("#contrib_ape_pat,#contrib_ape_mat,#contrib_nombres,#contrib_conviviente").val('-');
-    $("#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_nro_mun,#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_nro_doc_conv").val(0);
+    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#txt_av_jr_calle_psje,#contrib_nro_mun").val('');
+    $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente").val('');
     $("#contrib_est_civil").val('select');
 }
 

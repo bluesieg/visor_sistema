@@ -83,14 +83,25 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_all_dist', 'General@get_dist'); //llena combo Distritos
     /*     * ********************************************************************************************************************* */
     /*     * **************************************CONTRIBUYENTES******************************************************************** */
-    Route::get('contribuyentes', 'adm_tributaria\Contribuyentes@vw_contribuyentes')->name('adm_contribuyentes'); // VW_CONTRIUYENTES
-    Route::get('grid_contribuyentes', 'adm_tributaria\Contribuyentes@index'); // tabla grilla Contribuyentes    
+//    Route::get('contribuyentes', 'adm_tributaria\Contribuyentes@vw_contribuyentes'); // VW_CONTRIUYENTES
+    
+    
+    Route::group(['namespace' => 'adm_tributaria'], function() {
+        Route::resource('contribuyentes','ContribuyentesController');
+        Route::get('consultar_persona','ContribuyentesController@consultar_persona');
+        Route::post('insert_personas','ContribuyentesController@insert_persona');
+        Route::get('grid_contribuyentes', 'ContribuyentesController@grid_contrib'); // tabla grilla Contribuyentes 
+        Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); // 
+//        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
+    });
+    
+      
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
-    Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
+    
     Route::post('contribuyente_update', 'adm_tributaria\Contribuyentes@modificar_contribuyente'); //update contribuyente
     Route::post('contribuyente_delete', 'adm_tributaria\Contribuyentes@eliminar_contribuyente'); //eliminar contribuyente
     Route::get('autocomplete_contrib', 'adm_tributaria\Contribuyentes@get_autocomplete_contrib'); //eliminar contribuyente
-    Route::get('obtiene_cotriname', 'adm_tributaria\Contribuyentes@get_cotrib_byname'); //
+    
     Route::get('obtiene_cotriop', 'adm_tributaria\Contribuyentes@get_cotrib_op'); //
     Route::get('obtener_pred_ctb/{id}', 'adm_tributaria\Contribuyentes@get_predios_contrib'); //
     /*     * ******************************************VALORES ARANCELARIOS******************************************************************** */
@@ -146,6 +157,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_fracc_de_contrib','ConvenioController@fracc_de_contrib');
         Route::get('grid_detalle_fracc','ConvenioController@detalle_fracc');
     });    
+    Route::group(['namespace'=>'coactiva'],function(){///ESTADO DE CUENTAS
+        Route::resource('coactiva','CoactivaController');
+//        Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
+    });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('predios_urbanos', 'PredioController');
