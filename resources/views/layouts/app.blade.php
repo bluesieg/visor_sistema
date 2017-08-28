@@ -186,6 +186,17 @@
                         </ul>	
                     </li> 
                     <li class="">
+                        <a href="#" title="Alcabala"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Alcabala</span></a>
+                        <ul id="menu_alcabala">
+                            <li id="li_alcala_conf">
+                                <a href='alcabala_conf' title="Configuración"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Confi. Parametros</span></a>                            
+                            </li>
+                            <li id="li_alcabala">
+                                <a href='alcabala' title="Alcabala"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Registro Alcabala</span></a>                            
+                            </li>
+                        </ul>	
+                    </li> 
+                    <li class="">
                         <a href="#" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fraccionamento</span></a>
                         <ul id="menu_fracc">                            
                             <li id="li_fraccionamiento">

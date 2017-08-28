@@ -166,6 +166,8 @@ class Contribuyentes extends Controller
                 trim($Datos->nro_doc),
                 trim(str_replace("-", "",$Datos->contribuyente)),
                 trim($Datos->dom_fiscal),
+                trim($Datos->nro_doc_conv),
+                trim($Datos->conviviente),
             );
         }
         return response()->json($Lista);
@@ -261,11 +263,19 @@ class Contribuyentes extends Controller
                         'msg' => 'si',
                         'id_pers' => $Consulta[0]->id_pers,
                         'contribuyente' => $Consulta[0]->contribuyente,
+                        'dom_fiscal' => $Consulta[0]->dom_fiscal,
+                        'nro_doc' => $Consulta[0]->nro_doc,
+                        'nro_doc_conv' => $Consulta[0]->nro_doc_conv,
+                        'conviviente' => $Consulta[0]->conviviente,
             ]);
         } else {
             return response()->json([
                         'msg' => 'no',
             ]);
         }
+    }
+    function get_predios_contrib($id) {
+        return DB::select("select id_pred,sec,mzna,lote,nom_via,nro_mun,mzna_dist,lote_dist,base_impon from adm_tri.vw_predi_urba where id_contrib=$id and anio='".date("Y")."'");
+
     }
 }

@@ -92,6 +92,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('autocomplete_contrib', 'adm_tributaria\Contribuyentes@get_autocomplete_contrib'); //eliminar contribuyente
     Route::get('obtiene_cotriname', 'adm_tributaria\Contribuyentes@get_cotrib_byname'); //
     Route::get('obtiene_cotriop', 'adm_tributaria\Contribuyentes@get_cotrib_op'); //
+    Route::get('obtener_pred_ctb/{id}', 'adm_tributaria\Contribuyentes@get_predios_contrib'); //
     /*     * ******************************************VALORES ARANCELARIOS******************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {
         Route::get('val_arancel', 'Valores_Arancelarios@vw_val_arancel')->name('val_aran'); // VW_ARANCELES
@@ -173,7 +174,15 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('fis_rep/{tip}/{id}/{sec}/{man}','FiscalizacionController@reporte');
         Route::get('obtiene_op', 'FiscalizacionController@getOP'); //
         Route::get('obtiene_con_sec', 'FiscalizacionController@getcontrbsec'); //
-
+    });  
+    Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
+        Route::resource('alcabala', 'AlcabalaController');
+        Route::get('trae_acabala/{an}', 'AlcabalaController@get_alcabala'); //
+        Route::get('alcabala_conf', 'AlcabalaController@mantenimiento'); //
+        Route::get('deduccion_save', 'AlcabalaController@ded_create'); //
+        Route::get('tasa_save', 'AlcabalaController@tas_create'); //
+        Route::get('grid_deduc', 'AlcabalaController@get_deduc'); //
+        Route::get('grid_tasas', 'AlcabalaController@get_tasas'); //
     });  
     Route::get('$',function(){ echo 0;});//url auxiliar
 

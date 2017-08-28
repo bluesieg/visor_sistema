@@ -190,6 +190,7 @@ function callpredtab()
         if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
         if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia");return false}
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
+        if($('#dlg_inp_areter').val()==null||$('#dlg_inp_areter').val()==0){mostraralertasconfoco('Ingresar area del terreno...',"#dlg_inp_areter");return false}
         validarcampos();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: Guardando ...');
         $.ajax({url: 'predios_urbanos/create',
