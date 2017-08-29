@@ -169,7 +169,7 @@ class Caja_MovimientosController extends Controller {
         $recibo = DB::table('tesoreria.vw_caja_pago_recib')->where('id_rec_mtr', $id_rec)->get();
         
         if($recibo[0]->clase_recibo=='0'|| $recibo[0]->clase_recibo=='3'){
-            $contrib = DB::table('adm_tri.vw_contribuyentes')->select('contribuyente')->where('id_pers',$recibo[0]->id_contrib)->first();
+            $contrib = DB::table('adm_tri.vw_contribuyentes')->select('contribuyente')->where('id_contrib',$recibo[0]->id_contrib)->first();
             $recibo[0]->pers_raz_soc= $contrib->contribuyente;
         }
         

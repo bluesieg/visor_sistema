@@ -165,11 +165,11 @@
             rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
-                {name: 'id_per', index: 'id_per', align: 'center',width: 100},
-                {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260},
+                {name: 'id_per', index: 'id_per', align: 'center',width: 90},
+                {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 70},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 240},
                 {name: 'dom_fiscal', index: 'dom_fiscal', align: 'left',width: 100},
-                {name: 'nro_doc_conv', index: 'nro_doc_conv', align: 'left',width: 100},
+                {name: 'nro_doc_conv', index: 'nro_doc_conv', align: 'left',width: 90},
                 {name: 'conviviente', index: 'conviviente', align: 'left',width: 150},
                 
             ],

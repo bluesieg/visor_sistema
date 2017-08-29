@@ -1,5 +1,5 @@
 
-function open_dialog_new_edit_Contribuyente() {
+function open_dialog_new_edit_Contribuyente() {   
     $("#dialog_new_edit_Contribuyentes").dialog({
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: CONTRIBUYENTE :.</h4></div>",
@@ -13,8 +13,9 @@ function open_dialog_new_edit_Contribuyente() {
                 click: function () { $(this).dialog("close"); }
             }],
         close: function (event, ui) { limpiar_dlg_contrib(); },
-        open: function(){ limpiar_dlg_contrib(); }
+        open: function(){ limpiar_dlg_contrib(); }        
     }).dialog('open');
+    MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes','Cargando');
     $("#cb_tip_doc_2").val('02');
     $("#cb_tip_doc_1").val('02');
     $("#contrib_dpto").val('04');
@@ -22,6 +23,7 @@ function open_dialog_new_edit_Contribuyente() {
     llenar_combo_dist('contrib_dist');
     $("#contrib_dist").val('040104');
     autocompletar_av_jr_call('txt_av_jr_calle_psje');
+    MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
 }
 function fn_consultar_persona(num){ 
     if(num==1){
@@ -52,8 +54,7 @@ function fn_consultar_persona(num){
     });
 }
 
-function modificar_contrib(){
-    MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes','Cargando');
+function modificar_contrib(){    
     id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
     $("#dialog_new_edit_Contribuyentes").dialog({
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
@@ -68,10 +69,10 @@ function modificar_contrib(){
                 click: function () { $(this).dialog("close"); }
             }],
         close: function (event, ui) { limpiar_dlg_contrib(); },
-        open: function(){ limpiar_dlg_contrib(); }
+        open: function(){ limpiar_dlg_contrib(); MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes','Cargando');}
     }).dialog('open');
-    llenar_combo_prov('contrib_prov');
-    llenar_combo_dist('contrib_dist');
+    llenar_combo_prov('contrib_prov',$("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
+    llenar_combo_dist('contrib_dist',$("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));
     
     $("#cb_tip_doc_1").val($("#table_Contribuyentes").getCell(id_contrib, 'tipo_doc'));
     $("#txt_nro_doc").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc'));
@@ -82,10 +83,13 @@ function modificar_contrib(){
     $("#contrib_est_civil").val($("#table_Contribuyentes").getCell(id_contrib, 'est_civil'));
     $("#contrib_tlfno_fijo").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfno_fijo'));
     $("#contrib_tlfono_celular").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfono_celular'));
-    $("#contrib_email").val($("#table_Contribuyentes").getCell(id_contrib, 'email'));
-    $("#contrib_dpto").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
-    $("#contrib_prov").val($("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));
-    $("#contrib_dist").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dist'));
+    $("#contrib_email").val($("#table_Contribuyentes").getCell(id_contrib, 'email'));    
+    setTimeout(function(){
+        $("#contrib_dpto").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
+        $("#contrib_prov").val($("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));
+        $("#contrib_dist").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dist'));
+        MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');        
+    }, 2000);
     $("#hiddentxt_av_jr_calle_psje").val($("#table_Contribuyentes").getCell(id_contrib, 'id_via'));
     $("#txt_av_jr_calle_psje").val($("#table_Contribuyentes").getCell(id_contrib, 'nom_via'));
     $("#contrib_nro_mun").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_mun'));
@@ -97,7 +101,7 @@ function modificar_contrib(){
     $("#contrib_nro_doc_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc_conv'));
     $("#vw_contrib_id_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'id_conv'));
     $("#contrib_conviviente").val($("#table_Contribuyentes").getCell(id_contrib, 'conviviente')); 
-    MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
+    
 }
 function update_contrib(){
     id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
@@ -128,6 +132,7 @@ function update_contrib(){
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
             MensajeExito('Contribuyente','Se ha Modificado el Contribuyente...');
+            fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
         },
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
@@ -234,11 +239,12 @@ function new_contrib() {
             id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
-            ref_dom_fis:$("#contrib_dom_fiscal").val() || '-'
+            ref_dom_fis:($("#contrib_dom_fiscal").val()).toUpperCase() || '-'
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
             MensajeExito('Contribuyente','Se ha Guardado un Nuevo Contribuyente...');
+            fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
         },
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');

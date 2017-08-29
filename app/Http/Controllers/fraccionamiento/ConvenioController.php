@@ -269,7 +269,7 @@ class ConvenioController extends Controller
         $id_contrib=$request['id_contrib'];
         $amo=0;$inter=0;$cc=0;
         date_default_timezone_set('America/Lima');
-        $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_pers='.$id_contrib);
+        $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
         $conv = DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
         
         
@@ -280,12 +280,12 @@ class ConvenioController extends Controller
         foreach ($conv_det as $Datos) {
             $Lista = new \stdClass();
             $Lista->nro_cuot = $Datos->nro_cuota;
-            $Lista->saldo = number_format($Datos->saldo,2,'.','');
-            $Lista->amor = number_format($Datos->monto,2,'.','');
+            $Lista->saldo = number_format($Datos->saldo,3,'.','');
+            $Lista->amor = number_format($Datos->monto,3,'.','');
             $amo=$amo+number_format($Datos->monto,3,'.','');
-            $Lista->inter =  number_format($Datos->interes,2,'.','');
+            $Lista->inter =  number_format($Datos->interes,3,'.','');
             $inter=$inter+number_format($Datos->interes,3,'.','');
-            $Lista->total =  number_format($Datos->total,2,'.','');
+            $Lista->total =  number_format($Datos->total,3,'.','');
             $cc=$cc+number_format($Datos->total,3,'.','');            
             $Lista->fec_pago=$this->getCreatedAtAttribute($Datos->fec_pago)->format('d-M-Y');/*$this->fecha_mes($Datos->fec_pago);*/
             array_push($todo, $Lista);

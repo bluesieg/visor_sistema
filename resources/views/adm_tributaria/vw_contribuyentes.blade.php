@@ -15,7 +15,7 @@
                     <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
                         <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                     </button> 
-                    <button onclick="report_pdf();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
                 </ul>
@@ -279,7 +279,7 @@
                             <section>
                                 <label class="label">Referencia del Domicilio Fiscal:</label>
                                 <label class="input">
-                                    <input id="contrib_dom_fiscal" type="text" placeholder="Referencia del Domicilio Fiscal" class="input-sm">
+                                    <input id="contrib_dom_fiscal" type="text" placeholder="Referencia del Domicilio Fiscal" class="input-sm text-uppercase">
                                 </label>                        
                             </section>
                         </fieldset>

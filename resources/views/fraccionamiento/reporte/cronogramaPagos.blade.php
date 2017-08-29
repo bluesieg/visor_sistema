@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <td><b>DOMICILIO FISCAL:</b></td>
-                    <td>{{ $contrib[0]->dom_fiscal}}<br/></td>
+                    <td>{{ $contrib[0]->dom_fis}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>FECHA:</b></td>

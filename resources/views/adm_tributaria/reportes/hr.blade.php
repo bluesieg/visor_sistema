@@ -49,7 +49,7 @@
         </thead>
         <tbody>
           <tr>
-              <td colspan="2" style="text-align: center">{{ $sql->tipo_persona }}</td>
+              <td colspan="2" style="text-align: center">{{ $sql->persona }}</td>
               <td colspan="2" style="text-align: center">{{ $sql->nro_doc }}</td>
               <td colspan="2" style="text-align: center">{{ $sql->contribuyente }}</td>
               
@@ -78,7 +78,7 @@
         </thead>
         <tbody>
             <tr>
-              <td colspan="2" style="text-align: center"></td>
+              <td colspan="2" style="text-align: center">{{$sql->tip_doc_conv}}</td>
               <td colspan="2" style="text-align: center">{{$sql->nro_doc_conv}}</td>
               <td colspan="2" style="text-align: center">{{$sql->conviviente}}</td>
             </tr>

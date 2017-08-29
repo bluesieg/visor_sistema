@@ -174,6 +174,9 @@
                             <li id="li_impform">
                                 <a href="adm_impform" title="Impresion de Formatos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Imp. Formatos</span></a>
                             </li>
+                            <li id="li_env_doc_a_coac">
+                                <a href="envio_doc_coactiva" title="Envio Documentos a Coactiva"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Envio Doc. Coactiva</span></a>
+                            </li>
                         </ul>	
                     </li>
                     <li class="">

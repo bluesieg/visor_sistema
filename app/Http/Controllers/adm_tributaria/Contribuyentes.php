@@ -15,8 +15,52 @@ class Contribuyentes extends Controller
     
     public function index() {
         header('Content-type: application/json');
+        $totalg = DB::select('select count(id_pers) as total from adm_tri.vw_contribuyentes_vias');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
 
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
         }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('adm_tri.vw_contribuyentes_vias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_pers;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_pers),
+                trim($Datos->id_persona),
+                trim($Datos->tipo_doc),
+                trim($Datos->nro_doc),
+                trim(str_replace("-", "",$Datos->contribuyente)), 
+                trim($Datos->cod_via),
+                trim($Datos->nom_via),
+                trim($Datos->tlfno_fijo),
+                trim($Datos->tlfono_celular)               
+                
+            );
+        }
+        return response()->json($Lista);
+    }
     public function get_cotrib_op(Request $request)  
     {
         if($request['dat']=='0'&&$request['sec']=='0'&&$request['manz'])
@@ -166,9 +210,9 @@ class Contribuyentes extends Controller
         if (isset($Consulta[0]->id_pers)) {
             return response()->json([
                         'msg' => 'si',
-                        'id_pers' => $Consulta[0]->id_pers,
+                        'id_pers' => $Consulta[0]->id_contrib,
                         'contribuyente' => $Consulta[0]->contribuyente,
-                        'dom_fiscal' => $Consulta[0]->dom_fiscal,
+                        'dom_fiscal' => $Consulta[0]->dom_fis,
                         'nro_doc' => $Consulta[0]->nro_doc,
                         'nro_doc_conv' => $Consulta[0]->nro_doc_conv,
                         'conviviente' => $Consulta[0]->conviviente,

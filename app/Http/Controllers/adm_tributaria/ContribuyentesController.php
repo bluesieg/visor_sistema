@@ -230,13 +230,15 @@ class ContribuyentesController extends Controller
         
         
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->id_pers;            
+            $Lista->rows[$Index]['id'] = $Datos->id_contrib;            
             $Lista->rows[$Index]['cell'] = array(
-                trim($Datos->id_pers),
+                trim($Datos->id_contrib),
                 trim($Datos->id_persona),
                 trim($Datos->nro_doc),
                 trim(str_replace("-", "",$Datos->contribuyente)),
                 trim($Datos->dom_fis),
+                trim($Datos->nro_doc_conv),
+                trim($Datos->conviviente)                
             );
         }
         return response()->json($Lista);

@@ -241,8 +241,8 @@ class PredioController extends Controller
         if($tip=='HR'||$tip=='hr')
         {
             $sql = DB::select("select adm_tri.calcular_ivpp($an,$contri)");
-            $sql=DB::table('adm_tri.vw_contrib_hr2')->where('id_pers',$contri)->where('ano_cta',$an)->get()->first();
-            $sql_pre=DB::table('adm_tri.vw_predi_urba')->where('id_pers',$contri)->where('anio',$an)->get();
+            $sql=DB::table('adm_tri.vw_contrib_hr2')->where('id_contrib',$contri)->where('ano_cta',$an)->get()->first();
+            $sql_pre=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$contri)->where('anio',$an)->get();
             $view =  \View::make('adm_tributaria.reportes.hr', compact('sql','sql_pre'))->render();
         }
         if($tip=='PU'||$tip=='pu')

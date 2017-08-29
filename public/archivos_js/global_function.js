@@ -327,7 +327,8 @@ function llenar_combo_prov(input, cod_dpto) {// 0 form contribuyentes
         error: function (data) {
             mostraralertas('* Error al traer  Provincias...!');
         }
-    });
+    });    
+    llenar_combo_dist('contrib_dist',$("#contrib_prov option:selected").val());
 }
 global_dist = 0;
 function llenar_combo_dist(input, cod_prov) {// 0 form contribuyentes

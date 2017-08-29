@@ -101,7 +101,7 @@ function gen_rec_pago_fracc(){
                     type: 'GET',
                     data: {
                         id_est_rec: 1,
-                        glosa: 'PAGO DE CUOTA Nro: '+cuota_checks,
+                        glosa: 'PAGO - CUOTA DE FRACCIONAMIENTO Nro: '+cuota_checks,
                         total: $("#t_fracc_pago_mes_total").val().replace(',', ''),
                         id_pers:$("#vw_emi_rec_fracc_contrib_hidden").val(),
                         clase_recibo:3,
