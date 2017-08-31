@@ -1,5 +1,61 @@
 @extends('layouts.app')
 @section('content')
+
+    <section id="widget-grid" class="">
+        <div class='cr_content col-xs-12'>
+            <div class="col-xs-12">
+                <div class="col-lg-9">
+                    <h1 class="txt-color-green"><b>Mantenimiento de Contribuyentes...</b></h1>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12">
+                <label class="control-label col-lg-12">Sector</label>
+                <div class='col-lg-12'>
+                    <select id='selsec' class="form-control col-lg-8" onchange="callpredtab()">
+                        @foreach ($sectores as $sectores)
+                            <option value='{{$sectores->id_sec}}' >{{$sectores->sector}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12">
+                <label class="control-label col-lg-12">Manzana</label>
+                <div class='col-lg-12' id="dvselmnza">
+                    <select id="selmnza" class="form-control" onchange="callfilltab()">
+                        @foreach ($manzanas as $manzanas)
+                            <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-xs-12">
+                <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">
+                    <button onclick="open_dialog_new_edit_Contribuyente('NUEVO');" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                    </button>
+                    <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                    </button>
+                    <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                    </button>
+                    <button onclick="abrir_rep();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                    </button>
+                </ul>
+            </div>
+        </div>
+
+        <div class='cr_content col-xs-12'>
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
+                <table id="table_Contribuyentes"></table>
+                <div id="pager_table_Contribuyentes"></div>
+            </article>
+        </div>
+    </section>
+<!--
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -27,6 +83,7 @@
         </article>
     </div>
 </section>
+    -->
 @section('page-js-script')
 
 <script type="text/javascript">

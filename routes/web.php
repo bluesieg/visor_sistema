@@ -113,7 +113,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('consultar_persona','ContribuyentesController@consultar_persona');
         Route::post('insert_personas','ContribuyentesController@insert_persona');
         Route::get('grid_contribuyentes', 'ContribuyentesController@grid_contrib'); // tabla grilla Contribuyentes 
-        Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); // 
+        Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
+        Route::get('pre_rep_contr/{sect}/{mzna}','ContribuyentesController@reporte_contribuyentes');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
     });
     

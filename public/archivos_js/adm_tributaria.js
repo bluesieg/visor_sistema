@@ -323,5 +323,16 @@ function limpiar_dlg_contrib(){
 }
 
 
+function abrir_rep()
+{
+    $sector = $('#selsec').val();
+    $mzna = $('#selmnza').val();
+    //Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+    //alert(Id + "/" + $sector + "/" + $mzna);
+    window.open('pre_rep_contr/'+$sector+'/'+$mzna);
+
+
+}
+
 
 

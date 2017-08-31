@@ -16,7 +16,9 @@ class ContribuyentesController extends Controller
         $condicion=DB::select('select * from adm_tri.exoneracion');
         $tip_doc=DB::select('select * from adm_tri.tipo_documento');
         $tip_contrib=DB::select('select * from adm_tri.tipo_contribuyente');
-        return view('adm_tributaria.vw_contribuyentes', compact('tip_contrib','tip_doc','condicion','dpto'));
+        $sectores = DB::select('select * from catastro.sectores order by id_sec');
+        $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
+        return view('adm_tributaria.vw_contribuyentes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas'));
     }
 
     public function create(Request $request)
@@ -243,5 +245,16 @@ class ContribuyentesController extends Controller
         }
         return response()->json($Lista);
         }
+    }
+
+    public function reporte_contribuyentes($sec,$mzna){
+        //$sql = DB::select("select adm_tri.calcular_ivpp($an,$contri)");
+        $sql=DB::table('adm_tri.vw_contrib_hr2')->get()->first();
+        $sql = DB::table('adm_tri.vw_contribuyentes_vias')->limit(50)->offset(1)->get();
+        //$sql_pre=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$contri)->where('anio',$an)->get();
+        $view =  \View::make('adm_tributaria.reportes.reporte_contribuyentes', compact('sql'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view)->setPaper('a4');
+        return $pdf->stream($sec."_".$mzna.".pdf");
     }
 }
