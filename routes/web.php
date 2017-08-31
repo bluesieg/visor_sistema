@@ -43,10 +43,34 @@ Route::get('fracc', 'General@fraccionamiento');
 
 
 
-Route::group(['middleware' => 'auth'], function() {   
+Route::group(['middleware' => 'auth'], function() {
+    /******************** ********    CONFIGURACION CATASTRAL   ****************************/
+    Route::group(['namespace'=>'catastro'],function(){
+
+        /******************** *****  SECTORES   ***************************/
+        Route::resource('catastro_sectores','SectoresController');
+        Route::get('list_sectores','SectoresController@getSectores');
+        Route::post('insert_new_sector', 'SectoresController@insert_new_sector');
+        Route::post('update_sector', 'SectoresController@update_sector');
+        Route::post('delete_Sector', 'SectoresController@delete_sector');
+
+        /******************** *****  MANZANAS   ***************************/
+        Route::resource('catastro_mzns','ManzanaController');
+        Route::get('list_mzns_sector','ManzanaController@getManzanaPorSector');
+        Route::post('insert_new_mzna', 'ManzanaController@insert_new_mzna');
+        Route::post('create_mzna_masivo', 'ManzanaController@create_mzna_masivo');
+        Route::post('update_mzna', 'ManzanaController@update_mzna');
+        Route::post('delete_mzna', 'ManzanaController@delete_mzna');
+
+        /******************** *****  ARANCELES RUSTICOS   ***************************/
+        Route::resource('catastro_aran_rust','ArancelesRusticosController');
+        Route::get('list_aran_pred_rust','ArancelesRusticosController@getArancelRustPorAnio');
+        Route::post('insert_new_pred_rust', 'ArancelesRusticosController@insert_new_pred_rust');
+        Route::post('update_pred_rust', 'ArancelesRusticosController@update_pred_rust');
+        Route::post('delete_pred_rust', 'ArancelesRusticosController@delete_aran_pred_rust');
+    });
 /******************** ********    MAP CONTROLLER   ******************  **********/
     Route::group(['namespace'=>'map'],function(){
-
         Route::get('/cartografia', 'MapController@index')->name('home');
         Route::get('/getlimites', 'MapController@get_limites')->name('get.limites');
         Route::get('/getsectores', 'MapController@get_sectores')->name('get.sectores');
@@ -54,8 +78,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/geogetmznas_x_sector', 'MapController@geogetmznas_x_sector');
         Route::post('/get_centro_sector', 'MapController@get_centro_sector');
         Route::post('/mznas_x_sector', 'MapController@mznas_x_sector');
-
-
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
@@ -117,7 +139,6 @@ Route::group(['middleware' => 'auth'], function() {
     });
 
     /*     * ****************************************   VALORES UNITARIOS    ************************************************************** */
-
     Route::group(['namespace' => 'configuracion'], function() {
         Route::get('val_unit', 'Valores_Unitarios@show_vw_val_unit')->name('valores_unitarios'); // VW_VALORES_UNITARIOS
         Route::get('grid_val_unitarios', 'Valores_Unitarios@grid_val_unitarios'); // tabla grilla VALORES UNITARIOS
@@ -145,10 +166,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace'=>'caja'],function(){///ESTADO DE CUENTAS
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
         Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
+        Route::get('caja_imp_est_cta/{id_contrib}','Caja_Est_CuentasController@print_est_cta_contrib');
     });
     Route::group(['namespace' => 'fraccionamiento'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
-        Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');
-        
+        Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');        
         Route::resource('conve_fraccionamiento','ConvenioController');
         Route::resource('convenio_detalle','Convenio_DetalleController');
         Route::get('grid_deu_contrib_arbitrios','ConvenioController@list_deuda_contrib');
@@ -200,7 +221,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_tasas', 'AlcabalaController@get_tasas'); //
     });  
     Route::get('$',function(){ echo 0;});//url auxiliar
-
+    
 });
 
 

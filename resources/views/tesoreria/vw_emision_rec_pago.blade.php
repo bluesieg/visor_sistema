@@ -125,7 +125,7 @@
             }
         });
         jQuery("#table_cta_cte2").jqGrid({
-            url: 'get_grid_cta_cte2?id_pers=0&ano_cta=0',
+            url: 'get_grid_cta_cte2?id_contrib=0&ano_cta=0',
             datatype: 'json', mtype: 'GET',
             height: '120px', autowidth: true,
             toolbarfilter: true,
@@ -153,11 +153,11 @@
 
                         if (val == '0.000' && idarray[i] == 103) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar(" + a + ")'>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")'>", {'text-align': 'center'});
                         }
                         if (val == '0.000' && idarray[i] == 104) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_form(" + a + ")' checked>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")' checked>", {'text-align': 'center'});
                         }
                     }
                     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(idarray[i], 'ivpp'));
@@ -207,7 +207,7 @@
         $("#vw_emi_rec_imp_pre_contrib").keypress(function (e) {
             if (e.which == 13) {
                 if (globalvalidador == 0) {
-                    fn_bus_contrib();
+                    fn_bus_contrib_predial();
                     globalvalidador = 1;
                 } else {
                     globalvalidador = 0;

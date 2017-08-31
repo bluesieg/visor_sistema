@@ -129,7 +129,7 @@ var global_tot_a_pagar = 0;
 var select_check=0;
 var select_check_form=0;
 var inter=0;
-function calc_tot_a_pagar(num){
+function calc_tot_a_pagar_predial(num){
     rowId=103;
     if(inter==0){inter=1;global_tot_a_pagar = parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val());}
     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
@@ -166,7 +166,7 @@ function calcular_tot_a_pagar(){
 //    alert($("#vw_emi_rec_imp_pred_hora_act").val());
 }
 
-function fn_bus_contrib(){
+function fn_bus_contrib_predial(){
     if($("#vw_emi_rec_imp_pre_contrib").val()=="")
     {
         mostraralertasconfoco("Ingrese un Contribuyente para Buscar","#dlg_contri"); 
@@ -195,8 +195,8 @@ function fn_bus_contrib_list(per){
     anio=$("#vw_emi_rec_imp_pre_anio").val();
     
     $("#vw_emi_rec_imp_pre_contrib").attr('maxlength',tam);
-    id_pers=$('#table_contrib').jqGrid('getCell',per,'id_pers');
-    fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_pers='+id_pers+'&ano_cta='+anio);
+    id_contrib=$('#table_contrib').jqGrid('getCell',per,'id_pers');
+    fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib='+id_contrib+'&ano_cta='+anio);
     $("#dlg_bus_contr").dialog("close");    
 }
 
@@ -208,6 +208,6 @@ function limpiar_form_rec_imp_predial(){
     global_tot_a_pagar=0;
     select_check=0;
     inter=0;
-    fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_pers=0&ano_cta=0');
+    fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib=0&ano_cta=0');
 }
 

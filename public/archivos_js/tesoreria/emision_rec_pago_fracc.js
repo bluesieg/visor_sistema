@@ -1,5 +1,5 @@
 
-function dialog_emi_rec_pag_fracc() {    
+function dialog_emi_rec_pag_fracc() {
     $("#vw_emision_rec_pag_fracc").dialog({
         autoOpen: false, modal: true, width: 1350, show: {effect: "fade", duration: 300}, resizable: false,
         position: ['auto',20],        
@@ -114,6 +114,13 @@ function gen_rec_pago_fracc(){
                         } else {
                             mostraralertas('* Ha Ocurrido un Error al Generar Recibo.<br>* Actualice el Sistema e Intentelo Nuevamente.');
                         }
+                        $.confirm({
+                            title: 'Codigo de Caja',
+                            content: '<center><h3 style="margin-top:0px;font-size:40px">'+data+'</h3></center>',
+                            buttons: {
+                                Aceptar: function () {}                                
+                            }
+                        });
                     },
                     error: function (data) {
                         mostraralertas('* Error de Red.<br>* Contactese con el Administrador.');

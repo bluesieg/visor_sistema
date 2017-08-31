@@ -3,35 +3,69 @@
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
-            <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Estado de Cuenta - Impuesto Predial...</b></h1>
+            <div class="well well-sm well-light">                
                 <div class="row">
-                    <div class="col-xs-12">                        
-                        <section>
-                            <label class="control-label col-lg-2 text-align-right" style="padding-top:5px;">Rango Fecha:</label>
-                            <div class='col-lg-2 col-md-2 col-sm-2'>                                
-                                <input id="" type="text" placeholder="Desde" class="form-control" >
-                            </div>                            
-                            <div class="input-group col-md-2 col-sm-2" style="width:155px">                                
-                                <input id="" type="text" placeholder="Hasta" class="form-control" >
+                    <div class="col-xs-12">
+                        <div class="text-right">                            
+                            <section>
+                                <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 15px;"  >
+                                    <header style="background: #01a858 !important;color: white" >
+                                            <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                            <h2>ESTADO DE CUENTAS</h2>
+                                    </header>
+                                </div>
+                            </section>
+                            <div class="row">
+                                <section class="col-lg-3" style="padding-right: 5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Año Desde:</span>
+                                        <div class="icon-addon addon-md">
+                                            <select onchange="selanio_est_cta();" id="vw_caja_ets_cta_anio_desde" class="form-control input-sm">
+                                                @foreach ($anio as $anio1)
+                                                <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
+                                                @endforeach
+                                            </select><i></i>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-lg-3" style="padding-left: 5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Año Hasta:</span>
+                                        <div class="icon-addon addon-md">
+                                            <select onchange="selanio_est_cta();" id="vw_caja_ets_cta_anio_hasta" class="form-control input-sm">
+                                                @foreach ($anio as $anio2)
+                                                <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
+                                                @endforeach
+                                            </select><i></i>
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
-                        </section>
-                        <div class="col-xs-12" style="margin-bottom: 5px;"></div>
-                        <section>
-                            <label class="control-label col-lg-2 text-align-right" style="padding-top:5px;">Contribuyente:</label>
-                            <div class='col-lg-2 col-md-2 col-sm-2'>
-                                <input id="vw_caja_est_cta_id_contrib" type="hidden" value="0">
-                                <input id="vw_caja_est_cta_cod_contrib" type="text" placeholder="Codigo" class="form-control" >
-                            </div>
-                            <div class="input-group col-lg-8 col-md-8 col-sm-8">                                
-                                <input id="vw_caja_est_cta_contrib" class="form-control text-uppercase" type="text" placeholder="Contribuyente...">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default btn-primary" type="button" onclick="fn_bus_contrib()">
-                                        <i class="fa fa-search"></i> Buscar
+                            <div class="row" style="margin-top: 7px">
+                                <section class="col-lg-3" style="padding-right: 5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Codigo:</span>
+                                        <div class="icon-addon addon-md">
+                                            <input id="vw_caja_est_cta_id_contrib" type="hidden" value="0">
+                                            <input id="vw_caja_est_cta_cod_contrib" type="text" class="form-control input-sm" >
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-lg-6" style="padding-left: 5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Contribuyente:</span>
+                                        <div class="icon-addon addon-md">
+                                            <input id="vw_caja_est_cta_contrib" class="form-control input-sm text-uppercase" type="text">
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-lg-3 text-align-left" style="padding-left: 5px;">
+                                    <button onclick="print_est_cta();" type="button" id="btn_vw_productos_eliminar" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                                     </button>
-                                </div>                                    
-                            </div>                                
-                        </section>
+                                </section>
+                            </div>
+                        </div>
                     </div>
                 </div> 
             </div>                   
@@ -48,12 +82,12 @@
         $("#menu_caja").show();
         $("#li_menu_caja_est_cta").addClass('cr-active');
         jQuery("#tabla_est_Cuenta").jqGrid({
-            url: 'caja_est_cta_contrib?id_pers=0',
+            url: 'caja_est_cta_contrib?id_pers=0&desde=0&hasta=0',
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
             colNames: ['cod', 'id_pers', 'Periodo', 'Trimestre', 'Impuesto/Tributo', 'Cuota S/.', 'Abono S/.', 'Fecha', 'Total S/.'],
-            rowNum: 20, sortname: 'cod', sortorder: 'asc', viewrecords: true, caption: 'Estado de Cuenta de Contribuyente', align: "center",
+            rowNum: 20, sortname: 'descrip_tributo', sortorder: 'desc', viewrecords: true, caption: 'PREDIAL Y FORMATOS', align: "center",
             colModel: [
                 {name: 'cod', index: 'cod', hidden: true},
                 {name: 'id_pers', index: 'id_per', hidden: true},
@@ -102,14 +136,10 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                     $("#table_contrib").setSelection(firstid);
                 }
-                jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter": function (rowid) {
-                        fn_bus_contrib_list(rowid);
-                    }});
+                jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter": function (rowid) { fn_bus_contrib_caja_est_cta(rowid); }});
             },
             onSelectRow: function (Id) {},
-            ondblClickRow: function (Id) {
-                fn_bus_contrib_list(Id)
-            }
+            ondblClickRow: function (Id) { fn_bus_contrib_caja_est_cta(Id);}
         });
         var globalvalidador = 0;
         $("#vw_caja_est_cta_contrib").keypress(function (e) {

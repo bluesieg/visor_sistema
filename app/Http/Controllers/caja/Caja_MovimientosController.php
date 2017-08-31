@@ -104,8 +104,15 @@ class Caja_MovimientosController extends Controller {
     function get_grid_Caja_Mov(Request $request) {
         date_default_timezone_set('America/Lima');
         $est_recibo = $request['est_recibo'];
-        $totalg = DB::select("select count(id_rec_mtr) as total from tesoreria.vw_caja_mov"
+        $id_recib = $request['id_recib'];
+        if(isset($id_recib)){
+            $totalg = DB::select("select count(id_rec_mtr) as total from tesoreria.vw_caja_mov"
+                        . " where id_rec_mtr=".$id_recib);
+        }else{
+            $totalg = DB::select("select count(id_rec_mtr) as total from tesoreria.vw_caja_mov"
                         . " where id_usuario='" . Auth::user()->id . "' and  fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
+        }
+        
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -126,17 +133,29 @@ class Caja_MovimientosController extends Controller {
         if ($start < 0) {
             $start = 0;
         }
-
-        $sql = DB::table('tesoreria.vw_caja_mov')
+        
+        if(isset($id_recib)){
+            $sql = DB::table('tesoreria.vw_caja_mov')
+                        ->where('id_rec_mtr', $id_recib)
+                        ->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }else{
+            $sql = DB::table('tesoreria.vw_caja_mov')
                         ->where([
                                 ['id_usuario', '=', Auth::user()->id],
                                 ['fecha', '=', date('d-m-Y')],
-                                ['id_est_rec', '=', $est_recibo]
+                                ['id_est_rec', '=', $est_recibo]                                
                         ])
                         ->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-
-        $suma = DB::select("select sum(total) as sum_total from tesoreria.vw_caja_mov"
-                        . " where id_usuario='" . Auth::user()->id . "' and  fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
+        }
+        
+        if(isset($id_recib)){
+            $suma = DB::select("select sum(total) as sum_total from tesoreria.vw_caja_mov"
+                        . " where id_rec_mtr=".$id_recib);
+        }else{
+            $suma = DB::select("select sum(total) as sum_total from tesoreria.vw_caja_mov"
+                    . " where id_usuario='" . Auth::user()->id . "' and  fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
+        }
+        
         $array = array();
         $array['sum_total'] = $suma[0]->sum_total;
 

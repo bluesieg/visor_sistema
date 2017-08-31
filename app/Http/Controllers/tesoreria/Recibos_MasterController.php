@@ -16,12 +16,7 @@ class Recibos_MasterController extends Controller
     {
         $tip_doc = DB::table('adm_tri.tipo_documento')->get();
         $anio = DB::table('adm_tri.vw_uit')->select('anio')->orderBy('anio','desc')->get();
-        
-//        $request->session()->get('key');
-//        $request->session()->put('key', 'value');
-        
-        return view('tesoreria/vw_emision_rec_pago',compact('tip_doc','anio'));
-        
+        return view('tesoreria/vw_emision_rec_pago',compact('tip_doc','anio'));        
     }
     
     public function create(Request $request)
@@ -92,9 +87,9 @@ class Recibos_MasterController extends Controller
     }
     
     function tabla_cta_cte_2(Request $request){
-        $id_pers = $request['id_pers'];
+        $id_contrib = $request['id_contrib'];
         $ano_cta = $request['ano_cta'];
-        $totalg = DB::select("select count(id_pers) as total from adm_tri.vw_cta_cte2 where id_pers='".$id_pers."' and ano_cta='".$ano_cta."'");
+        $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_cta_cte2 where id_contrib='".$id_contrib."' and ano_cta='".$ano_cta."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -116,7 +111,7 @@ class Recibos_MasterController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_pers',$id_pers)->where('ano_cta',$ano_cta)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('ano_cta',$ano_cta)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -127,7 +122,7 @@ class Recibos_MasterController extends Controller
             $cont++;
             $Lista->rows[$Index]['id'] = $Datos->id_tribu;
             $Lista->rows[$Index]['cell'] = array(
-                $Datos->id_pers,
+                $Datos->id_contrib,
                 trim($Datos->descrip_tributo),
                 trim($Datos->ivpp),
                 trim($Datos->saldo),                

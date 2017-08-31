@@ -5,15 +5,16 @@ namespace App\Http\Controllers\caja;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-
+use App\Traits\DatesTranslator;
 
 class Caja_Est_CuentasController extends Controller
 {
-    
+    use DatesTranslator;
 
     public function index()
-    {        
-        return view('caja/vw_caja_est_cuentas');
+    {     
+        $anio = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('caja/vw_caja_est_cuentas',compact('anio'));
     }
 
     public function create()
@@ -48,7 +49,9 @@ class Caja_Est_CuentasController extends Controller
     
     function caja_est_cuentas(Request $request){
         $id_pers = $request['id_pers'];
-        $totalg = DB::select("select count(cod) as total from adm_tri.estado_cuentas_vlady where id_pers='".$id_pers."'");
+        $desde = $request['desde'];
+        $hasta = $request['hasta'];
+        $totalg = DB::select("select count(cod) as total from adm_tri.estado_cuentas_vlady where id_contrib='".$id_pers."' and ano_cta between ".$desde." and ".$hasta);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -70,7 +73,8 @@ class Caja_Est_CuentasController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('adm_tri.estado_cuentas_vlady')->where('id_pers',$id_pers)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('adm_tri.estado_cuentas_vlady')->where('id_contrib',$id_pers)->whereBetween('ano_cta',[$desde,$hasta])
+                ->orderBy($sidx, $sord)->orderBy('trim','asc')->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -81,7 +85,7 @@ class Caja_Est_CuentasController extends Controller
             $Lista->rows[$Index]['id'] = $Datos->cod;
             $Lista->rows[$Index]['cell'] = array(
                 $Datos->cod,
-                trim($Datos->id_pers),
+                trim($Datos->id_contrib),
                 trim($Datos->ano_cta),
                 trim($Datos->trim),                
                 trim($Datos->descrip_tributo),                
@@ -92,5 +96,18 @@ class Caja_Est_CuentasController extends Controller
             );
         }        
         return response()->json($Lista);
+    }
+    
+    function print_est_cta_contrib($id_contrib){
+        $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
+        $fecha_larga = $this->getCreatedAtAttribute(date('d-m-Y'))->format('l,d \d\e F \d\e\l Y');
+        $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib);
+        $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib);
+        
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','arb','pred'))->render();
+
+        $pdf = \App::make('dompdf.wrapper');            
+        $pdf->loadHTML($view)->setPaper('a4','landscape');
+        return $pdf->stream();
     }
 }

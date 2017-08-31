@@ -11,34 +11,53 @@
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
-            <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>
-                    CAJA:
-                    <input type="hidden" id="vw_caja_id_cajero">
-                    <input type="text" id="vw_caja_mov_cajero" class="input-sm" style="font-size:20px;border: 0px" disabled="">
-                </b></h1>
+            <div class="well well-sm well-light">                
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
-                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-3">
-                                <label>Tipo de Recibo:</label>
-                                <label class="select">
-                                    <select onchange="select_tipo_recibo(this.value);" id="vw_caja_mov_txt_tipo_recibo" class="input-sm">                                       
-                                        @foreach ($est_recibos as $est_recibos)
-                                        <option value='{{$est_recibos->id_est_rec}}' >{{$est_recibos->estad_recibo}}</option>
-                                        @endforeach                                        
-                                    </select><i></i>
-                                </label>
-                            </div>                            
-                            <button onclick="dialog_caja_mov_realizar_pago();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
-                            </button>
-                            <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Cerrar Caja
-                            </button>
-                            <button onclick="imp_pago_rec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                            </button>
+                            <section>
+                                <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 15px;"  >
+                                    <header style="background: #01a858 !important;color: white;text-align: left" >
+                                        <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                        <h2 style="font-size:20px">CAJA: </h2>
+                                        <input type="hidden" id="vw_caja_id_cajero">
+                                        <input type="text" id="vw_caja_mov_cajero" class="input-sm" style="font-size:20px;border: 0px;background: none;" disabled="">
+                                    </header>
+                                </div>
+                            </section>
+                            <div class="row">
+                                <section class="col-lg-3" style="padding-right: 5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Tipo recibo:</span>
+                                        <div class="icon-addon addon-md">
+                                            <select onchange="select_tipo_recibo(this.value);" id="vw_caja_mov_txt_tipo_recibo" class="form-control input-sm">                                       
+                                                @foreach ($est_recibos as $est_recibos)
+                                                <option value='{{$est_recibos->id_est_rec}}' >{{$est_recibos->estad_recibo}}</option>
+                                                @endforeach                                        
+                                            </select><i></i>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-lg-3" style="padding-left: 5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Codigo:</span>
+                                        <div class="icon-addon addon-md">
+                                            <input id="vw_caja_mov_txt_id_recib" type="text" class="form-control input-sm" >
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-lg-6 text-align-right" style="padding-left: 5px;">
+                                    <button onclick="dialog_caja_mov_realizar_pago();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
+                                    </button>
+                                    <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Cerrar Caja
+                                    </button>
+                                    <button onclick="imp_pago_rec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                    </button>
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div> 
@@ -102,17 +121,12 @@
         $(window).on('resize.jqGrid', function () {
             $("#tabla_Caja_Movimientos").jqGrid('setGridWidth', $("#content").width());
         });
-//        $("#vw_emision_reg_pag_fil_fecha").keypress(function (e) {
-//            if (e.which == 13) {
-//                fn_actualizar_grilla('table_Resumen_Recibos', 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val());
-//            }
-//        });
-//        $("#vw_emi_rec_txt_tributo").keypress(function (e) {
-//            if (e.which == 13 && !e.shiftKey) {
-//                event.preventDefault();
-//                autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
-//            }
-//        
+        $("#vw_caja_mov_txt_id_recib").keypress(function (e) {
+            if (e.which == 13) {
+                fn_actualizar_grilla('tabla_Caja_Movimientos', 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val()+'&id_recib='+$("#vw_caja_mov_txt_id_recib").val());
+            }
+        });
+
           $("#dialog_select_caja").dialog({
             autoOpen: false, modal: true, height: 250, width: 400, 
             show: {effect: "fade", duration: 300}, resizable: false,

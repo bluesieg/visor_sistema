@@ -64,23 +64,23 @@ function confirmar_Pago(id_recibo){
 
 function imp_pago_rec(id_recibo){
 //    window.open('imp_pago_rec');
+    id_recibo = $('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');
     $("#vw_caja_mov_confirm_pago_reporte").dialog({
         autoOpen: false, modal: true, width: 850,height:600, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:RECIBO:.</h4></div>",
         buttons: [{
-                html: "<i class='fa fa-save'></i>&nbsp; Confirmar e Imprimir",
-                "class": "btn btn-primary",
-                click: function () {
-//                    printTrigger('imp_pago_rec?id_rec='+id_recibo);
-                    dialog_close('vw_caja_mov_confirm_pago_reporte');
-                    dialog_close('vw_caja_mov_realizar_pago');
-                    MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
-                }
-            }]        
+            html: "<i class='fa fa-save'></i>&nbsp; Confirmar e Imprimir",
+            "class": "btn btn-primary",
+            click: function (){
+    //                    printTrigger('imp_pago_rec?id_rec='+id_recibo);
+                dialog_close('vw_caja_mov_confirm_pago_reporte');
+                dialog_close('vw_caja_mov_realizar_pago');
+                MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
+            }
+        }]        
     }).dialog('open');
     
-    $('#print_recibo_pagado').attr('src','imp_pago_rec?id_rec='+id_recibo);
-    
+    $('#print_recibo_pagado').attr('src','imp_pago_rec?id_rec='+id_recibo);    
 }
 function printTrigger(url) {    
         var iframe = this._printIframe;
