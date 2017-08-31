@@ -237,6 +237,21 @@
                         </ul>
                     </li>
                     <li class="">
+                        <a href="#" title="Configuracion Catastro"><i class="fa fa-lg fa-fw fa-cog fa-spin"></i> <span class="menu-item-parent">Configuracion Catastro</span></a>
+                        <ul id="menu_configuracion_catastro">
+                            <li id="conf_cat_sect">
+                                <a href="catastro_sectores" title="Dashboard"><i class="fa fa-map-marker"></i> Sectores catastrales</a>
+                            </li>
+                            <li id="conf_cat_mzna">
+                                <a href="catastro_mzns" title="Dashboard"><i class="fa fa-building"></i> Manzanas catastrales</a>
+                            </li>
+                            <li id="conf_aran_rust">
+                                <a href="catastro_aran_rust" title="Dashboard"><i class="fa fa-building"></i> Aranceles Rusticos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li class="">
                         <a href="#" title="Cartografia Base"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">Cartografia Base</span></a>
                         <ul id="manu_cart_base">                            
                             <li id="li_ver_cart">
