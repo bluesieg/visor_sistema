@@ -206,22 +206,30 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('selmzna','PredioController@ListManz');
         Route::get('adm_impform/','PredioController@imprimir_formatos');
         Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
-        
     });
-    Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
-        Route::resource('fiscalizacion', 'FiscalizacionController');
-        Route::get('fis_rep/{tip}/{id}/{sec}/{man}','FiscalizacionController@reporte');
-        Route::get('obtiene_op', 'FiscalizacionController@getOP'); //
-        Route::get('obtiene_con_sec', 'FiscalizacionController@getcontrbsec'); //
+    Route::group(['namespace' => 'recaudacion'], function() {//modulo de fiscalizacion
+        Route::resource('ordenpago', 'OrdenPagoController');
+        Route::get('fis_rep/{tip}/{id}/{sec}/{man}','OrdenPagoController@reporte');
+        Route::get('obtiene_op', 'OrdenPagoController@getOP'); //
+        Route::get('obtiene_con_sec', 'OrdenPagoController@getcontrbsec'); //
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');
-        Route::get('trae_acabala/{an}', 'AlcabalaController@get_alcabala'); //
+        Route::get('trae_acabala/{an}/{id}/{tip}', 'AlcabalaController@get_alcabala'); //
+        Route::get('alca_manten_doc', 'AlcabalaController@manten_docs'); //
         Route::get('alcabala_conf', 'AlcabalaController@mantenimiento'); //
         Route::get('deduccion_save', 'AlcabalaController@ded_create'); //
         Route::get('tasa_save', 'AlcabalaController@tas_create'); //
+        Route::get('natcontra_save', 'AlcabalaController@contra_create'); //
+        Route::get('doctrans_save', 'AlcabalaController@transfer_create'); //
+        Route::get('transina_save', 'AlcabalaController@inafecto_create'); //
         Route::get('grid_deduc', 'AlcabalaController@get_deduc'); //
         Route::get('grid_tasas', 'AlcabalaController@get_tasas'); //
+        Route::get('grid_nat_contra', 'AlcabalaController@get_contra'); //
+        Route::get('grid_doc_trans', 'AlcabalaController@get_transfe'); //
+        Route::get('grid_trans_ina', 'AlcabalaController@get_inafecto'); //
+        Route::get('alcab_rep/{id}','AlcabalaController@reporte');
+        
     });  
     Route::get('$',function(){ echo 0;});//url auxiliar
     

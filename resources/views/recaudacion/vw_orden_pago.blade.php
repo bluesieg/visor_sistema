@@ -129,7 +129,7 @@
 @section('page-js-script')
 <script type="text/javascript">
     $(document).ready(function (){
-        $("#menu_fisca").show();
+        $("#menu_recaudacion").show();
         $("#li_fis_op").addClass('cr-active')
         jQuery("#table_op").jqGrid({
             url: 'obtiene_op?dat=0&sec=0&manz=0',
@@ -235,7 +235,7 @@
     });
 </script>
 @stop
-<script src="{{ asset('archivos_js/fiscalizacion/fiscalizacion.js') }}"></script>
+<script src="{{ asset('archivos_js/recaudacion/ordenpago.js') }}"></script>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>

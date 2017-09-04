@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class='col-lg-6'style="padding: 0px;" >
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_bus_ani()">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_bus_ani(0,0)">
                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar por Año
                     </button>
                 </div>
@@ -46,7 +46,7 @@
                         <span class="input-group-addon">Cod.</span>
                         <div class=""  >
                             <input id="dlg_contri_com_hidden" type="hidden" value="0">
-                            <input id="dlg_dni_com" type="text"  class="form-control" style="height: 32px; " >
+                            <input id="dlg_contri_com_cod" type="text"  class="form-control" style="height: 32px; " >
                         </div>
 
                     </div>
@@ -80,7 +80,7 @@
                         <span class="input-group-addon">Cod.</span>
                         <div class=""  >
                             <input id="dlg_contri_ven_hidden" type="hidden" value="0">
-                        <input id="dlg_dni_ven" type="text"  class="form-control" style="height: 32px; " >
+                        <input id="dlg_contri_ven_cod" type="text"  class="form-control" style="height: 32px; " >
                         </div>
 
                     </div>
@@ -129,7 +129,7 @@
         $("#menu_alcabala").show();
         $("#li_alcabala").addClass('cr-active')
         jQuery("#table_alcab").jqGrid({
-            url: 'trae_acabala/'+$("#selan").val(),
+            url: 'trae_acabala/'+$("#selan").val()+'/0/0',
             datatype: 'json', mtype: 'GET',
             height: '230px', autowidth: true,
             toolbarfilter: true,
@@ -170,7 +170,7 @@
                 {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 240},
                 {name: 'dom_fiscal', index: 'dom_fiscal', align: 'left',width: 100},
                 {name: 'nro_doc_conv', index: 'nro_doc_conv', align: 'left',width: 90},
-                {name: 'conviviente', index: 'conviviente', align: 'left',width: 150},
+                {name: 'conviviente', index: 'conviviente', align: 'left',width: 220},
                 
             ],
             pager: '#pager_table_contrib',
@@ -215,6 +215,32 @@
                 if(globalvalidador==0)
                 {
                     fn_ctb_alcab("dlg_trans");
+                    globalvalidador=1;
+                }
+                else
+                {
+                    globalvalidador=0;
+                }
+            }
+        });
+        $("#dlg_contri_com").keypress(function (e) {
+            if (e.which == 13) {
+                if(globalvalidador==0)
+                {
+                    fn_ctb_alcab("dlg_contri_com");
+                    globalvalidador=1;
+                }
+                else
+                {
+                    globalvalidador=0;
+                }
+            }
+        });
+        $("#dlg_contri_ven").keypress(function (e) {
+            if (e.which == 13) {
+                if(globalvalidador==0)
+                {
+                    fn_ctb_alcab("dlg_contri_ven");
                     globalvalidador=1;
                 }
                 else

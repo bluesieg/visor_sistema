@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\fiscalizacion;
+namespace App\Http\Controllers\recaudacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\orden_pago_master;
 use App\Traits\DatesTranslator;
 
-class FiscalizacionController extends Controller
+class OrdenPagoController extends Controller
 {
     use DatesTranslator;
     public function index()
@@ -16,7 +16,7 @@ class FiscalizacionController extends Controller
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores = DB::select('select * from catastro.sectores order by id_sec');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
-        return view('fiscalizacion/vw_fiscalizacion',compact('anio_tra','sectores','manzanas'));
+        return view('recaudacion/vw_orden_pago',compact('anio_tra','sectores','manzanas'));
     }
     public function create(Request $request)
     {
@@ -126,13 +126,13 @@ class FiscalizacionController extends Controller
             }
             if($request['sec']==0)
             {
-                $totalg = DB::select('select count(id_gen_fis) as total from fiscalizacion.vw_genera_fisca where id_per='.$request['dat']);
-                $sql = DB::table('fiscalizacion.vw_genera_fisca')->where('id_per',$request['dat'])->where("anio",$request['an'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                $totalg = DB::select('select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per='.$request['dat']);
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('id_per',$request['dat'])->where("anio",$request['an'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }
             else
             {
-                $totalg = DB::select("select count(id_gen_fis) as total from fiscalizacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$request['sec']."' and mzna='".$request['manz']."' order by 1 asc)");
-                $sql = DB::select("select * from fiscalizacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$request['sec']."' and mzna='".$request['manz']."' order by 1 asc) order by $sidx $sord limit $limit offset $start");
+                $totalg = DB::select("select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$request['sec']."' and mzna='".$request['manz']."' order by 1 asc)");
+                $sql = DB::select("select * from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$request['sec']."' and mzna='".$request['manz']."' order by 1 asc) order by $sidx $sord limit $limit offset $start");
             }
 
             $total_pages = 0;
@@ -230,20 +230,20 @@ class FiscalizacionController extends Controller
     {
         if($tip=='1'||$tip=='3')
         {
-            $sql    =DB::table('fiscalizacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
+            $sql    =DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
             if(count($sql)>=1)
             {
                 $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d, F Y ');
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql->anio)->get()->first();
             }
-            $view =  \View::make('fiscalizacion.reportes.op', compact('sql','UIT'))->render();
+            $view =  \View::make('recaudacion.reportes.op', compact('sql','UIT'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("OP.pdf");
         }
         if($tip=='4')
         {
-            $sql = DB::select("select * from fiscalizacion.vw_op_detalle where id_gen_fis between ". str_replace("-", " and ", $id));
+            $sql = DB::select("select * from recaudacion.vw_op_detalle where id_gen_fis between ". str_replace("-", " and ", $id));
 
             if(count($sql)>=1)
             {
@@ -253,7 +253,7 @@ class FiscalizacionController extends Controller
                 }
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();
             }
-            $view =  \View::make('fiscalizacion.reportes.op_masivo', compact('sql','UIT'))->render();
+            $view =  \View::make('recaudacion.reportes.op_masivo', compact('sql','UIT'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->download("OP.pdf");

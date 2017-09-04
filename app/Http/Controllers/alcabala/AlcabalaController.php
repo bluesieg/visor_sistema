@@ -8,6 +8,9 @@ use App\Models\alcabala\deducciones;
 use Illuminate\Support\Facades\DB;
 use App\Models\alcabala\tasas;
 use App\Models\alcabala\Alcabala;
+use App\Models\alcabala\Tipo_Contrato;
+use App\Models\alcabala\Doc_Transf;
+use App\Models\alcabala\Transferencias_Inafectas;
 use App\Traits\DatesTranslator;
 class AlcabalaController extends Controller
 {
@@ -35,13 +38,14 @@ class AlcabalaController extends Controller
         $alcabala->fecha_reg=date("d/m/Y");
         $alcabala->id_doc_cont=$request["contra"];
         $alcabala->id_doc_tranf=$request["doctrans"];
-        $alcabala->fec_doc_tranf=$request["fec_doc_tranf"];
+        $alcabala->fec_doc_tranf=$request["fectrans"];
         $alcabala->nom_notaria=$request["notaria"];
         $alcabala->id_dec=DB::table('alcabala.deducciones')->where('flg_act',1)->get()->first()->id_dec;
         $alcabala->id_tas=DB::table('alcabala.tasas')->where('flg_act',1    )->get()->first()->id_tas;
         $alcabala->base_impon_autoavaluo=$request["bimpo"];
         $alcabala->porcen_adqui=$request["poradq"];
         $alcabala->valor_transferencia=$request["vtrans"];
+        $alcabala->id_tip_camb=$request["id_tip_camb"];
         $alcabala->tip_camb=$request["tip_camb"];
         $alcabala->base_impon_afecta=$request["bafecta"];
         $alcabala->id_trans_inafec=$request["inafec"];
@@ -82,8 +86,12 @@ class AlcabalaController extends Controller
     {
         return view('alcabala/vw_mantenimiento');
     }
+    public function manten_docs()
+    {
+        return view('alcabala/vw_manten_doc');
+    }
     
-    public function get_alcabala($an,Request $request)
+    public function get_alcabala($an,$id,$tip,Request $request)
     {
             header('Content-type: application/json');
             $page = $_GET['page'];
@@ -94,8 +102,24 @@ class AlcabalaController extends Controller
             if ($start < 0) {
                 $start = 0;
             }
-            $totalg = DB::select('select count(id_alcab) as total from alcabala.alcabala where anio='.$an);
-            $sql = DB::table('alcabala.alcabala')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            if($id=="0")
+            {
+                $totalg = DB::select('select count(id_alcab) as total from alcabala.vw_alcabala where anio='.$an);
+                $sql = DB::table('alcabala.vw_alcabala')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }
+            else
+            {
+                if($tip==1)
+                {
+                    $totalg = DB::select('select count(id_alcab) as total from alcabala.vw_alcabala where id_adqui='.$id);
+                    $sql = DB::table('alcabala.vw_alcabala')->where("id_adqui",$id)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
+                if($tip==2)
+                {
+                    $totalg = DB::select('select count(id_alcab) as total from alcabala.vw_alcabala where id_trans='.$id);
+                    $sql = DB::table('alcabala.vw_alcabala')->where("id_trans",$id)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
+            }
 
             $total_pages = 0;
             if (!$sidx) {
@@ -117,15 +141,25 @@ class AlcabalaController extends Controller
 
 
             foreach ($sql as $Index => $Datos) {
+                $dir=$Datos->sec."-".$Datos->mzna."-".$Datos->lote."-".$Datos->nom_via;
+                if($Datos->nro_mun!=""){
+                    $dir=$dir." Nro ".$Datos->nro_mun;
+                }
+                if($Datos->mzna_dist!=""){
+                    $dir=$dir." Mzna ".$Datos->mzna_dist;
+                }
+                if($Datos->lote_dist!=""){
+                    $dir=$dir." Lt ".$Datos->lote_dist;
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_alcab;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_alcab),
                     trim($Datos->nro_alcab),
-                    trim($Datos->id_adqui),
-                    trim($Datos->id_trans),
-                    trim($Datos->id_pred),
+                    trim($Datos->nom_adqui),
+                    trim($Datos->nom_trans),
+                    $dir,
                     trim($this->getCreatedAtAttribute($Datos->fecha_reg)->format('d/m/Y')),
-                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="verop('.trim($Datos->id_alcab).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver Alcabala</button>',
+                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="veralcab('.trim($Datos->id_alcab).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver Alcabala</button>',
                 );
             }
             return response()->json($Lista);
@@ -252,5 +286,185 @@ class AlcabalaController extends Controller
                 );
             }
             return response()->json($Lista);
+    }
+    ////////////////////////////// naturaleza del contrato
+    public function contra_create(Request $request)
+    {
+        $contra= new Tipo_Contrato;
+        $contra->descrip_cto=$request["des"];
+        $contra->save();
+        return $contra->id_tip_cto;
+    }
+    public function get_contra(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+            $totalg = DB::select("select count(id_tip_cto) as total from alcabala.tipo_contrato");
+            $sql = DB::table('alcabala.tipo_contrato')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            
+
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+
+
+            foreach ($sql as $Index => $Datos) {
+                $Lista->rows[$Index]['id'] = $Datos->id_tip_cto;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_tip_cto),
+                    trim($Datos->descrip_cto),
+                );
+            }
+            return response()->json($Lista);
+    }
+    ////////////////////////////// documento de transferencia
+    public function transfer_create(Request $request)
+    {
+        $trans= new Doc_Transf;
+        $trans->descrip_doc_transf=$request["des"];
+        $trans->save();
+        return $trans->id_doc_transf;
+    }
+    public function get_transfe(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+            $totalg = DB::select("select count(id_doc_transf) as total from alcabala.doc_transf");
+            $sql = DB::table('alcabala.doc_transf')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            
+
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+
+
+            foreach ($sql as $Index => $Datos) {
+                $Lista->rows[$Index]['id'] = $Datos->id_doc_transf;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_doc_transf),
+                    trim($Datos->descrip_doc_transf),
+                );
+            }
+            return response()->json($Lista);
+    }
+    
+    ////////////////////////////// tranferencia inafecta
+    public function inafecto_create(Request $request)
+    {
+        $trans= new Transferencias_Inafectas;
+        $trans->descrip_trans_inaf=$request["des"];
+        $trans->save();
+        return $trans->id_trans_inaf;
+    }
+    public function get_inafecto(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+            $totalg = DB::select("select count(id_trans_inaf) as total from alcabala.transferencias_inafectas");
+            $sql = DB::table('alcabala.transferencias_inafectas')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            
+
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+
+
+            foreach ($sql as $Index => $Datos) {
+                $Lista->rows[$Index]['id'] = $Datos->id_trans_inaf;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_trans_inaf),
+                    trim($Datos->descrip_trans_inaf),
+                );
+            }
+            return response()->json($Lista);
+    }
+    
+    public function reporte($id) 
+    {
+       
+        $sql    =DB::table('alcabala.vw_alcabala')->where('id_alcab',$id)->get()->first();
+        if(count($sql)>=1)
+        {
+            $dir=$sql->sec."-".$sql->mzna."-".$sql->lote."-".$sql->nom_via;
+            if($sql->nro_mun!=""){
+                $dir=$dir." -N° ".$sql->nro_mun;
+            }
+            if($sql->mzna_dist!=""){
+                $dir=$dir." -Mzna ".$sql->mzna_dist;
+            }
+            if($sql->lote_dist!=""){
+                $dir=$dir." -Lt ".$sql->lote_dist;
+            }
+            $moneda="S/.";
+            $afecto=$sql->base_impon_autoavaluo*$sql->porcen_adqui/100;
+            if($afecto<($sql->valor_transferencia*$sql->tip_camb))
+            {
+                $afecto=$sql->valor_transferencia*$sql->tip_camb;
+            }
+            $sql->fec_doc_tranf=$this->getCreatedAtAttribute($sql->fec_doc_tranf)->format('d/m/Y');
+            if($sql->id_tip_camb==2){$moneda="$";}
+            $view =  \View::make('alcabala.reportes.alcab', compact('sql','dir','moneda','afecto'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("alcabala.pdf");
+        }
+        
     }
 }

@@ -645,9 +645,9 @@
                             </label>
                         </div>
                         <div class='col-lg-3 '>
-                            <label class="label">Fecha:</label>
+                            <label class="label">Año:</label>
                             <label class="input">
-                                <input id="rpiso_inp_fech" type="text"  class="input-sm" data-mask="99/99/9999" data-mask-placeholder="-" >
+                                <input id="rpiso_inp_fech" type="text"  class="input-sm" maxlength="4" onkeypress="return soloDNI(event);">
                             </label>
                         </div>
                         <div class="col-xs-12"></div>

@@ -147,6 +147,7 @@ function llamarcambio()
         
         if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
+        if($('#dlg_sel_gpocatterr').val()==null){mostraralertasconfoco('Seleccion categoria de Tierras...',"#dlg_sel_gpocatterr");return false}
         validarcampos();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: Guardando ...');
         $.ajax({url: 'predios_rural/create',
@@ -311,7 +312,7 @@ function llamarcambio()
         if($("#rpiso_inp_estruc").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
         if($("#rpiso_inp_estruc").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
         if($("#rpiso_inp_aconst").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
-        if($("#rpiso_inp_acomun").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
+        if($("#rpiso_inp_acomun").val()==""){$("#rpiso_inp_acomun").val(0)}
         MensajeDialogLoadAjax('dlg_reg_piso', '.:: Guardando ...');
         Id_pre=$('#dlg_idpre').val();
         $("#rpiso_inp_estruc").val().toUpperCase();

@@ -180,10 +180,10 @@
                         </ul>	
                     </li>
                     <li class="">
-                        <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Fiscalización</span></a>
-                        <ul id="menu_fisca">
+                        <a href="#" title="Recaudación"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Recaudación</span></a>
+                        <ul id="menu_recaudacion">
                             <li id="li_fis_op">
-                                <a href='fiscalizacion' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
+                                <a href='ordenpago' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
                             </li>
                         </ul>	
                     </li> 
@@ -192,6 +192,9 @@
                         <ul id="menu_alcabala">
                             <li id="li_alcala_conf">
                                 <a href='alcabala_conf' title="Configuración"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Confi. Parametros</span></a>                            
+                            </li>
+                            <li id="li_alca_manten_doc">
+                                <a href='alca_manten_doc' title="Matenimiento de Documentos"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Manten. Documentos</span></a>                            
                             </li>
                             <li id="li_alcabala">
                                 <a href='alcabala' title="Alcabala"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Registro Alcabala</span></a>                            

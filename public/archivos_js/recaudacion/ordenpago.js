@@ -113,7 +113,7 @@ function generar_op(tip,ctb)
             MensajeDialogLoadAjax("dlg_ctrb_sector", '.:: Cargando ...');
 
         }
-        $.ajax({url: 'fiscalizacion/create',
+        $.ajax({url: 'ordenpago/create',
         type: 'GET',
         data:{per:Id_contrib,sec:sec,man:man,tip:tip},
         success: function(r) 

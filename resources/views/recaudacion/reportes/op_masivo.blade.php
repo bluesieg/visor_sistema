@@ -10,6 +10,7 @@
   </head>
   <body>
     <main>
+        @foreach ($sql as $sql)
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
             <tr>
             <td style="width: 10%; border: 0px;" >
@@ -29,7 +30,7 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>ORDEN DE PAGO PREDIAL N° {{$sql->nro_fis}}-{{$sql->anio}}-GAT-MDCC</b></di</center>
+        <center><div Class="asunto" style="margin-top: 10px;"><b>ORDEN DE PAGO PREDIAL N° {{$sql->nro_fis}}-{{$sql->anio}}-GAT-MDCC</b></div></center>
         <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
         <div class="lado3" style="margin-top: 30px; font-weight: bold">
@@ -173,7 +174,7 @@
             <br>
             <b>Nota:</b> Se ha aprobado los beneficiones tributarios a traves de Ordenanza Municipal 459-MDCC.
         </div>
-        
-  </body>
-  
+        <div style="page-break-before:always;"></div>
+        @endforeach
+    </body>
 </html>

@@ -435,7 +435,7 @@
                                     <div class='col-lg-4'>
                                         <label class="label">Fecha:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_fech" type="text"  class="input-sm"  data-mask="99/99/9999" data-mask-placeholder="-" >
+                                            <input id="dlg_inp_fech" type="text"  class="input-sm datepicker"  data-dateformat='dd/mm/yy' >
                                         </label>
                                     </div>
                                 </div>
