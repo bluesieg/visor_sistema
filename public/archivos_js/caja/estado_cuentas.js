@@ -40,5 +40,5 @@ function selanio_est_cta(){
 
 function print_est_cta(){
     id_contrib = $("#vw_caja_est_cta_id_contrib").val();
-    window.open('caja_imp_est_cta/'+id_contrib);
+    window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
 }

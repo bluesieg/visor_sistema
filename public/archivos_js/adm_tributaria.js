@@ -44,7 +44,7 @@ function fn_consultar_persona(num){
                     $("#vw_contrib_id_conv").val(data.id_pers);
                 }                
             }else{
-                MensajeExito('Personas','El Documento Ingresado no esta Registrado...');
+//                MensajeExito('Personas','El Documento Ingresado no esta Registrado...');
                 dlg_new_persona(nro_doc);
             }
         },
@@ -72,9 +72,8 @@ function modificar_contrib(){
         open: function(){ limpiar_dlg_contrib(); MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes','Cargando');}
     }).dialog('open');
     llenar_combo_prov('contrib_prov',$("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
-    llenar_combo_dist('contrib_dist',$("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));
+    llenar_combo_dist('contrib_dist',$("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));    
     
-    $("#cb_tip_doc_1").val($("#table_Contribuyentes").getCell(id_contrib, 'tipo_doc'));
     $("#txt_nro_doc").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc'));
     $("#vw_contrib_sel_tip_contrib").val($("#table_Contribuyentes").getCell(id_contrib, 'tipo_persona'));
     $("#contrib_id_cond_exonerac").val($("#table_Contribuyentes").getCell(id_contrib, 'id_cond_exonerac'));
@@ -85,11 +84,12 @@ function modificar_contrib(){
     $("#contrib_tlfono_celular").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfono_celular'));
     $("#contrib_email").val($("#table_Contribuyentes").getCell(id_contrib, 'email'));    
     setTimeout(function(){
+        $("#cb_tip_doc_1").val($("#table_Contribuyentes").getCell(id_contrib, 'tip_doc'));
         $("#contrib_dpto").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
         $("#contrib_prov").val($("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));
         $("#contrib_dist").val($("#table_Contribuyentes").getCell(id_contrib, 'id_dist'));
         MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');        
-    }, 2000);
+    }, 1500);
     $("#hiddentxt_av_jr_calle_psje").val($("#table_Contribuyentes").getCell(id_contrib, 'id_via'));
     $("#txt_av_jr_calle_psje").val($("#table_Contribuyentes").getCell(id_contrib, 'nom_via'));
     $("#contrib_nro_mun").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_mun'));
@@ -177,6 +177,22 @@ function dlg_new_persona(nro_doc){
     }
 }
 function new_persona(){
+    if($("#cb_tip_doc_3").val()=='02'){
+        if($("#pers_sexo").val()=='-'){
+            mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
+            return false;
+        }
+        if($("#pers_fnac").val()==''){
+            mostraralertasconfoco('Ingrese Fecha Nacimiento','#pers_fnac');
+            return false;
+        }
+    }
+    
+//    if($("#pers_dom_fis").val()==''){
+//        mostraralertasconfoco('Ingrese Domicilio Fiscal','#pers_dom_fis');
+//        return false;
+//    }
+    
     $.ajax({  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         url: 'insert_personas',
@@ -188,22 +204,21 @@ function new_persona(){
             pers_raz_soc : $("#pers_raz_soc").val() || '-',
             pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
             pers_nro_doc : $("#pers_nro_doc").val() || '-',
-            pers_dom_fis : $("#pers_dom_fis").val() || '-',
+//            pers_dom_fis : $("#pers_dom_fis").val() || '-',
             pers_sexo : $("#pers_sexo").val() || '-',
-            pers_fnac : $("#pers_fnac").val() || '1600-01-01'
+            pers_fnac : $("#pers_fnac").val() || '1900-01-01'
         },
         success: function (data) {
-            dialog_close('dialog_Personas');
-            fn_consultar_persona();
-            MensajeExito('Personas','Nueva Personas Guardada Correctamente...');
+            dialog_close('dialog_Personas');            
+//            MensajeExito('Personas','Nueva Personas Guardada Correctamente...');
         },
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
         }
-    });
+    });    
 }
 function limpiar_personas(){
-    $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac,#pers_dom_fis").val('');
+    $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac").val('');
 }
 
 function new_contrib() { 
@@ -264,15 +279,13 @@ function eliminar_contribuyente(id) {
                     url: 'contribuyente_delete',
                     type: 'POST',
                     data: {id: id},
-                    success: function (data) {
-//                        $.alert(raz_soc + '- Ha sido Eliminado');                        
+                    success: function (data) {                     
                         fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
                         dialog_close('dialog_new_edit_Contribuyentes');
                         MensajeExito('Eliminar Contribuyente', raz_soc + '- Ha sido Eliminado');
                     },
                     error: function (data) {
                         MensajeAlerta('Eliminar Contribuyente', raz_soc + '- No se pudo Eliminar.');
-//                        mostraralertas('* Error al Eliminar Contribuyente...');
                     }
                 });
             },
@@ -288,11 +301,11 @@ function filtro_tipo_doc(tipo) {
         $("#vw_contrib_sel_tip_contrib").val(1);
         $("#txt_nro_doc").removeAttr('maxlength');
         $("#txt_nro_doc").attr('maxlength',8);
-        $("#txt_nro_doc").val('');
+        $("#txt_nro_doc,#vw_contrib_contribuyente").val('');
     }else if(tipo=='00'){
         $("#txt_nro_doc").removeAttr('maxlength');
         $("#txt_nro_doc").attr('maxlength',11);
-        $("#txt_nro_doc").val('');
+        $("#txt_nro_doc,#vw_contrib_contribuyente").val('');
         $("#vw_contrib_sel_tip_contrib").val(2);
     }
 }
@@ -330,8 +343,20 @@ function abrir_rep()
     //Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
     //alert(Id + "/" + $sector + "/" + $mzna);
     window.open('pre_rep_contr/'+$sector+'/'+$mzna);
+}
 
-
+function reniec(){
+    
+    $.ajax({
+        url: 'https://ws.ehg.pe?cache=false&dni=40524154&ws=getDatosDni',
+        type:'POST',
+        data:{dni : 80673320, pas : "Pr0gr4m4", ruc : 20159515240},
+//        data:{ cache : "false", dni : 40524154, ws :"getDatosDni"},
+        success: function(data){
+            
+        },
+        error: function(data){}
+    });
 }
 
 

@@ -116,6 +116,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
         Route::get('pre_rep_contr/{sect}/{mzna}','ContribuyentesController@reporte_contribuyentes');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
+        Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
+        Route::get('fiscal_get_op', 'EnvDocCoactivaController@fis_getOP');
     });
     
       
@@ -167,7 +169,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace'=>'caja'],function(){///ESTADO DE CUENTAS
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
         Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
-        Route::get('caja_imp_est_cta/{id_contrib}','Caja_Est_CuentasController@print_est_cta_contrib');
+        Route::get('caja_imp_est_cta/{id_contrib}/{desde}/{hasta}','Caja_Est_CuentasController@print_est_cta_contrib');
     });
     Route::group(['namespace' => 'fraccionamiento'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
         Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');        

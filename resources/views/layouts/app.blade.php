@@ -207,10 +207,13 @@
                         </ul>	
                     </li>
                     <li class="">
-                        <a href="#" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-rebel"></i> <span class="menu-item-parent">Cobranza Coactiva</span></a>
+                        <a href="#" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-rebel"></i> <span class="menu-item-parent">Coactiva</span></a>
                         <ul id="menu_coactiva">                            
                             <li id="li_coactiva">
                                 <a href="coactiva" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Coactivas</span></a>
+                            </li>
+                            <li id="li_recep_doc">
+                                <a href="recepcion_doc" title="Recepcion de Documentos"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Recepcion Doc.</span></a>
                             </li>
                         </ul>	
                     </li>

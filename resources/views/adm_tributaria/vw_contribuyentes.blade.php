@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    <section id="widget-grid" class="">
+    <section id="widget-grid" class="">        
         <div class='cr_content col-xs-12'>
             <div class="col-xs-12">
                 <div class="col-lg-9">
@@ -43,47 +43,18 @@
                     <button onclick="abrir_rep();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
+                    <button onclick="reniec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reniec
+                    </button>
                 </ul>
             </div>
+             
         </div>
-
-        <div class='cr_content col-xs-12'>
-
-            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
-                <table id="table_Contribuyentes"></table>
-                <div id="pager_table_Contribuyentes"></div>
-            </article>
-        </div>
-    </section>
-<!--
-<section id="widget-grid" class="">    
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
-            <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Mantenimiento de Contribuyentes...</b></h1>
-                <ul id="sparks">                                        
-                    <button onclick="open_dialog_new_edit_Contribuyente('NUEVO');" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                    </button>
-                    <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                    </button>
-                    <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
-                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                    </button> 
-                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                    </button>
-                </ul>
-            </div>                   
-        </div>
-        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
             <table id="table_Contribuyentes"></table>
             <div id="pager_table_Contribuyentes"></div>
         </article>
-    </div>
-</section>
-    -->
+    </section>
 @section('page-js-script')
 
 <script type="text/javascript">
@@ -97,11 +68,11 @@
             toolbarfilter: true,
             colNames: ['Codigo', ' Tip. Doc', 'N°. Documento', 'Contribuyente o Razon Social', 'Cod. Via', 'Calle / Via', 'Fono. Fijo', 'Celular',
                 'tipo_persona','id_cond_exonerac','est_civil','email','id_dpto','id_prov','id_dist','id_via','nro_mun','dpto','manz','lote',
-                'dom_fis','tip_doc_conv','nro_doc_conv','conviviente','id_pers','id_conv'],
+                'dom_fis','tip_doc_conv','nro_doc_conv','conviviente','id_pers','id_conv','tip_doc'],
             rowNum: 20, sortname: 'id_contrib', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE CONTRIBUYENTES REGISTRADOS', align: "center",
             colModel: [                
                 {name: 'id_persona', index: 'id_persona', align: 'left', width: 80},
-                {name: 'tipo_doc', index: 'tipo_doc', align: 'center', width: 60},
+                {name: 'tip_doc_desc', index: 'tip_doc_desc', align: 'center', width: 60},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 90},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'cod_via', index: 'cod_via', align: 'center', width: 60},
@@ -125,7 +96,8 @@
                 {name: 'nro_doc_conv', index: 'tlfono_celular', hidden:true},
                 {name: 'conviviente', index: 'tlfono_celular', hidden:true},
                 {name: 'id_pers', index: 'tlfono_celular', hidden:true},
-                {name: 'id_conv', index: 'tlfono_celular', hidden:true}
+                {name: 'id_conv', index: 'tlfono_celular', hidden:true},
+                {name: 'tip_doc', index: 'tip_doc', hidden:true}
             ],
             pager: '#pager_table_Contribuyentes',
             rowList: [20, 30, 50],
@@ -204,7 +176,7 @@
                                     </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left:5px;padding-right:5px;margin-top: 16px"> 
-                                    <button onclick="fn_consultar_persona();" type="button" class="btn btn-labeled btn-primary">
+                                    <button onclick="fn_consultar_persona(1);" type="button" class="btn btn-labeled btn-primary">
                                         <span class="btn-label" style="left: 0px;">
                                             <i class="fa fa-search"></i>
                                         </>Buscar
@@ -431,9 +403,10 @@
                             </section>
                             <div class="row">
                                 <section class="col col-6" style="padding-right:5px;">
-                                    <label class="label">Tipo Documento:</label>                                   
+                                    <label class="label">Sexo:</label>                                   
                                     <label class="select">
-                                        <select id="pers_sexo" class="input-sm text-uppercase">                                            
+                                        <select id="pers_sexo" class="input-sm text-uppercase">
+                                            <option value="-">Seleccionar</option>
                                             <option value="1">Masculino</option>
                                             <option value="0">Femenino</option>        
                                         </select><i></i> </label>                                     
@@ -445,12 +418,12 @@
                                     </label>                                                                                                          
                                 </section>                                
                             </div>
-                            <section>
+<!--                            <section>
                                 <label class="label">Domicilio Fiscal:</label>
                                 <label class="input">
                                     <input id="pers_dom_fis" type="text" class="input-sm text-uppercase">
                                 </label>                                
-                            </section>
+                            </section>-->
                         </fieldset>
                     </div>
                 </div>
@@ -475,6 +448,23 @@
         </div>
     </div>
 </div>
+
+<div id="reniec" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <center><img id="captcha_reniec" src="" width="150"></center>
+                <section>
+                    <label class="label">Codigo:</label>
+                    <label class="input">
+                        <input id="txt_captcha_reniec" type="text" class="input-sm">
+                    </label>                        
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 

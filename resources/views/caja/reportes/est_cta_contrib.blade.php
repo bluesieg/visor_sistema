@@ -35,6 +35,10 @@
             <!--<center><b>DATOS DEL CONTRIBUYENTE</b></center>-->
             <table style="font-size:14px;margin-top: 10px;">
                 <tr>
+                    <td><b>PERIODO:</b></td>
+                    <td>{{ $desde." al ".$hasta}}<br/></td>
+                </tr>
+                <tr>
                     <td><b>CODIGO:</b></td>
                     <td>{{ $contrib[0]->id_persona}}<br/></td>
                 </tr>
@@ -64,13 +68,13 @@
                         <th align="center" width="5%">Año</th>
                         <th align="center" width="30%">Descripcion</th>
                         <th align="center" width="10%">Trim I</th>
-                        <th align="center" width="10%">Abo I</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim II</th>
-                        <th align="center" width="10%">Abo II</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim III</th>
-                        <th align="center" width="10%">Abo III</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim IV</th>
-                        <th align="center" width="10%">Abo IV</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Pago Tot</th>
                         <th align="center" width="10%">Deuda Tot</th>
                     </tr>                                        
@@ -103,13 +107,13 @@
                         <th align="center" width="5%">Año</th>
                         <th align="center" width="30%">Descripcion</th>
                         <th align="center" width="10%">Trim I</th>
-                        <th align="center" width="10%">Abo I</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim II</th>
-                        <th align="center" width="10%">Abo II</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim III</th>
-                        <th align="center" width="10%">Abo III</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim IV</th>
-                        <th align="center" width="10%">Abo IV</th>
+                        <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Pago Tot</th>
                         <th align="center" width="10%">Deuda Tot</th>
                     </tr>                                        
@@ -134,17 +138,5 @@
                 </tbody>
             </table>
         </div>
-    
-    
-    <footer>
-        <center>
-        <div style="float: left;width: 45%; text-align: center;border-top: 1px solid #01A858">
-            <p>MUNICIPALIDAD</p>
-        </div>
-        <div style="float: right;width: 45%; text-align: center;border-top: 1px solid #01A858">
-            <p>{{ str_replace('-','',$contrib[0]->contribuyente)}}<br>DNI: {{ $contrib[0]->nro_doc}}</p>
-        </div>
-        </center>
-    </footer>
     </body>
 </html>

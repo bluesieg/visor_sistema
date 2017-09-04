@@ -110,7 +110,7 @@ class ContribuyentesController extends Controller
         $data->pers_raz_soc = $request['pers_raz_soc'];
         $data->pers_tip_doc = $request['pers_tip_doc'];
         $data->pers_nro_doc = $request['pers_nro_doc'];
-        $data->pers_dom_fis = $request['pers_dom_fis'];
+//        $data->pers_dom_fis = $request['pers_dom_fis'];
         $data->pers_sexo = $request['pers_sexo'];
         $data->pers_fnac = $request['pers_fnac'];
         $data->save();        
@@ -164,7 +164,7 @@ class ContribuyentesController extends Controller
             $Lista->rows[$Index]['id'] = $Datos->id_contrib;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_persona),
-                trim($Datos->tip_doc),
+                trim($Datos->tip_doc_desc),
                 trim($Datos->nro_doc),
                 trim(str_replace("-", "",$Datos->contribuyente)), 
                 trim($Datos->cod_via),
@@ -188,7 +188,8 @@ class ContribuyentesController extends Controller
                 trim($Datos->nro_doc_conv),
                 trim($Datos->conviviente),
                 $Datos->id_pers,
-                $Datos->id_conv
+                $Datos->id_conv,
+                $Datos->tip_doc
             );
         }
         return response()->json($Lista);

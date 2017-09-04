@@ -51,7 +51,7 @@ class Caja_Est_CuentasController extends Controller
         $id_pers = $request['id_pers'];
         $desde = $request['desde'];
         $hasta = $request['hasta'];
-        $totalg = DB::select("select count(cod) as total from adm_tri.estado_cuentas_vlady where id_contrib='".$id_pers."' and ano_cta between ".$desde." and ".$hasta);
+        $totalg = DB::select("select count(id_contrib) as total from adm_tri.estado_cuentas_vlady where id_contrib='".$id_pers."' and ano_cta between ".$desde." and ".$hasta);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -81,10 +81,12 @@ class Caja_Est_CuentasController extends Controller
         $Lista->total = $total_pages;
         $Lista->records = $count;
         
-        foreach ($sql as $Index => $Datos) {            
-            $Lista->rows[$Index]['id'] = $Datos->cod;
+        $cc=0;
+        foreach ($sql as $Index => $Datos) {  
+            $cc++;
+            $Lista->rows[$Index]['id'] = $cc;
             $Lista->rows[$Index]['cell'] = array(
-                $Datos->cod,
+                $cc,
                 trim($Datos->id_contrib),
                 trim($Datos->ano_cta),
                 trim($Datos->trim),                
@@ -98,13 +100,13 @@ class Caja_Est_CuentasController extends Controller
         return response()->json($Lista);
     }
     
-    function print_est_cta_contrib($id_contrib){
+    function print_est_cta_contrib($id_contrib,$desde,$hasta){
         $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
         $fecha_larga = $this->getCreatedAtAttribute(date('d-m-Y'))->format('l,d \d\e F \d\e\l Y');
-        $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib);
-        $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib);
+        $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
+        $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
         
-        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','arb','pred'))->render();
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','arb','pred','desde','hasta'))->render();
 
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a4','landscape');
