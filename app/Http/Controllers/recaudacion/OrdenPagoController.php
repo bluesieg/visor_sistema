@@ -283,6 +283,5 @@ class OrdenPagoController extends Controller
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("OP.pdf");
         }
-        
     }
 }

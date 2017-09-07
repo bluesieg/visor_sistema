@@ -182,8 +182,16 @@
                     <li class="">
                         <a href="#" title="Recaudación"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Recaudación</span></a>
                         <ul id="menu_recaudacion">
-                            <li id="li_fis_op">
+                            <li id="li_reca_op">
                                 <a href='ordenpago' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
+                            </li>
+                        </ul>	
+                    </li> 
+                    <li class="">
+                        <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Fiscalización</span></a>
+                        <ul id="menu_fisca">
+                            <li id="li_fisca_carta">
+                                <a href='fisca_carta_req' title="Carta de Requerimiento"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Carta Requerimiento</span></a>                            
                             </li>
                         </ul>	
                     </li> 

@@ -235,6 +235,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('alcab_rep/{id}','AlcabalaController@reporte');
         
     });  
+    Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
+        Route::resource('reso_deter', 'Res_DeterminacionController');
+        Route::get('fisca_carta_req', 'Res_DeterminacionController@carta_requerimiento'); //
+    }); 
     Route::get('$',function(){ echo 0;});//url auxiliar
     
 });
