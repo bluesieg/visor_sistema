@@ -93,7 +93,7 @@
                                     <span>
                                         <i class="glyphicon glyphicon-plus-sign"></i>
                                     </span>
-                                    <label>Nuevo Piso</label>
+                                    <label>Recibir Doc.</label>
                                 </button>
                                 <button onclick="enviar_a_coactiva();" type="button" class="btn btn-warning">
                                     <span class="btn-label"><i class="fa fa-check-square" style="font-size:30px"></i></span>

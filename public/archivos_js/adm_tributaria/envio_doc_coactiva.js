@@ -1,18 +1,4 @@
 
-function enviar_a_coactiva(){
-    cont_rows=jQuery("#tabla_Doc_Fisca").jqGrid('getGridParam', 'records');
-    
-//    var Seleccionados = new Array();
-//    $('input[type=checkbox][name=chk_doc]:checked').each(function() {
-//        Seleccionados.push($(this).val());
-//    });
-//    cant=Seleccionados.length;
-//    id_doc_checks = Seleccionados.join('-');    
-    
-    if(cont_rows==0 || cant==0){
-        return false;
-    }        
-}
 function right(){
     cont_rows=jQuery("#tabla_Doc_OP").jqGrid('getGridParam', 'records');
     id_gen_fis=$('#tabla_Doc_OP').jqGrid ('getGridParam', 'selrow');
@@ -80,7 +66,38 @@ function update_env_op(id_gen_fis,env_op){
         error: function(){}
     });
 }
-
+//function chk_click_1(source){
+//    if($(source).is(':checked')){
+//        $("#env_doc_chek2").prop('checked',false);
+//        $("#env_doc_chek3").prop('checked',false);
+//    }else{
+//        $("#env_doc_chek2").prop('checked',true);
+//        $("#env_doc_chek3").prop('checked',true);
+//    }
+//}
+//function chk_click_2(source){
+//    if($(source).is(':checked')){
+//        $("#env_doc_chek1").prop('checked',false);
+//        $("#env_doc_chek3").prop('checked',false);
+//    }else{
+//        $("#env_doc_chek1").prop('checked',true);
+//        $("#env_doc_chek3").prop('checked',true);
+//    }
+//}
+//function chk_click_3(source){
+//    if($(source).is(':checked')){
+//        $("#env_doc_chek1").prop('checked',false);
+//        $("#env_doc_chek2").prop('checked',false);
+//    }else{
+//        $("#env_doc_chek1").prop('checked',true);
+//        $("#env_doc_chek2").prop('checked',true);
+//    }
+//}
+function fn_up_grid(){  
+    
+    fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
+}
 function fn_bus_contrib_env_doc(){  
     if($("#vw_env_doc_contrib").val()==""){
         mostraralertasconfoco("Ingrese un Contribuyente para Buscar","#vw_env_doc_contrib"); 

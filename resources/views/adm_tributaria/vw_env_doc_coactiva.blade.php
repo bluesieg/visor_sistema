@@ -4,6 +4,11 @@
     .icon-addon .form-control, .icon-addon.addon-md .form-control {
         padding-left: 10px; 
     }
+    .vl_check{
+        background: white !important;
+        margin-top: 3px;
+        margin-right: 5px;
+    }
 </style>
 <section id="widget-grid" class="">    
     <div class="row">
@@ -11,79 +16,102 @@
             <div class="well well-sm well-light">
                 <h1 class="txt-color-green"><b>Envio de OP a Ejecucion Coactiva...</b></h1>
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12">                       
                         <div class="text-right">
-                            <div class="row">
-                                <section class="col-lg-7" style="padding-right: 5px;">
+                            <div class="row" style="margin-bottom:10px;">
+                                <section class="col-lg-4" style="padding-right: 5px;">
                                     <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
                                         <header style="background: #01a858 !important;color: white" >
                                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                                <h2>BUSQUEDA DE CONTRIBUYENTE</h2>
-                                        </header>                                    
+                                                <h2>BUSQUEDA POR CONTRIBUYENTE</h2>
+                                                <div class="smart-form">
+                                                    <label class="toggle">
+                                                        <input type="radio" name="myradio" id="env_doc_chek1" value="1">
+                                                        <i class="vl_check" data-swchon-text="ON" data-swchoff-text="OFF"></i></label>
+                                                </div>
+                                        </header>
                                     </div>
                                 </section>
-                                <section class="col-lg-5" style="padding-left: 5px;">
-                                    <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
-                                        <header style="background: #01a858 !important;color: white" >
-                                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                                <h2>FILTRAR POR: FECHA / NUMERO DE DOCUMENTO</h2>
-                                        </header>                                    
-                                    </div>
-                                </section>
-                            </div>
-                                                        
-                            <div class="row" style="margin-top: 7px">
-                                <section class="col-lg-2" style="padding-right: 5px;">
+                                <section class="col-lg-2" style="padding-right: 5px;padding-left: 5px;">                                    
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Cod.<i class="icon-append fa fa-lock" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
                                             <input id="hidden_vw_env_doc_codigo" type="hidden" value="0">
-                                            <input id="vw_env_doc_codigo" type="text" class="form-control input-sm" style="padding-left:5px;padding-right: 5px;">
+                                            <input id="vw_env_doc_codigo" type="text" class="form-control" style="padding-left:5px;padding-right: 5px;" disabled="">
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-5" style="padding-left: 5px;padding-right: 5px;">
+                                <section class="col-lg-6" style="padding-left: 5px;">
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
-                                            <input id="vw_env_doc_contrib" class="form-control input-sm text-uppercase" type="text">
+                                            <input id="vw_env_doc_contrib" class="form-control text-uppercase" type="text" disabled="">
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-5" style="padding-left: 5px;">
-                                    <div class="row">
-                                        <section class="col-lg-6" style="padding-right:5px">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">De</span>
-                                                <input placeholder="dd/mm/aaaa" class="form-control input-sm datepicker" data-dateformat='dd/mm/yy'>
-                                                <span class="input-group-addon">a</span>
-                                                <input placeholder="dd/mm/aaaa" class="form-control input-sm datepicker" data-dateformat='dd/mm/yy'>
-                                            </div>                                            
-                                        </section>
-                                        <section class="col-lg-6" style="padding-left:5px">                                            
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Del</span>
-                                                <input class="form-control input-sm" id="appendprepend" type="text">
-                                                <span class="input-group-addon">a</span>
-                                                <input class="form-control input-sm" id="appendprepend" type="text">
-                                            </div>                                            
-                                        </section>                                        
+                            </div>
+                            <div class="row">
+                                <section class="col-lg-2" style="padding-right: 5px;">
+                                    <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
+                                        <header style="background: #01a858 !important;color: white" >
+                                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                                <h2>FECHA</h2>
+                                                <div class="smart-form">
+                                                    <label class="toggle">
+                                                        <input type="radio" name="myradio" id="env_doc_chek2" value="2" checked="checked">
+                                                        <i class="vl_check"  data-swchon-text="ON" data-swchoff-text="OFF"></i></label>
+                                                </div>                                                
+                                        </header>                                    
                                     </div>
                                 </section>
-                            </div>                            
+                                <section class="col-lg-4" style="padding-right:5px;padding-left: 5px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Desde<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
+                                        <input placeholder="dd/mm/aaaa" id="vw_env_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <span class="input-group-addon">Hasta<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
+                                        <input placeholder="dd/mm/aaaa" id="vw_env_doc_fhasta" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <span class="input-group-btn">
+                                                <button class="btn btn-success" type="button" onclick="fn_up_grid();" title="BUSCAR">
+                                                <i class="glyphicon glyphicon-search"></i>&nbsp;Buscar
+                                            </button>
+                                        </span>
+                                    </div>                                            
+                                </section>
+                                <section class="col-lg-2" style="padding-right: 5px;padding-left: 5px">
+                                    <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
+                                        <header style="background: #01a858 !important;color: white" >
+                                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                                <h2>NRO:DOC</h2>
+                                                <div class="smart-form">
+                                                    <label class="toggle">
+                                                        <input type="radio" name="myradio" id="env_doc_chek3" value="3">
+                                                        <i class="vl_check"  data-swchon-text="ON" data-swchoff-text="OFF"></i></label>
+                                                </div>
+                                        </header>                                    
+                                    </div>
+                                </section>
+                                <section class="col-lg-4" style="padding-left:5px">                                            
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Del</span>
+                                        <input class="form-control" id="vw_env_doc_nrode" type="text" disabled="">
+                                        <span class="input-group-addon">Al</span>
+                                        <input class="form-control" id="vw_env_doc_nroa" type="text" disabled="">
+                                    </div>                                            
+                                </section>
+                            </div>                  
                         </div>                        
                     </div>
                 </div> 
             </div>
             <div class="well well-sm well-light" style="margin-top:-20px;">
                 <div class="row">                    
-                    <section class="col-lg-5" id="content_2" style="padding-right:5px;width: 45%">
+                    <section class="col-lg-5" id="content_2" style="padding-right:5px;width: 45%">                        
                         <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;">
                             <header style="background: #01a858 !important;color: white" >
                                     <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
                                     <h2>RECAUDACION</h2>
                             </header>                                    
-                        </div>
+                        </div>                       
                         <table id="tabla_Doc_OP"></table>
                         <div id="p_tabla_Doc_OP"></div>
                     </section>
@@ -123,21 +151,23 @@
         $("#menu_admtri").show();
         $("#li_env_doc_a_coac").addClass('cr-active');
         jQuery("#tabla_Doc_OP").jqGrid({
-            url: 'recaudacion_get_op?id_contrib=0&env_op=0',
+            url: 'recaudacion_get_op?id_contrib=0&env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif'],
+            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','monto'],
             rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
+                {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 70},
                 {name: 'fec_reg', index: 'fec_reg', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 60},
+                {name: 'anio', index: 'anio', align: 'center', width: 50},
                 {name: 'nro_doc', index: 'nro_doc',hidden: true},                
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'estado', index: 'estado', hidden: true},
-                {name: 'verif_env', index: 'verif_env', hidden: true}
+                {name: 'verif_env', index: 'verif_env', hidden: true},
+                {name: 'monto', index: 'monto', width: 85,align:'center'}
             ],
             pager: '#p_tabla_Doc_OP',
             rowList: [15, 20],
@@ -146,21 +176,23 @@
             ondblClickRow: function (Id){}
         });
         jQuery("#tabla_Doc_OP_2").jqGrid({
-            url: 'recaudacion_get_op?id_contrib=0&env_op=0',
+            url: 'recaudacion_get_op?id_contrib=0&env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif'],
+            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','monto'],
             rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
+                {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 70},
                 {name: 'fec_reg', index: 'fec_reg', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 60},
+                {name: 'anio', index: 'anio', align: 'center', width: 50},
                 {name: 'nro_doc', index: 'nro_doc',hidden: true},                
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'estado', index: 'estado', hidden: true},
-                {name: 'verif_env', index: 'verif_env', hidden: true}
+                {name: 'verif_env', index: 'verif_env', hidden: true},
+                {name: 'monto', index: 'monto', width: 85,align:'center'}
             ],
             pager: '#p_tabla_Doc_OP_2',
             rowList: [15, 20],
