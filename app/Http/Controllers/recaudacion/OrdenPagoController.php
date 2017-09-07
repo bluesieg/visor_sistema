@@ -107,9 +107,9 @@ class OrdenPagoController extends Controller
     {
         //
     }
-    public function getOP(Request $request)
+    public function getOP($dat,$sec,$manz,$an,$ini,$fin,Request $request)
     {
-        if($request['dat']=='0'&&$request['sec']=='0'&&$request['manz'])
+        if($dat==0&&$sec==0&&$manz==0&&$ini==0&&$fin==0)
         {
             return 0;
         }
@@ -124,15 +124,23 @@ class OrdenPagoController extends Controller
             if ($start < 0) {
                 $start = 0;
             }
-            if($request['sec']==0)
+            if($sec==0)
             {
-                $totalg = DB::select('select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per='.$request['dat']);
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('id_per',$request['dat'])->where("anio",$request['an'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                if($dat==0)
+                {
+                    $totalg = DB::select("select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where fec_reg between '".$ini."' and '".$fin."'");
+                    $sql = DB::table('recaudacion.vw_genera_fisca')->wherebetween('fec_reg',[$ini,$fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
+                else
+                {
+                    $totalg = DB::select('select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per='.$dat);
+                    $sql = DB::table('recaudacion.vw_genera_fisca')->where('id_per',$dat)->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
             }
             else
             {
-                $totalg = DB::select("select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$request['sec']."' and mzna='".$request['manz']."' order by 1 asc)");
-                $sql = DB::select("select * from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$request['sec']."' and mzna='".$request['manz']."' order by 1 asc) order by $sidx $sord limit $limit offset $start");
+                $totalg = DB::select("select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$sec."' and mzna='".$manz."' order by 1 asc)");
+                $sql = DB::select("select * from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$sec."' and mzna='".$manz."' order by 1 asc) order by $sidx $sord limit $limit offset $start");
             }
 
             $total_pages = 0;
@@ -171,7 +179,7 @@ class OrdenPagoController extends Controller
     }
     public function getcontrbsec(Request $request)
     {
-        if($request['sec']=='0'&&$request['man'])
+        if($request['sec']=='0'&&$request['man']=='0')
         {
             return 0;
         }
@@ -257,6 +265,23 @@ class OrdenPagoController extends Controller
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->download("OP.pdf");
+        }
+        if($tip=='5')
+        {
+            $sql = DB::select("select * from recaudacion.vw_op_detalle where fec_reg between '".$sec."' and '".$man."'");
+
+            if(count($sql)>=1)
+            {
+                for($i=0;$i<count($sql);$i++)
+                {
+                    $sql[$i]->fec_reg=$this->getCreatedAtAttribute($sql[$i]->fec_reg)->format('l d, F Y ');
+                }
+                $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();
+            }
+            $view =  \View::make('recaudacion.reportes.op_masivo', compact('sql','UIT'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("OP.pdf");
         }
         
     }

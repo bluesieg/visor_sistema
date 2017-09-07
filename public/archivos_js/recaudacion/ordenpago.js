@@ -74,14 +74,26 @@ function traer_contri_cod(input, doc) {
 }
 function call_list_contrib(tip)
 {
+    
     $("#table_op").jqGrid("clearGridData", true);
     if(tip==1)
     {
-        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op?dat='+$("#dlg_contri_hidden").val()+'&sec=0&manz=0&an='+$("#selancontri").val()}).trigger('reloadGrid');
+        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op/'+$("#dlg_contri_hidden").val()+'/0/0/'+$("#selantra").val()+'/0/0'}).trigger('reloadGrid');
     }
-    else
+    if(tip==2)
     {
-        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op?dat=0&sec='+$("#selsec option:selected").text()+'&manz='+$("#selmnza option:selected").text()+'&an='+$("#selancontri").val()}).trigger('reloadGrid');
+        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op/0/'+$("#selsec option:selected").text()+'/'+$("#selmnza option:selected").text()+'/'+$("#selantra").val()+'/0/0'}).trigger('reloadGrid');
+    }
+    if(tip==3)
+    {
+        if($("#dlg_bus_fini").val()==""||$("#dlg_bus_ffin").val()=="")
+        {
+            mostraralertasconfoco("Ingresar Fechas","#dlg_bus_fini"); 
+            return false;
+        } 
+        ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
+        fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
+        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op/0/0/0/0/'+ini+'/'+fin}).trigger('reloadGrid');
     }
 }
 function generar_op(tip,ctb)
@@ -139,6 +151,17 @@ function generar_op(tip,ctb)
         autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  Contribuyente por sector :.</h4></div>"       
         }).dialog('open');
+    }
+    if(tip==5)
+    {
+        if($("#dlg_bus_fini").val()==""||$("#dlg_bus_ffin").val()=="")
+        {
+            mostraralertasconfoco("Ingresar Fechas","#dlg_bus_fini"); 
+            return false;
+        } 
+        ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
+        fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
+        window.open('fis_rep/'+tip+'/0/'+ini+'/'+fin);
     }
 }
 function verop(idop)

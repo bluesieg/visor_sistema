@@ -40,7 +40,7 @@
                   <td class="nro">1</td>
                   <th style="width: 10%">Tip.doc.</th>
                   <td class="nro">2</td>
-                <th style="width: 22%">NUMERO DE DOCUMENTO</th>
+                <th style="width: 22%">NÚMERO DE DOCUMENTO</th>
                 <td class="nro" >3</td>
                 <th style="width: 60%">APELLIDOS y NOMBRES / RAZON SOCIAL</th>
               </tr>
@@ -70,9 +70,9 @@
                   <td class="nro">5</td>
                   <th style="width: 10%">Tip.doc.</th>
                   <td class="nro">6</td>
-                <th style="width: 22%">NUMERO DE DOCUMENTO</th>
+                <th style="width: 22%">NÚMERO DE DOCUMENTO</th>
                 <td class="nro" >7</td>
-                <th style="width: 60%">APELLIDOS y NOMBRES / RAZON SOCIAL</th>
+                <th style="width: 60%">APELLIDOS y NOMBRES / RAZÓN SOCIAL</th>
               </tr>
             </thead>
             <tbody>

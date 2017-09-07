@@ -64,7 +64,7 @@
             datatype: 'json', mtype: 'GET',
             height: '100px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_dec', 'N° UITs', 'Fec.ini', 'Fec.fin','ley', 'Activo'],
+            colNames: ['id_dec', 'N° UITs', 'Fecha Inicio', 'Fecha Fin','ley', 'Activo'],
             rowNum: 20, sortname: 'id_dec', sortorder: 'desc', viewrecords: true, caption: 'Lista de Deducciones', align: "center",
             colModel: [
                 {name: 'id_dec', index: 'id_dec', hidden: true},
@@ -91,7 +91,7 @@
             datatype: 'json', mtype: 'GET',
             height: '100px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_tas', 'Porcentaje', 'Fec.ini', 'Fec.fin','ley', 'Activo'],
+            colNames: ['id_tas', 'Porcentaje', 'Feccha Inicio', 'Fecha Fin','ley', 'Activo'],
             rowNum: 20, sortname: 'id_tas', sortorder: 'desc', viewrecords: true, caption: 'Lista de Tasas', align: "center",
             colModel: [
                 {name: 'id_tas', index: 'id_tas', hidden: true},

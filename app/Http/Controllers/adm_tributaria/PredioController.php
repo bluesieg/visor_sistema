@@ -45,6 +45,7 @@ class PredioController extends Controller
         $predio->id_cond_esp_exon = 1;
         $predio->id_hab_urb = 2;
         $predio->mzna = $request['mzna'];
+        $predio->id_mzna_cat = $request['id_mzna'];
         $predio->sec = $request['sec'];
         $predio->lote = $request['lote'];
         $predio->anio = $request['an'];

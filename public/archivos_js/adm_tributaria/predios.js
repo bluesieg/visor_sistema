@@ -204,7 +204,7 @@ function callpredtab()
         luz:$("#dlg_inp_luz").val(),agua:$("#dlg_inp_agua").val(),liccon:$('input:radio[name=dlg_rd_lcons]:checked').val(),
         confobr:$('input:radio[name=dlg_rd_confobr]:checked').val(),defra:$('input:radio[name=dlg_rd_defra]:checked').val(),
         areterr:$("#dlg_inp_areter").val(),arecomter:$("#dlg_inp_arecomter").val(),aranc:$("#dlg_inp_aranc").val(),
-        an:$("#selantra").val()},
+        an:$("#selantra").val(),id_mzna:$("#selmnza").val()},
         success: function(r) 
         {
             $('#dlg_idpre').val(r);

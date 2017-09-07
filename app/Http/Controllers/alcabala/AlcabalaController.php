@@ -39,7 +39,7 @@ class AlcabalaController extends Controller
         $alcabala->id_doc_cont=$request["contra"];
         $alcabala->id_doc_tranf=$request["doctrans"];
         $alcabala->fec_doc_tranf=$request["fectrans"];
-        $alcabala->nom_notaria=$request["notaria"];
+        $alcabala->nom_notaria= strtoupper($request["notaria"]);
         $alcabala->id_dec=DB::table('alcabala.deducciones')->where('flg_act',1)->get()->first()->id_dec;
         $alcabala->id_tas=DB::table('alcabala.tasas')->where('flg_act',1    )->get()->first()->id_tas;
         $alcabala->base_impon_autoavaluo=$request["bimpo"];
@@ -49,7 +49,14 @@ class AlcabalaController extends Controller
         $alcabala->tip_camb=$request["tip_camb"];
         $alcabala->base_impon_afecta=$request["bafecta"];
         $alcabala->id_trans_inafec=$request["inafec"];
-        $alcabala->impuesto_tot=$request["imp_tot"];
+        if($request["inafec"]==0)
+        {
+            $alcabala->impuesto_tot=$request["imp_tot"];
+        }
+        else
+        {
+            $alcabala->impuesto_tot=0;
+        }
         $alcabala->anio=date("Y");
         $alcabala->pk_uit=DB::table('adm_tri.uit')->where('anio',date("Y"))->get()->first()->pk_uit;
 
@@ -91,7 +98,7 @@ class AlcabalaController extends Controller
         return view('alcabala/vw_manten_doc');
     }
     
-    public function get_alcabala($an,$id,$tip,Request $request)
+    public function get_alcabala($an,$id,$tip,$num,$ini,$fin,Request $request)
     {
             header('Content-type: application/json');
             $page = $_GET['page'];
@@ -104,8 +111,21 @@ class AlcabalaController extends Controller
             }
             if($id=="0")
             {
-                $totalg = DB::select('select count(id_alcab) as total from alcabala.vw_alcabala where anio='.$an);
-                $sql = DB::table('alcabala.vw_alcabala')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                if($tip==0)
+                {
+                    $totalg = DB::select('select count(id_alcab) as total from alcabala.vw_alcabala where anio='.$an);
+                    $sql = DB::table('alcabala.vw_alcabala')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
+                if($tip==3)
+                {
+                    $totalg = DB::select("select count(id_alcab) as total from alcabala.vw_alcabala where nro_alcab='".$num."' AND anio=".$an);
+                    $sql = DB::table('alcabala.vw_alcabala')->where("nro_alcab",$num)->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
+                if($tip==4)
+                {
+                    $totalg = DB::select("select count(id_alcab) as total from alcabala.vw_alcabala where fecha_reg between '".$ini."' AND '".$fin."'");
+                    $sql = DB::table('alcabala.vw_alcabala')->whereBetween("fecha_reg",[$ini,$fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
             }
             else
             {
@@ -151,6 +171,14 @@ class AlcabalaController extends Controller
                 if($Datos->lote_dist!=""){
                     $dir=$dir." Lt ".$Datos->lote_dist;
                 }
+                if($Datos->estado==0)
+                {
+                    $Datos->estado="Sin Pago";
+                }
+                if($Datos->estado==1)
+                {
+                    $Datos->estado="Pagado";
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_alcab;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_alcab),
@@ -159,7 +187,8 @@ class AlcabalaController extends Controller
                     trim($Datos->nom_trans),
                     $dir,
                     trim($this->getCreatedAtAttribute($Datos->fecha_reg)->format('d/m/Y')),
-                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="veralcab('.trim($Datos->id_alcab).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver Alcabala</button>',
+                    trim($Datos->estado),
+                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="veralcab('.trim($Datos->id_alcab).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                 );
             }
             return response()->json($Lista);
@@ -217,7 +246,7 @@ class AlcabalaController extends Controller
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_dec),
                     trim($Datos->nro_uit),
-                    trim($Datos->fec_ini),
+                    $this->getCreatedAtAttribute(trim($Datos->fec_ini))->format('d/m/Y'),
                     trim($Datos->fec_fin),
                     trim($Datos->act_ley),
                     trim($Datos->flg_act),
@@ -278,8 +307,8 @@ class AlcabalaController extends Controller
                 $Lista->rows[$Index]['id'] = $Datos->id_tas;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_tas),
-                    trim($Datos->por_tas),
-                    trim($Datos->fec_ini),
+                    trim($Datos->por_tas)." %",
+                    $this->getCreatedAtAttribute(trim($Datos->fec_ini))->format('d/m/Y'),
                     trim($Datos->fec_fin),
                     trim($Datos->act_ley),
                     trim($Datos->flg_act),

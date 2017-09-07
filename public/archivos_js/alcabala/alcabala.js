@@ -10,7 +10,28 @@ function limpiar()
 }
 function fn_bus_ani(id,tip)
 {
-    jQuery("#table_alcab").jqGrid('setGridParam', {url: 'trae_acabala/'+$("#selan").val()+'/'+id+'/'+tip}).trigger('reloadGrid');
+    num=0;ini=0;fin=0;
+    if(tip==3)
+    {
+        if($("#dlg_bus_num").val()=="")
+        {
+            mostraralertasconfoco("Ingresar Numero","#dlg_bus_num"); 
+            return false;
+        }
+        ajustar(6,'dlg_bus_num')
+        num=$("#dlg_bus_num").val();
+    }
+    if(tip==4)
+    {
+       if($("#dlg_bus_fini").val()==""||$("#dlg_bus_ffin").val()=="")
+        {
+            mostraralertasconfoco("Ingresar Fechas","#dlg_bus_fini"); 
+            return false;
+        } 
+        ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
+        fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
+    }
+    jQuery("#table_alcab").jqGrid('setGridParam', {url: 'trae_acabala/'+$("#selan").val()+'/'+id+'/'+tip+'/'+num+'/'+ini+'/'+fin}).trigger('reloadGrid');
 }
 function fn_new()
 {
@@ -19,7 +40,7 @@ function fn_new()
     $("#div_adquiere").show("Explode");
     $("#dlg_adquire").focus();
     $("#dlg_new_alcabala").dialog({
-        autoOpen: false, modal: true, width: 1000, 
+        autoOpen: false, modal: true, width: 1100, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Registrar Nueva Alcabala</h4></div>"
@@ -81,21 +102,14 @@ function fn_ctb_list_alcab(per)
 {
     
     $("#"+inputglobal+"_hidden").val(per);
-    $("#"+inputglobal+"_cod").val($('#table_contrib').jqGrid('getCell',per,'id_per'));
     $("#"+inputglobal).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
-    if(inputglobal=="dlg_contri_com")
+    if(inputglobal=="dlg_contri")
     {
-        fn_bus_ani(per,1);
+        fn_bus_ani(per,$("#seltip").val());
         $("#dlg_bus_contr").dialog("close");
         return false;
     }
-    if(inputglobal=="dlg_contri_ven")
-    {
-        fn_bus_ani(per,2);
-        $("#dlg_bus_contr").dialog("close");
-        return false;
-    }
-    
+    $("#"+inputglobal+"_cod").val($('#table_contrib').jqGrid('getCell',per,'id_per'));
     $("#"+inputglobal+"_doc").val($('#table_contrib').jqGrid('getCell',per,'nro_doc'));
     $("#"+inputglobal+"_dom").val($('#table_contrib').jqGrid('getCell',per,'dom_fiscal'));
     $("#"+inputglobal+"_doc_conv").val($('#table_contrib').jqGrid('getCell',per,'nro_doc_conv'));
@@ -195,7 +209,14 @@ function next(tipo)
         $("#dlg_fin_base").val($("#dlg_bi_apli").val())
         $("#dlg_fin_dedu").val($("#dlg_tot_deduc").val())
         $("#dlg_fin_afecta").val($("#dlg_bi_afecta").val())
-        $("#dlg_fin_pagar").val($("#dlg_tot_pago").val())
+        if($("#selinafec").val()==0)
+        {
+            $("#dlg_fin_pagar").val($("#dlg_tot_pago").val());
+        }
+        else
+        {
+            $("#dlg_fin_pagar").val(0);
+        }
         $("#div_adquiere,#div_trans,#div_pred,#div_calculos").hide("Explode");
         $("#dlg_fin_inafecta").val($("#selinafec option:selected").text());
         $("#div_final").show("Explode");

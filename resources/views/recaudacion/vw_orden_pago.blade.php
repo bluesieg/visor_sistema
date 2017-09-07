@@ -2,33 +2,77 @@
 @section('content')
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
-        <h1 class="txt-color-green"><b>Generación de Ordenes de Pago (OP)</b></h1>
-
-        <div class="col-xs-12 cr-body" >
-            <section>
-                <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                    <header>
-                            <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                            <h2>Busqueda de OP por Sector y Manzana</h2>
-                    </header>
-                </div>
-            </section>
-            <div class="col-xs-2" style="padding: 0px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon">Periodo</span>
-                    <div class="icon-addon addon-md">
-                        <select id='selantra' class="form-control col-lg-8"  style="height: 32px;">
-                        @foreach ($anio_tra as $anio)
-                        <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                        @endforeach
-                        </select>
-                    </div>
-                    
+        <div class="col-xs-9">
+            <h1 class="txt-color-green"><b>Generación de Ordenes de Pago (OP)</b></h1>
+        </div>
+        <div class="col-xs-3" style="margin-top: 5px; padding-right: 23px;">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;">
+                    @foreach ($anio_tra as $anio)
+                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                    @endforeach
+                    </select>
                 </div>
             </div>
-            <div class="col-xs-2" style="padding: 0px;">
+        </div>
+        <div class="col-xs-12 cr-body" >
+            
+            <div class="col-xs-3" style="padding: 0px; margin-top: 5px">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                <h2>Busqueda por Contribuyente</h2>
+                        </header>
+                    </div>
+                </section>
+            </div>
+            <div class="col-xs-9" style="padding: 0px; margin-top: 5px">
+                <div class="col-xs-3" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Cod. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="dlg_contri_hidden" type="hidden" value="0">
+                        <input id="dlg_dni" type="text"  class="form-control" style="height: 32px; " >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
+                        <div   >
+                            <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib()">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class='col-lg-3'style="padding: 0px;" >
+                    <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(1,0)">
+                        <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nueva OP
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-12"></div>
+            <div class="col-xs-3" style="padding: 0px; margin-top: 5px">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                <h2>Busqueda por Sector y Manzana</h2>
+                        </header>
+                    </div>
+                </section>
+            </div>
+            <div class="col-xs-9" style="padding: 0px; margin-top: 5px">
+            <div class="col-xs-3" style="padding: 0px;">
                 <div class="input-group input-group-md">
-                    <span class="input-group-addon">Sector</span>
+                    <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
                     <div class="icon-addon addon-md">
                         <select id='selsec' class="form-control" onchange="callpredtab()" style="height: 32px;" >
                         @foreach ($sectores as $sec)
@@ -39,9 +83,9 @@
 
                 </div>
             </div>
-            <div class="col-xs-2" style="padding: 0px;">
+            <div class="col-xs-3" style="padding: 0px;">
                 <div class="input-group input-group-md">
-                    <span class="input-group-addon">Manzana</span>
+                    <span class="input-group-addon">Manzana &nbsp;<i class="fa fa-list"></i></span>
                     <div class="icon-addon addon-md"  id="dvselmnza">
                         <select id="selmnza" class="form-control" style="height: 32px;" >
                         @foreach ($manzanas as $manzanas)
@@ -54,65 +98,59 @@
             </div>
              
             
-            <div class='col-lg-2'style="padding: 0px;" >
+            <div class='col-lg-2' style="padding: 0px;" >
                 <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="call_list_contrib(2)">
-                    <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar Ordenes
+                    <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                 </button>
             </div>
             <div class='col-lg-3'style="padding: 0px;" >
-                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(2,0);">
-                    <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nuevas OP por Sector
+                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(2,0);" style="width: 100%">
+                    <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar OP por Sector
                 </button>
             </div>
-        </div>
-        <div class="col-xs-12 cr-body" >
-            <section>
-                <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                    <header>
-                            <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                            <h2>Busqueda de OP por Contribuyente</h2>
-                    </header>
-                </div>
-            </section>
-            <div class="col-xs-2" style="padding: 0px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon">Periodo</span>
-                    <div class="icon-addon addon-md">
-                        <select id='selancontri' class="form-control col-lg-8" style="height: 32px;">
-                        @foreach ($anio_tra as $anio)
-                        <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                        @endforeach
-                        </select>
+            </div>
+            
+            
+            <div class="col-xs-12"></div>
+            <div class="col-xs-3" style="padding: 0px; margin-top: 5px">
+                <div>
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 5px; padding: 0px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                <h2>Busqueda Por Fechas</h2>
+                        </header>
                     </div>
+                </section>
                 </div>
             </div>
-            <div class="col-xs-2" style="padding: 0px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon">Cod.</span>
-                    <div class=""  >
-                        <input id="dlg_contri_hidden" type="hidden" value="0">
-                    <input id="dlg_dni" type="text"  class="form-control" style="height: 32px; " >
+            <div class="col-xs-9" style="padding: 0px; margin-top: 5px">
+                <div class="col-xs-3" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Desde &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div class=""  >
+                            <input id="dlg_bus_fini" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                        </div>
                     </div>
-
                 </div>
-            </div>
-            <div class="col-xs-5" style="padding: 0px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon">Contribuyente</span>
-                    <div   >
-                        <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
+                <div class="col-xs-3" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Hasta &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div class=""  >
+                            <input id="dlg_bus_ffin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                        </div>
                     </div>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" onclick="fn_bus_contrib()">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </span>
                 </div>
-            </div>
-            <div class='col-lg-3'style="padding: 0px;" >
-                <button type="button" class="btn btn-labeled bg-color-greenDark txt-color-white" onclick="generar_op(1,0)">
-                    <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar Nueva OP
-                </button>
+                <div class='col-lg-2'style="padding: 0px;" >
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="call_list_contrib(3)">
+                        <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
+                    </button>
+                </div>
+                <div class='col-lg-2'style="padding: 0px;" >
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="generar_op(5,0)">
+                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir por fechas
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -132,7 +170,7 @@
         $("#menu_recaudacion").show();
         $("#li_fis_op").addClass('cr-active')
         jQuery("#table_op").jqGrid({
-            url: 'obtiene_op?dat=0&sec=0&manz=0',
+            url: 'obtiene_op/0/0/0/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '200px', autowidth: true,
             toolbarfilter: true,

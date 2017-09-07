@@ -210,12 +210,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'recaudacion'], function() {//modulo de fiscalizacion
         Route::resource('ordenpago', 'OrdenPagoController');
         Route::get('fis_rep/{tip}/{id}/{sec}/{man}','OrdenPagoController@reporte');
-        Route::get('obtiene_op', 'OrdenPagoController@getOP'); //
+        Route::get('obtiene_op/{dat}/{sec}/{manz}/{an}/{ini}/{fin}', 'OrdenPagoController@getOP'); //
         Route::get('obtiene_con_sec', 'OrdenPagoController@getcontrbsec'); //
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');
-        Route::get('trae_acabala/{an}/{id}/{tip}', 'AlcabalaController@get_alcabala'); //
+        Route::get('trae_acabala/{an}/{id}/{tip}/{num}/{ini}/{fin}', 'AlcabalaController@get_alcabala'); //
         Route::get('alca_manten_doc', 'AlcabalaController@manten_docs'); //
         Route::get('alcabala_conf', 'AlcabalaController@mantenimiento'); //
         Route::get('deduccion_save', 'AlcabalaController@ded_create'); //
