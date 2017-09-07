@@ -1,33 +1,20 @@
 @extends('layouts.app')
 @section('content')
 
-    <section id="widget-grid" class="">        
+    <section id="widget-grid" class="">
         <div class='cr_content col-xs-12'>
             <div class="col-xs-12">
                 <div class="col-lg-9">
                     <h1 class="txt-color-green"><b>Mantenimiento de Contribuyentes...</b></h1>
                 </div>
+                <div class="col-lg-3 col-md-6 col-xs-12">
+                </div>
 
             </div>
             <div class="col-lg-3 col-md-6 col-xs-12">
-                <label class="control-label col-lg-12">Sector</label>
-                <div class='col-lg-12'>
-                    <select id='selsec' class="form-control col-lg-8" onchange="callpredtab()">
-                        @foreach ($sectores as $sectores)
-                            <option value='{{$sectores->id_sec}}' >{{$sectores->sector}}</option>
-                        @endforeach
-                    </select>
-                </div>
             </div>
+
             <div class="col-lg-3 col-md-6 col-xs-12">
-                <label class="control-label col-lg-12">Manzana</label>
-                <div class='col-lg-12' id="dvselmnza">
-                    <select id="selmnza" class="form-control" onchange="callfilltab()">
-                        @foreach ($manzanas as $manzanas)
-                            <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
-                        @endforeach
-                    </select>
-                </div>
             </div>
             <div class="col-lg-6 col-md-12 col-xs-12">
                 <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">
@@ -40,7 +27,7 @@
                     <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
                         <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                     </button>
-                    <button onclick="abrir_rep();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                    <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
                     <button onclick="reniec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
@@ -48,12 +35,11 @@
                     </button>
                 </ul>
             </div>
-             
         </div>
-        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
-            <table id="table_Contribuyentes"></table>
-            <div id="pager_table_Contribuyentes"></div>
-        </article>
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
+                <table id="table_Contribuyentes"></table>
+                <div id="pager_table_Contribuyentes"></div>
+            </article>
     </section>
 @section('page-js-script')
 
@@ -460,6 +446,123 @@
                         <input id="txt_captcha_reniec" type="text" class="input-sm">
                     </label>                        
                 </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dialog_reporte_contr" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        <p>
+                            Reporte por:
+                        </p>
+                        <hr class="simple">
+                        <ul id="myTab1" class="nav nav-tabs bordered">
+                            <li class="active">
+                                <a href="#s1" onclick="current_tab(1);" data-toggle="tab">Año-Sector-Manzana</a>
+                            </li>
+                            <li>
+                                <a href="#s2" onclick="current_tab(2);" data-toggle="tab">Habilitación Urbana</a>
+                            </li>
+
+                        </ul>
+
+                        <div id="myTabContent1" class="tab-content padding-10">
+                            <div class="tab-pane fade in active" id="s1">
+                                <div class="row">
+                                    <section class="col col-4" style="padding-right:5px;">
+                                        <label class="label">AÑO:</label>
+                                        <label class="select">
+                                            <select id='selantra' class="form-control col-lg-8">
+                                                @foreach ($anio_tra as $anio)
+                                                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                                @endforeach
+                                            </select><i></i> </label>
+                                    </section>
+                                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
+                                        <label class="label">SECTOR:</label>
+                                        <label class="select">
+                                            <select id='selsec' class="form-control col-lg-8">
+                                                @foreach ($sectores as $sectores)
+                                                    <option value='{{$sectores->sector}}' >{{$sectores->sector}}</option>
+                                                @endforeach
+                                            </select><i></i> </label>
+                                    </section>
+                                    <section class="col col-4" style="padding-left:5px;padding-right:5px">
+                                        <label class="label">MANZANA:</label>
+                                        <label class="select">
+                                            <select id="selmnza" class="form-control">
+                                                @foreach ($manzanas as $manzanas)
+                                                    <option value='{{$manzanas->codi_mzna}}'>{{$manzanas->codi_mzna}}</option>
+                                                @endforeach
+                                            </select><i></i> </label>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="s2">
+
+                                <!--
+                                <section class="col col-3" style="padding-right:5px;">
+                                    <label class="label">Código:</label>
+                                    <label class="input">
+                                        <input id="pers_pat" type="text" maxlength="50">
+                                    </label>
+                                </section>-->
+                                <div class="row">
+                                <section class="col col-2" style="padding-right:5px;">
+                                    <label class="label">AÑO:</label>
+                                    <label class="select">
+                                        <select id='selec_hab_urb' class="form-control col-lg-8">
+                                            @foreach ($anio_tra as $anio)
+                                                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                            @endforeach
+                                        </select><i></i> </label>
+                                </section>
+
+                                <section class="col col-10">
+                                    <label class="label">Habilitación Urbana:</label>
+                                    <label class="input">
+                                        <input type="text" list="list" id="hab_urb" name="hab_urb" placeholder="Habilitación Urbana">
+                                        <datalist id="list">
+                                            @foreach ($hab_urb as $hab)
+                                                <option data-xyz ="{{$hab->id_hab_urb}}" value="{{$hab->nomb_hab_urba}}">{{$hab->id_hab_urb}}</option>
+                                            @endforeach
+                                        </datalist> </label>
+                                </section>
+                                    </div>
+
+                                <!--
+                                <section class="col col-9" style="padding-left:5px;padding-right:5px;">
+                                    <label class="label">Habilitación Urbana:</label>
+                                    <label class="input">
+                                        <input id="pers_mat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                    </label>
+                                </section>-->
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
             </div>
         </div>
     </div>

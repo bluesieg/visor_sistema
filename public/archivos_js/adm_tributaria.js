@@ -359,5 +359,63 @@ function reniec(){
     });
 }
 
+function limpiar_reporte(){
+    $('#selsec').val('0');
+    $('#selmnza').val('0');
+    $('#selantra').val('0');
+    $('#selec_hab_urb').val('0');
+    $('#hab_urb').val('');
+}
 
+function dlg_new_reporte(){
+    limpiar_reporte();
+    $("#dialog_reporte_contr").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: REPORTE DE CONTRIBUYENTES :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte",
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_rep(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }],
+        close: function (event, ui) { limpiar_personas();},
+        open: function (){ limpiar_personas(); }
+    }).dialog('open');
+
+}
+$current_tab=1;
+function abrir_rep()
+{
+    if($current_tab == 1) {
+        $sector = $('#selsec').val();
+        $mzna = $('#selmnza').val();
+        $anio = $('#selantra').val();
+        //Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+        //alert(Id + "/" + $sector + "/" + $mzna);
+        window.open('pre_rep_contr/'+$sector+'/'+$mzna+'/'+$anio);
+    }
+    if($current_tab == 2){
+        var anio_hab_urb = $('#selec_hab_urb').val();
+        var val = $('#hab_urb').val();
+        var xyz = $('#list option').filter(function() {
+            return this.value == val;
+        }).data('xyz');
+        var id_hab_urba = xyz ? '' + xyz : 'No Match';
+        if(id_hab_urba != 'No Match')
+            window.open('pre_rep_contr_hab_urb/'+id_hab_urba+'/'+anio_hab_urb);
+        else
+            MensajeAlerta('Reporte Contrituyentes', ' Habilitación Urbana no Válida.');
+
+        //alert(id_hab_urba);
+    }
+
+
+}
+
+function current_tab(id_report){
+    $current_tab=id_report;
+}
 

@@ -16,9 +16,11 @@ class ContribuyentesController extends Controller
         $condicion=DB::select('select * from adm_tri.exoneracion');
         $tip_doc=DB::select('select * from adm_tri.tipo_documento');
         $tip_contrib=DB::select('select * from adm_tri.tipo_contribuyente');
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores = DB::select('select * from catastro.sectores order by id_sec');
+        $hab_urb = DB::select('select id_hab_urb,nomb_hab_urba from catastro.hab_urb');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
-        return view('adm_tributaria.vw_contribuyentes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas'));
+        return view('adm_tributaria.vw_contribuyentes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas','anio_tra','hab_urb'));
     }
 
     public function create(Request $request)
@@ -248,14 +250,62 @@ class ContribuyentesController extends Controller
         }
     }
 
-    public function reporte_contribuyentes($sec,$mzna){
+    public function reporte_contribuyentes($sec,$mzna,$anio){
         //$sql = DB::select("select adm_tri.calcular_ivpp($an,$contri)");
-        $sql=DB::table('adm_tri.vw_contrib_hr2')->get()->first();
-        $sql = DB::table('adm_tri.vw_contribuyentes_vias')->limit(50)->offset(1)->get();
+        //dd($sec);
+        //$anio = '2017';
+        $flag = 1;
+        $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('sec',$sec)->where('mzna',$mzna)->where('ano_cta',$anio)->get();
         //$sql_pre=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$contri)->where('anio',$an)->get();
-        $view =  \View::make('adm_tributaria.reportes.reporte_contribuyentes', compact('sql'))->render();
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($view)->setPaper('a4');
-        return $pdf->stream($sec."_".$mzna.".pdf");
+        $view =  \View::make('adm_tributaria.reportes.reporte_contribuyentes', compact('sql','anio','sec','mzna','flag'))->render();
+
+        if(count($sql)>=1)
+        {
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            return $pdf->stream($sec."_".$mzna.".pdf");
+        }
+        else
+        {   return 'No hay datos';}
+
     }
+    public function reporte_contribuyentes_hab_urb($cod_hab_urb,$anio){
+        //$sql = DB::select("select adm_tri.calcular_ivpp($an,$contri)");
+        //dd($cod_hab_urb);
+        //$anio = '2017';
+        $sec='0';
+        $mzna = '0';
+        $flag = 2;
+
+        $sql=DB::table('adm_tri.vw_contrib_hab_urb')->where('id_hab_urb',$cod_hab_urb)->where('anio',$anio)->get();
+        //dd(count($sql));
+        //$sql_pre=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$contri)->where('anio',$an)->get();
+
+
+        if(count($sql)>0)
+        {
+            $view =  \View::make('adm_tributaria.reportes.reporte_contribuyentes', compact('sql','anio','sec','mzna','flag'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            return $pdf->stream($sec."_".$mzna.".pdf");
+        }
+        else
+        {   return 'No hay datos';}
+
+        /*
+        $flag = 2;
+        $sql=DB::table('adm_tri.vw_contrib_hab_urb')->where('id_hab_urb',$cod_hab_urb)->get();
+        $view =  \View::make('adm_tributaria.reportes.reporte_contribuyentes', compact('sql','flag'))->render();
+
+        if(count($sql)>=1)
+        {
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            return $pdf->stream($cod_hab_urb.".pdf");
+        }
+        else
+        {   return 'No hay datos';}*/
+
+    }
+
 }

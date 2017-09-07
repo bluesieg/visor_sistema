@@ -114,7 +114,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('insert_personas','ContribuyentesController@insert_persona');
         Route::get('grid_contribuyentes', 'ContribuyentesController@grid_contrib'); // tabla grilla Contribuyentes 
         Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
-        Route::get('pre_rep_contr/{sect}/{mzna}','ContribuyentesController@reporte_contribuyentes');
+        Route::get('pre_rep_contr/{sect}/{mzna}/{anio}','ContribuyentesController@reporte_contribuyentes');
+        Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ContribuyentesController@reporte_contribuyentes_hab_urb');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
         /*ENVIO DE DOCUEMNTOS EJECUCION COACTIVA*/
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
