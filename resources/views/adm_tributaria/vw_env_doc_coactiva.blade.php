@@ -9,45 +9,65 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Envio de Documentos a Coactiva...</b></h1>
+                <h1 class="txt-color-green"><b>Envio de OP a Ejecucion Coactiva...</b></h1>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="text-right">                            
-                            <section>
-                                <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 15px;"  >
-                                    <header style="background: #01a858 !important;color: white" >
-                                            <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                            <h2>CONTRIBUYENTE</h2>
-                                    </header>
-                                </div>
-                            </section>                            
+                        <div class="text-right">
+                            <div class="row">
+                                <section class="col-lg-7" style="padding-right: 5px;">
+                                    <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
+                                        <header style="background: #01a858 !important;color: white" >
+                                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                                <h2>BUSQUEDA DE CONTRIBUYENTE</h2>
+                                        </header>                                    
+                                    </div>
+                                </section>
+                                <section class="col-lg-5" style="padding-left: 5px;">
+                                    <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
+                                        <header style="background: #01a858 !important;color: white" >
+                                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                                <h2>FILTRAR POR: FECHA / NUMERO DE DOCUMENTO</h2>
+                                        </header>                                    
+                                    </div>
+                                </section>
+                            </div>
+                                                        
                             <div class="row" style="margin-top: 7px">
                                 <section class="col-lg-2" style="padding-right: 5px;">
                                     <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Codigo:</span>
+                                        <span class="input-group-addon">Cod.<i class="icon-append fa fa-lock" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
                                             <input id="hidden_vw_env_doc_codigo" type="hidden" value="0">
-                                            <input id="vw_env_doc_codigo" type="text" class="form-control input-sm" >
+                                            <input id="vw_env_doc_codigo" type="text" class="form-control input-sm" style="padding-left:5px;padding-right: 5px;">
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-6" style="padding-left: 5px;">
+                                <section class="col-lg-5" style="padding-left: 5px;padding-right: 5px;">
                                     <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Contribuyente:</span>
+                                        <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
                                             <input id="vw_env_doc_contrib" class="form-control input-sm text-uppercase" type="text">
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-3" style="padding-left: 5px;">
-                                    <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Documento:</span>
-                                        <div class="icon-addon addon-md">
-                                            <select id="vw_env_doc_tip_doc" class="form-control input-sm">
-                                                <option value="1">DOC. OP</option>
-                                                <option value="2">DOC. RD</option>
-                                            </select>
-                                        </div>
+                                <section class="col-lg-5" style="padding-left: 5px;">
+                                    <div class="row">
+                                        <section class="col-lg-6" style="padding-right:5px">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">De</span>
+                                                <input placeholder="dd/mm/aaaa" class="form-control input-sm datepicker" data-dateformat='dd/mm/yy'>
+                                                <span class="input-group-addon">a</span>
+                                                <input placeholder="dd/mm/aaaa" class="form-control input-sm datepicker" data-dateformat='dd/mm/yy'>
+                                            </div>                                            
+                                        </section>
+                                        <section class="col-lg-6" style="padding-left:5px">                                            
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Del</span>
+                                                <input class="form-control input-sm" id="appendprepend" type="text">
+                                                <span class="input-group-addon">a</span>
+                                                <input class="form-control input-sm" id="appendprepend" type="text">
+                                            </div>                                            
+                                        </section>                                        
                                     </div>
                                 </section>
                             </div>                            
@@ -55,25 +75,43 @@
                     </div>
                 </div> 
             </div>
-            <div class="well well-sm well-light" style="margin-top:-20px;">                
-                <div class="row">
-                    <div class="col-xs-12">                        
-                        <div class="row">
-                            <section id="content_2" class="col col-lg-10" style="padding-right:5px">
-                                <table id="tabla_Doc_Fisca"></table>
-                                <div id="pagger_tabla_Doc_Fisca"></div>
-                            </section>
-                            <section class="col col-lg-2" style="padding-left:5px">                
-                                <button onclick="enviar_a_coactiva();" type="button" class="btn btn-labeled bg-color-green txt-color-white">
-                                    <span class="btn-label"><i class="fa fa-share-square-o"></i></span>Enviar a Coactiva
-                                </button>
-                                <br>
-                                <button onclick="seleccionar_todo();" type="button" class="btn btn-labeled btn-primary" style="margin-top:5px">
-                                    <span class="btn-label"><i class="fa fa-check-square"></i></span>Seleccionar Todo
-                                </button>
-                            </section>
-                        </div>                                                
-                    </div>
+            <div class="well well-sm well-light" style="margin-top:-20px;">
+                <div class="row">                    
+                    <section class="col-lg-5" id="content_2" style="padding-right:5px;width: 45%">
+                        <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;">
+                            <header style="background: #01a858 !important;color: white" >
+                                    <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                    <h2>RECAUDACION</h2>
+                            </header>                                    
+                        </div>
+                        <table id="tabla_Doc_OP"></table>
+                        <div id="p_tabla_Doc_OP"></div>
+                    </section>
+                    <section class="col-lg-2 text-align-center" style="padding-right:5px;padding-left: 5px;width: 10%">
+                        <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 15px;"  >
+                            <header style="background: #01a858 !important;color: white" >
+                                    <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                    <h2>Botones</h2>
+                            </header>                                    
+                        </div>
+                        <a onclick="all_right();" class="btn btn-default btn-circle btn-lg"><i class="fa fa-angle-double-right"></i></a>
+                        <br><br>
+                        <a onclick="right();" class="btn btn-default btn-circle btn-lg"><i class="fa fa-angle-right"></i></a>
+                        <br><br>
+                        <a onclick="left();" class="btn btn-default btn-circle btn-lg"><i class="fa fa-angle-left"></i></a>
+                        <br><br>
+                        <a onclick="all_left();" class="btn btn-default btn-circle btn-lg"><i class="fa fa-angle-double-left"></i></a>
+                    </section>
+                    <section class="col-lg-5" id="content_3" style="padding-left: 5px;width: 45%">
+                       <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
+                            <header style="background: #01a858 !important;color: white" >
+                                    <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                    <h2>COACTIVA</h2>
+                            </header>                                    
+                        </div>
+                        <table id="tabla_Doc_OP_2"></table>
+                        <div id="p_tabla_Doc_OP_2"></div>
+                    </section>
                 </div> 
             </div>
         </div>       
@@ -84,37 +122,57 @@
     $(document).ready(function () {
         $("#menu_admtri").show();
         $("#li_env_doc_a_coac").addClass('cr-active');
-        jQuery("#tabla_Doc_Fisca").jqGrid({
-            url: 'fiscal_get_op?id_contrib=0&tip_doc=0',
+        jQuery("#tabla_Doc_OP").jqGrid({
+            url: 'recaudacion_get_op?id_contrib=0&env_op=0',
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP','Enviar'],
-            rowNum: 20, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption: 'LIsta de Ordenes de Pago', align: "center",
+            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif'],
+            rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
                 {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 80},
-                {name: 'anio', index: 'anio', align: 'center', width: 80},
-                {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 150},
+                {name: 'fec_reg', index: 'fec_reg', hidden: true},
+                {name: 'anio', index: 'anio', align: 'center', width: 60},
+                {name: 'nro_doc', index: 'nro_doc',hidden: true},                
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
-                {name: 'op', index: 'op', align: 'center', width: 100},
-                {name: 'check', index: 'check', align: 'center', width: 50}
+                {name: 'estado', index: 'estado', hidden: true},
+                {name: 'verif_env', index: 'verif_env', hidden: true}
             ],
-            pager: '#pagger_tabla_Doc_Fisca',
-            rowList: [13, 20],
-            gridComplete: function () {
-                    var idarray = jQuery('#tabla_Doc_Fisca').jqGrid('getDataIDs');
-                    if (idarray.length > 0) {
-                    var firstid = jQuery('#tabla_Doc_Fisca').jqGrid('getDataIDs')[0];
-                            $("#tabla_Doc_Fisca").setSelection(firstid);    
-                        }
-                },
+            pager: '#p_tabla_Doc_OP',
+            rowList: [15, 20],
+            gridComplete: function () {},
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        jQuery("#tabla_Doc_OP_2").jqGrid({
+            url: 'recaudacion_get_op?id_contrib=0&env_op=0',
+            datatype: 'json', mtype: 'GET',
+            height: 'auto', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif'],
+            rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, align: "center",
+            colModel: [
+                {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
+                {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
+                {name: 'fec_reg', index: 'fec_reg', hidden: true},
+                {name: 'anio', index: 'anio', align: 'center', width: 60},
+                {name: 'nro_doc', index: 'nro_doc',hidden: true},                
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
+                {name: 'estado', index: 'estado', hidden: true},
+                {name: 'verif_env', index: 'verif_env', hidden: true}
+            ],
+            pager: '#p_tabla_Doc_OP_2',
+            rowList: [15, 20],
+            gridComplete: function () {},
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
         $(window).on('resize.jqGrid', function () {
-            $("#tabla_Doc_Fisca").jqGrid('setGridWidth', $("#content_2").width());
+            $("#tabla_Doc_OP").jqGrid('setGridWidth', $("#content_2").width());
+        });
+        $(window).on('resize.jqGrid', function () {
+            $("#tabla_Doc_OP_2").jqGrid('setGridWidth', $("#content_3").width());
         });
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
@@ -139,13 +197,14 @@
                 }                
             },
             onSelectRow: function (Id) {},
-            ondblClickRow: function (Id) { fn_bus_contrib_caja_est_cta(Id);}
+            ondblClickRow: function (Id) { fn_bus_contrib_list_env_doc(Id);}
         });
         var globalvalidador = 0;
         $("#vw_env_doc_contrib").keypress(function (e) {
             if (e.which == 13) {
                 if(globalvalidador==0){
                     fn_bus_contrib_env_doc();
+                    $("#chk_sel_todo_doc").removeAttr('disabled');
                     globalvalidador=1;
                 }else{
                     globalvalidador=0;
@@ -161,6 +220,9 @@
         <table id="table_contrib"></table>
         <div id="pager_table_contrib"></div>
     </article>
+</div>
+<div id="dlg_iframe_op" style="display: none;">
+    <iframe id="myIframe_op" width="885" height="580"></iframe>
 </div>
 
 @endsection

@@ -124,7 +124,7 @@ function update_contrib(){
             manz:$("#contrib_manz").val() || '0',
             lote:$("#contrib_lote").val() || '0',
             id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
-            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
+            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '3549',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
             ref_dom_fis:$("#contrib_dom_fiscal").val() || '-'
@@ -251,7 +251,7 @@ function new_contrib() {
             manz:$("#contrib_manz").val() || '0',
             lote:$("#contrib_lote").val() || '0',
             id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
-            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
+            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '3549',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
             ref_dom_fis:($("#contrib_dom_fiscal").val()).toUpperCase() || '-'

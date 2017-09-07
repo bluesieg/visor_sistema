@@ -116,8 +116,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
         Route::get('pre_rep_contr/{sect}/{mzna}','ContribuyentesController@reporte_contribuyentes');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
+        /*ENVIO DE DOCUEMNTOS EJECUCION COACTIVA*/
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
-        Route::get('fiscal_get_op', 'EnvDocCoactivaController@fis_getOP');
+        Route::get('recaudacion_get_op', 'EnvDocCoactivaController@fis_getOP');        
+        Route::get('updat_env_doc','EnvDocCoactivaController@up_env_doc');
     });
     
       
@@ -181,8 +183,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_fracc_de_contrib','ConvenioController@fracc_de_contrib');
         Route::get('grid_detalle_fracc','ConvenioController@detalle_fracc');
     });    
-    Route::group(['namespace'=>'coactiva'],function(){///ESTADO DE CUENTAS
+    Route::group(['namespace'=>'coactiva'],function(){///COACTIVA
         Route::resource('coactiva','CoactivaController');
+        Route::get('recepcion_doc','CoactivaController@recep_doc');
 //        Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
     });
     

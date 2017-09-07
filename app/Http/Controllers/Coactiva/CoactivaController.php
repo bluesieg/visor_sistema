@@ -11,36 +11,26 @@ class CoactivaController extends Controller
     public function index()
     {
         return view('coactiva.vw_coactiva');
+    }   
+    public function recep_doc() {
+        return view('coactiva.vw_recep_doc');
     }
-
     public function create()
-    {
-        //
-    }
+    {}
 
     public function store(Request $request)
-    {
-        //
-    }
+    {}
 
     public function show($id)
-    {
-        //
-    }
+    {}
 
     public function edit($id)
-    {
-        //
-    }
+    {}
 
     public function update(Request $request, $id)
-    {
-        //
-    }
+    {}
 
     public function destroy($id)
-    {
-        //
-    }
+    {}
     
 }

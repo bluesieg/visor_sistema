@@ -1,21 +1,85 @@
 
 function enviar_a_coactiva(){
     cont_rows=jQuery("#tabla_Doc_Fisca").jqGrid('getGridParam', 'records');
-    if(cont_rows==0){
+    
+//    var Seleccionados = new Array();
+//    $('input[type=checkbox][name=chk_doc]:checked').each(function() {
+//        Seleccionados.push($(this).val());
+//    });
+//    cant=Seleccionados.length;
+//    id_doc_checks = Seleccionados.join('-');    
+    
+    if(cont_rows==0 || cant==0){
         return false;
-    }
-    $.confirm({
-        title: 'Coactiva',
-        content: 'Enviando Documentos a Coactiva',
-        buttons: {
-            Confirmar: function () {
-                
-            },
-            Cancelar: function () {} 
+    }        
+}
+function right(){
+    cont_rows=jQuery("#tabla_Doc_OP").jqGrid('getGridParam', 'records');
+    id_gen_fis=$('#tabla_Doc_OP').jqGrid ('getGridParam', 'selrow');
+    if(cont_rows==0 || id_gen_fis==null){return false;}
+    update_env_op(id_gen_fis,2);
+}
+function left(){
+    cont_rows=jQuery("#tabla_Doc_OP_2").jqGrid('getGridParam', 'records');
+    id_gen_fis=$('#tabla_Doc_OP_2').jqGrid ('getGridParam', 'selrow');
+    if(cont_rows==0 || id_gen_fis==null){return false;}
+    update_env_op(id_gen_fis,1);
+}
+function all_right(){    
+    var rows = $("#tabla_Doc_OP").getDataIDs();
+    if (rows.length > 0) {
+        MensajeDialogLoadAjax('tabla_Doc_OP','Enviando...');
+        MensajeDialogLoadAjax('tabla_Doc_OP_2','Recibiendo...');
+        var i=0;
+        for(i=0;i<=(rows.length)-1;i++){
+            all_update_env_op(rows[i],2);
         }
+        setTimeout(function () {
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+            MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
+            MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
+        }, 1100);
+    }
+}
+function all_left(){    
+    var rows = $("#tabla_Doc_OP_2").getDataIDs();
+    if (rows.length > 0) {
+        MensajeDialogLoadAjax('tabla_Doc_OP','Recibiendo...');
+        MensajeDialogLoadAjax('tabla_Doc_OP_2','Enviando...');
+        var i=0;
+        for(i=0;i<=(rows.length)-1;i++){
+            all_update_env_op(rows[i],1);
+        }
+        setTimeout(function () {
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+            MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
+            MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
+        }, 1100);
+    }
+}
+function all_update_env_op(id_gen_fis,env_op){
+    $.ajax({
+        url:'updat_env_doc',
+        type:'GET',
+        data:{id_gen_fis:id_gen_fis,env_op:env_op},
+        success:function(data){},
+        error: function(){}
     });
 }
-
+function update_env_op(id_gen_fis,env_op){
+    $.ajax({
+        url:'updat_env_doc',
+        type:'GET',
+        data:{id_gen_fis:id_gen_fis,env_op:env_op},
+        success:function(data){
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+        },
+        error: function(){}
+    });
+}
 
 function fn_bus_contrib_env_doc(){  
     if($("#vw_env_doc_contrib").val()==""){
@@ -32,8 +96,7 @@ function fn_bus_contrib_env_doc(){
     $("#dlg_bus_contr").dialog({
         autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
-        }).dialog('open');
-       
+        }).dialog('open');       
 }
 
 function fn_bus_contrib_list_env_doc(per){
@@ -45,7 +108,8 @@ function fn_bus_contrib_list_env_doc(per){
     
     $("#vw_env_doc_contrib").attr('maxlength',tam);
 
-    fn_actualizar_grilla('tabla_Doc_Fisca','fiscal_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&tip_doc='+$("#vw_env_doc_tip_doc").val());
+    fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
+    fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
     $("#dlg_bus_contr").dialog("close");    
 }
 
@@ -56,8 +120,20 @@ function verop(idop)
         mostraralertas("No hay Contribuyente seleccionado para impresión");
         return false;
     }    
-    sec=$("#selsec option:selected").text();
-    man=$("#selmnza option:selected").text();
-    window.open('fis_rep/1/'+idop+'/0/0');
+
+    $("#dlg_iframe_op").dialog({
+        autoOpen: false, modal: true, width: 910,heigth: 580, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  OP :.</h4></div>",
+        open: function(ev, ui){
+            $('#myIframe_op').attr('src','fis_rep/1/'+idop+'/0/0');
+        }
+    }).dialog('open');
+    MensajeDialogLoadAjax('dlg_iframe_op','Cargando...');
+    
+    setTimeout(function () {
+        MensajeDialogLoadAjaxFinish('dlg_iframe_op');
+    }, 1100);
+    
+//    window.open('fis_rep/1/'+idop+'/0/0');
 }
 
