@@ -14,8 +14,8 @@ class OrdenPagoController extends Controller
     public function index()
     {
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        $sectores = DB::select('select * from catastro.sectores order by id_sec');
-        $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
+        $sectores = DB::select('select * from catastro.sectores order by sector');
+        $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by sector limit 1) ');
         return view('recaudacion/vw_orden_pago',compact('anio_tra','sectores','manzanas'));
     }
     public function create(Request $request)
@@ -283,6 +283,5 @@ class OrdenPagoController extends Controller
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("OP.pdf");
         }
-        
     }
 }

@@ -85,7 +85,7 @@ function llamarcambio()
                 $("#dlg_sel_foradq").val(r[0].id_form_adq);
                 $("#dlg_inp_fech").val(r[0].fech_adquis);
                 $("#dlg_inp_aranc").val(r[0].arancel);
-                $("#dlg_inp_valterr").val(r[0].val_ter);
+                $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,2,".",","));
                 $("#dlg_inp_areter").val(r[0].are_terr);
                 $("#dlg_inp_valle").val(r[0].lugar_pr_rust);
                 $("#dlg_inp_carre").val(r[0].ubicac_pr_rus);
@@ -740,7 +740,7 @@ function llamarcambio()
     function validarvalter()
     {
         if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
-        $("#dlg_inp_valterr").val($("#dlg_inp_aranc").val()*$("#dlg_inp_areter").val());
+        $("#dlg_inp_valterr").val( formato_numero($("#dlg_inp_aranc").val()*$("#dlg_inp_areter").val(),2,".",","));
     }
     autocompletar=0;
     function auto_input(textbox,url,extra){

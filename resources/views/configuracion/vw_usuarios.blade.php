@@ -69,14 +69,13 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id', 'DNI', ' Nombres', 'Usuario', 'Nivel', 'Fecha Nac.'],
+            colNames: ['id', 'DNI', ' Nombres', 'Usuario', 'Fecha Nac.'],
             rowNum: 13, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE USUARIOS REGISTRADOS', align: "center",
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'dni', index: 'dni', align: 'center', width: 80},
                 {name: 'ape_nom', index: 'ape_nom', width: 250},
-                {name: 'usuario', index: 'usuario', width: 130},
-                {name: 'nivel', index: 'nivel', width: 80},
+                {name: 'usuario', index: 'usuario', width: 130},                
                 {name: 'fch_nac', index: 'fch_nac', width: 100}
             ],
             pager: '#pager_table_Usuarios',
@@ -153,15 +152,7 @@
                                     <input id="vw_usuario_txt_conf_pass" type="password" placeholder="Confirmar Password">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                 </div>
-                            </label>
-                            <label class="label">Nivel:</label>
-                            <label class="select">
-                                <select id="vw_usuario_txt_nivel" name="vw_usuario_txt_nivel">
-                                    <option value="select">Seleccione</option>
-                                    <option value="3">3</option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </select> <i class="fa fa-filter"></i> </label>
+                            </label>                            
                         </section>
                     </div>
                 </fieldset>
@@ -215,17 +206,7 @@
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>                                
                                     </div>
                                 </label>
-                            </div>
-                            <div class="col col-6">
-                                <label class="label">Nivel:</label>
-                                <label class="select">
-                                    <select id="vw_usuario_txt_nivel_2">
-                                        <option value="select">Seleccione</option>
-                                        <option value="3">3</option>
-                                        <option value="2">2</option>
-                                        <option value="1">1</option>
-                                    </select> <i class="fa fa-filter"></i> </label>
-                            </div>
+                            </div>                            
                         </section>                          
                     </div>
                 </div>

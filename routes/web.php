@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
     Route::post('oficinas_delete', 'configuracion\Oficinas_Uit@oficinas_delete');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/vw_general', 'General@index')->name('vw_general');
 //
@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('usuarios_validar_dni','Usuarios@validar_dni');
     Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
     Route::post('cambiar_foto_user','Usuarios@cambiar_foto_usuario');
+    Route::post('cambiar_pass_user','Usuarios@cambiar_pass_user');
 
     /*     * **************************AUTOLLENADO DE COMBOS********************************************************************* */
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento
@@ -237,6 +238,14 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('alcab_rep/{id}','AlcabalaController@reporte');
         
     });  
+    Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
+        Route::resource('reso_deter', 'Res_DeterminacionController');
+        Route::get('fisca_carta_req', 'Res_DeterminacionController@carta_requerimiento'); //
+        Route::get('carta_save', 'Res_DeterminacionController@carta_create'); //
+        Route::get('carta_set_fisca', 'Res_DeterminacionController@fisca_enviados_create'); //
+        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}', 'Res_DeterminacionController@get_cartas_req'); //
+
+    }); 
     Route::get('$',function(){ echo 0;});//url auxiliar
     
 });

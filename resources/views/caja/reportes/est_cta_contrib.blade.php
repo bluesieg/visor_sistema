@@ -16,8 +16,8 @@
             }
             footer { position: fixed; bottom: -20px; left: 0px; right: 0px; height: 70px; }
             .t1, .t2 { border-collapse: collapse; }
-            .t1 > tbody > tr > td { border: 1px solid #D5D5D5; font-size: 13px}
-            .t1 > thead > tr > th { border:1px solid #D5D5D5; background: #01A858;color: white; }            
+            .t1 > tbody > tr > td { border: 1px solid #D5D5D5; font-size: 12px}
+            .t1 > thead > tr > th { border:1px solid #D5D5D5;font-size: 13px; background: #01A858;color: white; }            
         </style>
 
     </head>    
@@ -52,7 +52,7 @@
                 </tr>
                 <tr>
                     <td><b>DOMICILIO FISCAL:</b></td>
-                    <td>{{ $contrib[0]->dom_fis}}<br/></td>
+                    <td>{{ strtoUpper($contrib[0]->dom_fis)}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>FECHA:</b></td>
@@ -75,8 +75,8 @@
                         <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim IV</th>
                         <th align="center" width="10%">Abono</th>
-                        <th align="center" width="10%">Pago Tot</th>
-                        <th align="center" width="10%">Deuda Tot</th>
+                        <th align="center" width="10%">Deuda Tot.</th>
+                        <th align="center" width="10%">Saldo</th>
                     </tr>                                        
                 </thead>
                 <tbody>
@@ -114,8 +114,8 @@
                         <th align="center" width="10%">Abono</th>
                         <th align="center" width="10%">Trim IV</th>
                         <th align="center" width="10%">Abono</th>
-                        <th align="center" width="10%">Pago Tot</th>
-                        <th align="center" width="10%">Deuda Tot</th>
+                        <th align="center" width="10%">Deuda Tot.</th>
+                        <th align="center" width="10%">Saldo</th>
                     </tr>                                        
                 </thead>
                 <tbody>                    

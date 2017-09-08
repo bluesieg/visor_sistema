@@ -26,14 +26,38 @@ class EnvDocCoactivaController extends Controller
     public function destroy($id)
     {   }
     
-    public function fis_getOP(Request $request){   
-        $id_contrib=$request['id_contrib'];
-        $env_op=$request['env_op'];
-        $totalg = DB::select('select count(id_per) as total from recaudacion.vw_genera_fisca where id_per='.$id_contrib.' and env_op='.$env_op);
+    public function fis_getOP(Request $request){
+        $env_op=$request['env_op'];        
+        $tip_bus=$request['tip_bus'];
+        $grid=$request['grid'];
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
+        
+        if(isset($grid)){
+            if($tip_bus=='1'){
+                $desde=$request['desde'];
+                $hasta=$request['hasta'];
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and fec_reg between '".$desde."' and '".$hasta."' and fch_env='".date('d-m-Y')."'");            
+            }else if($tip_bus=='2'){
+                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
+                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and nro_fis between '".$del."' and '".$al."' and fch_env='".date('d-m-Y')."'");            
+            }
+        }else{
+            if($tip_bus=='1'){
+                $desde=$request['desde'];
+                $hasta=$request['hasta'];
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and fec_reg between '".$desde."' and '".$hasta."'");            
+            }else if($tip_bus=='2'){
+                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
+                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and nro_fis between '".$del."' and '".$al."'");            
+            }
+        }
+        
+        
 
         $total_pages = 0;
         if (!$sidx) {
@@ -50,8 +74,22 @@ class EnvDocCoactivaController extends Controller
         if ($start < 0) {
             $start = 0;
         }
-
-        $sql = DB::table('recaudacion.vw_genera_fisca')->where([['id_per',$id_contrib],['env_op',$env_op]])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        if(isset($grid)){
+            if($tip_bus=='1'){
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('fec_reg',[$desde,$hasta])->where('fch_env',date('d-m-Y'))->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }else if($tip_bus=='2'){
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('nro_fis',[$del,$al])->where('fch_env',date('d-m-Y'))->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }
+        }else{
+            if($tip_bus=='1'){
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }else if($tip_bus=='2'){
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('nro_fis',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            }
+        }
+        
+        
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -67,14 +105,16 @@ class EnvDocCoactivaController extends Controller
                 trim($Datos->nro_doc),
                 str_replace('-','',trim($Datos->contribuyente)),
                 trim($Datos->estado),
-                trim($Datos->verif_env)
+                trim($Datos->verif_env),
+                $Datos->monto
             );
         }
         return response()->json($Lista);       
     }
     
     function up_env_doc(Request $request){                    
-        DB::table('recaudacion.orden_pago_master')->where('id_gen_fis',$request['id_gen_fis'])->update(['env_op'=>$request['env_op']]);        
+        DB::table('recaudacion.orden_pago_master')->where('id_gen_fis',$request['id_gen_fis'])
+                ->update(['env_op'=>$request['env_op'],'fch_env'=>date('d-m-Y')]);        
         return response()->json(['msg'=>'si']);
     }
 }

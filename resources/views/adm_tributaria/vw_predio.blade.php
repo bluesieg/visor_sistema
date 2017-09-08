@@ -17,26 +17,36 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-xs-12">
-        <label class="control-label col-lg-12">Sector</label>
-        <div class='col-lg-12'>
-            <select id='selsec' class="form-control col-lg-8" onchange="callpredtab()">
-            @foreach ($sectores as $sectores)
-            <option value='{{$sectores->id_sec}}' >{{$sectores->sector}}</option>
-            @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-xs-12">
-        <label class="control-label col-lg-12">Manzana</label>
-        <div class='col-lg-12' id="dvselmnza">
-            <select id="selmnza" class="form-control" onchange="callfilltab()">
-            @foreach ($manzanas as $manzanas)
-            <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
-            @endforeach
-            </select>
-        </div>
-    </div>
+    <div class="col-xs-6" style="padding-top: 17px; margin-top: 5px">
+            <div class="col-xs-6" style="padding: 0px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
+                    <div class="icon-addon addon-md">
+                        <select id='selsec' class="form-control" onchange="callpredtab()" style="height: 32px;" >
+                        @foreach ($sectores as $sec)
+                        <option value='{{$sec->id_sec}}' >{{$sec->sector}}</option>
+                        @endforeach
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xs-6" style="padding: 0px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">Manzana &nbsp;<i class="fa fa-list"></i></span>
+                    <div class="icon-addon addon-md"  id="dvselmnza">
+                        <select id="selmnza" class="form-control" style="height: 32px;" onchange="callfilltab()">
+                        @foreach ($manzanas as $manzanas)
+                        <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
+                        @endforeach
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+             
+            
+            </div>
     <div class="col-lg-6 col-md-12 col-xs-12">
         <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">                                        
                     <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="clicknewgrid();">
@@ -74,7 +84,7 @@
         jQuery("#table_predios").jqGrid({
             url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val(),
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: '380px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pred','t_pred', 'Sector','Manzana','Lote', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','id_via','A.Terreno','S/.Terreno','S/.Construct'],
             rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos', align: "center",
@@ -545,7 +555,7 @@
                                         </label>
                                     </div>
                                     <div class='col-lg-2'>
-                                        <label class="label">Val Terr.:</label>
+                                        <label class="label">Val Terreno:</label>
                                         <label class="input">
                                             <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="" style="text-align: right; width: 100px">
                                         </label>

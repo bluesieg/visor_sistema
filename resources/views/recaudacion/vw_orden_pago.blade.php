@@ -168,11 +168,11 @@
 <script type="text/javascript">
     $(document).ready(function (){
         $("#menu_recaudacion").show();
-        $("#li_fis_op").addClass('cr-active')
+        $("#li_reca_op").addClass('cr-active')
         jQuery("#table_op").jqGrid({
             url: 'obtiene_op/0/0/0/0/0/0',
             datatype: 'json', mtype: 'GET',
-            height: '200px', autowidth: true,
+            height: '260px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP'],
             rowNum: 20, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",

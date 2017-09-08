@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+    <head>        
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -62,10 +62,10 @@
             @else
             <div class="pull-right">
                 <div id="hide-menu" class="btn-header pull-right">
-                    <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Colapsar Menu"><i class="fa fa-reorder"></i></a> </span>
+                    <span> <a style="background: #356E35; color:white;border: 1px solid white;" href="javascript:void(0);" data-action="toggleMenu" title="Colapsar Menu"><i class="fa fa-reorder"></i></a> </span>
                 </div> 
                 <div id="logout" class="btn-header transparent pull-right">
-                    <span> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="Salir" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> 
+                    <span> <a style="background: #A90329 !important; color:white;border: 1px solid white;" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="Salir" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> 
                         <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
                             {{ csrf_field() }}
                         </form>
@@ -86,12 +86,8 @@
                                 <a onclick="cambiar_foto_usuario();" class="padding-10 padding-top-0 padding-bottom-0" style="cursor: pointer;margin-bottom: 4px;"><i class="fa fa-cog"></i> Cambiar Foto</a>
                             </li>                            
                             <li>
-                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Cambiar Password</a>
-                            </li>
-                            <div class="divider"></div>
-                            <li>
-                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
-                            </li>
+                                <a onclick="cambiar_password();" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Cambiar Password</a>
+                            </li>                            
                         </ul>
                     </li>
                 </ul>
@@ -185,8 +181,16 @@
                     <li class="">
                         <a href="#" title="Recaudación"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Recaudación</span></a>
                         <ul id="menu_recaudacion">
-                            <li id="li_fis_op">
+                            <li id="li_reca_op">
                                 <a href='ordenpago' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
+                            </li>
+                        </ul>	
+                    </li> 
+                    <li class="">
+                        <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Fiscalización</span></a>
+                        <ul id="menu_fisca">
+                            <li id="li_fisca_carta">
+                                <a href='fisca_carta_req' title="Carta de Requerimiento"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Carta Requerimiento</span></a>                            
                             </li>
                         </ul>	
                     </li> 
@@ -305,6 +309,29 @@
                                         <input type="file" id="vw_usuario_cambiar_cargar_foto" name="vw_usuario_cambiar_cargar_foto" accept="image/png, image/jpeg, image/jpg">
                                 </div>
                                 </form>
+                            </div>
+                        </div>
+                    </div>                 
+                </div>        
+            </div>
+        </div>
+        <div id="dialog_Cambiar_password" style="display: none">
+            <div class="widget-body">
+                <div  class="smart-form">
+                    <div class="panel-group">                
+                        <div class="panel panel-success" style="border: 0px !important;">
+                            <div class="panel-heading bg-color-success">.:: Cambiar Password ::.</div>
+                            <div class="panel-body">
+                                <section style="margin-top: 10px;">                                    
+                                    <label class="label">Nuevo Contraseña:</label>
+                                    <label class="input"> 
+                                        <input type="text" id="vw_usuario_cam_pass_1"></label>                                    
+                                </section>
+                                <section>                                    
+                                    <label class="label">Confirmar Contraseña:</label>
+                                    <label class="input"> 
+                                        <input type="text" id="vw_usuario_cam_pass_2"></label>                                   
+                                </section>                               
                             </div>
                         </div>
                     </div>                 

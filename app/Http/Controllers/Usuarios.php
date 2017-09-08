@@ -13,7 +13,7 @@ class Usuarios extends Controller {
 
     public function getAllUsuarios2() {
         $table = DB::select('select * from usuarios limit 10');
-        dd($table);
+        
 //        dd($table);
         return view('configuracion/vw_usuarios')->with([
                     'Usuarios' => $table]
@@ -56,8 +56,7 @@ class Usuarios extends Controller {
                 trim($Datos->id),
                 trim($Datos->dni),
                 trim($Datos->ape_nom),
-                trim($Datos->usuario),
-                trim($Datos->nivel),
+                trim($Datos->usuario),                
                 trim(date('d-m-Y', strtotime($Datos->fch_nac)))
             );
         }
@@ -84,8 +83,7 @@ class Usuarios extends Controller {
         $data['dni'] = $request['vw_usuario_txt_dni'];
         $data['ape_nom'] = strtoupper($request['vw_usuario_txt_ape_nom']);
         $data['usuario'] = strtoupper($request['vw_usuario_txt_usuario']);
-        $data['password'] = bcrypt($request['vw_usuario_txt_password']);
-        $data['nivel'] = $request['vw_usuario_txt_nivel'];
+        $data['password'] = bcrypt($request['vw_usuario_txt_password']);        
         $data['fch_nac'] = date('d-m-Y H:i:s', strtotime($request['vw_usuario_txt_fch_nac']));
         $data['cad_lar'] = strtoupper($request['vw_usuario_txt_ape_nom']) . ' ' . $request['vw_usuario_txt_dni'] . ' ' . strtoupper($request['vw_usuario_txt_usuario']);
         $data['contrasena']= $this->encripta_pass($request['vw_usuario_txt_password']);
@@ -118,7 +116,6 @@ class Usuarios extends Controller {
             $Lista->dni = trim($Datos->dni);
             $Lista->ape_nom = trim($Datos->ape_nom);
             $Lista->usuario = trim($Datos->usuario);
-            $Lista->nivel = trim($Datos->nivel);
             $Lista->fch_nac = date('d-m-Y', strtotime($Datos->fch_nac));
 //            $Lista->foto = trim($Datos->foto);
         }
@@ -195,6 +192,20 @@ class Usuarios extends Controller {
         $foto = base64_encode($file2);
 
         $update = DB::table('usuarios')->where('id',$id)->update(['foto'=>$foto]);
+        if ($update) {
+            return response()->json(['msg' => 'si']);
+        } else {
+            return response()->json(['msg' => 'no','id'=>$id]);
+        }
+    }
+    
+    function cambiar_pass_user(Request $request){
+              
+        
+        $id = Auth::user()->id;
+        $pass = trim($request['pass1']);
+
+        $update = DB::table('usuarios')->where('id',$id)->update(['password'=> bcrypt($pass)]);
         if ($update) {
             return response()->json(['msg' => 'si']);
         } else {
