@@ -58,7 +58,7 @@ class InstalacionesController extends Controller
         $insta->antiguedad = date("Y")-$request['anio'];
         
         $insta->save();
-        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
+        DB::select("select adm_tri.actualiza_base_predio(".$insta->id_pre.")");
         return $insta->id_inst;
     }
 
@@ -110,7 +110,7 @@ class InstalacionesController extends Controller
             $val->antiguedad = date("Y")-$request['anio'];
             
             $val->save();
-            DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
+            DB::select("select adm_tri.actualiza_base_predio(".$val->id_pre.")");
         }
         return "edit".$id;
     }
@@ -123,13 +123,15 @@ class InstalacionesController extends Controller
 
      public function destroy(Request $request)
     {
+         $pred=0;
         $insta=new Instalaciones;
         $val=  $insta::where("id_inst","=",$request['id'] )->first();
         if(count($val)>=1)
         {
+            $pred=$val->id_pre;
             $val->delete();
         }
-        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
+        DB::select("select adm_tri.actualiza_base_predio(".$pred.")");
         return "destroy ".$request['id'];
     }
     

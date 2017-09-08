@@ -127,14 +127,16 @@ class PisosController extends Controller
     }
 
     public function destroy(Request $request)
-    {
+    {   
+        $pred=0;
         $pisos=new Pisos;
         $val=  $pisos::where("id_pisos","=",$request['id'] )->first();
         if(count($val)>=1)
         {
+            $pred=$val->$val->id_predio;
             $val->delete();
         }
-        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
+        DB::select("select adm_tri.actualiza_base_predio(".$pred.")");
         return "destroy ".$request['id'];
     }
     public function listpisos($id)
