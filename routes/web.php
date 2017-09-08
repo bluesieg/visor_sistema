@@ -78,6 +78,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/geogetmznas_x_sector', 'MapController@geogetmznas_x_sector');
         Route::post('/get_centro_sector', 'MapController@get_centro_sector');
         Route::post('/mznas_x_sector', 'MapController@mznas_x_sector');
+        Route::post('/get_lotes_x_sector', 'MapController@get_lotes_x_sector');
+        Route::post('/get_predios_rentas','MapController@get_predios_rentas');
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios

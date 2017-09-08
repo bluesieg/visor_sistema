@@ -40,21 +40,6 @@ class MapController extends Controller
     }
 
     function get_manzanas(){
-        //$lotes = DB::select('select ST_AsGeoJSON(geom) geometry from espacial.manzanas');
-/*
-        $manzanas = DB::select(" SELECT json_build_object(
-                'type',       'Feature',
-                'id',         gid,
-                'properties', json_build_object(
-                   'gid', gid,
-                    'cod_sect', cod_sect,
-                    'cod_mza', cod_mza,
-                    'mza_urb', mza_urb
-                 ),
-                 'geometry',   ST_AsGeoJSON(geom)::json
-                  ) features
-                  FROM espacial.manzanas limit 10;");*/
-
 
         $mznas = DB::connection('mapa')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
@@ -123,35 +108,6 @@ class MapController extends Controller
         return response()->json($sectores);
     }
 
-    function get_lotes_x_sector(Request $req){
-
-        $lotes = DB::connection('mapa')->select("SELECT json_build_object(
-                            'type',     'FeatureCollection',
-                            'features', json_agg(feature)
-                        )
-                        FROM (
-                          SELECT json_build_object(
-                            'type',       'Feature',
-                            'id',         gid,
-                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
-                            'properties', json_build_object(
-                               'gid', gid,
-                                'cod_mza', cod_mza,
-                                'mz_urb', mz_urb,
-                                'cod_sect', cod_sect,
-                                'nom_lote',nom_lote,
-                                'cod_habi',cod_habi,
-                                'habilit',habilit,
-                                'sec_mzna',sec_mzna,
-                                'cod_lote',cod_lote
-                             )
-                          ) AS feature
-                          FROM (SELECT * FROM mdcc_2017.lotes where cod_sect = '".$req->codigo."') row) features;");
-
-        return response()->json($lotes);
-    }
-
-
     function get_centro_sector(Request $reques){
         //dd($reques->codigo);
         $centro_sector = DB::connection('mapa')->select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from mdcc_2017.sectores_cat where codigo = '" . $reques->codigo . "'");
@@ -190,38 +146,8 @@ class MapController extends Controller
 
         return response()->json($mznas);
     }
-
-    function get_predios_rentas(Request $req){
-        $predios = DB::connection('mapa')->select("SELECT json_build_object(
-                            'type',     'FeatureCollection',
-                            'features', json_agg(feature)
-                        )
-                        FROM (
-                          SELECT json_build_object(
-                            'type',       'Feature',
-                            'id',         gid,
-                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
-                            'properties', json_build_object(
-                               'gid', gid,
-                                'cod_mza', cod_mza,
-                                'mz_urb', mz_urb,
-                                'cod_sect', cod_sect,
-                                'nom_lote',nom_lote,
-                                'cod_habi',cod_habi,
-                                'habilit',habilit,
-                                'sec_mzna',sec_mzna,
-                                'cod_lote',cod_lote
-                             )
-                          ) AS feature
-                          FROM (SELECT lotes.gid, lotes.layer, lotes.cod_mza, lotes.mz_urb, lotes.cod_sect, lotes.nom_lote, lotes.cod_habi, lotes.habilit,
-                                   lotes.sec_mzna, lotes.cod_lote, lotes.geom FROM mdcc_2017.lotes lotes
-                                    join
- (Select * from  dblink(
-'dbname=catastro_rentas2 host=172.25.8.18 user=mdcc password=123456',
-'SELECT sec, mzna, lote FROM adm_tri.predios')
- AS tb1(sec1 CHARACTER VARYING,mzna1 CHARACTER VARYING,lote1 CHARACTER VARYING)) as tb1
-                                    on tb1.sec1 = lotes.cod_sect and tb1.mzna1 = lotes.cod_mza and tb1.lote1 = lotes.cod_lote where cod_sect = '".$req->codigo ."' ) row) features;");
-        return response()->json($predios);
+    
+    public function nuevoUsuario(){
+        return view('fnewUsuario');
     }
-
 }

@@ -138,27 +138,29 @@ function get_mzns_por_sector(id_sec){
     //var map = new ol.Map("map");
     // add layers here"POINT(-71.546226195617 -16.3045550718574)"
    // map.setCenter(new ol.LonLat(-71.546226195617, -16.3045550718574), 5);
-
-    //alert(id_sec);
-    $.ajax({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'get_centro_sector',
-        type: 'POST',
-        data: {codigo: id_sec+""},
-        success: function (data) {
+    if(id_sec != '0')
+    {
+        //alert(id_sec);
+        MensajeDialogLoadAjax('map', '.:: CARGANDO ...');
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_centro_sector',
+            type: 'POST',
+            data: {codigo: id_sec+""},
+            success: function (data) {
 //                        $.alert(raz_soc + '- Ha sido Eliminado');
-            //alert(data[0].lat + " / " + data[0].lon);
-            map.getView().setCenter(ol.proj.transform([parseFloat(data[0].lat),parseFloat(data[0].lon)], 'EPSG:4326', 'EPSG:3857'));
-            map.getView().setZoom(16);
-        },
-        error: function (data) {
-            MensajeAlerta('Eliminar Arancel Rústico', id + ' - No se pudo Eliminar.');
+                //alert(data[0].lat + " / " + data[0].lon);
+                map.getView().setCenter(ol.proj.transform([parseFloat(data[0].lat),parseFloat(data[0].lon)], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(16);
+            },
+            error: function (data) {
+                MensajeAlerta('Cartografía', 'Error.');
 //                        mostraralertas('* Error al Eliminar Contribuyente...');
-        }
-    });
+            }
+        });
 
         //alert($("#departamento").val());
-        MensajeDialogLoadAjax('provincia', '.:: CARGANDO ...');
+
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'mznas_x_sector',
@@ -171,50 +173,215 @@ function get_mzns_por_sector(id_sec){
                 //fn_actualizar_grilla('tabla_sectores', 'list_sectores');
                 //dialog_close('dlg_nuevo_sector');
                 //MensajeExito('Eliminar Sector', id + ' - Ha sido Eliminado');
-                MensajeDialogLoadAjaxFinish('provincia', '.:: CARGANDO ...');
-
             },
             error: function (data) {
-                MensajeAlerta('Eliminar Sector', id + ' - No se pudo Eliminar.');
+                MensajeAlerta('Predios','No se encontró ningún predio.');
 //                        mostraralertas('* Error al Eliminar Contribuyente...');
             }
         });
 
-    $.ajax({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'geogetmznas_x_sector',
-        type: 'POST',
-        data: {codigo: id_sec+""},
-        success: function (data) {
-            //alert(data[0].json_build_object);
-            //alert(geojson_manzanas2);
-            map.removeLayer(lyr_manzanas2);
-            var format_manzanas2 = new ol.format.GeoJSON();
-            var features_manzanas2 = format_manzanas2.readFeatures(JSON.parse(data[0].json_build_object),
-                {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-            var jsonSource_manzanas2 = new ol.source.Vector({
-                attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-            });
-            //vectorSource.addFeatures(features_manzanas2);
-            jsonSource_manzanas2.addFeatures(features_manzanas2);
-            lyr_manzanas2 = new ol.layer.Vector({
-                source:jsonSource_manzanas2,
-                style: manzanas_Style,
-                title: "manzanas"
-            });
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'geogetmznas_x_sector',
+            type: 'POST',
+            data: {codigo: id_sec+""},
+            success: function (data) {
+                //alert(data[0].json_build_object);
+                //alert(geojson_manzanas2);
+                map.removeLayer(lyr_manzanas2);
+                var format_manzanas2 = new ol.format.GeoJSON();
+                var features_manzanas2 = format_manzanas2.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_manzanas2 = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                //vectorSource.addFeatures(features_manzanas2);
+                jsonSource_manzanas2.addFeatures(features_manzanas2);
+                lyr_manzanas2 = new ol.layer.Vector({
+                    source:jsonSource_manzanas2,
+                    style: label_manzanas,
+                    title: "manzanas"
+                });
 
-            map.addLayer(lyr_manzanas2);
-            layersList[2] = lyr_manzanas2;
-            //alert(layersList.length);
-            MensajeDialogLoadAjaxFinish('provincia', '.:: CARGANDO ...');
+                map.addLayer(lyr_manzanas2);
+                layersList[2] = lyr_manzanas2;
+                //alert(layersList.length);
+                MensajeDialogLoadAjaxFinish('map', '.:: CARGANDO ...');
 
-        },
-        error: function (data) {
-            MensajeAlerta('Eliminar Sector', id + ' - No se pudo Eliminar.');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún predio.');
 //                        mostraralertas('* Error al Eliminar Contribuyente...');
-        }
+            }
+        });
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_lotes_x_sector',
+            type: 'POST',
+            data: {codigo: id_sec+""},
+            success: function (data) {
+                //alert(data[0].json_build_object);
+                //alert(geojson_manzanas2);
+                map.removeLayer(lyr_lotes3);
+                var format_lotes3 = new ol.format.GeoJSON();
+                var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_lotes3 = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                //vectorSource.addFeatures(features_manzanas2);
+                jsonSource_lotes3.addFeatures(features_lotes3);
+                lyr_lotes3 = new ol.layer.Vector({
+                    source:jsonSource_lotes3,
+                    style: label_lotes,
+                    title: "lotes"
+                });
+
+                map.addLayer(lyr_lotes3);
+                layersList[3] = lyr_lotes3;
+                //alert(layersList.length);
+                MensajeDialogLoadAjaxFinish('map', '.:: CARGANDO ...');
+
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún predio.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+    }
+
+    else{
+        alert("Seleccione un sector");
+    }
+
+}
+
+function label_manzanas(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'red',
+            width: 2
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.1)'
+        }),
+        text: new ol.style.Text({
+            text: feature.get('mz_cat')
+        })
     });
 }
+
+function label_lotes(feature) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'green',
+            width: 1
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(0, 255, 0, 0.1)'
+        }),
+        text: new ol.style.Text({
+            font: '12px Calibri,sans-serif',
+            fill: new ol.style.Fill({ color: '#000' }),
+            stroke: new ol.style.Stroke({
+                color: '#fff', width: 2
+            }),
+            // get the text from the feature - `this` is ol.Feature
+            // and show only under certain resolution
+            text: map.getView().getZoom() > 16 ? feature.get('nom_lote') : ''
+        })
+         /*
+        text: new ol.style.Text({
+            text: feature.get('nom_lote')
+        })
+       text: map.getView().getZoom() > 12 ? feature.get('nom_lote') : ''*/
+    });
+}
+
+function get_predios(){
+    //alert(1);
+    var sector = $('#sectores_map').val();
+
+    //alert($('#draw_predios').is(':checked'));
+    if($('#draw_predios').is(':checked')){
+        if(sector != '0')
+        {
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url: 'get_predios_rentas',
+                type: 'POST',
+                data: {codigo: sector},
+                success: function (data) {
+                    //alert(data[0].json_build_object);
+                    //alert(geojson_manzanas2);
+                    map.removeLayer(lyr_predios4);
+                    var format_predios4 = new ol.format.GeoJSON();
+                    var features_predios4 = format_predios4.readFeatures(JSON.parse(data[0].json_build_object),
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_predios4 = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    //vectorSource.addFeatures(features_manzanas2);
+                    jsonSource_predios4.addFeatures(features_predios4);
+                    lyr_predios4 = new ol.layer.Vector({
+                        source:jsonSource_predios4,
+                        style: label_predios,
+                        title: "predios"
+                    });
+
+                    map.addLayer(lyr_predios4);
+                    layersList[4] = lyr_predios4;
+                    //alert(layersList.length);
+                    MensajeDialogLoadAjaxFinish('map', '.:: CARGANDO ...');
+
+                },
+                error: function (data) {
+                    MensajeAlerta('Predios', 'No se encontraron predios en este sector');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+                }
+            });
+
+
+        }
+        else{
+            $("#draw_predios").prop("checked",false);
+            alert('Seleccione un sector');
+        }
+    }
+    else {
+        map.removeLayer(lyr_predios4);
+    }
+
+}
+
+function label_predios(feature) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'green',
+            width: 1
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgb(255, 255, 0)'
+        }),
+        text: new ol.style.Text({
+            font: '12px Calibri,sans-serif',
+            fill: new ol.style.Fill({ color: '#000' }),
+            stroke: new ol.style.Stroke({
+                color: '#fff', width: 2
+            }),
+            // get the text from the feature - `this` is ol.Feature
+            // and show only under certain resolution
+            text: map.getView().getZoom() > 16 ? feature.get('nom_lote') : ''
+        })
+        /*
+         text: new ol.style.Text({
+         text: feature.get('nom_lote')
+         })
+         text: map.getView().getZoom() > 12 ? feature.get('nom_lote') : ''*/
+    });
+}
+
 
 
 var doHover = false;
@@ -240,7 +407,12 @@ var onSingleClick2 = function(evt) {
 
     });
 };
-
+/*
 map.on('singleclick', function(evt) {
     onSingleClick2(evt);
 });
+*/
+var layerSwitcher = new ol.control.LayerSwitcher({
+    tipLabel: 'Légende' // Optional label for button
+});
+map.addControl(layerSwitcher);

@@ -17,6 +17,9 @@
 
 		<link rel="stylesheet" href="{{ asset('layers/ol.css')}}" />
 		<script src="{{ asset('layers/ol.js')}}"></script>
+        <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('layers/ol3-layerswitcher.css')}}">
+        <script  src="{{ asset('layers/ol3-layerswitcher.js')}}"></script>
 
         <link rel="shortcut icon" href="{{ asset('img/favicon/favi.ico') }}" type="image/x-icon">
         <link rel="icon" href="{{ asset('img/favicon/favi.ico') }}" type="image/x-icon">
@@ -259,7 +262,7 @@
 
                     <li class="">
                         <a href="#" title="Cartografia Base"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">Cartografia Base</span></a>
-                        <ul id="manu_cart_base">                            
+                        <ul id="menu_cart_base">
                             <li id="li_ver_cart">
                                 <a href="cartografia" title="Ver Cartografia"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Cartografia</span></a>
                             </li>
@@ -309,7 +312,7 @@
             </div>
         </div>
 
-        <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+
        
         <script src="{{ asset('js/libs/jquery-ui-1.10.3.min.js') }}"></script>
         
