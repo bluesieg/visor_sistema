@@ -14,58 +14,46 @@
                     <div class="col-xs-12">
                         <div class="text-right">
                             <div class="row">
-                                <section class="col-lg-7" style="padding-right:5px">
+                                <section class="col-lg-3" style="padding-right:5px">
                                     <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >                                
                                         <header style="background: #01a858 !important;color: white; padding-right: 15px !important" >
                                             <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                            <h2>CONTRIBUYENTE</h2>
+                                            <h2>TIPO DE DOCUMENTO</h2>
                                         </header>
                                     </div>                                   
                                 </section>
-                                <section class="col-lg-5" style="padding-left:5px">
+                                <section class="col-lg-6" style="padding-left:5px">
                                     <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
                                         <header style="background: #01a858 !important;color: white; padding-right: 15px !important" >
                                             <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                            <h2>TIPO DOCUMENTO - FECHA</h2>
+                                            <h2>RANGO FECHA</h2>
                                         </header>
                                     </div>                                    
                                 </section>     
                             </div>                    
-                            <div class="row" style="margin-top: 7px">                                
-                                <section class="col-lg-2" style="padding-right: 5px;">
-                                    <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Cod.<i class="icon-append fa fa-lock" style="margin-left: 5px;"></i></span>
-                                        <div class="icon-addon addon-md">
-                                            <input id="hidden_vw_recep_doc_codigo" type="hidden" value="0">
-                                            <input id="vw_recep_doc_codigo" type="text" class="form-control input-sm" style="padding-left:6px;padding-right:6px">
-                                        </div>
-                                    </div>
-                                </section>
-                                <section class="col-lg-5" style="padding-left: 5px;padding-right: 5px;">
-                                    <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
-                                        <div class="icon-addon addon-md">
-                                            <input id="vw_recep_doc_contrib" class="form-control input-sm text-uppercase" type="text">
-                                        </div>
-                                    </div>
-                                </section>
-                                <section class="col-lg-2" style="padding-left: 5px;padding-right: 5px;">
+                            <div class="row" style="margin-top: 7px">
+                                <section class="col-lg-3" style="padding-right: 5px;">
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Documento<i class="icon-append fa fa-file-text" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
-                                            <select id="vw_recep_doc_tip_doc" class="form-control input-sm">
+                                            <select id="vw_recep_doc_tip_doc" class="form-control">
                                                 <option value="1">OP</option>
                                                 <option value="2">RD</option>
                                             </select>
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-3" style="padding-left: 5px;">
-                                    <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Fecha<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
-                                        <div class="icon-addon addon-md">
-                                            <input id="vw_recep_doc_fch" type="text" placeholder="dd/mm/aaaa" class="form-control input-sm datepicker" data-dateformat='dd/mm/yy'>
-                                         </div>
+                                <section class="col-lg-6" style="padding-left: 5px;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Desde<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
+                                        <input placeholder="dd/mm/aaaa" id="vw_env_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <span class="input-group-addon">Hasta<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
+                                        <input placeholder="dd/mm/aaaa" id="vw_env_doc_fhasta" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" id="vw_env_doc_btn1" type="button" onclick="fn_up_grid();" title="BUSCAR">
+                                                <i class="glyphicon glyphicon-search"></i>&nbsp;Buscar
+                                            </button>
+                                        </span>
                                     </div>
                                 </section>
                             </div>                            
@@ -94,11 +82,7 @@
                                         <i class="glyphicon glyphicon-plus-sign"></i>
                                     </span>
                                     <label>Recibir Doc.</label>
-                                </button>
-                                <button onclick="enviar_a_coactiva();" type="button" class="btn btn-warning">
-                                    <span class="btn-label"><i class="fa fa-check-square" style="font-size:30px"></i></span>
-                                    <label>Recibir</label>
-                                </button>                                                              
+                                </button>                                                                                             
                             </section>
                         </div>                                                
                     </div>

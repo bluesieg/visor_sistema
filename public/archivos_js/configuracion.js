@@ -99,8 +99,7 @@ function dlg_Editar_Usuario() {
             $("#vw_usuario_txt_ape_nom_2").val(data.ape_nom);
             $("#vw_usuario_txt_dni_2").val(data.dni);
             $("#vw_usuario_txt_fch_nac_2").val(data.fch_nac);
-            $("#vw_usuario_txt_usuario_2").val(data.usuario);
-            $("#vw_usuario_txt_nivel_2").val(data.nivel);
+            $("#vw_usuario_txt_usuario_2").val(data.usuario);            
 //            $("#vw_usuario_foto_img").attr('src', 'data:image/png;base64,' + data.foto);
 
         }, error: function (data) {
@@ -129,11 +128,7 @@ function save_nuevo_usuario() {
     if (pass != confir_pass) {
         mostraralertasconfoco('* Las Contraseñas no Coinciden', 'vw_usuario_txt_password');
         return false;
-    }
-    if ($("#vw_usuario_txt_nivel").val() == 'select') {
-        mostraralertasconfoco('* Seleccione un Nivel...', 'vw_usuario_txt_nivel');
-        return false;
-    }
+    }    
 //    var filesSelected = $("#vw_usuario_cargar_foto").val();
 //    if (filesSelected == '') {
 //        mostraralertasconfoco('* Seleccione una Foto', 'vw_usuario_cargar_foto');
@@ -150,8 +145,7 @@ function update_user() {
     dni = $.trim($("#vw_usuario_txt_dni_2").val());
     usuario = $.trim($("#vw_usuario_txt_usuario_2").val());
 //    password = $.trim($("#vw_usuario_txt_password").val());
-    ape_nom = $.trim($("#vw_usuario_txt_ape_nom_2").val());
-    nivel = $.trim($("#vw_usuario_txt_nivel_2").val());
+    ape_nom = $.trim($("#vw_usuario_txt_ape_nom_2").val());    
     fch_nac = $.trim($("#vw_usuario_txt_fch_nac_2").val());
 
     if (dni == '' || dni.length <= 7) {
@@ -168,7 +162,7 @@ function update_user() {
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         type: 'POST',
         url: 'usuario_update',
-        data: {id: id_user, dni: dni, usuario: usuario.toUpperCase(), ape_nom: ape_nom.toUpperCase(), nivel: nivel, fch_nac: fch_nac},
+        data: {id: id_user, dni: dni, usuario: usuario.toUpperCase(), ape_nom: ape_nom.toUpperCase(), fch_nac: fch_nac},
         success: function (data) {
             if (data.msg == 'si') {
                 fn_actualizar_grilla('table_Usuarios', 'list_usuarios');
@@ -204,6 +198,44 @@ function cambiar_foto_usuario() {
             $("#vw_usuario_cambiar_cargar_foto").val('');
             foto_global = '';
         }
+    }).dialog('open');
+}
+
+function cambiar_password(){
+    $("#dialog_Cambiar_password").dialog({
+        autoOpen: false, modal: true, width: 350, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: CONFIGURACION DE USUARIO :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success",
+                click: function () {
+                    if($("#vw_usuario_cam_pass_1").val()==$("#vw_usuario_cam_pass_2").val()){
+                        $.ajax({
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            url: 'cambiar_pass_user',
+                            method: "POST",
+                            data:{pass1:$("#vw_usuario_cam_pass_1").val()},
+                            success: function (data) {
+                                if (data.msg == 'si') {
+                                    dialog_close('dialog_Cambiar_password');                                
+                                } else {
+                                    mostraralertas('* Error al cambiar la Contraseña.');
+                                }
+                            },
+                            error: function (er) {
+                                mostraralertas('* Error en Base de Datos.<br>* Comuniquese con el Administrador.');
+                            }
+                        });
+                    }else{
+                        mostraralertas('* Las Contraseñas no son Iguales');
+                    }
+                }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () { $(this).dialog("close"); }
+            }],
+        close: function (event, ui) {}
     }).dialog('open');
 }
 
@@ -294,8 +326,7 @@ function limpiar_form_usuario() {
     $("#vw_usuario_txt_fch_nac").val('');
     $("#vw_usuario_txt_usuario").val('');
     $("#vw_usuario_txt_password").val('');
-    $("#vw_usuario_txt_conf_pass").val('');
-    $("#vw_usuario_txt_nivel").val('select');
+    $("#vw_usuario_txt_conf_pass").val('');    
     $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
     $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
 }

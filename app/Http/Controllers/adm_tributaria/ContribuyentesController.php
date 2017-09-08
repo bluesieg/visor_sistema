@@ -44,7 +44,7 @@ class ContribuyentesController extends Controller
         $data->id_via=$request['id_via'];        
         $data->id_pers=$request['id_pers']; 
         $data->id_conv=$request['id_conv'];
-        $data->ref_dom_fis=$request['ref_dom_fis'];
+        $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
         $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
         $data->id_persona=$id_persona;
         $data->activo=1;
@@ -86,7 +86,7 @@ class ContribuyentesController extends Controller
             $val->id_via=$request['id_via'];        
             $val->id_pers=$request['id_pers']; 
             $val->id_conv=$request['id_conv'];
-            $val->ref_dom_fis=$request['ref_dom_fis'];            
+            $val->ref_dom_fis= strtoupper($request['ref_dom_fis']);
             $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
             $val->id_persona=$id_persona;                    
             $val->save();  

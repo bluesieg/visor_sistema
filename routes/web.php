@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
     Route::post('oficinas_delete', 'configuracion\Oficinas_Uit@oficinas_delete');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/vw_general', 'General@index')->name('vw_general');
 //
@@ -89,6 +89,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('usuarios_validar_dni','Usuarios@validar_dni');
     Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
     Route::post('cambiar_foto_user','Usuarios@cambiar_foto_usuario');
+    Route::post('cambiar_pass_user','Usuarios@cambiar_pass_user');
 
     /*     * **************************AUTOLLENADO DE COMBOS********************************************************************* */
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento

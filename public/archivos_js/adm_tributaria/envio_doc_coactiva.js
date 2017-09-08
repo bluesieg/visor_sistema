@@ -21,8 +21,10 @@ function all_right(){
             all_update_env_op(rows[i],2);
         }
         setTimeout(function () {
-            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
-            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
         }, 1100);
@@ -38,8 +40,10 @@ function all_left(){
             all_update_env_op(rows[i],1);
         }
         setTimeout(function () {
-            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
-            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
         }, 1100);
@@ -60,43 +64,37 @@ function update_env_op(id_gen_fis,env_op){
         type:'GET',
         data:{id_gen_fis:id_gen_fis,env_op:env_op},
         success:function(data){
-            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
-            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
         },
         error: function(){}
     });
 }
-//function chk_click_1(source){
-//    if($(source).is(':checked')){
-//        $("#env_doc_chek2").prop('checked',false);
-//        $("#env_doc_chek3").prop('checked',false);
-//    }else{
-//        $("#env_doc_chek2").prop('checked',true);
-//        $("#env_doc_chek3").prop('checked',true);
-//    }
-//}
-//function chk_click_2(source){
-//    if($(source).is(':checked')){
-//        $("#env_doc_chek1").prop('checked',false);
-//        $("#env_doc_chek3").prop('checked',false);
-//    }else{
-//        $("#env_doc_chek1").prop('checked',true);
-//        $("#env_doc_chek3").prop('checked',true);
-//    }
-//}
-//function chk_click_3(source){
-//    if($(source).is(':checked')){
-//        $("#env_doc_chek1").prop('checked',false);
-//        $("#env_doc_chek2").prop('checked',false);
-//    }else{
-//        $("#env_doc_chek1").prop('checked',true);
-//        $("#env_doc_chek2").prop('checked',true);
-//    }
-//}
-function fn_up_grid(){  
+function radio_click(val){
+    if(val==1){
+        $("#vw_env_doc_fdesde,#vw_env_doc_fhasta,#vw_env_doc_btn1").attr('disabled',false);
+        $("#vw_env_doc_nrode,#vw_env_doc_nroa,#vw_env_doc_btn2").attr('disabled',true);
+    }else if (val==2){
+        $("#vw_env_doc_fdesde,#vw_env_doc_fhasta,#vw_env_doc_btn1").attr('disabled',true);
+        $("#vw_env_doc_nrode,#vw_env_doc_nroa,#vw_env_doc_btn2").attr('disabled',false);
+    }
+}
+
+function fn_up_grid(){
+    if($("input:radio[name='myradio']:checked").val()==1){
+        fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
+        fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
+    }else if($("input:radio[name='myradio']:checked").val()==2){
+        fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
+        fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
+    }
     
-    fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
-                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
 }
 function fn_bus_contrib_env_doc(){  
     if($("#vw_env_doc_contrib").val()==""){
@@ -125,8 +123,10 @@ function fn_bus_contrib_list_env_doc(per){
     
     $("#vw_env_doc_contrib").attr('maxlength',tam);
 
-    fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=1');
-    fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?id_contrib='+$("#hidden_vw_env_doc_codigo").val()+'&env_op=2');
+    fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
+    fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
     $("#dlg_bus_contr").dialog("close");    
 }
 
