@@ -22,7 +22,7 @@ class SectoresController extends Controller
 
     public function getSectores(){
         header('Content-type: application/json');
-        $sectores = DB::select('select * from catastro.sectores order by id_sec');
+        $sectores = DB::select('select * from catastro.sectores order by sector');
         return response()->json($sectores);
     }
 

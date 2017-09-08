@@ -70,7 +70,7 @@
         jQuery("#tabla_manzanas").jqGrid({
             url: 'list_mzns_sector?id_sec=' + id_sec,
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: 'auto', autowidth: true,
             toolbarfilter: true,
             colNames: ['Código','Sector','cod_mzna','mzna_dist','id_codigo'],
             rowNum: 20,sortname: 'id_mzna',sortorder: 'asc', viewrecords: true, caption: 'Manzanas', align: "center",

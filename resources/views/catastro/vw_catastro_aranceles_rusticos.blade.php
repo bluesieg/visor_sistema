@@ -71,7 +71,7 @@
         jQuery("#tabla_aran_rust").jqGrid({
             url: 'list_aran_pred_rust?anio=' + anio,
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: 'auto', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_ara_p_r','Año','id_gpo_tierra','id_gpo_cat','Descripción','categoria','arancel_rustico'],
             rowNum: 20,sortname: 'id_ara_p_r',sortorder: 'asc', viewrecords: true, caption: 'Manzanas', align: "center",

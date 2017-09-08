@@ -50,7 +50,7 @@
         jQuery("#tabla_sectores").jqGrid({
             url: 'list_sectores',
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: 'auto', autowidth: true,
             toolbarfilter: true,
             colNames: ['Código','Sector'],
             rowNum: 20,sortname: 'id_sec', viewrecords: true, caption: 'Sectores', align: "center",
