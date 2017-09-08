@@ -134,6 +134,7 @@ class PisosController extends Controller
         {
             $val->delete();
         }
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return "destroy ".$request['id'];
     }
     public function listpisos($id)

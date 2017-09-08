@@ -67,6 +67,7 @@ class PredioController extends Controller
         $predio->tip_pre_u_r = 1;
         $predio->save();
         DB::select("select adm_tri.calcular_ivpp($predio->anio,$predio->id_contrib)");
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return $predio->id_pred;
     }
     public function store(Request $request)
@@ -124,6 +125,7 @@ class PredioController extends Controller
             $val->save();
         }
         DB::select("select adm_tri.calcular_ivpp($val->anio,$val->id_contrib)");
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return "edit".$id;
     }
     public function update(Request $request, $id)
@@ -138,6 +140,7 @@ class PredioController extends Controller
         {
             $val->delete();
         }
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return "destroy ".$request['id'];
     }
     public function ListManz(Request $request)

@@ -27,6 +27,7 @@ class CondominiosController extends Controller
         $condos->porcent = $request['porc'];
         $condos->id_pred = $request['id_pre'];
         $condos->save();
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return $condos->id_condom;
     }
 
@@ -64,6 +65,7 @@ class CondominiosController extends Controller
             $val->porcent = $request['porc'];
             $val->save();
         }
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return "edit".$id;
     }
 
@@ -87,6 +89,7 @@ class CondominiosController extends Controller
         {
             $val->delete();
         }
+        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
         return "destroy ".$request['id'];
     }
     public function listcondos($id)

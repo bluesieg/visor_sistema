@@ -135,7 +135,7 @@ function callpredtab()
                 $("input[name=dlg_rd_defra][value='"+r[0].declar_fabrica+"']").prop("checked",true);
                 auto_select("dlg_inp_nvia","sel_viaby_sec",r[0].id_via);
                 $("#dlg_inp_aranc").val(r[0].arancel);
-                $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,2,".",","));
+                $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,3,".",","));
                 $("#dlg_inp_areter").val(r[0].are_terr);
                 $("#dlg_inp_arecomter").val(r[0].are_com_terr);
                 MensajeDialogLoadAjaxFinish('dlg_reg_dj');
@@ -867,7 +867,7 @@ function callpredtab()
     function validarvalter()
     {
         if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
-        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat($("#dlg_inp_arecomter").val())),2,",","."));
+        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat($("#dlg_inp_arecomter").val())),3,".",","));
     }
     autocompletar=0;
     function auto_input(textbox,url,extra){
