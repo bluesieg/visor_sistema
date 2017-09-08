@@ -132,8 +132,14 @@ class ContribuyentesController extends Controller
         
     }
     
-    function grid_contrib(){
-        $totalg = DB::select('select count(id_contrib) as total from adm_tri.vw_contribuyentes_vias');
+    function grid_contrib(Request $request){
+        $buscar=$request['buscar'];
+        if(isset($request['buscar'])){
+            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_contribuyentes_vias where contribuyente like '%".$buscar."'");
+        }else{
+            $totalg = DB::select('select count(id_contrib) as total from adm_tri.vw_contribuyentes_vias');
+        }
+        
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -154,8 +160,12 @@ class ContribuyentesController extends Controller
         if ($start < 0) {
             $start = 0;
         }
-
-        $sql = DB::table('adm_tri.vw_contribuyentes_vias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        if(isset($request['buscar'])){
+            $sql = DB::table('adm_tri.vw_contribuyentes_vias')->where('contribuyente', 'like', '%'.$buscar.'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }else{
+            $sql = DB::table('adm_tri.vw_contribuyentes_vias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
+        
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;

@@ -25,6 +25,9 @@ function open_dialog_new_edit_Contribuyente() {
     autocompletar_av_jr_call('txt_av_jr_calle_psje');
     MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
 }
+function buscar_contrib(){
+    fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes?buscar='+($("#vw_contrib_buscar").val()).toUpperCase());
+}
 function fn_consultar_persona(num){ 
     if(num==1){
         nro_doc=$("#txt_nro_doc").val();

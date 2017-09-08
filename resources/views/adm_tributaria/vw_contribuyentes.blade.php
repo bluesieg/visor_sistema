@@ -1,46 +1,58 @@
 @extends('layouts.app')
 @section('content')
-
-    <section id="widget-grid" class="">
-        <div class='cr_content col-xs-12'>
-            <div class="col-xs-12">
-                <div class="col-lg-9">
-                    <h1 class="txt-color-green"><b>Mantenimiento de Contribuyentes...</b></h1>
-                </div>
-                <div class="col-lg-3 col-md-6 col-xs-12">
-                </div>
-
+<section id="widget-grid" class="">    
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
+            <div class="well well-sm well-light">
+                <h1 class="txt-color-green"><b>Contribuyentes...</b></h1>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="text-right">
+                            <section class="col-lg-5" style="padding-left:2px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
+                                    <input type="text" id="vw_contrib_buscar" class="form-control text-uppercase">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="button" onclick="buscar_contrib();" title="BUSCAR">
+                                            <i class="glyphicon glyphicon-search"></i>&nbsp;Buscar
+                                        </button>
+                                    </span>
+                                </div>                                            
+                            </section>
+                            <button onclick="open_dialog_new_edit_Contribuyente('NUEVO');" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                            </button>
+                            <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                            </button>
+                            <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                            </button>
+                            <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                            </button>
+<!--                            <button onclick="reniec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reniec
+                            </button>                  -->
+                        </div>                        
+                    </div>
+                </div> 
             </div>
-            <div class="col-lg-3 col-md-6 col-xs-12">
+            <div class="well well-sm well-light" style="margin-top:-20px;">                
+                <div class="row">
+                    <div class="col-xs-12">                        
+                        <div class="row">
+                            <section id="content_2" class="col-lg-12">
+                                <table id="table_Contribuyentes"></table>
+                                <div id="pager_table_Contribuyentes"></div>
+                            </section>                            
+                        </div>                                                
+                    </div>
+                </div> 
             </div>
-
-            <div class="col-lg-3 col-md-6 col-xs-12">
-            </div>
-            <div class="col-lg-6 col-md-12 col-xs-12">
-                <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">
-                    <button onclick="open_dialog_new_edit_Contribuyente('NUEVO');" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                    </button>
-                    <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                    </button>
-                    <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
-                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                    </button>
-                    <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                    </button>
-                    <button onclick="reniec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reniec
-                    </button>
-                </ul>
-            </div>
-        </div>
-            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
-                <table id="table_Contribuyentes"></table>
-                <div id="pager_table_Contribuyentes"></div>
-            </article>
-    </section>
+        </div>       
+    </div>
+</section>
 @section('page-js-script')
 
 <script type="text/javascript">
@@ -109,7 +121,12 @@
             }
         });
         $(window).on('resize.jqGrid', function () {
-            $("#table_Contribuyentes").jqGrid('setGridWidth', $("#content").width());
+            $("#table_Contribuyentes").jqGrid('setGridWidth', $("#content_2").width());
+        });
+        $("#vw_contrib_buscar").keypress(function (e) {
+            if (e.which == 13) {
+                buscar_contrib();
+            }
         });
         $("#txt_nro_doc").keypress(function (e) {
             if (e.which == 13) {
