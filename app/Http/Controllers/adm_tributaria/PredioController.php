@@ -13,8 +13,8 @@ class PredioController extends Controller
     public function index()
     {
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        $sectores = DB::select('select * from catastro.sectores order by id_sec');
-        $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
+        $sectores = DB::select('select * from catastro.sectores order by sector');
+        $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by sector limit 1) ');
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
         $ecc = DB::select('select * from adm_tri.ecc order by id_ecc ');
         $tpre = DB::select('select * from adm_tri.tip_predio order by id_tip_p ');

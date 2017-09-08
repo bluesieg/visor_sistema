@@ -9,12 +9,24 @@
        <div class="datehead">AÑO: {{ $sql->anio }}</div>
 
     <main>
-      <div id="details" class="clearfix">
-        <div id="invoice">
-          <h1>DECLARACION JURADA DE AUTOAVALUO</h1>
-          <div class="sub2">IMPUESTO PREDIAL  - DECRETO LEGISLATIVO Nº 776</div>
-        </div>
-      </div>
+         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+            <tr>
+            <td style="width: 10%; border: 0px;" >
+                <img src="img/escudo.png" height="70px"/>
+            </td>
+            <td style="width: 80%; padding-top: 10px; border:0px;">
+                <div id="details" class="clearfix">
+                   <div id="invoice">
+                       <h1 style="font-size: 1.8em">DECLARACION JURADA DE AUTOAVALUO</h1>
+                      <div class="sub2" style="font-size: 1.1em">IMPUESTO PREDIAL  - DECRETO LEGISLATIVO Nº 776</div>
+                    </div>
+                  </div>
+            </td>
+            <td style="width: 10%;border: 0px;"></td>
+            </tr>
+            
+        </table>
+      
       
           
         <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px; margin-bottom: 5px">

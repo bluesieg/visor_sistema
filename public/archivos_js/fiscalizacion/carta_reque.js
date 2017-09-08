@@ -25,33 +25,33 @@ function fn_bus_contrib_list_carta(per)
     $("#"+inputglobal).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     $("#"+inputglobal+"_doc").val($('#table_contrib').jqGrid('getCell',per,'nro_doc'));
     $("#"+inputglobal+"_dom").val($('#table_contrib').jqGrid('getCell',per,'dom_fiscal'));
-    call_list_contrib_carta(1);
+    if(inputglobal=="dlg_contri")
+    {
+        call_list_contrib_carta(1);
+    }
     $("#dlg_bus_contr").dialog("close");
 }
 
 function call_list_contrib_carta(tip)
 {
     
-    $("#table_op").jqGrid("clearGridData", true);
+    $("#table_cartas").jqGrid("clearGridData", true);
     if(tip==1)
     {
-        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op/'+$("#dlg_contri_hidden").val()+'/0/0/'+$("#selantra").val()+'/0/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0'}).trigger('reloadGrid');
     }
     if(tip==2)
     {
-        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op/0/'+$("#selsec option:selected").text()+'/'+$("#selmnza option:selected").text()+'/'+$("#selantra").val()+'/0/0'}).trigger('reloadGrid');
-    }
-    if(tip==3)
-    {
         if($("#dlg_bus_fini").val()==""||$("#dlg_bus_ffin").val()=="")
         {
-            mostraralertasconfoco("Ingresar Fechas","#dlg_bus_fini"); 
+            mostraralertasconfoco("Ingresar Fechas de busqueda","dlg_bus_fini");
             return false;
-        } 
+        }
         ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
         fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
-        jQuery("#table_op").jqGrid('setGridParam', {url: 'obtiene_op/0/0/0/0/'+ini+'/'+fin}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/0/0/'+ini+'/'+fin}).trigger('reloadGrid');
     }
+    
 }
 function fn_new_carta()
 {
@@ -118,28 +118,45 @@ function fn_confirmar_carta()
                             timeout : 3000
                     });
             }
-
     });
 }
 function fn_save_carta()
 {
     MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
-//   MensajeDialogLoadAjax('dlg_new_tasas', '.:: Guardando ...');
-//        $.ajax({url: 'tasa_save',
-//        type: 'GET',
-//        data:{por:$("#dlg_tas_por").val(),ini:$("#dlg_tas_fec").val(),ley:$("#dlg_tas_ley").val()},
-//        success: function(r) 
-//        {
-//            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-//            jQuery("#table_tasas").jqGrid('setGridParam', {url: 'grid_tasas'}).trigger('reloadGrid');
-//            MensajeDialogLoadAjaxFinish('dlg_new_tasas');
-//            $("#dlg_new_tasas").dialog("close");
-//        },
-//        error: function(data) {
-//            mostraralertas("hubo un error, Comunicar al Administrador");
-//            MensajeDialogLoadAjaxFinish('dlg_new_tasas');
-//            console.log('error');
-//            console.log(data);
-//        }
-//        });
+        $.ajax({url: 'carta_save',
+        type: 'GET',
+        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val()},
+        success: function(r) 
+        {
+            if(r>0)
+            {
+                $('#table_fiscalizadores tbody tr').each(function() {
+                    fisca=$(this).attr("id");
+                    $.ajax({url: 'carta_set_fisca',
+                    type: 'GET',
+                    data:{car:r,fis: fisca},
+                    success: function(data) 
+                    {
+                        MensajeExito("Fiscalizador Insertado","Su Registro Fue Insertado con Éxito...",4000);
+                    },
+                    error: function(data) {
+                        mostraralertas("no inserto Fiscalizador, Comunicar al Administrador");
+                        console.log('error');
+                        console.log(data);
+                    }
+                    });
+                });
+            }
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            call_list_contrib_carta(1);
+            MensajeDialogLoadAjaxFinish('dlg_new_carta');
+            $("#dlg_new_carta").dialog("close");
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_new_carta');
+            console.log('error');
+            console.log(data);
+        }
+        });
 }

@@ -4,12 +4,31 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Example 2</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
+        <style>
+            @page { margin-top: 20px !important;};
+        </style>
   </head>
   <body>
     <main>
-      <div id="details" class="clearfix">
+        <table border="0" cellspacing="0" cellpadding="0" style="margin: 0px;">
+            <tr>
+            <td style="width: 10%; border: 0px;" >
+                <img src="img/escudo.png" height="70px"/>
+            </td>
+            <td style="width: 80%; padding-top: 10px; border:0px;">
+                <div id="details" class="clearfix">
+                   <div id="invoice">
+                       <h1 style="font-size: 1.8em">MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
+                    </div>
+                  </div>
+            </td>
+            <td style="width: 10%;border: 0px;"></td>
+            </tr>
+            
+        </table>
+        <div id="details" class="clearfix">
           <div id="invoice" >
-          <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
+         
           
           
           <div class="lado" style="text-align: left !important; padding-top: 20px;">GERENCIA DE RENTAS</div>
@@ -18,7 +37,7 @@
               <div class="date">AÑO: {{ date("Y") }}</div>
           </div>
           <div class="lado" style="text-align: right !important"><div class="resaltado" >HR</div>HOJA RESUMEN</div>
-          <div Class="asunto">DECLARACION JURADA DE AUTOVALUO</div>
+          <div Class="asunto" style="margin-top: 5px;">DECLARACION JURADA DE AUTOVALUO</div>
           <div class="subasunto">LEY TRIBUTARIA MUNICIPAL/DECRETO LEGISLATIVO 776</div>
           <table border="0" cellspacing="0" cellpadding="0" style="margin: 0px;">
               <tr>
@@ -142,7 +161,7 @@
         </tbody>
         
       </table>
-        <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+        <div class="lado3" style="height: 425px; border-bottom: 1px solid #333">
             INFORMACION ADICIONAL. 
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
         <thead>

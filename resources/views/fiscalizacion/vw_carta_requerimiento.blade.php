@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class='col-lg-2'style="padding: 0px;" >
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="call_list_contrib(3)">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="call_list_contrib_carta(2)">
                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar fechas
                     </button>
                 </div>
@@ -91,8 +91,8 @@
        
         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
             <article class="col-xs-11" style=" padding: 0px !important">
-                    <table id="table_op"></table>
-                    <div id="pager_table_op"></div>
+                    <table id="table_cartas"></table>
+                    <div id="pager_table_cartas"></div>
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
                 <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new_carta();" >
@@ -111,29 +111,29 @@
     $(document).ready(function (){
         $("#menu_fisca").show();
         $("#li_fisca_carta").addClass('cr-active')
-        jQuery("#table_op").jqGrid({
-            url: 'obtiene_op/0/0/0/0/0/0',
+        jQuery("#table_cartas").jqGrid({
+            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '260px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP'],
-            rowNum: 20, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",
+            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Ver'],
+            rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",
             colModel: [
-                {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 80},
-                {name: 'anio', index: 'anio', align: 'center', width: 80},
-                {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 150},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
-                {name: 'op', index: 'op', align: 'center', width: 100},
+                {name: 'id_car', index: 'id_gen_fis', hidden: true},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 15},
+                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 40},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 15},
+                {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 16},
+                {name: 'id_car', index: 'id_car', align: 'center', width: 15},
+
             ],
-            pager: '#pager_table_op',
-            rowList: [13, 20],
+            pager: '#pager_table_cartas',
+            rowList: [20, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_op').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_cartas').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_op').jqGrid('getDataIDs')[0];
-                            $("#table_op").setSelection(firstid);    
+                    var firstid = jQuery('#table_cartas').jqGrid('getDataIDs')[0];
+                            $("#table_cartas").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
