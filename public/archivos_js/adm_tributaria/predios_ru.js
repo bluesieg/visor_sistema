@@ -365,7 +365,33 @@ function llamarcambio()
         }
         });
     }
-    
+    function pisoDelete()
+    {
+        if($('#dlg_idpre').val()==0)
+        {
+            mostraralertas("Primero Guardar Predio...");
+            return false;
+        }
+        Id=$('#table_pisos').jqGrid ('getGridParam', 'selrow');
+        MensajeDialogLoadAjax('s1', '.:: Eliminando ...');
+        $.ajax({
+            url: 'pisos_predios/destroy',
+            type: 'post',
+            data: {_method: 'delete', _token:$("#btn_s1_delpiso").data('token'),id:Id},
+            success: function(r) 
+            {
+                jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+                MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
+                MensajeDialogLoadAjaxFinish('s1');
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('s1');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
     function creardlgcondo()
     {
      $("#dlg_reg_condo").dialog({
@@ -569,10 +595,10 @@ function llamarcambio()
                 $( "#rinst_inp_canti" ).prop( "disabled", false );
                 $( "#rinst_inp_canti" ).val(r[0].pro_tot);
             }
-            else
+            if(r[0].unid_medida=="M2" || r[0].unid_medida=="ML")
             {
-                $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto" ).prop( "disabled", false );
-                $( "#rinst_inp_canti" ).prop( "disabled", true );
+                $( "#rinst_inp_largo,#rinst_inp_ancho" ).prop( "disabled", false );
+                $( "#rinst_inp_canti,#rinst_inp_alto" ).prop( "disabled", true );
                 $( "#rinst_inp_canti" ).val(0);
             }
             $("#rinst_inp_anio").val(r[0].anio);
@@ -660,6 +686,34 @@ function llamarcambio()
         }
         });
     }
+    function instDelete()
+    {
+        if($('#dlg_idpre').val()==0)
+        {
+            mostraralertas("Primero Guardar Predio...");
+            return false;
+        }
+        Id=$('#table_instal').jqGrid ('getGridParam', 'selrow');
+        MensajeDialogLoadAjax('s2', '.:: Eliminando ...');
+        $.ajax({
+            url: 'instalaciones_predios/destroy',
+            type: 'post',
+            data: {_method: 'delete', _token:$("#btn_s2_delinst").data('token'),id:Id},
+            success: function(r) 
+            {
+                jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+                MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
+                MensajeDialogLoadAjaxFinish('s1');
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('s1');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
+    
     function  clicksavePensi()
     {
         

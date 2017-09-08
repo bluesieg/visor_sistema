@@ -79,15 +79,15 @@ class CondominiosController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+     public function destroy(Request $request)
     {
-        //
+        $condos=new Condominios;
+        $val=  $condos::where("id_condom","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id'];
     }
     public function listcondos($id)
     {

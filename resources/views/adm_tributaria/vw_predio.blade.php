@@ -620,7 +620,7 @@
                                                 </span>
                                                 <label>Editar Piso</label>
                                             </button>
-                                            <button class="btn bg-color-red txt-color-white cr-btn-big" >
+                                            <button id="btn_s1_delpiso" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="pisoDelete()">
                                                 <span>
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </span>
@@ -646,7 +646,7 @@
                                                 </span>
                                                 <label>Editar Inst</label>
                                             </button>
-                                            <button class="btn bg-color-red txt-color-white cr-btn-big" >
+                                            <button id="btn_s2_delinst" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="instDelete()">
                                                 <span>
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </span>
@@ -672,7 +672,7 @@
                                                 </span>
                                                 <label>Editar Cond</label>
                                             </button>
-                                            <button class="btn bg-color-red txt-color-white cr-btn-big" >
+                                            <button id="btn_s3_delcondos" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="condoDelete()">
                                                 <span>
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </span>

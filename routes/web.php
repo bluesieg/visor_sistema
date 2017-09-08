@@ -71,15 +71,15 @@ Route::group(['middleware' => 'auth'], function() {
     });
 /******************** ********    MAP CONTROLLER   ******************  **********/
     Route::group(['namespace'=>'map'],function(){
-        Route::get('/cartografia', 'MapController@index')->name('home');
-        Route::get('/getlimites', 'MapController@get_limites')->name('get.limites');
-        Route::get('/getsectores', 'MapController@get_sectores')->name('get.sectores');
-        Route::get('/getmznas', 'MapController@get_manzanas')->name('get.manzanas');
-        Route::post('/geogetmznas_x_sector', 'MapController@geogetmznas_x_sector');
-        Route::post('/get_centro_sector', 'MapController@get_centro_sector');
-        Route::post('/mznas_x_sector', 'MapController@mznas_x_sector');
-        Route::post('/get_lotes_x_sector', 'MapController@get_lotes_x_sector');
-        Route::post('/get_predios_rentas','MapController@get_predios_rentas');
+        Route::get('cartografia', 'MapController@index')->name('home');
+        Route::get('getlimites', 'MapController@get_limites')->name('get.limites');
+        Route::get('getsectores', 'MapController@get_sectores')->name('get.sectores');
+        Route::get('getmznas', 'MapController@get_manzanas')->name('get.manzanas');
+        Route::post('geogetmznas_x_sector', 'MapController@geogetmznas_x_sector');
+        Route::post('get_centro_sector', 'MapController@get_centro_sector');
+        Route::post('mznas_x_sector', 'MapController@mznas_x_sector');
+        Route::post('get_lotes_x_sector', 'MapController@get_lotes_x_sector');
+        Route::post('get_predios_rentas','MapController@get_predios_rentas');
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios

@@ -120,27 +120,21 @@ class PisosController extends Controller
         return "edit".$id;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $pisos=new Pisos;
+        $val=  $pisos::where("id_pisos","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id'];
     }
     public function listpisos($id)
     {

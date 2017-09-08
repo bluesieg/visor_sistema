@@ -9,7 +9,7 @@
             <div class="input-group input-group-md">
                 <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
                 <div class="icon-addon addon-md">
-                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
                     @foreach ($anio_tra as $anio)
                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                     @endforeach
@@ -114,7 +114,7 @@
         jQuery("#table_cartas").jqGrid({
             url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0',
             datatype: 'json', mtype: 'GET',
-            height: '260px', autowidth: true,
+            height: '280px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Ver'],
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",
@@ -125,7 +125,6 @@
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 15},
                 {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 16},
                 {name: 'id_car', index: 'id_car', align: 'center', width: 15},
-
             ],
             pager: '#pager_table_cartas',
             rowList: [20, 50],

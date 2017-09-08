@@ -36,6 +36,10 @@ function call_list_contrib_carta(tip)
 {
     
     $("#table_cartas").jqGrid("clearGridData", true);
+    if(tip==0)
+    {
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0'}).trigger('reloadGrid');
+    }
     if(tip==1)
     {
         jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0'}).trigger('reloadGrid');

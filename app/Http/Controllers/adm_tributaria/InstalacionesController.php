@@ -114,27 +114,20 @@ class InstalacionesController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+     public function destroy(Request $request)
     {
-        //
+        $insta=new Instalaciones;
+        $val=  $insta::where("id_inst","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id'];
     }
     
     public function listinsta($id)
