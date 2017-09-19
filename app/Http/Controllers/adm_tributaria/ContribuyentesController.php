@@ -315,4 +315,23 @@ class ContribuyentesController extends Controller
 
     }
 
+    function reporte_contribuyentes_otro(){
+
+        $sql=DB::table('reportes.vw_02_contri_predios')->orderBy('id_contrib')->orderBy('nro_doc_conyugue')->get();
+
+        if(count($sql)>0)
+        {
+            $view =  \View::make('adm_tributaria.reportes.123_123',compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+
+
+    }
+
 }

@@ -153,7 +153,7 @@
         </thead>
     </table>
     -->
-    <p class="pagenum"> Gerencia de Administración Tributaria - Página</p>
+    <p class="pagenum" style="padding-top: 130px;text-align: center"> Gerencia de Administración Tributaria - Página</p>
 </body>
 
 </html>

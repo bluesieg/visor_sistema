@@ -497,6 +497,9 @@
                             <li>
                                 <a href="#s2" onclick="current_tab(2);" data-toggle="tab">Habilitación Urbana</a>
                             </li>
+                            <li>
+                                <a href="#s3" onclick="current_tab(3);" data-toggle="tab">Otro</a>
+                            </li>
 
                         </ul>
 
@@ -555,14 +558,55 @@
                                 <section class="col col-10">
                                     <label class="label">Habilitación Urbana:</label>
                                     <label class="input">
-                                        <input type="text" list="list" id="hab_urb" name="hab_urb" placeholder="Habilitación Urbana">
+                                        <input type="hidden" id="hiddentxt_hab_urb">
+                                        <input id="hab_urb" type="text" placeholder="Avenida, Jiron, Calle o Pasaje." class="input-sm">
+                                       <!-- <input type="text" list="list" id="hab_urb" name="hab_urb" placeholder="Habilitación Urbana">
                                         <datalist id="list">
                                             @foreach ($hab_urb as $hab)
                                                 <option data-xyz ="{{$hab->id_hab_urb}}" value="{{$hab->nomb_hab_urba}}">{{$hab->id_hab_urb}}</option>
                                             @endforeach
-                                        </datalist> </label>
+                                        </datalist> -->
+                                        </label>
                                 </section>
                                     </div>
+
+                                <!--
+                                <section class="col col-9" style="padding-left:5px;padding-right:5px;">
+                                    <label class="label">Habilitación Urbana:</label>
+                                    <label class="input">
+                                        <input id="pers_mat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                    </label>
+                                </section>-->
+
+                            </div>
+                            <div class="tab-pane fade" id="s3">
+
+
+                                <div class="row">
+                                    <section class="col col-2" style="padding-right:5px;">
+                                        <label class="label">AÑO:</label>
+                                        <label class="select">
+                                            <select id='selec_hab_urb' class="form-control col-lg-8">
+                                                @foreach ($anio_tra as $anio)
+                                                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                                @endforeach
+                                            </select><i></i> </label>
+                                    </section>
+
+                                    <section class="col col-10">
+                                        <label class="label">Habilitación Urbana:</label>
+                                        <label class="input">
+                                            <input type="hidden" id="hiddentxt_hab_urb">
+                                            <input id="hab_urb" type="text" placeholder="Avenida, Jiron, Calle o Pasaje." class="input-sm">
+                                            <!-- <input type="text" list="list" id="hab_urb" name="hab_urb" placeholder="Habilitación Urbana">
+                                        <datalist id="list">
+                                            @foreach ($hab_urb as $hab)
+                                                    <option data-xyz ="{{$hab->id_hab_urb}}" value="{{$hab->nomb_hab_urba}}">{{$hab->id_hab_urb}}</option>
+                                            @endforeach
+                                                    </datalist> -->
+                                        </label>
+                                    </section>
+                                </div>
 
                                 <!--
                                 <section class="col col-9" style="padding-left:5px;padding-right:5px;">

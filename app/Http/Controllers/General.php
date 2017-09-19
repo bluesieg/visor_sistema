@@ -61,8 +61,26 @@ class General extends Controller {
         }
         return response()->json($todo);
     }
+
+    function autocomplete_hab_urb(Request $request){
+
+        $data = $request->all();
+        $Consulta = DB::select('select id_hab_urb,nomb_hab_urba from catastro.hab_urb');
+        $todo = array();
+        foreach ($Consulta as $Datos) {
+            $Lista = new \stdClass();
+            $Lista->value = $Datos->id_hab_urb;
+            $Lista->label = trim($Datos->nomb_hab_urba);
+//            $Lista->llabel= trim($Datos->abrev).'-'.trim($Datos->nom_via);
+            array_push($todo, $Lista);
+        }
+
+        return response()->json($todo);
+
+    }
     function autocompletar_tipo_uso(Request $request){
         $data = $request->all();
+
         $Consulta = DB::table('catastro.usos_predio')->get();  
 
         $todo=array();

@@ -382,6 +382,9 @@ function dlg_new_reporte(){
         open: function (){ limpiar_personas(); }
     }).dialog('open');
 
+
+    autocompletar_hab_urb('hab_urb');
+
 }
 $current_tab=1;
 function abrir_rep()
@@ -396,12 +399,14 @@ function abrir_rep()
     }
     if($current_tab == 2){
         var anio_hab_urb = $('#selec_hab_urb').val();
+        var id_hab_urba = $('#hiddentxt_hab_urb').val();
+        /*
         var val = $('#hab_urb').val();
         var xyz = $('#list option').filter(function() {
             return this.value == val;
         }).data('xyz');
-        var id_hab_urba = xyz ? '' + xyz : 'No Match';
-        if(id_hab_urba != 'No Match')
+        var id_hab_urba = xyz ? '' + xyz : 'No Match';*/
+        if(id_hab_urba != '')
             window.open('pre_rep_contr_hab_urb/'+id_hab_urba+'/'+anio_hab_urb);
         else
             MensajeAlerta('Reporte Contrituyentes', ' Habilitación Urbana no Válida.');
@@ -409,7 +414,40 @@ function abrir_rep()
         //alert(id_hab_urba);
     }
 
+    if($current_tab == 3) {
+        $sector = $('#selsec').val();
+        $mzna = $('#selmnza').val();
+        $anio = $('#selantra').val();
+        //Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+        //alert(Id + "/" + $sector + "/" + $mzna);
+        window.open('pre_rep_contr_otro');
+    }
 
+
+}
+
+function autocompletar_hab_urb(textbox) {
+    $.ajax({
+        type: 'GET',
+        url: 'autocomplete_hab_urb',
+        success: function (data) {
+            var $local_sourcedoctotodo = data;
+            $("#" + textbox).autocomplete({
+                source: $local_sourcedoctotodo,
+                focus: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hiddentxt_" + textbox).val(ui.item.value);
+                    $("#" + textbox).attr('maxlength', ui.item.label.length);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hiddentxt_" + textbox).val(ui.item.value);
+                    return false;
+                }
+            });
+        }
+    });
 }
 
 function current_tab(id_report){

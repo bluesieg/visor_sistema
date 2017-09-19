@@ -270,6 +270,15 @@
                     </li>
 
                     <li class="">
+                        <a href="#" title="Reportes"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">Reportes</span></a>
+                        <ul id="menu_reportes">
+                            <li id="li_ver_reportes">
+                                <a href="reportes" title="Ver Cartografia"><i class="fa fa-lg fa-fw fa-file-text"></i> <span class="menu-item-parent">Reportes generales</span></a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="">
                         <a href="#" title="Cartografia Base"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">Cartografia Base</span></a>
                         <ul id="menu_cart_base">
                             <li id="li_ver_cart">

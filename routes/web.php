@@ -102,6 +102,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('sel_viaby_sec', 'General@sel_viaby_sec'); //seleccionas vias por mazana y sector
     Route::get('sel_cat_gruterr', 'General@sel_cat_gruterr'); //seleccionas vias por mazana y sector
     Route::get('autocomplete_nom_via', 'configuracion\Valores_Arancelarios@get_autocomplete_nom_via'); //autocompletar arancel cod_via->nom_completo de via
+    Route::get('autocomplete_hab_urb', 'General@autocomplete_hab_urb'); //autocomplentar habilitaciones urbanas
+
     /*     * *******************DEPARTAMENTO  PROVINCIA DISTRITO  **************************************************************** */
     Route::get('get_all_dpto', 'General@get_dpto'); //llena combo departamentos
     Route::get('get_all_prov', 'General@get_prov'); //llena combo provincias
@@ -119,6 +121,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
         Route::get('pre_rep_contr/{sect}/{mzna}/{anio}','ContribuyentesController@reporte_contribuyentes');
         Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ContribuyentesController@reporte_contribuyentes_hab_urb');
+        Route::get('pre_rep_contr_otro','ContribuyentesController@reporte_contribuyentes_otro');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
         /*ENVIO DE DOCUEMNTOS EJECUCION COACTIVA*/
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
@@ -256,7 +259,19 @@ Route::group(['middleware' => 'auth'], function() {
 
     }); 
     Route::get('$',function(){ echo 0;});//url auxiliar
-    
+
+    /*************************************** - REPORTES - *************************************** */
+
+    Route::group(['namespace' => 'reportes'], function() {
+        Route::resource('reportes', 'ReportesController');
+                    /******************** CONTRITUYENTES  ********************/
+        Route::resource('reso_deter', 'Res_DeterminacionController');
+        Route::get('fisca_carta_req', 'Res_DeterminacionController@carta_requerimiento'); //
+        Route::get('carta_save', 'Res_DeterminacionController@carta_create'); //
+        Route::get('carta_set_fisca', 'Res_DeterminacionController@fisca_enviados_create'); //
+        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}', 'Res_DeterminacionController@get_cartas_req'); //
+
+    });
 });
 
 
