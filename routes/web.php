@@ -264,12 +264,6 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['namespace' => 'reportes'], function() {
         Route::resource('reportes', 'ReportesController');
-                    /******************** CONTRITUYENTES  ********************/
-        Route::resource('reso_deter', 'Res_DeterminacionController');
-        Route::get('fisca_carta_req', 'Res_DeterminacionController@carta_requerimiento'); //
-        Route::get('carta_save', 'Res_DeterminacionController@carta_create'); //
-        Route::get('carta_set_fisca', 'Res_DeterminacionController@fisca_enviados_create'); //
-        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}', 'Res_DeterminacionController@get_cartas_req'); //
 
     });
 });
