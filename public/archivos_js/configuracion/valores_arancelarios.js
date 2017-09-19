@@ -25,13 +25,13 @@ function open_dialog_new_edit_Val_Arancel(tipo) {
     }).dialog('open');
     if (tipo == 'NUEVO') {
         $("#val_arancel_cod_via").prop('disabled', false);
-        sector = $("#vw_val_arancel_cb_sector").val();
+        sector = $("#vw_val_arancel_cb_sector option:selected").text();
         mzna = $("#vw_val_arancel_cb_mzna").val();
         $("#val_arancel_sec").val(sector);
         $("#val_arancel_mzna").val(mzna);
     } else if (tipo == 'EDITAR') {
         $("#val_arancel_cod_via").prop('disabled', true);
-        sector = $("#vw_val_arancel_cb_sector").val();
+        sector = $("#vw_val_arancel_cb_sector option:selected").text();        
         mzna = $("#vw_val_arancel_cb_mzna").val();
         $("#val_arancel_sec").val(sector);
         $("#val_arancel_mzna").val(mzna);
@@ -58,7 +58,8 @@ function eliminar_val_arancel(){
                     type: 'POST',
                     data: {id_arancel: id_arancel},
                     success: function (data) {
-                        fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+//                        fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+                        buscar_val_arancel();
                         dialog_close('dialog_new_edit_Val_Arancel');
                     },
                     error: function (data) {
@@ -102,7 +103,8 @@ function valores_arancelarios_save_edit(tipo, id_arancel) {
             },
             success: function (data) {
                 if (data.msg == 'si') {
-                    fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+//                    fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+                    buscar_val_arancel();
                     dialog_close('dialog_new_edit_Val_Arancel');
                 }else{
                     mostraralertas('* Codigo Via ya Existe...!');
@@ -124,7 +126,8 @@ function valores_arancelarios_save_edit(tipo, id_arancel) {
                 val_ara: $("#val_arancel_val_ara").val()
             },
             success: function (data) {
-                fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+//                fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro
+                buscar_val_arancel();
                 dialog_close('dialog_new_edit_Val_Arancel');
                 MensajeDialogLoadAjaxFinish('dialog_new_edit_Val_Arancel', '.:: CARGANDO ...');
             },
@@ -135,11 +138,19 @@ function valores_arancelarios_save_edit(tipo, id_arancel) {
         });
     }
 }
-
+function ponerCeros(tam, num) {
+    if (num.toString().length <= tam) return ponerCeros(tam, "0" + num)
+    else return num;
+}
+//function ponerCeros(value,ceros) {
+//  while (value.length<ceros){
+//    value = '0'+value;}
+//    return value;
+//}
 function buscar_val_arancel() {
     MensajeDialogLoadAjax('content', '.:: CARGANDO ...');
-    filtro = $('#vw_val_arancel_cb_anio').val() + $('#vw_val_arancel_cb_sector').val() + $('#vw_val_arancel_cb_mzna').val();
-    fn_actualizar_grilla('table_Val_Arancel', 'grid_val_arancel?filtro=' + filtro);
+//    filtro = $('#vw_val_arancel_cb_anio').val() + $('#vw_val_arancel_cb_sector').val() + $('#vw_val_arancel_cb_mzna').val();
+    fn_actualizar_grilla('table_Val_Arancel','grid_val_arancel?anio='+$("#vw_val_arancel_cb_anio").val()+'&sec='+$("#vw_val_arancel_cb_sector option:selected").text()+'&mzna='+$("#vw_val_arancel_cb_mzna option:selected").text());
     MensajeDialogLoadAjaxFinish('content', '.:: CARGANDO ...');
 }
 

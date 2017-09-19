@@ -21,10 +21,17 @@ function all_right(){
             all_update_env_op(rows[i],2);
         }
         setTimeout(function () {
-            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            if($("input:radio[name='myradio']:checked").val()==1){
+                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
-            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
+            }else if($("input:radio[name='myradio']:checked").val()==2){
+                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
+                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
+            }
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
         }, 1100);
@@ -40,10 +47,17 @@ function all_left(){
             all_update_env_op(rows[i],1);
         }
         setTimeout(function () {
-            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            if($("input:radio[name='myradio']:checked").val()==1){
+                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
-            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
+            }else if($("input:radio[name='myradio']:checked").val()==2){
+                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
+                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
+            }
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
             MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
         }, 1100);
@@ -64,10 +78,17 @@ function update_env_op(id_gen_fis,env_op){
         type:'GET',
         data:{id_gen_fis:id_gen_fis,env_op:env_op},
         success:function(data){
-            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            if($("input:radio[name='myradio']:checked").val()==1){
+                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
-            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
+            }else if($("input:radio[name='myradio']:checked").val()==2){
+                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
+                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
+            }
         },
         error: function(){}
     });
@@ -76,12 +97,18 @@ function radio_click(val){
     if(val==1){
         $("#vw_env_doc_fdesde,#vw_env_doc_fhasta,#vw_env_doc_btn1").attr('disabled',false);
         $("#vw_env_doc_nrode,#vw_env_doc_nroa,#vw_env_doc_btn2").attr('disabled',true);
+        $("#vw_env_doc_nrode,#vw_env_doc_nroa,#vw_env_doc_btn2").val('');
     }else if (val==2){
-        $("#vw_env_doc_fdesde,#vw_env_doc_fhasta,#vw_env_doc_btn1").attr('disabled',true);
+        $("#vw_env_doc_fdesde,#vw_env_doc_fhasta,#vw_env_doc_btn1").attr('disabled',true);        
         $("#vw_env_doc_nrode,#vw_env_doc_nroa,#vw_env_doc_btn2").attr('disabled',false);
     }
 }
-
+function print_op(){
+    rows = $("#tabla_Doc_OP_2").getRowData().length;
+    if(rows!=0){
+        window.open("listado_op");
+    }    
+}
 function fn_up_grid(){
     if($("input:radio[name='myradio']:checked").val()==1){
         fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
@@ -89,6 +116,7 @@ function fn_up_grid(){
         fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
             '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
     }else if($("input:radio[name='myradio']:checked").val()==2){
+        if($("#vw_env_doc_nrode").val()=='' || $("#vw_env_doc_nroa").val()==''){mostraralertas('Ingrese Valores...<br>Ejemplo: Del 1 - Al 10');return false;}
         fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
             '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
         fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
@@ -123,10 +151,17 @@ function fn_bus_contrib_list_env_doc(per){
     
     $("#vw_env_doc_contrib").attr('maxlength',tam);
 
-    fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+    if($("input:radio[name='myradio']:checked").val()==1){
+        fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
             '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
-    fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+        fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
             '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
+    }else if($("input:radio[name='myradio']:checked").val()==2){
+        fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
+        fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
+            '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
+    }
     $("#dlg_bus_contr").dialog("close");    
 }
 

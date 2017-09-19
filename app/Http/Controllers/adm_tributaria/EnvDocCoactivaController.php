@@ -5,10 +5,11 @@ namespace App\Http\Controllers\adm_tributaria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Traits\DatesTranslator;
 
 class EnvDocCoactivaController extends Controller
 {
-
+    use DatesTranslator;
     public function index()
     {
         return view('adm_tributaria.vw_env_doc_coactiva');
@@ -39,21 +40,21 @@ class EnvDocCoactivaController extends Controller
             if($tip_bus=='1'){
                 $desde=$request['desde'];
                 $hasta=$request['hasta'];
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and fec_reg between '".$desde."' and '".$hasta."' and fch_env='".date('d-m-Y')."'");            
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and fec_reg between '".$desde."' and '".$hasta."' ");            
             }else if($tip_bus=='2'){
                 $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
                 $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and nro_fis between '".$del."' and '".$al."' and fch_env='".date('d-m-Y')."'");            
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and nro_fis between '".$del."' and '".$al."' ");            
             }
         }else{
             if($tip_bus=='1'){
                 $desde=$request['desde'];
                 $hasta=$request['hasta'];
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and fec_reg between '".$desde."' and '".$hasta."'");            
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and fec_reg between '".$desde."' and '".$hasta."'");            
             }else if($tip_bus=='2'){
                 $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
                 $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and nro_fis between '".$del."' and '".$al."'");            
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and nro_fis between '".$del."' and '".$al."'");            
             }
         }
         
@@ -77,15 +78,15 @@ class EnvDocCoactivaController extends Controller
         
         if(isset($grid)){
             if($tip_bus=='1'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('fec_reg',[$desde,$hasta])->where('fch_env',date('d-m-Y'))->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }else if($tip_bus=='2'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('nro_fis',[$del,$al])->where('fch_env',date('d-m-Y'))->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('nro_fis',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }
         }else{
             if($tip_bus=='1'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }else if($tip_bus=='2'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->whereBetween('nro_fis',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('nro_fis',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }
         }
         
@@ -101,6 +102,7 @@ class EnvDocCoactivaController extends Controller
                 trim($Datos->id_gen_fis),
                 trim($Datos->nro_fis),
                 date('d-m-Y', strtotime($Datos->fec_reg)),
+                trim($Datos->hora_env),
                 trim($Datos->anio),
                 trim($Datos->nro_doc),
                 str_replace('-','',trim($Datos->contribuyente)),
@@ -114,7 +116,19 @@ class EnvDocCoactivaController extends Controller
     
     function up_env_doc(Request $request){                    
         DB::table('recaudacion.orden_pago_master')->where('id_gen_fis',$request['id_gen_fis'])
-                ->update(['env_op'=>$request['env_op'],'fch_env'=>date('d-m-Y')]);        
+                ->update(['env_op'=>$request['env_op'],'fch_env'=>date('d-m-Y'),'hora_env'=>date('h:i A')]);        
         return response()->json(['msg'=>'si']);
+    }
+    
+    function imp_op(){        
+        $op = DB::select('select * from recaudacion.vw_genera_fisca where env_op=2 and verif_env=0 order by 4 asc');
+        
+        $fecha_larga = $this->getCreatedAtAttribute(date('d-m-Y'))->format('l,d \d\e F \d\e\l Y');
+        $view = \View::make('adm_tributaria.reportes.listado_op',compact('op','fecha_larga'))->render();
+
+        $pdf = \App::make('dompdf.wrapper');            
+        $pdf->loadHTML($view)->setPaper('a4');
+        return $pdf->stream();            
+
     }
 }

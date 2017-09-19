@@ -60,7 +60,7 @@
 <script type="text/javascript">
     sumTotal = 0;
     $(document).ready(function () {
-        $("#menu_tesoreria").show();
+        $("#menu_ventanilla").show();
         $("#li_tesoreria_emi_rec_pag").addClass('cr-active');
         jQuery("#table_Resumen_Recibos").jqGrid({
             url: 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val(),
@@ -265,8 +265,8 @@
                                     <label class="label">Tipo Documento:</label>                                   
                                     <label class="select">
                                         <select onchange="emi_rec_select_tipo_recibo(this.value);" id="vw_emi_rec_txt_selec_tip_doc" class="input-sm">                                       
-                                            @foreach ($tip_doc as $tip_doc)                                        
-                                            <option value='{{$tip_doc->tip_doc}}' >{{$tip_doc->tipo_documento}}</option>
+                                            @foreach ($tip_doc as $tip_doc1)                                        
+                                            <option value='{{$tip_doc1->tip_doc}}' >{{$tip_doc1->tipo_documento}}</option>
                                             @endforeach                                        
                                         </select><i></i>                        
                                 </section>
@@ -569,6 +569,88 @@
 
             </div>                   
         </div>        
+    </div>
+</div>
+
+<div id="dialog_Personas" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important;">
+<!--                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>-->
+                    <div class="panel-body">
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-6" style="padding-right:5px;">
+                                    <label class="label">Tipo Documento:</label>                                   
+                                    <label class="select">
+                                        <select id="cb_tip_doc_3" onchange="filtro_tipo_doc_pers(this.value);" class="input-sm">
+                                        @foreach ($tip_doc as $tip_doc2)
+                                        <option value='{{$tip_doc2->tip_doc}}' >{{trim($tip_doc2->tipo_documento)}}</option>
+                                        @endforeach                                          
+                                        </select><i></i> </label>                                                       
+                                </section>
+                                <section class="col col-6" style="padding-left:5px;">
+                                    <label class="label">Nro. Documento:</label>
+                                    <label class="input">
+                                        <input id="pers_nro_doc" type="text" onkeypress="return soloDNI(event);" maxlength="8" placeholder="00000000" class="input-sm">
+                                    </label>                                                                                            
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-3" style="padding-right:5px;">
+                                    <label class="label">Ape.Paterno:</label>
+                                    <label class="input">
+                                        <input id="pers_pat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                    </label>                                    
+                                </section>
+                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
+                                    <label class="label">Ape.Materno:</label>
+                                    <label class="input">
+                                        <input id="pers_mat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                    </label>                                                                     
+                                </section>
+                                <section class="col col-6" style="padding-left:5px;">
+                                    <label class="label">Nombres:</label>
+                                    <label class="input">
+                                        <input id="pers_nombres" type="text" maxlength="100" class="input-sm text-uppercase">
+                                    </label>                                                                     
+                                </section> 
+                            </div>                            
+                            <section>
+                                <label class="label">Razon Social:</label>
+                                <label class="input">
+                                    <input id="pers_raz_soc" type="text" class="input-sm text-uppercase">
+                                </label>                                                 
+                            </section>
+                            <div class="row">
+                                <section class="col col-6" style="padding-right:5px;">
+                                    <label class="label">Sexo:</label>                                   
+                                    <label class="select">
+                                        <select id="pers_sexo" class="input-sm text-uppercase">
+                                            <option value="-">Seleccionar</option>
+                                            <option value="1">Masculino</option>
+                                            <option value="0">Femenino</option>        
+                                        </select><i></i> </label>                                     
+                                </section>
+                                <section class="col col-6" style="padding-left:5px;">
+                                    <label class="label">Fecha Nac.:</label>
+                                    <label class="input">
+                                        <input id="pers_fnac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="dia/mes/año" class="input-sm">
+                                    </label>                                                                                                          
+                                </section>                                
+                            </div>
+<!--                            <section>
+                                <label class="label">Domicilio Fiscal:</label>
+                                <label class="input">
+                                    <input id="pers_dom_fis" type="text" class="input-sm text-uppercase">
+                                </label>                                
+                            </section>-->
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="dlg_bus_contr" style="display: none;">

@@ -80,7 +80,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#menu_ventanilla").show();
-        $("#li_menu_caja_est_cta").addClass('cr-active');
+        $("#li_vent_est_cta").addClass('cr-active');
         jQuery("#tabla_est_Cuenta").jqGrid({
             url: 'caja_est_cta_contrib?id_pers=0&desde=0&hasta=0',
             datatype: 'json', mtype: 'GET',

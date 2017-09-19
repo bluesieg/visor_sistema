@@ -89,7 +89,7 @@
                 {name: 'dpto', index: 'tlfono_celular', hidden:true},
                 {name: 'manz', index: 'tlfono_celular', hidden:true},
                 {name: 'lote', index: 'tlfono_celular', hidden:true},
-                {name: 'dom_fis', index: 'tlfono_celular', hidden:true},
+                {name: 'ref_dom_fis', index: 'tlfono_celular', hidden:true},
                 {name: 'tip_doc_conv', index: 'tlfono_celular', hidden:true},
                 {name: 'nro_doc_conv', index: 'tlfono_celular', hidden:true},
                 {name: 'conviviente', index: 'tlfono_celular', hidden:true},

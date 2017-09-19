@@ -179,6 +179,17 @@
                         </ul>	
                     </li>
                     <li class="">
+                        <a href="#" title="Ventanilla"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Ventanilla</span></a>
+                        <ul id="menu_ventanilla">
+                            <li id="li_tesoreria_emi_rec_pag">
+                                <a href="emi_recibo_master" title="Emision de Recibos de Pago"><i class="fa fa-lg fa-fw fa-file-text"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
+                            </li>
+                            <li id="li_vent_est_cta">
+                                <a href="estado_de_cta" title="Estado de Cuentas"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Estado de Cuentas</span></a>
+                            </li>
+                        </ul>	
+                    </li>
+                    <li class="">
                         <a href="#" title="Recaudación"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Recaudación</span></a>
                         <ul id="menu_recaudacion">
                             <li id="li_reca_op">
@@ -207,7 +218,18 @@
                                 <a href='alcabala' title="Alcabala"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Registro Alcabala</span></a>                            
                             </li>
                         </ul>	
-                    </li> 
+                    </li>
+                    <li class="">
+                        <a href="#" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-rebel"></i> <span class="menu-item-parent">Coactiva</span></a>
+                        <ul id="menu_coactiva">                            
+                            <li id="li_emision_rec">
+                                <a href="emision_rec" title="Apertura de Ejecucion Coactiva"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Emision REC</span></a>
+                            </li>
+                            <li id="li_recep_doc">
+                                <a href="recepcion_doc" title="Recepcion de Documentos"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Recepcion Doc.</span></a>
+                            </li>
+                        </ul>	
+                    </li>
                     <li class="">
                         <a href="#" title="Fraccionamiento"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fraccionamento</span></a>
                         <ul id="menu_fracc">                            
@@ -217,22 +239,8 @@
                         </ul>	
                     </li>
                     <li class="">
-                        <a href="#" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-rebel"></i> <span class="menu-item-parent">Coactiva</span></a>
-                        <ul id="menu_coactiva">                            
-                            <li id="li_coactiva">
-                                <a href="coactiva" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Coactivas</span></a>
-                            </li>
-                            <li id="li_recep_doc">
-                                <a href="recepcion_doc" title="Recepcion de Documentos"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Recepcion Doc.</span></a>
-                            </li>
-                        </ul>	
-                    </li>
-                    <li class="">
                         <a href="#"><i class="fa fa fa-lg fa-fw fa-fax"></i> <span class="menu-item-parent">Tesoreria</span></a>
-                        <ul id="menu_tesoreria">
-                            <li id="li_tesoreria_emi_rec_pag">
-                                <a href="emi_recibo_master" title="Emision de Recibos de Pago"><i class="fa fa-lg fa-fw fa-file-text"></i> <span class="menu-item-parent">Emision de Recibos</span></a>
-                            </li>
+                        <ul id="menu_tesoreria">                            
                             <li class="">
                                 <a href="#" title="Generar Recibos"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Generar Recibos</span></a>
                             </li>
@@ -243,10 +251,7 @@
                         <ul id="menu_caja">
                             <li id="li_menu_caja_movimientos">
                                 <a href="caja_movimient" title="Movimientos"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Movimientos</span></a>
-                            </li>
-                            <li id="li_menu_caja_est_cta">
-                                <a href="estado_de_cta" title="Estado de Cuentas"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Estado de Cuentas</span></a>
-                            </li>                            
+                            </li>                                                        
                         </ul>
                     </li>
                     <li class="">
@@ -325,12 +330,12 @@
                                 <section style="margin-top: 10px;">                                    
                                     <label class="label">Nuevo Contraseña:</label>
                                     <label class="input"> 
-                                        <input type="text" id="vw_usuario_cam_pass_1"></label>                                    
+                                        <input type="password" id="vw_usuario_cam_pass_1"></label>                                    
                                 </section>
                                 <section>                                    
                                     <label class="label">Confirmar Contraseña:</label>
                                     <label class="input"> 
-                                        <input type="text" id="vw_usuario_cam_pass_2"></label>                                   
+                                        <input type="password" id="vw_usuario_cam_pass_2"></label>                                   
                                 </section>                               
                             </div>
                         </div>
@@ -365,6 +370,8 @@
         <script src="{{ asset('js/pdf/jspdf.debug.js') }}"></script>
         <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
         <script src="{{ asset('archivos_js/configuracion.js') }}"></script>
+        
+        <script src="js/plugin/ckeditor/ckeditor.js"></script>
         <!--<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>--> 
 
         <!--<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->

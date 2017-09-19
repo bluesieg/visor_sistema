@@ -51,7 +51,7 @@ class Caja_MovimientosController extends Controller {
                         $ult = array_pop($chk);
                         $cant = count($chk)+1;
 //                        echo $prim.$ult."<br>";
-                        $value_formato_pred= DB::select('select sum(abo1_cta+abo2_cta+abo3_cta+abo4_cta) from adm_tri.vw_cta_cte2 where id_pers='.$request['id_pers'].' and id_tribu=104');
+                        $value_formato_pred= DB::select('select sum(abo1_cta+abo2_cta+abo3_cta+abo4_cta) from adm_tri.vw_cta_cte2 where id_contrib='.$request['id_pers'].' and id_tribu=104');
                         $pre_x_trim= DB::table('tesoreria.recibos_detalle')->where('id_rec_master',$val->id_rec_mtr)->where('id_trib',103)->value('p_unit');
 //                        $costo_sol= $val->total;
 //                        dd($costo_sol);
@@ -60,7 +60,7 @@ class Caja_MovimientosController extends Controller {
                                     ->update(['abo'.$i.'_cta'=>$pre_x_trim,'fec_abo'.$i=>date('d-m-Y')]);
                         }
                         if($value_formato_pred[0]->sum==0){
-                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_pers',$request['id_pers'])->where('id_tribu',104)->value('ivpp');
+                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',104)->value('ivpp');
                             for($x=1;$x<=4;$x++){
                                 $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',104)
                                         ->update(['abo'.$x.'_cta'=>($value_formato_pred/4),'fec_abo'.$x=>date('d-m-Y')]);

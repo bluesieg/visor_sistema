@@ -17,7 +17,7 @@
             N°.{{$recibo[0]->serie}}
         </div>
         <div style="position: absolute;margin-top: 90px;margin-left: 180px; font-size: 12px;">
-            {{$recibo[0]->pers_raz_soc}}
+            {{$recibo[0]->contribuyente}}
         </div>
         <div style="position: absolute;margin-top: 122px;margin-left: 180px; font-size: 12px;">
             {{$recibo[0]->usuario}}

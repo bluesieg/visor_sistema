@@ -28,18 +28,21 @@ function open_dialog_new_edit_Contribuyente() {
 function buscar_contrib(){
     fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes?buscar='+($("#vw_contrib_buscar").val()).toUpperCase());
 }
-function fn_consultar_persona(num){ 
-    if(num==1){
-        nro_doc=$("#txt_nro_doc").val();
+global_contrib_conviv=0;
+function fn_consultar_persona(num){
+    global_contrib_conviv=num;
+    if(global_contrib_conviv==1){
+        nro_doc=$("#txt_nro_doc").val();        
     }else{
         nro_doc=$("#contrib_nro_doc_conv").val();
-    }     
+    }
+    if(nro_doc==''){mostraralertas('Ingrese Numero de Documento');return false;}
     $.ajax({        
         url: 'consultar_persona?nro_doc='+nro_doc,
         type: 'GET',        
         success: function (data) {
             if(data){
-                if(num==1){
+                if(global_contrib_conviv==1){
                     $("#vw_contrib_contribuyente").val(data.contrib);
                     $("#vw_contrib_id_pers").val(data.id_pers);
                 }else{
@@ -47,13 +50,10 @@ function fn_consultar_persona(num){
                     $("#vw_contrib_id_conv").val(data.id_pers);
                 }                
             }else{
-//                MensajeExito('Personas','El Documento Ingresado no esta Registrado...');
                 dlg_new_persona(nro_doc);
             }
         },
-        error: function (data) {
-            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
-        }
+        error: function (data) { MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...'); }
     });
 }
 
@@ -99,7 +99,7 @@ function modificar_contrib(){
     $("#contrib_dpto_depa").val($("#table_Contribuyentes").getCell(id_contrib, 'dpto'));
     $("#contrib_manz").val($("#table_Contribuyentes").getCell(id_contrib, 'manz'));
     $("#contrib_lote").val($("#table_Contribuyentes").getCell(id_contrib, 'lote'));
-    $("#contrib_dom_fiscal").val($("#table_Contribuyentes").getCell(id_contrib, 'dom_fis'));
+    $("#contrib_dom_fiscal").val($("#table_Contribuyentes").getCell(id_contrib, 'ref_dom_fis'));
     $("#cb_tip_doc_2").val('02');
     $("#contrib_nro_doc_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc_conv'));
     $("#vw_contrib_id_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'id_conv'));
@@ -127,10 +127,11 @@ function update_contrib(){
             manz:$("#contrib_manz").val() || '0',
             lote:$("#contrib_lote").val() || '0',
             id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
-            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '3549',             
+            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
-            ref_dom_fis:$("#contrib_dom_fiscal").val() || '-'
+            ref_dom_fis:$("#contrib_dom_fiscal").val() || '-',
+            nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-'
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
@@ -165,7 +166,6 @@ function dlg_new_persona(nro_doc){
     if(tipo=='02'){
         fn_consultar_dni();
         $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
-//        $("#pers_pat,#pers_mat,#pers_nombres").val('');
         $("#pers_raz_soc").removeAttr('disabled');        
         $("#pers_raz_soc").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
@@ -185,17 +185,8 @@ function new_persona(){
             mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
             return false;
         }
-        if($("#pers_fnac").val()==''){
-            mostraralertasconfoco('Ingrese Fecha Nacimiento','#pers_fnac');
-            return false;
-        }
     }
-    
-//    if($("#pers_dom_fis").val()==''){
-//        mostraralertasconfoco('Ingrese Domicilio Fiscal','#pers_dom_fis');
-//        return false;
-//    }
-    
+
     $.ajax({  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         url: 'insert_personas',
@@ -207,13 +198,14 @@ function new_persona(){
             pers_raz_soc : $("#pers_raz_soc").val() || '-',
             pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
             pers_nro_doc : $("#pers_nro_doc").val() || '-',
-//            pers_dom_fis : $("#pers_dom_fis").val() || '-',
             pers_sexo : $("#pers_sexo").val() || '-',
             pers_fnac : $("#pers_fnac").val() || '1900-01-01'
         },
         success: function (data) {
-            dialog_close('dialog_Personas');            
-//            MensajeExito('Personas','Nueva Personas Guardada Correctamente...');
+            if(data){
+                dialog_close('dialog_Personas');
+                fn_consultar_persona(global_contrib_conviv);
+            }            
         },
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
@@ -254,10 +246,11 @@ function new_contrib() {
             manz:$("#contrib_manz").val() || '0',
             lote:$("#contrib_lote").val() || '0',
             id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
-            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '3549',             
+            id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
-            ref_dom_fis:($("#contrib_dom_fiscal").val()).toUpperCase() || '-'
+            ref_dom_fis:($("#contrib_dom_fiscal").val()).toUpperCase() || '-',
+            nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-'
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
@@ -336,6 +329,7 @@ function limpiar_dlg_contrib(){
     $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#txt_av_jr_calle_psje,#contrib_nro_mun").val('');
     $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente").val('');
     $("#contrib_est_civil").val('select');
+    $("#hiddentxt_av_jr_calle_psje").val('0');
 }
 
 

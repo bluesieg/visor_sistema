@@ -239,24 +239,28 @@ class ConvenioController extends Controller
         }
 
         $sql = DB::table('fraccionamiento.vw_trae_cuota_conv')->where('id_conv_mtr',$id_conv)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $array = array();
+        $sum = DB::select("select sum(cod_estado) as sum from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr=".$id_conv);
+        $array['verif_cancela'] = $sum[0]->sum;
         
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-        
+        $Lista->userdata = $array;
         foreach ($sql as $Index => $Datos) {            
             $Lista->rows[$Index]['id'] = $Datos->id_det_conv;
             if($Datos->cod_estado=='0'){
                 $check="<input type='checkbox' value=".$Datos->nro_cuota." onclick='check_tot_mes(".$Datos->total.",this)'>";
             }else{
-                $check="";
+                $check=$this->getCreatedAtAttribute($Datos->fecha_q_pago)->format('d-M-Y');
             }
             
             $Lista->rows[$Index]['cell'] = array(
                 $Datos->nro_cuota,
                 $Datos->total,
-                $Datos->estado,              
+                $Datos->estado,
+                $Datos->cod_estado,
                 $this->fecha_mes($Datos->fec_pago),
                 $check               
             );

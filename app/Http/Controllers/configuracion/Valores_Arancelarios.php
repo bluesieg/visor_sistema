@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\DB;
 class Valores_Arancelarios extends Controller {
 
     public function vw_val_arancel() {
-        return view('configuracion/vw_valores_arancelarios');
+        $sector = DB::select('select * from catastro.vw_sector order by 2');
+        return view('configuracion/vw_valores_arancelarios', compact('sector'));
     }
 
     function grid_valores_arancelarios(Request $request) {
-
-        header('Content-type: application/json');
-
-        $filtro = $request['filtro'];
+        $anio = $request['anio'];
+        $sec=$request['sec'];
+        $mzna=$request['mzna'];
+        $filtro=$anio.$sec.$mzna;
         $totalg = DB::select("select count(id_arancel) as total from catastro.vw_arancel where filtro='" . $filtro . "'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
@@ -44,7 +45,7 @@ class Valores_Arancelarios extends Controller {
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        $Lista->asd = $filtro;
         foreach ($sql as $Index => $Datos) {
             $Lista->rows[$Index]['id'] = $Datos->id_arancel;
             $Lista->rows[$Index]['cell'] = array(

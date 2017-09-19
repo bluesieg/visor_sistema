@@ -18,8 +18,8 @@
                 <div class="row">
                     <div class="col-xs-12">                       
                         <div class="text-right">
-                            <div class="row">
-                                <section class="col-lg-2" style="padding-right: 3px;">
+                            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left:0px">
+                                <section class="col-lg-2" style="padding-right: 0px;">
                                     <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
                                         <header style="background: #01a858 !important;color: white" >
                                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
@@ -32,7 +32,7 @@
                                         </header>                                    
                                     </div>
                                 </section>
-                                <section class="col-lg-4" style="padding-right:3px;padding-left: 3px">
+                                <section class="col-lg-4" style="padding-right:5px;padding-left: 3px">
                                     <div class="input-group">
                                         <span class="input-group-addon">Desde<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
                                         <input placeholder="dd/mm/aaaa" id="vw_env_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
@@ -45,7 +45,7 @@
                                         </span>
                                     </div>                                            
                                 </section>
-                                <section class="col-lg-2" style="padding-right: 3px;padding-left: 3px">
+                                <section class="col-lg-2" style="padding-right: 0px;padding-left: 25px">
                                     <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
                                         <header style="background: #01a858 !important;color: white" >
                                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
@@ -71,10 +71,8 @@
                                         </span>
                                     </div>                                            
                                 </section>
-                                <section class="col-lg-1 text-right" style="padding-left:3px">                                            
-                                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white" title="IMPRIMIR">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imp
-                                    </button>                                          
+                                <section class="col-lg-1 text-right" style="padding-left:3px">
+                                    <a onclick="print_op();" class="btn btn-labeled bg-color-magenta txt-color-white"> <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir</a>
                                 </section>
                             </div>                  
                         </div>                        
@@ -83,7 +81,7 @@
             </div>
             <div class="well well-sm well-light" style="margin-top:-20px;">
                 <div class="row">                    
-                    <section class="col-lg-5" id="content_2" style="padding-right:5px;width: 45%">                        
+                    <section class="col-lg-5" id="content_2" style="padding-right:5px;">                        
                         <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;">
                             <header style="background: #01a858 !important;color: white" >
                                     <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
@@ -93,7 +91,7 @@
                         <table id="tabla_Doc_OP"></table>
                         <div id="p_tabla_Doc_OP"></div>
                     </section>
-                    <section class="col-lg-2 text-align-center" style="padding-right:5px;padding-left: 5px;width: 10%">
+                    <section class="col-lg-1 text-align-center" style="padding-right:0px;padding-left: 0px;">
                         <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 15px;"  >
                             <header style="background: #01a858 !important;color: white" >
                                     <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
@@ -108,7 +106,7 @@
                         <br><br>
                         <a onclick="all_left();" class="btn btn-default btn-circle btn-lg"><i class="fa fa-angle-double-left"></i></a>
                     </section>
-                    <section class="col-lg-5" id="content_3" style="padding-left: 5px;width: 45%">
+                    <section class="col-lg-6" id="content_3" style="padding-left: 5px;">
                        <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
                             <header style="background: #01a858 !important;color: white" >
                                     <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
@@ -135,13 +133,14 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','monto'],
+            colNames: ['id_gen_fis', 'Nro', 'Fecha','Hora', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','Monto S/.'],
             rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
                 {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 70},
-                {name: 'fec_reg', index: 'fec_reg', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 50},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 75},
+                {name: 'hora', index: 'hora', hidden:true},
+                {name: 'anio', index: 'anio', hidden: true},
                 {name: 'nro_doc', index: 'nro_doc',hidden: true},                
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'estado', index: 'estado', hidden: true},
@@ -160,18 +159,19 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','monto'],
+            colNames: ['id_gen_fis', 'Nro', 'Fecha','Hora', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','Monto S/.'],
             rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
                 {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 70},
-                {name: 'fec_reg', index: 'fec_reg', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 50},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 75},
+                {name: 'hora', index: 'hora', width: 70,align:'center'},
+                {name: 'anio', index: 'anio', hidden: true},
                 {name: 'nro_doc', index: 'nro_doc',hidden: true},                
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'estado', index: 'estado', hidden: true},
                 {name: 'verif_env', index: 'verif_env', hidden: true},
-                {name: 'monto', index: 'monto', width: 85,align:'center'}
+                {name: 'monto', index: 'monto', width: 85,align:'center'}                
             ],
             pager: '#p_tabla_Doc_OP_2',
             rowList: [15, 20],

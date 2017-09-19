@@ -55,14 +55,15 @@ function grid_fracc_de_contrib(){
         url: 'grid_detalle_fracc?id_conv=0',
         datatype: 'json', mtype: 'GET',
         height: 325, autowidth: true,
-        colNames: ['N°', 'Cuota Mensual', 'Estado', 'Fecha Pago', 'Selec.'],
+        colNames: ['N°', 'Cuota Mensual', 'Estado', 'cod_est', 'Fecha Pago', 'Selec.'],
         rowNum: 12, sortname: 'nro_cuota', sortorder: 'asc', viewrecords: true,
         colModel: [
             {name: 'nro_cuota', index: 'nro_cuota',width: 20,align:'center'},
-            {name: 'total', index: 'total',width: 70,align:'center'},
-            {name: 'estado', index: 'estado',width: 60, align:'center'},
+            {name: 'total', index: 'total',width: 60,align:'center'},
+            {name: 'estado', index: 'estado',width: 50, align:'center'},
+            {name: 'cod_est', index: 'cod_est', hidden: true},
             {name: 'fec_pago', index: 'fec_pago', width: 60, align:'center'},
-            {name: 'seleccione', index: 'seleccione', align: 'center', width: 30}
+            {name: 'seleccione', index: 'seleccione', align: 'center', width: 50}
         ],        
         rowList: [12, 15],
         gridComplete: function () {
@@ -70,8 +71,21 @@ function grid_fracc_de_contrib(){
             if (rows.length > 0) {
                 var firstid = jQuery('#t_fracc_crono_contrib').jqGrid('getDataIDs')[0];
                 $("#t_fracc_crono_contrib").setSelection(firstid);
-            }
+            }            
             $("#t_fracc_pago_mes_total").val('0.00');
+            var verif = jQuery("#t_fracc_crono_contrib").getGridParam('userData').verif_cancela;
+            if(verif==rows.length){
+                $("#t_fracc_crono_contrib").closest(".ui-jqgrid").block({
+                    message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Fraccionamiento Cancelado</div>",
+                    theme: true,
+                    themedCSS:{
+                        width: "40%",
+                        left: "30%",
+                        border: "3px solid #a00"
+                    }
+                });
+            }else{ $("#t_fracc_crono_contrib").closest(".ui-jqgrid").unblock(); }
+            
         },            
         ondblClickRow: function (Id) {}
     });
@@ -90,7 +104,7 @@ function gen_rec_pago_fracc(){
 //    return false;
     $.confirm({
         title: '.:Recibo:.',
-        content: 'Generar Recibo por '+cuota_checks+' Cuota(s).',
+        content: 'Pagar Cuota Nro: '+cuota_checks,
         buttons: {
             Confirmar: function () {
                 MensajeDialogLoadAjax('vw_emision_rec_pag_fracc', 'Generando Recibo...');
@@ -111,16 +125,16 @@ function gen_rec_pago_fracc(){
                     success: function (data) {
                         if (data) {
                             imp_fracc_insert_detalle(data);
+                            $.confirm({
+                                title: 'Codigo de Caja',
+                                content: '<center><h3 style="margin-top:0px;font-size:40px">'+data+'</h3></center>',
+                                buttons: {
+                                    Aceptar: function () {}                                
+                                }
+                            });
                         } else {
                             mostraralertas('* Ha Ocurrido un Error al Generar Recibo.<br>* Actualice el Sistema e Intentelo Nuevamente.');
-                        }
-                        $.confirm({
-                            title: 'Codigo de Caja',
-                            content: '<center><h3 style="margin-top:0px;font-size:40px">'+data+'</h3></center>',
-                            buttons: {
-                                Aceptar: function () {}                                
-                            }
-                        });
+                        }                        
                     },
                     error: function (data) {
                         mostraralertas('* Error de Red.<br>* Contactese con el Administrador.');

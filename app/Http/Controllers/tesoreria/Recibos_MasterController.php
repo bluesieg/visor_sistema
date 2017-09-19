@@ -332,9 +332,9 @@ class Recibos_MasterController extends Controller
     
     function buscar_persona(Request $request){
         $nro_doc= $request['nro_doc'];
-        $persona = DB::table('adm_tri.personas')->where('pers_nro_doc',$nro_doc)->first();
+        $persona = DB::table('adm_tri.vw_personas')->where('pers_nro_doc',$nro_doc)->first();
         if(isset($persona->pers_raz_soc)){
-            return response()->json(['raz_soc'=>$persona->pers_raz_soc,'msg'=>'si','id_pers'=>$persona->id_pers]);
+            return response()->json(['raz_soc'=>$persona->contribuyente,'msg'=>'si','id_pers'=>$persona->id_pers]);
         }else{
             return response()->json(['msg'=>'no']);
         }
@@ -346,5 +346,17 @@ class Recibos_MasterController extends Controller
         $personas->pers_nro_doc= $request['pers_nro_doc'];
         $personas->save();        
         return $personas->id_pers;
+    }
+    
+    function verif_est_cta(Request $request){
+        $check=str_split($request['check']);
+        $id_contrib=$request['id_contrib'];
+        $array =  array();
+        for($i=$check[0];$i<=end($check);$i++){
+            $sql=DB::table('adm_tri.vw_cta_cte2')->value('trim'.$i.'_est');            
+            if($sql=='2'){ $array[]=$i; }
+        }
+        return $array;
+        
     }
 }

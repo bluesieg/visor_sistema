@@ -117,7 +117,6 @@ function soloNumeroTab(evt) {// con guin y slash ( - / )
     }
 }
 
-
 function dialog_close(div) {
     $('#' + div).dialog("close");
 }
@@ -205,7 +204,7 @@ function autocompletar_av_jr_call(textbox) {
                 focus: function (event, ui) {
                     $("#" + textbox).val(ui.item.label);
                     $("#hidden" + textbox).val(ui.item.value);
-                    $("#" + textbox).attr('maxlength', ui.item.label.length);
+//                    $("#" + textbox).attr('maxlength', ui.item.label.length);
                     return false;
                 },
                 select: function (event, ui) {
@@ -306,6 +305,8 @@ function llenar_combo_dpto(input) {// 0 form contribuyentes
 
 global_prov = 0;
 function llenar_combo_prov(input, cod_dpto) {// 0 form contribuyentes
+    MensajeDialogLoadAjax(input,'Cargando');
+    
     cod_dpto = cod_dpto || "04";
     $('#' + input).prop('options').length = 1;
     $.ajax({
@@ -321,17 +322,21 @@ function llenar_combo_prov(input, cod_dpto) {// 0 form contribuyentes
             } else {
                 setTimeout(function () {
                     $('#contrib_setprov').val('select');
-                }, 1000);
+                }, 500);
             }
         },
         error: function (data) {
             mostraralertas('* Error al traer  Provincias...!');
         }
-    });    
-    llenar_combo_dist('contrib_dist',$("#contrib_prov option:selected").val());
+    });
+    setTimeout(function () { 
+        llenar_combo_dist('contrib_dist',$("#contrib_prov option:selected").val());        
+        MensajeDialogLoadAjaxFinish(input);        
+    }, 500);
 }
 global_dist = 0;
 function llenar_combo_dist(input, cod_prov) {// 0 form contribuyentes
+    MensajeDialogLoadAjax('contrib_dist','Cargando');
     cod_prov = cod_prov || "0401";
     $('#' + input).prop('options').length = 1;
     $.ajax({
@@ -346,6 +351,9 @@ function llenar_combo_dist(input, cod_prov) {// 0 form contribuyentes
             mostraralertas('* Error al traer Distritos...!');
         }
     });
+    setTimeout(function () { 
+        MensajeDialogLoadAjaxFinish('contrib_dist');
+    }, 300);
 }
 
 function fn_actualizar_grilla(grilla, url) {

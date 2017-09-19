@@ -118,6 +118,13 @@ function insert_Recibos_Master() {
         success: function (data) {
             if (data) {
                 array_detalle_rec(data);
+                $.confirm({
+                    title: 'Codigo de Caja',
+                    content: '<center><h3 style="margin-top:0px;font-size:40px">'+data+'</h3></center>',
+                    buttons: {
+                        Aceptar: function () {}                                
+                    }
+                });
             } else {
                 mostraralertas('* Ha Ocurrido un Error al Generar Recibo.<br>* Actualice el Sistema e Intentelo Nuevamente.');
             }
@@ -196,42 +203,7 @@ function consultar_persona() {
                 $("#vw_emi_rec_txt_id_pers").val(result.id_pers);
                 MensajeDialogLoadAjaxFinish('vw_emi_rec_txt_nombres_raz_soc');
             } else if (result.msg == 'no') {
-                if ($("#vw_emi_rec_txt_selec_tip_doc").val() == '02') {
-                    $.ajax({
-                        type: 'GET',
-                        url: 'http://py-devs.com/api/dni/' + nro_doc + '/?format=json',
-                        datatype: 'json',
-                        success: function (data) {
-                            if(data!==undefined){
-                                raz_soc = data.ape_paterno + ' ' + data.ape_materno + ' ' + data.nombres;
-                                $("#vw_emi_rec_txt_nombres_raz_soc").val(raz_soc);
-                                guardar_new_persona();
-                            }                            
-                            MensajeDialogLoadAjaxFinish('vw_emi_rec_txt_nombres_raz_soc');                            
-                        },
-                        error: function (data) {
-                            MensajeDialogLoadAjaxFinish('vw_emi_rec_txt_nombres_raz_soc');
-                            mostraralertas('* No se Encontró el DNI<br>* Error de Red.<br>* Ingrese los datos Manualmente.');
-                        }
-                    });
-                } else if ($("#vw_emi_rec_txt_selec_tip_doc").val() == '00') {
-                    $.ajax({
-                        type: 'GET',
-                        url: 'http://py-devs.com/api/ruc/' + nro_doc + '/?format=json',
-                        datatype: 'json',
-                        success: function (data) {
-                            if(data!==undefined){
-                                $("#vw_emi_rec_txt_nombres_raz_soc").val(data.nombre);
-                                guardar_new_persona();
-                            }                            
-                            MensajeDialogLoadAjaxFinish('vw_emi_rec_txt_nombres_raz_soc');
-                        },
-                        error: function (data) {
-                            mostraralertas('* No se Encontró el RUC<br>Porfavor Ingrese los Datos Manualmente...');
-                            MensajeDialogLoadAjaxFinish('vw_emi_rec_txt_nombres_raz_soc');
-                        }
-                    });
-                }
+                dlg_new_persona(nro_doc);
             }
         },
         error: function (result) {
@@ -240,19 +212,79 @@ function consultar_persona() {
         }
     });
 }
-function guardar_new_persona() {    
-    $.ajax({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        type: 'POST',
-        url: 'insert_new_persona',
-        data: {
-            pers_nro_doc:$("#vw_emi_rec_txt_nro_doc").val(),
-            pers_raz_soc:$("#vw_emi_rec_txt_nombres_raz_soc").val()
-        },
-        success: function(data){
-            $("#vw_emi_rec_txt_id_pers").val(data);
+function dlg_new_persona(nro_doc){
+    $("#dialog_Personas").dialog({
+        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: PERSONAS :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () { new_persona(); }                
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () { $(this).dialog("close"); }
+            }],
+        close: function (event, ui) { limpiar_personas();},
+        open: function (){ limpiar_personas(); }
+    }).dialog('open');
+    $("#cb_tip_doc_3").val($("#vw_emi_rec_txt_selec_tip_doc").val());
+    $("#pers_nro_doc").val(nro_doc);
+    tipo = $("#cb_tip_doc_3").val();
+    if(tipo=='02'){
+        fn_consultar_dni();
+        $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
+        $("#pers_raz_soc").removeAttr('disabled');        
+        $("#pers_raz_soc").attr('disabled',true);
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',8);        
+    }else if (tipo=='00'){
+        fn_consultar_ruc();
+        $("#pers_raz_soc").removeAttr('disabled');
+        $("#pers_raz_soc").val('');
+        $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',11);        
+    }
+}
+
+function new_persona(){
+    if($("#cb_tip_doc_3").val()=='02'){
+        if($("#pers_sexo").val()=='-'){
+            mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
+            return false;
         }
-    });
+        if($("#pers_fnac").val()==''){
+            mostraralertasconfoco('Ingrese Fecha Nacimiento','#pers_fnac');
+            return false;
+        }
+    }
+    
+    $.ajax({  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'insert_personas',
+        type: 'POST',
+        data:{
+            pers_ape_pat : $("#pers_pat").val() || '-',
+            pers_ape_mat : $("#pers_mat").val() || '-',
+            pers_nombres : $("#pers_nombres").val() || '-',
+            pers_raz_soc : $("#pers_raz_soc").val() || '-',
+            pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
+            pers_nro_doc : $("#pers_nro_doc").val() || '-',
+            pers_sexo : $("#pers_sexo").val() || '-',
+            pers_fnac : $("#pers_fnac").val() || '1900-01-01'
+        },
+        success: function (data) {
+            consultar_persona();
+            dialog_close('dialog_Personas');
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });    
+}
+function limpiar_personas(){
+    $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac").val('');
 }
 
 function limpiar_form_rec_varios() {

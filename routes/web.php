@@ -124,9 +124,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
         Route::get('recaudacion_get_op', 'EnvDocCoactivaController@fis_getOP');        
         Route::get('updat_env_doc','EnvDocCoactivaController@up_env_doc');
+        Route::get('listado_op','EnvDocCoactivaController@imp_op');
     });
     
-      
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
     
     Route::post('contribuyente_update', 'adm_tributaria\Contribuyentes@modificar_contribuyente'); //update contribuyente
@@ -146,7 +146,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('update_valor_arancel', 'Valores_Arancelarios@update_valor_arancel');
         Route::post('delete_valor_arancel', 'Valores_Arancelarios@delete_valor_arancel');
     });
-
     /*     * ****************************************   VALORES UNITARIOS    ************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {
         Route::get('val_unit', 'Valores_Unitarios@show_vw_val_unit')->name('valores_unitarios'); // VW_VALORES_UNITARIOS
@@ -165,6 +164,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_grid_cta_cte2','Recibos_MasterController@tabla_cta_cte_2');
         Route::get('grid_pred_arbitrios','Recibos_MasterController@tabla_cta_arbitrios');
         Route::get('grid_cta_pago_arbitrios','Recibos_MasterController@cta_pago_arbitrios');
+        Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
     });
     Route::group(['namespace' => 'caja'], function() {
 //        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
@@ -187,10 +187,15 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_fracc_de_contrib','ConvenioController@fracc_de_contrib');
         Route::get('grid_detalle_fracc','ConvenioController@detalle_fracc');
     });    
-    Route::group(['namespace'=>'coactiva'],function(){///COACTIVA
+    Route::group(['namespace'=>'coactiva'],function(){///COACTIVA/////////////
         Route::resource('coactiva','CoactivaController');
+        Route::get('emision_rec','CoactivaController@emision_apertura_resolucion');
         Route::get('recepcion_doc','CoactivaController@recep_doc');
-//        Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
+        Route::get('coactiva_recep_doc','CoactivaController@get_doc');
+        Route::get('recib_doc_coactiva','CoactivaController@resep_documentos');
+        Route::get('coactiva_gen_resolucion','CoactivaController@get_doc_recibidos');
+        Route::get('rec_apertura','CoactivaController@rec_apertura');
+        Route::get('editor_text','CoactivaController@editor_text');
     });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {

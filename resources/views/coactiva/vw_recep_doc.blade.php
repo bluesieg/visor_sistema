@@ -4,6 +4,11 @@
     .icon-addon .form-control, .icon-addon.addon-md .form-control {
         padding-left: 10px; 
     }
+    .vl_check{
+        background: white !important;
+        margin-top: 3px;
+        margin-right: 5px;
+    }
 </style>
 <section id="widget-grid" class="">    
     <div class="row">
@@ -22,14 +27,32 @@
                                         </header>
                                     </div>                                   
                                 </section>
-                                <section class="col-lg-6" style="padding-left:5px">
+                                <section class="col-lg-3" style="padding-left:5px; padding-right: 5px">
                                     <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
                                         <header style="background: #01a858 !important;color: white; padding-right: 15px !important" >
                                             <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                            <h2>RANGO FECHA</h2>
+                                            <h2>FILTRAR POR NUMERO</h2>
+                                            <div class="smart-form">
+                                                <label class="toggle">
+                                                    <input type="radio" onchange="radio_click_resep_doc(this.value)" name="myradio_resep_doc" value="2" checked="checked">
+                                                    <i class="vl_check"  data-swchon-text="ON" data-swchoff-text="OFF"></i></label>
+                                            </div>
                                         </header>
                                     </div>                                    
-                                </section>     
+                                </section>                                
+                                <section class="col-lg-5" style="padding-left:5px;">                                            
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Del <i class="icon-append fa fa-hashtag" style="margin-left: 5px;"></i></span>
+                                        <input class="form-control" id="vw_resep_doc_nrode" type="text" disabled="">
+                                        <span class="input-group-addon">Al <i class="icon-append fa fa-hashtag" style="margin-left: 5px;"></i></span>
+                                        <input class="form-control" id="vw_resep_doc_nroa" type="text" disabled="">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" id="vw_resep_doc_btn2" type="button" onclick="up_resep_doc(2);" title="BUSCAR" disabled="">
+                                                <i class="glyphicon glyphicon-search"></i>&nbsp;Buscar
+                                            </button>
+                                        </span>
+                                    </div>                                            
+                                </section>
                             </div>                    
                             <div class="row" style="margin-top: 7px">
                                 <section class="col-lg-3" style="padding-right: 5px;">
@@ -37,25 +60,38 @@
                                         <span class="input-group-addon">Documento<i class="icon-append fa fa-file-text" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
                                             <select id="vw_recep_doc_tip_doc" class="form-control">
-                                                <option value="1">OP</option>
-                                                <option value="2">RD</option>
+                                                <option value="1">(OP) Orden de Pago</option>
+                                                <option value="2">(RD) Res. de Determin.</option>
                                             </select>
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-6" style="padding-left: 5px;">
+                                <section class="col-lg-3" style="padding-left:5px;padding-right: 5px;">
+                                    <div class="jarviswidget jarviswidget-color-white" style="margin-bottom: 0px;"  >
+                                        <header style="background: #01a858 !important;color: white; padding-right: 15px !important" >
+                                            <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                            <h2>FILTRAR POR FECHA</h2>
+                                            <div class="smart-form">
+                                                <label class="toggle">
+                                                    <input type="radio" onchange="radio_click_resep_doc(this.value)" name="myradio_resep_doc" value="1" checked="checked">
+                                                    <i class="vl_check"  data-swchon-text="ON" data-swchoff-text="OFF"></i></label>
+                                            </div>
+                                        </header>
+                                    </div>                                    
+                                </section>
+                                <section class="col-lg-5" style="padding-left: 5px">
                                     <div class="input-group">
                                         <span class="input-group-addon">Desde<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
-                                        <input placeholder="dd/mm/aaaa" id="vw_env_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <input placeholder="dd/mm/aaaa" id="vw_resep_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
                                         <span class="input-group-addon">Hasta<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
-                                        <input placeholder="dd/mm/aaaa" id="vw_env_doc_fhasta" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <input placeholder="dd/mm/aaaa" id="vw_resep_doc_fhasta" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-success" id="vw_env_doc_btn1" type="button" onclick="fn_up_grid();" title="BUSCAR">
+                                            <button class="btn btn-success" id="vw_resep_doc_btn1" type="button" onclick="up_resep_doc(1);" title="BUSCAR">
                                                 <i class="glyphicon glyphicon-search"></i>&nbsp;Buscar
                                             </button>
                                         </span>
                                     </div>
-                                </section>
+                                </section>                                
                             </div>                            
                         </div>                        
                     </div>
@@ -66,20 +102,20 @@
                     <div class="col-xs-12">                        
                         <div class="row">
                             <section id="content_2" class="col col-lg-10" style="padding-right:5px">
-                                <table id="tabla_Doc_OP"></table>
-                                <div id="p_tabla_Doc_OP"></div>
+                                <table id="t_recep_doc"></table>
+                                <div id="p_t_recep_doc"></div>
                             </section>
                             <section class="col col-lg-2" style="padding-left:5px"> 
                                 <div style="background: #eee !important;padding:0px 7px; border: 1px solid #DDD;border-radius: 3px;margin-bottom: 8px;">
                                     <form class="smart-form">
                                         <label class="toggle" >
-                                            <input type="checkbox" onclick="seleccionar_todo();" id="chk_sel_todo_doc" disabled="">
+                                            <input type="checkbox" onclick="check_all_resep_doc();" id="chk_sel_todo_doc" disabled="">
                                             <i data-swchon-text="ON" data-swchoff-text="OFF"></i>Check Todo</label>
                                     </form>
                                 </div>
-                                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewpiso()" >
+                                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="recibir_doc();" >
                                     <span>
-                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                        <i class="glyphicon glyphicon-check"></i>
                                     </span>
                                     <label>Recibir Doc.</label>
                                 </button>                                                                                             
@@ -96,37 +132,43 @@
     $(document).ready(function () {
         $("#menu_coactiva").show();
         $("#li_recep_doc").addClass('cr-active');        
-        jQuery("#tabla_Doc_OP").jqGrid({
-            url: 'recaudacion_get_op?id_contrib=0&env_op=0',
+        jQuery("#t_recep_doc").jqGrid({
+            url: 'coactiva_recep_doc?tip_doc=0',
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif'],
+            colNames: ['id_gen_fis', 'Nro', 'Fecha','Hora', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','Monto S/.','Recibir'],
             rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption:'Documentos Enviados', align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
                 {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
-                {name: 'fec_reg', index: 'fec_reg', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 60},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 60},
+                {name: 'hora', index: 'hora', align: 'center', width: 60},
+                {name: 'anio', index: 'anio', hidden: true},
                 {name: 'nro_doc', index: 'nro_doc',hidden: true},                
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'estado', index: 'estado', hidden: true},
-                {name: 'verif_env', index: 'verif_env', hidden: true}
+                {name: 'verif_env', index: 'verif_env', hidden: true},
+                {name: 'monto', index: 'monto', width: 85,align:'center'},
+                {name: 'recibir', index: 'recibir', width: 60,align:'center'}
             ],
-            pager: '#p_tabla_Doc_OP',
+            pager: '#p_t_recep_doc',
             rowList: [15, 20],
             gridComplete: function () {
-                var idarray = jQuery('#tabla_Doc_OP').jqGrid('getDataIDs');
+                var idarray = jQuery('#t_recep_doc').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#tabla_Doc_OP').jqGrid('getDataIDs')[0];
-                            $("#tabla_Doc_OP").setSelection(firstid);    
-                        }
+                        var firstid = jQuery('#t_recep_doc').jqGrid('getDataIDs')[0];
+                        $("#t_recep_doc").setSelection(firstid);
+                        $("#chk_sel_todo_doc").attr('disabled',false);    
+                    }else{
+                        $("#chk_sel_todo_doc").attr('disabled',true);
+                    }
             },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
         $(window).on('resize.jqGrid', function () {
-            $("#tabla_Doc_OP").jqGrid('setGridWidth', $("#content_2").width());
+            $("#t_recep_doc").jqGrid('setGridWidth', $("#content_2").width());
         });
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',

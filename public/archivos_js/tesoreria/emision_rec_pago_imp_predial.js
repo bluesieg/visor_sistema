@@ -17,9 +17,8 @@ function dialog_emi_rec_pag_imp_predial() {
         open: function () {limpiar_form_rec_imp_predial();},
         close: function () {limpiar_form_rec_imp_predial();}
     }).dialog('open');
-//    $("#vw_emi_rec_txt_selec_tip_doc").val('02');
-//    $("#vw_emi_rec_txt_nro_doc").attr('maxlength',8);
 }
+interrup=0;
 function gen_recibo_imp_predial(){
     var Seleccionados = new Array();
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
@@ -27,25 +26,39 @@ function gen_recibo_imp_predial(){
     });
     s_checks = Seleccionados.join('');
     
-    var formatosSeleccionados = new Array();
-    $('input[type=checkbox][name=chk_trim_form]:checked').each(function() {
-        formatosSeleccionados.push($(this).val());
-    });
-    formatos_checks = formatosSeleccionados.join('');
-//    alert("Dias seleccionados => " + s_checks);
-//    return false;
-    if($("#vw_emi_rec_imp_pre_contrib").val()==''){
-        mostraralertasconfoco('Ingrese un Contribuyente','#vw_emi_rec_imp_pre_contrib');
-        return false;
-    }
     if($("#vw_emi_rec_imp_pred_glosa").val()==''){
         mostraralertasconfoco('Ingrese Glosa del recibo.','#vw_emi_rec_imp_pred_glosa');
+        return false;
+    }
+    if($("#vw_emi_rec_imp_pre_contrib").val()==''){
+        mostraralertasconfoco('Ingrese un Contribuyente','#vw_emi_rec_imp_pre_contrib');
         return false;
     }
     if(select_check==0){
         mostraralertasconfoco('Haga click en un Trimestre para Generar el Recibo','#vw_emi_rec_imp_pre_contrib');
         return false;
     }
+    
+    $.ajax({
+        url:'verif_est_cta_coactiva',
+        type:'GET',
+        data:{check:s_checks,id_contrib:$("#vw_emi_rec_imp_pre_id_pers").val()},
+        success: function(data){
+            if(data.length>0){
+                interrup=1;
+                mostraralertas('No se Puede Generar El Recibo<br>Trimestre(s): '+data+', Estan en Cobranza Coactiva'); 
+//                break;
+            }else{interrup=0;}
+        }        
+    });
+    
+//    if(interrup==1){return false;}
+//    e.preventDefault();
+    var formatosSeleccionados = new Array();
+    $('input[type=checkbox][name=chk_trim_form]:checked').each(function() {
+        formatosSeleccionados.push($(this).val());
+    });
+    formatos_checks = formatosSeleccionados.join('');
     
     $.confirm({
         title: '.:Recibo:.',
@@ -68,6 +81,13 @@ function gen_recibo_imp_predial(){
                     success: function (data) {
                         if (data) {
                             imp_pred_insert_detalle(data);
+                            $.confirm({
+                                title: 'Codigo de Caja',
+                                content: '<center><h3 style="margin-top:0px;font-size:40px">'+data+'</h3></center>',
+                                buttons: {
+                                    Aceptar: function () {}                                
+                                }
+                            });
                         } else {
                             mostraralertas('* Ha Ocurrido un Error al Generar Recibo.<br>* Actualice el Sistema e Intentelo Nuevamente.');
                         }
@@ -142,7 +162,7 @@ function calc_tot_a_pagar_predial(num){
     } else {
         select_check--;        
         global_tot_a_pagar=(global_tot_a_pagar-pre_x_trim);
-        $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(global_tot_a_pagar,2,'.',','));
+        $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(Math.abs(global_tot_a_pagar),2,'.',','));
     }   
 }
 var select_check_2=0;

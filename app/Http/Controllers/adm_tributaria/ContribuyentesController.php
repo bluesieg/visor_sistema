@@ -26,9 +26,7 @@ class ContribuyentesController extends Controller
     public function create(Request $request)
     {            
         $data = new Contribuyentes();
-//        $data->tipo_doc=$request['tipo_doc'];
         $data->tipo_persona=$request['tipo_persona'];
-//        $data->nro_doc=$request['nro_doc'];
         $data->tlfno_fijo=$request['tlfno_fijo']; 
         $data->tlfono_celular=$request['tlfono_celular']; 
         $data->email=$request['email'];
@@ -48,7 +46,8 @@ class ContribuyentesController extends Controller
         $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
         $data->id_persona=$id_persona;
         $data->activo=1;
-        $data->fch_inscripcion=date('Y-m-d');        
+        $data->fch_inscripcion=date('Y-m-d');
+        $data->nom_via_2=$request['nom_via_2'];
         $data->save();        
         return $data->id_contrib;
       
@@ -87,6 +86,7 @@ class ContribuyentesController extends Controller
             $val->id_pers=$request['id_pers']; 
             $val->id_conv=$request['id_conv'];
             $val->ref_dom_fis= strtoupper($request['ref_dom_fis']);
+            $val->nom_via_2=$request['nom_via_2'];
             $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
             $val->id_persona=$id_persona;                    
             $val->save();  
@@ -112,7 +112,6 @@ class ContribuyentesController extends Controller
         $data->pers_raz_soc = $request['pers_raz_soc'];
         $data->pers_tip_doc = $request['pers_tip_doc'];
         $data->pers_nro_doc = $request['pers_nro_doc'];
-//        $data->pers_dom_fis = $request['pers_dom_fis'];
         $data->pers_sexo = $request['pers_sexo'];
         $data->pers_fnac = $request['pers_fnac'];
         $data->save();        
@@ -122,22 +121,20 @@ class ContribuyentesController extends Controller
     function consultar_persona(Request $request){
         $nro_doc = $request['nro_doc'];        
         $contribuyente = DB::table('adm_tri.vw_personas')->where('pers_nro_doc',$nro_doc)->get();
-//        dd($contribuyente[0]->contribuyente);
         if(isset($contribuyente[0]->contribuyente)){
             return response()->json([
                     'contrib' => trim(str_replace('-','',$contribuyente[0]->contribuyente)),
                     'id_pers' => trim(str_replace('-','',$contribuyente[0]->id_pers)),
             ]);
         }
-        
     }
     
     function grid_contrib(Request $request){
         $buscar=$request['buscar'];
         if(isset($request['buscar'])){
-            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_contribuyentes_vias where contribuyente like '%".$buscar."'");
+            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_contribuyentes where contribuyente like '%".$buscar."'");
         }else{
-            $totalg = DB::select('select count(id_contrib) as total from adm_tri.vw_contribuyentes_vias');
+            $totalg = DB::select('select count(id_contrib) as total from adm_tri.vw_contribuyentes');
         }
         
         $page = $_GET['page'];
@@ -161,9 +158,9 @@ class ContribuyentesController extends Controller
             $start = 0;
         }
         if(isset($request['buscar'])){
-            $sql = DB::table('adm_tri.vw_contribuyentes_vias')->where('contribuyente', 'like', '%'.$buscar.'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $sql = DB::table('adm_tri.vw_contribuyentes')->where('contribuyente', 'like', '%'.$buscar.'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }else{
-            $sql = DB::table('adm_tri.vw_contribuyentes_vias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $sql = DB::table('adm_tri.vw_contribuyentes')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }
         
         $Lista = new \stdClass();
@@ -195,7 +192,7 @@ class ContribuyentesController extends Controller
                 trim($Datos->dpto),
                 trim($Datos->manz),
                 trim($Datos->lote),
-                trim($Datos->dom_fis),                                
+                trim($Datos->ref_dom_fis),                                
                 trim($Datos->tip_doc_conv),
                 trim($Datos->nro_doc_conv),
                 trim($Datos->conviviente),

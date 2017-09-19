@@ -20,14 +20,17 @@
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
-                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-5">
+                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-6 text-left">
                                 <label>Filtro Año:</label>
                                 <select id="vw_val_arancel_cb_anio" onchange="click_btn_buscar();" class="input-sm">
                                     <option value="select" selected="" disabled="">Año.</option>
                                 </select><i></i>
                                 <label>Sector:</label>
                                 <select id="vw_val_arancel_cb_sector" onchange="llenar_combo_mzna(this.value);" class="input-sm">
-                                    <option value="select" selected="" disabled="">Sector.</option>                                    
+                                    <option value="select" selected="" disabled="">Sector.</option>
+                                    @foreach ($sector as $sector)                                        
+                                    <option value='{{$sector->id_sec}}' >{{$sector->sector}}</option>
+                                    @endforeach 
                                 </select><i></i>
                                 <label> Manzana:</label>
                                 <select id="vw_val_arancel_cb_mzna" onchange="click_btn_buscar();" class="input-sm">
@@ -72,25 +75,7 @@
         get_global_anio_uit('vw_val_arancel_cb_anio');
         var sector_global = 0;
 
-        $.ajax({
-            url: 'get_sector_val_arancel',
-            type: 'GET',
-            success: function (data) {
-                for (i = 0; i <= data.length - 1; i++) {
-                    $('#vw_val_arancel_cb_sector').append('<option value=' + data[i].sector + '>' + data[i].sector + '</option>');
-                }
-                if (sector_global == 0) {
-                    sector_global = 1;
-                    $('#vw_val_arancel_cb_sector').val('01');
-                } else {
-                    $("#btn_vw_valores_arancelarios_Buscar").click();
-                }
-            },
-            error: function (data) {
-                alert(' Error al llenar combo Sector...');
-                MensajeDialogLoadAjaxFinish('content', '.:: CARGANDO ...');
-            }
-        });
+
         var mzna_global = 0;
         var d = new Date();
         if (mzna_global == 0) {
@@ -104,7 +89,7 @@
         }
 
         jQuery("#table_Val_Arancel").jqGrid({
-            url: 'grid_val_arancel?filtro=' + filtro,
+            url: 'grid_val_arancel?anio='+$("#vw_val_arancel_cb_anio").val()+'&sec='+$("#vw_val_arancel_cb_sector option:selected").text()+'&mzna='+$("#vw_val_arancel_cb_mzna option:selected").text(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
@@ -138,7 +123,9 @@
         });
         $("#val_arancel_cod_via").keypress(function (e) {
             if (e.which == 13) {
-                cod_via = $('#val_arancel_cod_via').val();
+                cod_via = ponerCeros(5,$("#val_arancel_cod_via").val());
+                
+                $('#val_arancel_cod_via').val(cod_via);
                 get_global_cod_via('val_arancel_nom_via',cod_via,'val_arancel_cod_via');
             }
         });
