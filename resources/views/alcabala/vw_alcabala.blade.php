@@ -177,6 +177,7 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
+        contrib_global=0;
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
             datatype: 'json', mtype: 'GET',
@@ -202,7 +203,10 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                             $("#table_contrib").setSelection(firstid);    
                         }
-                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_ctb_list_alcab(rowid);} } ); 
+                        if(contrib_global==0)
+                        {   contrib_global=1;
+                            jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_ctb_list_alcab(rowid);} } ); 
+                        }
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_ctb_list_alcab(Id)}
@@ -490,21 +494,44 @@
                         </header>
                     </div>
                 </section>
-                <div class="col-xs-9" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Predio a Transferir &nbsp;<i class="fa fa-home"></i></span>
-                        <div class=""  >
-                            <select id='selpredios' class="form-control col-lg-8" style="height: 32px;" onchange="fn_cal_pred()">
-                            
-                            </select>
+                <div class="widget-body col-xs-3" style="padding: 0px;">
+                        <div  class="smart-form">
+                            <div class="col-xs-12">
+                                <div class="panel panel-success cr-panel-sep" style="height: 150px;padding: 0px;">
+                                    <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
+                                    <div class="panel-body cr-body" style="padding: 0px;">
+                                        <div id="dlg_img_view"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xs-3" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">% Adquirido &nbsp;<i class="fa fa-cog"></i></span>
-                        <div>
-                            <input id="dlg_por_adquirido" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" onkeypress="return soloNumeroTab(event);"  >
+                <div class="col-xs-9">
+                    <div class="col-xs-12" style="padding: 0px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Predio a Transferir &nbsp;<i class="fa fa-home"></i></span>
+                            <div class=""  >
+                                <select id='selpredios' class="form-control col-lg-8" style="height: 32px;" onchange="fn_cal_pred()">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-7" style="padding: 0px; margin-top: 15px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Porcentaje Adquirido % &nbsp;<i class="fa fa-cog"></i></span>
+                            <div>
+                                <input id="dlg_por_adquirido" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" onkeypress="return soloNumeroTab(event);" maxlength="3"  placeholder="0.00%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12"></div>
+                    <div class="col-xs-7" style="padding: 0px; margin-top: 15px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Fecha Transferencia &nbsp;<i class="fa fa-calendar"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input id="dlg_fec_trans" type="text" name="request" placeholder="Ingresar Fecha" class="datepicker" data-dateformat='dd/mm/yy' style="height: 32px; padding-left: 5px;width: 100%;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -521,7 +548,7 @@
                     </div>
                 </div>
                 
-                <div class="col-xs-7" style="padding: 0px; margin-top: 10px;">
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Tipo Doc. Transferencia &nbsp;<i class="fa fa-file"></i></span>
                         <div class=""  >
@@ -533,14 +560,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-5" style="padding: 0px; margin-top: 10px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Fecha Transferencia &nbsp;<i class="fa fa-calendar"></i></span>
-                        <div class="icon-addon addon-md">
-                            <input id="dlg_fec_trans" type="text" name="request" placeholder="Ingresar Fecha" class="datepicker" data-dateformat='dd/mm/yy' style="height: 32px; padding-left: 5px;width: 100%;">
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
                     <div class="input-group input-group-md">

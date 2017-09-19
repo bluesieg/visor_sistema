@@ -59,12 +59,34 @@ function call_list_contrib_carta(tip)
 }
 function fn_new_carta()
 {
+    limpiar_carta_req()
     $("#dlg_new_carta").dialog({
         autoOpen: false, modal: true, width: 1100, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Generar Nueva Carta de Requerimiento</h4></div>"
         }).dialog('open');
+}
+function limpiar_carta_req()
+{
+    $("#dlg_contri_carta_doc,#dlg_contri_carta,#dlg_contri_carta_dom,#dlg_hor_fis,#dlg_otros").val("");
+    $("#dlg_contri_carta_hidden").val(0);
+    $('#table_fiscalizadores tbody tr').each(function() {$(this).remove();});
+    $('#cbx_con,#cbx_lic,#cbx_der').prop('checked', true);
+    $('#cbx_otr').prop('checked', false);
+    $('#dlg_otros').prop('disabled', true);
+}
+function validarotros()
+{
+    if($('#cbx_otr').is(':checked'))
+    {
+        $('#dlg_otros').prop('disabled', false);
+        $("#dlg_otros").focus();
+    }
+    else
+    {
+        $('#dlg_otros').prop('disabled', true);
+    }
 }
 function poner_fisca()
 {
@@ -99,11 +121,17 @@ function fn_confirmar_carta()
         mostraralertasconfoco("Seleccione Fecha de Fizcalización","dlg_fec_fis");
         return false;
     }
+    if($("#dlg_hor_fis").val()==0||$("#dlg_hor_fis").val()=="")
+    {
+        mostraralertasconfoco("Seleccione Hora de Fizcalización","dlg_hor_fis");
+        return false;
+    }
     if($('#table_fiscalizadores > tbody tr').length==0)
     {
         mostraralertasconfoco("Agregar Fizcalizadores","selfisca");
         return false;
     }
+    if($('#dlg_otros').prop('checked')&&$('#dlg_otros').val()==""){otro=1;}
     $.SmartMessageBox({
             title : "Confirmación Final!",
             content : "Está por generar Carta de Requerimiento para este Contribuyente, desea Grabar la información",
@@ -126,10 +154,16 @@ function fn_confirmar_carta()
 }
 function fn_save_carta()
 {
+    con=0;lic=0;der=0;otro=0;
+    if($('#cbx_con').prop('checked')){con=1;}
+    if($('#cbx_lic').prop('checked')){lic=1;}
+    if($('#cbx_der').prop('checked')){der=1;}
+    if($('#cbx_otr').prop('checked')){otro=1;}
+    
     MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
         $.ajax({url: 'carta_save',
         type: 'GET',
-        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val()},
+        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val(),hor:$("#dlg_hor_fis").val(),con:con,lic:lic,der:der,otro:otro,otrotext:$("#dlg_otros").val()},
         success: function(r) 
         {
             if(r>0)
@@ -155,6 +189,7 @@ function fn_save_carta()
             call_list_contrib_carta(1);
             MensajeDialogLoadAjaxFinish('dlg_new_carta');
             $("#dlg_new_carta").dialog("close");
+            vercarta(r);
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -163,4 +198,8 @@ function fn_save_carta()
             console.log(data);
         }
         });
+}
+function vercarta(id)
+{
+    window.open('car_req_rep/'+id);
 }

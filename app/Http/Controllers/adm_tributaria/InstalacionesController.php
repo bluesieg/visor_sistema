@@ -6,24 +6,25 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instalaciones;
+use App\Models\Predios\Predios_Anio;
+use App\Models\Predios\Predios_Contribuyentes;
 
 class InstalacionesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function calculos_ivpp($id)
+    {
+        DB::select("select adm_tri.actualiza_base_predio(".$id.")");
+        $Predios_Anio=new Predios_Anio;
+        $Predios_Anio=  $Predios_Anio::where("id_pred_anio","=",$id )->first();
+        $Predios_Contribuyentes=new Predios_Contribuyentes;
+        $Predios_Contribuyentes=  $Predios_Contribuyentes::where("id_pred","=",$Predios_Anio->id_pred )->first();
+        DB::select("select adm_tri.calcular_ivpp($Predios_Anio->anio,$Predios_Contribuyentes->id_contrib)");
+    }
     public function create(Request $request)
     {
         $insta=new Instalaciones;
@@ -54,11 +55,10 @@ class InstalacionesController extends Controller
         $insta->ecs = $request['ecs'];
         $insta->ecc = $request['ecc'];
         $insta->id_cla = $request['cla'];
-        $insta->id_pre = $request['id_pre'];
+        $insta->id_pred_anio = $request['id_pre'];
         $insta->antiguedad = date("Y")-$request['anio'];
-        
         $insta->save();
-        DB::select("select adm_tri.actualiza_base_predio(".$insta->id_pre.")");
+        $this->calculos_ivpp($insta->id_pre);
         return $insta->id_inst;
     }
 
@@ -110,7 +110,7 @@ class InstalacionesController extends Controller
             $val->antiguedad = date("Y")-$request['anio'];
             
             $val->save();
-            DB::select("select adm_tri.actualiza_base_predio(".$val->id_pre.")");
+            $this->calculos_ivpp($val->id_pred_anio);
         }
         return "edit".$id;
     }
@@ -123,22 +123,22 @@ class InstalacionesController extends Controller
 
      public function destroy(Request $request)
     {
-         $pred=0;
+        $pred_anio=0;
         $insta=new Instalaciones;
         $val=  $insta::where("id_inst","=",$request['id'] )->first();
         if(count($val)>=1)
         {
-            $pred=$val->id_pre;
+            $pred_anio=$val->id_pred_anio;
             $val->delete();
         }
-        DB::select("select adm_tri.actualiza_base_predio(".$pred.")");
+        $this->calculos_ivpp($pred_anio);
         return "destroy ".$request['id'];
     }
     
     public function listinsta($id)
     {
         header('Content-type: application/json');
-        $totalg = DB::select("select count(id_inst) as total from adm_tri.vw_instalaciones where id_pre='$id'");
+        $totalg = DB::select("select count(id_inst) as total from adm_tri.vw_instalaciones where id_pred_anio='$id'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -160,7 +160,7 @@ class InstalacionesController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pre='$id' order by id_inst asc");
+        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pred_anio='$id' order by id_inst asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;

@@ -30,18 +30,19 @@ class AlcabalaController extends Controller
     public function create(Request $request)
     {
         $alcabala= new Alcabala;
-        $alcabala->id_pred=$request["pred"];
+        $alcabala->id_pred_anio=$request["pred"];
         $alcabala->id_adqui=$request["adqui"];
         $alcabala->adqui_rep_leg=$request["adqui_rl"];
         $alcabala->id_trans=$request["trans"];
         $alcabala->trans_rep_leg=$request["trans_rl"];
         $alcabala->fecha_reg=date("d/m/Y");
+        $alcabala->hora_reg = date("H:i");
         $alcabala->id_doc_cont=$request["contra"];
         $alcabala->id_doc_tranf=$request["doctrans"];
         $alcabala->fec_doc_tranf=$request["fectrans"];
         $alcabala->nom_notaria= strtoupper($request["notaria"]);
         $alcabala->id_dec=DB::table('alcabala.deducciones')->where('flg_act',1)->get()->first()->id_dec;
-        $alcabala->id_tas=DB::table('alcabala.tasas')->where('flg_act',1    )->get()->first()->id_tas;
+        $alcabala->id_tas=DB::table('alcabala.tasas')->where('flg_act',1)->get()->first()->id_tas;
         $alcabala->base_impon_autoavaluo=$request["bimpo"];
         $alcabala->porcen_adqui=$request["poradq"];
         $alcabala->valor_transferencia=$request["vtrans"];

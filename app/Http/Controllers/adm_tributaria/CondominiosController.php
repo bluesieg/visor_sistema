@@ -6,14 +6,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Condominios;
+use App\Models\Predios\Predios_Anio;
+use App\Models\Predios\Predios_Contribuyentes;
 
 class CondominiosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function calculos_ivpp($id)
+    {
+        DB::select("select adm_tri.actualiza_base_predio(".$id.")");
+        $Predios_Anio=new Predios_Anio;
+        $Predios_Anio=  $Predios_Anio::where("id_pred_anio","=",$id )->first();
+        $Predios_Contribuyentes=new Predios_Contribuyentes;
+        $Predios_Contribuyentes=  $Predios_Contribuyentes::where("id_pred","=",$Predios_Anio->id_pred )->first();
+        DB::select("select adm_tri.calcular_ivpp($Predios_Anio->anio,$Predios_Contribuyentes->id_contrib)");
+    }
     public function index()
     {
         //
@@ -25,9 +31,9 @@ class CondominiosController extends Controller
         $condos->id_contrib = $request['contrib'];
         $condos->direccion = $request['dir'];
         $condos->porcent = $request['porc'];
-        $condos->id_pred = $request['id_pre'];
+        $condos->id_pred_anio = $request['id_pre'];
         $condos->save();
-        DB::select("select adm_tri.actualiza_base_predio(".$condos->id_pred.")");
+        $this->calculos_ivpp($condos->id_pred_anio);
         return $condos->id_condom;
     }
 
@@ -51,6 +57,9 @@ class CondominiosController extends Controller
     public function show($id)
     {
         $pisovw= DB::table('adm_tri.vw_condominios')->where('id_condom',$id)->get();
+        $pisovw[0]->ape_pat=trim($pisovw[0]->ape_pat);
+        $pisovw[0]->ape_mat=trim($pisovw[0]->ape_mat);
+        $pisovw[0]->nombres=trim($pisovw[0]->nombres);
         return $pisovw;
     }
 
@@ -65,17 +74,10 @@ class CondominiosController extends Controller
             $val->porcent = $request['porc'];
             $val->save();
         }
-        DB::select("select adm_tri.actualiza_base_predio(".$val->id_pred.")");
+        $this->calculos_ivpp($val->id_pred_anio);
         return "edit".$id;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
@@ -83,21 +85,21 @@ class CondominiosController extends Controller
 
      public function destroy(Request $request)
     {
-         $pred=0;
+        $pred=0;
         $condos=new Condominios;
         $val=  $condos::where("id_condom","=",$request['id'] )->first();
         if(count($val)>=1)
         {
-            $pred=$val->id_pred;
+            $pred=$val->id_pred_anio;
             $val->delete();
         }
-        DB::select("select adm_tri.actualiza_base_predio(".$pred.")");
+        $this->calculos_ivpp($pred);
         return "destroy ".$request['id'];
     }
     public function listcondos($id)
     {
         header('Content-type: application/json');
-        $totalg = DB::select("select count(id_condom) as total from adm_tri.vw_condominios where id_pred='$id'");
+        $totalg = DB::select("select count(id_condom) as total from adm_tri.vw_condominios where id_pred_anio='$id'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -119,7 +121,7 @@ class CondominiosController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_condominios where id_pred='$id' order by id_condom asc");
+        $sql = DB::select("select * from adm_tri.vw_condominios where id_pred_anio='$id' order by id_condom asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;

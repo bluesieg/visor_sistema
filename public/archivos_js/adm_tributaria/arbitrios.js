@@ -202,7 +202,7 @@ function mod_arb()
         success: function(r) 
         {
             getpisos(r[0].id_pisos);
-            $("#btnupdatearb").show();
+            $("#btnupdatearb").hide();
             $("#btnsavearb").hide();
             $("#inp_hidd_arb").val(r[0].id_arb);
             $("#sel_bar_frecu").val(r[0].frecu_bar);

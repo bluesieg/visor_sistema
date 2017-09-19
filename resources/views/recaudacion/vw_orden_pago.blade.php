@@ -197,6 +197,7 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
+        contrib_global=0;
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
             datatype: 'json', mtype: 'GET',
@@ -219,7 +220,10 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                             $("#table_contrib").setSelection(firstid);    
                         }
-                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
+                    if(contrib_global==0)
+                    {   contrib_global=1;
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
+                    }
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_bus_contrib_list(Id)}

@@ -14,8 +14,8 @@ class OrdenPagoController extends Controller
     public function index()
     {
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        $sectores = DB::select('select * from catastro.sectores order by sector');
-        $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by sector limit 1) ');
+        $sectores = DB::select('select * from catastro.sectores where id_sec>0 order by sector');
+        $manzanas = DB::select('select * from catastro.manzanas where id_mzna>0 and  id_sect=(select id_sec from catastro.sectores where id_sec>0 order by sector limit 1) ');
         return view('recaudacion/vw_orden_pago',compact('anio_tra','sectores','manzanas'));
     }
     public function create(Request $request)
@@ -26,7 +26,7 @@ class OrdenPagoController extends Controller
         }
         if($request['tip']=='4')
         {
-            $sql = DB::select("select id_contrib from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' group by id_contrib order by id_contrib");
+            $sql = DB::select("select id_contrib from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' and anio=".$request['an']." group by id_contrib order by id_contrib");
             $orden=0;
             foreach ($sql as $contri)
             {
@@ -45,7 +45,7 @@ class OrdenPagoController extends Controller
         $fisca= new orden_pago_master;
         $fisca->anio=date("Y");
         $fisca->fec_reg=date("d/m/Y");
-        $fisca->id_per=$per;
+        $fisca->id_contrib=$per;
         $fisca->ivpp_afecto=$ivpp->ivpp_afecto;
         $fisca->ivpp=$ivpp->ivpp;
         $fisca->save();
@@ -139,8 +139,8 @@ class OrdenPagoController extends Controller
             }
             else
             {
-                $totalg = DB::select("select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$sec."' and mzna='".$manz."' order by 1 asc)");
-                $sql = DB::select("select * from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.predios where sec='".$sec."' and mzna='".$manz."' order by 1 asc) order by $sidx $sord limit $limit offset $start");
+                $totalg = DB::select("select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.vw_predi_urba where sec='".$sec."' and mzna='".$manz."' order by 1 asc)");
+                $sql = DB::select("select * from recaudacion.vw_genera_fisca where id_per in (select id_contrib from adm_tri.vw_predi_urba where sec='".$sec."' and mzna='".$manz."' order by 1 asc) order by $sidx $sord limit $limit offset $start");
             }
 
             $total_pages = 0;
@@ -233,7 +233,14 @@ class OrdenPagoController extends Controller
             return response()->json($Lista);
         }
     }
-    
+    public function get_trimestre_actual($datetime)
+    {
+        $mes = date("m",strtotime($datetime));
+        $mes = is_null($mes) ? date('m') : $mes;
+        $trim=floor(($mes-1) / 3)+1;
+        return $trim;
+    }
+
     public function reporte($tip,$id,$sec,$man) 
     {
         if($tip=='1'||$tip=='3')
@@ -241,8 +248,10 @@ class OrdenPagoController extends Controller
             $sql    =DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
             if(count($sql)>=1)
             {
+                $sql->trimestre=$this->get_trimestre_actual($sql->fec_reg);
                 $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d, F Y ');
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql->anio)->get()->first();
+                
             }
             $view =  \View::make('recaudacion.reportes.op', compact('sql','UIT'))->render();
             $pdf = \App::make('dompdf.wrapper');
@@ -257,6 +266,8 @@ class OrdenPagoController extends Controller
             {
                 for($i=0;$i<count($sql);$i++)
                 {
+                    $sql[$i]->index=$i;
+                    $sql[$i]->trimestre=$this->get_trimestre_actual($sql[$i]->fec_reg);
                     $sql[$i]->fec_reg=$this->getCreatedAtAttribute($sql[$i]->fec_reg)->format('l d, F Y ');
                 }
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();
@@ -264,7 +275,7 @@ class OrdenPagoController extends Controller
             $view =  \View::make('recaudacion.reportes.op_masivo', compact('sql','UIT'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
-            return $pdf->download("OP.pdf");
+            return $pdf->stream("OP.pdf");
         }
         if($tip=='5')
         {
@@ -274,6 +285,8 @@ class OrdenPagoController extends Controller
             {
                 for($i=0;$i<count($sql);$i++)
                 {
+                    $sql[$i]->index=$i;
+                    $sql[$i]->trimestre=$this->get_trimestre_actual($sql[$i]->fec_reg);
                     $sql[$i]->fec_reg=$this->getCreatedAtAttribute($sql[$i]->fec_reg)->format('l d, F Y ');
                 }
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();

@@ -42,7 +42,7 @@
                   <td class="nro">2</td>
                 <th style="width: 22%">NÚMERO DE DOCUMENTO</th>
                 <td class="nro" >3</td>
-                <th style="width: 60%">APELLIDOS y NOMBRES / RAZON SOCIAL</th>
+                <th style="width: 60%">APELLIDOS y NOMBRES / RAZÓN SOCIAL</th>
               </tr>
             </thead>
             <tbody>

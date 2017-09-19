@@ -19,20 +19,15 @@ class PensionistaController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $pensionista=new \App\Models\pensionista;
-        $val=  $pensionista::where("id_pre","=",$request['id_pre'] )->first();
+        $val=  $pensionista::where("id_pred_anio","=",$request['id_pre'] )->first();
         if(count($val)>=1)
         {
             $pensionista=$val;
         }
-        $pensionista->id_pre = $request['id_pre'];
+        $pensionista->id_pred_anio = $request['id_pre'];
         $pensionista->id_con = $request['condi'];
         $pensionista->bas_leg = $request['basleg'];
         $pensionista->nro_exp = $request['exp'];
@@ -52,7 +47,7 @@ class PensionistaController extends Controller
 
     public function show($id)
     {
-        $pensionista= DB::table('adm_tri.pensionista')->where('id_pre',$id)->get();
+        $pensionista= DB::table('adm_tri.pensionista')->where('id_pred_anio',$id)->get();
         if(count($pensionista)>=1)
         {
             $pensionista[0]->fec_res=date("d/m/Y",strtotime(str_replace("/", "-", $pensionista[0]->fec_res)));
@@ -64,39 +59,22 @@ class PensionistaController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $pensionista=new \App\Models\pensionista;
-        $val=  $pensionista::where("id_pre","=",$request['id'] )->first();
+        $val=  $pensionista::where("id_pred_anio","=",$request['id'] )->first();
         if(count($val)>=1)
         {
             $val->delete();

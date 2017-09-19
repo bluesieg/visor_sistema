@@ -40,11 +40,7 @@
                 <div class="cabdiv" style="width: 100%; font-size: 0.9em !important">código contribuyente</div>
                 <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{ $sql->id_persona }}</div>
               </td>
-              <td style="width: 15%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
-                <div class="cabdiv" style="width: 100%;font-size: 0.9em !important">código del predio</div>
-                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{ $sql->cod_cat }}</div>
-              </td>
-              
+                           
               <td style="width: 10%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%;font-size: 0.9em !important">ANEXO</div>
                 <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{substr("000".$sql->nro_anexo,-4,4)}}</div>
@@ -95,10 +91,10 @@
         </thead>
         <tbody>
           <tr>
-              <td>{{$predio->lugar_pr_rust}}</td>
-              <td>{{$predio->ubicac_pr_rus}}</td>
-              <td>{{$predio->klm}}</td>
-              <td>{{$predio->nom_pre_pr_rus}}</td>
+              <td>{{$sql->lugar_pr_rust}}</td>
+              <td>{{$sql->ubicac_pr_rus}}</td>
+              <td>{{$sql->klm}}</td>
+              <td>{{$sql->nom_pre_pr_rus}}</td>
           </tr>
         </tbody>
       </table>
@@ -116,10 +112,10 @@
         </thead>
         <tbody>
           <tr>
-              <td>{{substr($predio->norte,0,30)}}</td>
-              <td>{{substr($predio->sur,0,30)}}</td>
-              <td>{{substr($predio->este,0,30)}}</td>
-              <td>{{substr($predio->oeste,0,30)}}</td>
+              <td>{{substr($sql->norte,0,30)}}</td>
+              <td>{{substr($sql->sur,0,30)}}</td>
+              <td>{{substr($sql->este,0,30)}}</td>
+              <td>{{substr($sql->oeste,0,30)}}</td>
           </tr>
         </tbody>
       </table>
@@ -157,7 +153,7 @@
           </tr>
         </tbody>
       </table>
-      <div style="height: 440px">
+      <div style="height: 420px">
         <div class="lado3" >
             INFORMACIÓN DE PISOS:    
         </div>

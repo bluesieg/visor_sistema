@@ -4,21 +4,25 @@
     
 <div class='cr_content col-xs-12'>
     <div class="col-xs-12">
-        <div class="col-lg-9 col-md-6 col-xs-6"></div>
-        <div class="col-lg-3 col-md-6 col-xs-6">
-            <label class="control-label col-lg-6">Año de Trabajo</label>
-            <div class='col-lg-6'>
-                <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
-                @foreach ($anio_tra as $anio)
-                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                @endforeach
-                </select>
+        <div class="col-lg-9">
+            <h1 class="txt-color-green"><b>Predios Rusticos...</b></h1>
+        </div>
+        <div class="col-lg-3 col-md-6 col-xs-12">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Año de Trabajo <i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                    @foreach ($anio_tra as $anio)
+                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                    @endforeach
+                    </select>
+                </div>
             </div>
         </div>
     </div>
     
     <div class="col-lg-6 col-xs-12">
-            <h1 class="txt-color-green"><b>Predios Rusticos...</b></h1>
+          
     </div>
     <div class="col-lg-6 col-md-12 col-xs-12">
         <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">                                        
@@ -67,10 +71,10 @@
                 {name: 'sec', index: 'sec', align: 'center', width: 20,hidden:true},
                 {name: 'mnza', index: 'mnza', align: 'center', width: 20,hidden:true},
                 {name: 'lote', index: 'lote', align: 'center', width: 50,hidden:true},
-                {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 80},
-                {name: 'mzna_dist', index: 'mzna_dist', align: 'center', width: 40},
-                {name: 'lote_dist', index: 'lote_dist', align: 'center', width: 40},
-                {name: 'nro_mun', index: 'nro_mun', width: 40,align: "right"},
+                {name: 'cod_cat', index: 'cod_cat', align: 'center',hidden:true},
+                {name: 'mzna_dist', index: 'mzna_dist', align: 'center',hidden:true},
+                {name: 'lote_dist', index: 'lote_dist', align: 'center',hidden:true},
+                {name: 'nro_mun', index: 'nro_mun', width: 40,hidden:true},
                 {name: 'descripcion', index: 'descripcion', width: 100},
                 {name: 'contribuyente', index: 'contribuyente', width: 150},
                 {name: 'nom_via', index: 'nom_via', width: 100},
@@ -195,6 +199,51 @@
                 },
             ondblClickRow: function (Id){clickmodinst();}
         });
+        contrib_global=0;
+        jQuery("#table_contrib").jqGrid({
+            url: 'obtiene_cotriname?dat=0',
+            datatype: 'json', mtype: 'GET',
+            height: '300px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_pers','codigo','DNI/RUC','contribuyente'],
+            rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
+            colModel: [
+                {name: 'id_pers', index: 'id_pers', hidden: true},
+                {name: 'id_per', index: 'id_per', align: 'center',width: 100},
+                {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260},
+                
+            ],
+            pager: '#pager_table_contrib',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_contrib').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
+                            $("#table_contrib").setSelection(firstid);    
+                        }
+                    if(contrib_global==0)
+                    {   contrib_global=1;
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_rus(rowid);} } ); 
+                    }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){fn_bus_contrib_list_rus(Id)}
+        });
+        var globalvalidador=0;
+        $("#dlg_contri").keypress(function (e) {
+            if (e.which == 13) {
+                if(globalvalidador==0)
+                {
+                    fn_bus_contrib_rus();
+                    globalvalidador=1;
+                }
+                else
+                {
+                    globalvalidador=0;
+                }
+            }
+        });
     });
     jQuery('#rpiso_inp_estruc').keypress(function(tecla) {
         $("#rpiso_inp_estruc").val($("#rpiso_inp_estruc").val().toUpperCase());
@@ -206,6 +255,12 @@
 </script>
 @stop
 <script src="{{ asset('archivos_js/adm_tributaria/predios_ru.js') }}"></script>
+<div id="dlg_bus_contr" style="display: none;">
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
+        <table id="table_contrib"></table>
+        <div id="pager_table_contrib"></div>
+    </article>
+</div> 
 <div id="dlg_reg_dj" style="display: none;">
                     <div class="widget-body">
                     <div  class="smart-form">
@@ -225,7 +280,7 @@
                                     <div class="col col-9">
                                         <label class="label">Contribuyente/Razón Social:</label>
                                         <label class="input">
-                                            <input id="dlg_contri" type="text"  class="input-sm" disabled="" >
+                                            <input id="dlg_contri" type="text"  class="input-sm" autofocus="">
                                         </label>
                                     </div>
                       
@@ -282,7 +337,7 @@
                                     <div class="col col-4 pdboth_dlg_cr" style="padding-right: 10px !important;">
                                         <label class="label">Nombre Predio:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_nompre" type="text"  class="input-sm" maxlength="50">
+                                            <input id="dlg_inp_nompre" type="text"  class="input-sm" maxlength="100">
                                         </label>
                                     </div>
                                    
@@ -326,7 +381,7 @@
                             <div class="panel panel-success ">
                                 <div class="panel-heading bg-color-success">.:: Datos Relativos Al Terreno ::.</div>
                                 <div class="panel-body cr-body">
-                                    <div class='col col-2' >
+                                    <div class='col col-3' >
                                         <label class="label">Tipo Terreno:</label>
                                         <select id='dlg_sel_tterr' class="form-control" >
                                                 @foreach ($tipoterr as $tter)
@@ -334,7 +389,7 @@
                                                 @endforeach
                                         </select>
                                     </div>
-                                    <div class='col col-2 pdboth_dlg_cr' >
+                                    <div class='col col-3 pdboth_dlg_cr' >
                                         <label class="label">Uso Terreno:</label>
                                         <select id='dlg_sel_uterr' class="form-control" >
                                                 @foreach ($usoterr as $uter)
@@ -342,7 +397,7 @@
                                                 @endforeach
                                         </select>
                                     </div>
-                                    <div class='col col-2 pdboth_dlg_cr'>
+                                    <div class='col col-3 pdboth_dlg_cr'>
                                         <label class="label">Estado de Construccion:</label>
                                         <select id='dlg_sel_estcon' class="form-control" >
                                                 @foreach ($ecc as $eccpre)
@@ -358,14 +413,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class='col col-3 pdboth_dlg_cr' style="padding-right: 10px !important;">
-                                        <label class="label">Uso del Predio(Arbitrios):</label>
-                                        <select id='dlg_sel_uspprearb' class="form-control" >
-                                            @foreach ($upa as $upa)
-                                            <option value='{{$upa->id_uso_arb}}' >{{$upa->uso_arbitrio}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -385,7 +433,7 @@
                                     <div class='col-lg-4'>
                                         <label class="label">Fecha:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_fech" type="text"  class="input-sm"  data-mask="99/99/9999" data-mask-placeholder="-" >
+                                            <input id="dlg_inp_fech" type="text"  class="input-sm datepicker"  data-dateformat='dd/mm/yy'  data-mask="99/99/9999" data-mask-placeholder="-" >
                                         </label>
                                     </div>
                                 </div>
@@ -393,7 +441,7 @@
                         </div>
                         
                         
-                        <div class="panel-group col-xs-7 " style="margin-top: 5px; margin-bottom: 5px  " >                
+                        <div class="panel-group col-xs-8 " style="margin-top: 5px; margin-bottom: 5px  " >                
                             <div class="panel panel-success cr-panel-sep">
                                 <div class="panel-heading bg-color-success">.:: Terreno ::.</div>
                                 <div class="panel-body cr-body">
@@ -420,7 +468,7 @@
                                     <div class='col col-2 pdboth_dlg_cr'>
                                         <label class="label">Hectareas.:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
+                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right" placeholder="0.00">
                                         </label>
                                     </div>
                                     

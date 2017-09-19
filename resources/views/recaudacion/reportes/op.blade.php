@@ -104,6 +104,7 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->interes1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1,2)}}</td>
           </tr>
+          @if($sql->trimestre>1)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
@@ -118,6 +119,8 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->interes2,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total2,2)}}</td>
           </tr>
+          @endif
+          @if($sql->trimestre>2)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
@@ -132,6 +135,8 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->interes3,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total3,2)}}</td>
           </tr>
+          @endif
+          @if($sql->trimestre>3)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
@@ -146,9 +151,10 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->interes4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total4,2)}}</td>
           </tr>
+          @endif
           <tr>
               <td colspan="6">Total Insoluto</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp*4,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp*$sql->trimestre,2)}}</td>
               <td colspan="4" style="text-align: right; padding-right: 2px; ">Total</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1+$sql->sub_total2+$sql->sub_total3+$sql->sub_total4,2)}}</td>
           </tr>
@@ -169,9 +175,9 @@
             -En el caso de no conformidad, podrá interponer recurso de reclamación debidamente sustentado, suscrito por letrado hábil
             (nombre, firma y número de registro), para lo cual deberá acreditar la cancelación de la totalidad de la deuda, salvo sea
             evidente la improcedencia de la cobranza, en cuyo caso podra presentar la reclamación en el plazo de 20 días hábiles
-            de motificada la presente, y conforme a los dispositivos vigentes.<br>
+            de notificada la presente, y conforme a los dispositivos vigentes.<br>
             <br>
-            <b>Nota:</b> Se ha aprobado los beneficiones tributarios a traves de Ordenanza Municipal 459-MDCC.
+            <b>Nota:</b> Se ha aprobado los beneficios tributarios a traves de Ordenanza Municipal 459-MDCC.
         </div>
         
   </body>

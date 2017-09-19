@@ -4,6 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Example 2</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
+        <style>
+            @page { margin-top: 20px !important;};
+        </style>
   </head>
   <body>
        <div class="datehead">AÑO: {{ $sql->anio }}</div>
@@ -110,7 +113,7 @@
         <tbody>
           <tr>
               <td>{{$sql->habilitacion}}</td>
-              <td>{{$sql->calle}}</td>
+              <td>{{$sql->cod_via."-".$sql->nom_via}}</td>
               <td>{{$sql->nro_mun}}</td>
               <td>{{$sql->nro_int}}</td>
               <td>{{$sql->mzna_dist}}</td>
@@ -135,7 +138,7 @@
           <tr>
               <td>{{$sql->cond_prop_descripc}}</td>
               <td>{{$sql->descripcion}}</td>
-              <td>{{$sql->uso_predio}}</td>
+              <td>{{$sql->codi_uso."-".$sql->desc_uso}}</td>
           </tr>
           
         </tbody>

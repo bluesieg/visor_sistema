@@ -224,7 +224,7 @@ class Contribuyentes extends Controller
         }
     }
     function get_predios_contrib($id) {
-        return DB::select("select id_pred,sec,mzna,lote,nom_via,nro_mun,mzna_dist,lote_dist,base_impon from adm_tri.vw_predi_urba where id_contrib=$id and anio='".date("Y")."'");
+        return DB::select("select id_pred_anio,id_pred,sec,mzna,lote,nom_via,nro_mun,mzna_dist,lote_dist,habilitacion,base_impon from adm_tri.vw_predi_urba where id_contrib=$id and anio='".date("Y")."'");
 
     }
 }

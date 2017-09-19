@@ -56,8 +56,14 @@ class Res_DeterminacionController extends Controller
     {
         $carta=new Carta_Requerimiento;
         $carta->id_contrib=$request['contri'];
+        $carta->soli_contra=$request['con'];
+        $carta->soli_licen=$request['lic'];
+        $carta->soli_dercl=$request['der'];
+        $carta->soli_otro=$request['otro'];
+        $carta->otro_text=$request['otrotext'];
         $carta->fec_reg=date("d/m/Y");
         $carta->fec_fis=$request['fec'];
+        $carta->hora_fis=$request['hor'];
         $carta->anio=date("Y");
         $carta->save();
         return $carta->id_car;
@@ -99,7 +105,6 @@ class Res_DeterminacionController extends Controller
               $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an.' and id_contrib='.$contrib);
               $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->where("id_contrib",$contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }
-
             $total_pages = 0;
             if (!$sidx) {
                 $sidx = 1;
@@ -111,14 +116,10 @@ class Res_DeterminacionController extends Controller
             if ($page > $total_pages) {
                 $page = $total_pages;
             }
-            
-
             $Lista = new \stdClass();
             $Lista->page = $page;
             $Lista->total = $total_pages;
             $Lista->records = $count;
-
-
             foreach ($sql as $Index => $Datos) {
                 
                 $Lista->rows[$Index]['id'] = $Datos->id_car;            
@@ -127,10 +128,25 @@ class Res_DeterminacionController extends Controller
                     trim($Datos->nro_car),
                     trim($Datos->contribuyente),
                     trim($this->getCreatedAtAttribute($Datos->fec_reg)->format('d/m/Y')),
-                    trim($this->getCreatedAtAttribute($Datos->fec_fis)->format('d/m/Y')),
-                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="veralcab('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
+                    trim($this->getCreatedAtAttribute($Datos->fec_fis)->format('d/m/Y'))." ".$Datos->hora_fis,
+                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="vercarta('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                 );
             }
             return response()->json($Lista);
+    }
+    public function carta_repo($id)
+    {
+        $sql    =DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$id)->get()->first();
+        if(count($sql)>=1)
+        {
+            $fiscalizadores=DB::table('fiscalizacion.vw_fisca_enviados')->where('id_car',$id)->get();
+            $predios=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$sql->id_contrib)->get();
+            $sql->fec_fis=$this->getCreatedAtAttribute($sql->fec_fis)->format('l d,\d\e F \d\e\l Y ');
+            $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d,\d\e F \d\e\l Y ');
+            $view =  \View::make('fiscalizacion.reportes.carta_req', compact('sql','fiscalizadores','predios'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("alcabala.pdf");
+        }
     }
 }

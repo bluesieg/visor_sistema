@@ -36,7 +36,7 @@ class ArbitriosController extends Controller
     public function create(Request $request)
     {
         $Arbitrio=new Arbitrios;
-        $Arbitrio->id_pred = $request['pred'];
+        $Arbitrio->id_pred_anio = $request['pred'];
         $Arbitrio->cod_cat = $request['cod'];
         $Arbitrio->anio = $request['an'];
         $Arbitrio->id_bar_cal = $request['barfrec'];
@@ -45,7 +45,7 @@ class ArbitriosController extends Controller
         $Arbitrio->id_seren = $request['seren'];
         $Arbitrio->id_par_jar = $request['parjar'];
         $Arbitrio->id_uso_arb = $request['usorrs'];
-        $Arbitrio->id_contri = $request['contrib'];
+        $Arbitrio->id_contrib = $request['contrib'];
         $Arbitrio->ini_mes = $request['inimes'];
         $Arbitrio->id_pisos = $request['pis_uso'];
         $Arbitrio->area_const = $request['area'];
@@ -123,12 +123,6 @@ class ArbitriosController extends Controller
         return "pago tambien";
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-    */
     public function store(Request $request)
     {
         //
@@ -138,7 +132,7 @@ class ArbitriosController extends Controller
     {
         if($request['new']=="1")
         {
-            $arbitriovw=DB::table('adm_tri.vw_area_construida')->where('id_predio',$id)->get();
+            $arbitriovw=DB::table('adm_tri.vw_area_construida')->where('id_pred_anio',$id)->get();
         }
         else
         {
@@ -177,12 +171,6 @@ class ArbitriosController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
@@ -191,8 +179,8 @@ class ArbitriosController extends Controller
     {
         
         header('Content-type: application/json');
-        $totalg = DB::select("select count(id_arb) as total from arbitrios.vw_arbitrios where id_pred=".$request["pre"]." and anio=".$request["an"]);
-        $sql = DB::select("select * from arbitrios.vw_arbitrios where id_pred=".$request["pre"]." and anio=".$request["an"]);
+        $totalg = DB::select("select count(id_arb) as total from arbitrios.vw_arbitrios where id_pred_anio=".$request["pre"]." and anio=".$request["an"]);
+        $sql = DB::select("select * from arbitrios.vw_arbitrios where id_pred_anio=".$request["pre"]." and anio=".$request["an"]);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];

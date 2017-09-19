@@ -211,8 +211,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('gridinsta/{id}','InstalacionesController@listinsta');
         Route::get('gridarbitrios','ArbitriosController@listarbitrios');
         Route::get('selmzna','PredioController@ListManz');
+        Route::get('sellot','PredioController@ListLote');
         Route::get('adm_impform/','PredioController@imprimir_formatos');
         Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
+        Route::get('traefoto_lote/{sec}/{mzna}/{lote}','PredioController@getfoto');
+        
     });
     Route::group(['namespace' => 'recaudacion'], function() {//modulo de fiscalizacion
         Route::resource('ordenpago', 'OrdenPagoController');
@@ -244,6 +247,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('carta_save', 'Res_DeterminacionController@carta_create'); //
         Route::get('carta_set_fisca', 'Res_DeterminacionController@fisca_enviados_create'); //
         Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}', 'Res_DeterminacionController@get_cartas_req'); //
+        Route::get('car_req_rep/{id}', 'Res_DeterminacionController@carta_repo'); //
 
     }); 
     Route::get('$',function(){ echo 0;});//url auxiliar

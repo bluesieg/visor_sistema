@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pisos;
 use App\Models\Predios;
+use App\Models\Predios\Predios_Anio;
+use App\Models\Predios\Predios_Contribuyentes;
 class PisosController extends Controller
 {
     /**
@@ -27,7 +29,7 @@ class PisosController extends Controller
     {
         
         $pisos=new Pisos;
-        $totapisos = DB::select("select count(id_pisos) as total from adm_tri.pisos where id_predio='".$request['id_pre']."'");
+        $totapisos = DB::select("select count(id_pisos) as total from adm_tri.pisos where id_pred_anio='".$request['id_pre']."'");
         $pisos->anio = date("Y");
         $pisos->cod_piso = $request['nro'];
         $pisos->ani_const = $request['fech'];
@@ -47,45 +49,33 @@ class PisosController extends Controller
         $pisos->area_const = $request['aconst'];
         $pisos->val_areas_com = $request['acomun'];
         $pisos->num_pis = $totapisos[0]->total+1;
-        $pisos->id_predio = $request['id_pre'];
+        $pisos->id_pred_anio = $request['id_pre'];
         $pisos->save();
-        DB::select("select adm_tri.fn_count_pisos(".$request['id_pre'].")");
-        DB::select("select adm_tri.actualiza_base_predio(".$request['id_pre'].")");
-        $predio=new Predios;
-        $predio=  $predio::where("id_pred","=",$request['id_pre'] )->first();
-        DB::select("select adm_tri.calcular_ivpp($predio->anio,$predio->id_contrib)");
+        $this->calculos_ivpp($request['id_pre']);
         return $pisos->id_pisos;
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function calculos_ivpp($id)
+    {
+        DB::select("select adm_tri.fn_count_pisos(".$id.")");
+        DB::select("select adm_tri.actualiza_base_predio(".$id.")");
+        $Predios_Anio=new Predios_Anio;
+        $Predios_Anio=  $Predios_Anio::where("id_pred_anio","=",$id )->first();
+        $Predios_Contribuyentes=new Predios_Contribuyentes;
+        $Predios_Contribuyentes=  $Predios_Contribuyentes::where("id_pred","=",$Predios_Anio->id_pred )->first();
+        DB::select("select adm_tri.calcular_ivpp($Predios_Anio->anio,$Predios_Contribuyentes->id_contrib)");
+    }
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $pisovw= DB::table('adm_tri.vw_pisos')->where('id_pisos',$id)->get();
         return $pisovw;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Request $request,$id)
     {
         $pisos=new Pisos;
@@ -111,11 +101,9 @@ class PisosController extends Controller
             $val->val_areas_com = $request['acomun'];
             $val->save();
             
-            DB::select("select adm_tri.fn_count_pisos(".$val->id_predio.")");
-            DB::select("select adm_tri.actualiza_base_predio(".$val->id_predio.")");
-            $predio=new Predios;
-            $predio=  $predio::where("id_pred","=",$val->id_predio )->first();
-            DB::select("select adm_tri.calcular_ivpp($predio->anio,$predio->id_contrib)");
+            
+            $this->calculos_ivpp($val->id_pred_anio);
+       
         }
         return "edit".$id;
     }
@@ -133,16 +121,16 @@ class PisosController extends Controller
         $val=  $pisos::where("id_pisos","=",$request['id'] )->first();
         if(count($val)>=1)
         {
-            $pred=$val->$val->id_predio;
+            $pred_anio=$val->id_pred_anio;
             $val->delete();
         }
-        DB::select("select adm_tri.actualiza_base_predio(".$pred.")");
+        $this->calculos_ivpp($pred_anio);
         return "destroy ".$request['id'];
     }
     public function listpisos($id)
     {
         header('Content-type: application/json');
-        $totalg = DB::select("select count(id_pisos) as total from adm_tri.vw_pisos where id_predio='$id'");
+        $totalg = DB::select("select count(id_pisos) as total from adm_tri.vw_pisos where id_pred_anio='$id'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -164,7 +152,7 @@ class PisosController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_pisos where id_predio='$id' order by cod_piso asc");
+        $sql = DB::select("select * from adm_tri.vw_pisos where id_pred_anio='$id' order by cod_piso asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;

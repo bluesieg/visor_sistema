@@ -100,7 +100,6 @@ function fn_ctb_alcab(input)
 }
 function fn_ctb_list_alcab(per)
 {
-    
     $("#"+inputglobal+"_hidden").val(per);
     $("#"+inputglobal).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     if(inputglobal=="dlg_contri")
@@ -121,13 +120,14 @@ function fn_ctb_list_alcab(per)
 }
 function obtener_predios(id)
 {
+    $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="55%"/></center>');
      MensajeDialogLoadAjax("selpredios", '.:: Cargando ...');
     $.ajax({url: 'obtener_pred_ctb/'+id,
         type: 'GET',
         success: function(data) 
         {
             $("#selpredios").html("");
-            $("#selpredios").append($('<option>',{value:0,text: "--Seleccione--", costo:0, autovaluo:0}));
+            $("#selpredios").append($('<option>',{value:0,text: "--Seleccione--", costo:0, autovaluo:0,sector:0,manzana:0,lote:0}));
             for (var i=0; i < data.length; i++)
             {
                 var dir=data[i].sec+"-"+data[i].mzna+"-"+data[i].lote+"-"+data[i].nom_via;
@@ -140,7 +140,7 @@ function obtener_predios(id)
                 if(data[i].lote_dist!=null){
                     dir=dir+" Lt "+data[i].lote_dist;
                 }
-                $("#selpredios").append($('<option>',{value:data[i].id_pred,text: dir, autovaluo:data[i].base_impon}));
+                $("#selpredios").append($('<option>',{value:data[i].id_pred_anio,text: dir+data[i].habilitacion, autovaluo:data[i].base_impon,sector:data[i].sec,manzana:data[i].mzna,lote:data[i].lote}));
             } 
             MensajeDialogLoadAjaxFinish("selpredios");
         },
@@ -261,10 +261,40 @@ function back(tipo)
 }
 function fn_cal_pred()
 {
+    traerfoto($("#selpredios option:selected").attr("sector"),$("#selpredios option:selected").attr("manzana"),$("#selpredios option:selected").attr("lote"));
     $("#dlg_autovaluo").val(formato_numero($("#selpredios option:selected").attr("autovaluo"),2,".",","));
     
 }
-
+function traerfoto(sec,mzna,lote)
+{
+    if(sec==0)
+    {
+        $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="95%" width="55%"/></center>');
+        return false;
+    }
+    MensajeDialogLoadAjax('dlg_img_view', '.:: Cargando ...');
+    $.ajax({url: 'traefoto_lote/'+sec+'/'+mzna+'/'+lote,
+    type: 'GET',
+    success: function(r) 
+    {
+        if(r!=0)
+        {
+            $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r+'" height="95%" width="78%"/></center>');
+        }
+        else
+        {
+            $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="95%" width="55%"/></center>');
+        }
+        MensajeDialogLoadAjaxFinish('dlg_img_view');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_img_view');
+    }
+    }); 
+}
 function validarventa()
 {
     /roja/g

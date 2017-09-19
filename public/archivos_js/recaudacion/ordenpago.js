@@ -127,7 +127,7 @@ function generar_op(tip,ctb)
         }
         $.ajax({url: 'ordenpago/create',
         type: 'GET',
-        data:{per:Id_contrib,sec:sec,man:man,tip:tip},
+        data:{per:Id_contrib,sec:sec,man:man,tip:tip,an:$("#selantra").val()},
         success: function(r) 
         {
             window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);

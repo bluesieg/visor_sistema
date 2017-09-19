@@ -2,39 +2,68 @@
 @section('content')
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
-        <h1 class="txt-color-green"><b>Impresión de Formatos...</b></h1>
 
-        <div class="col-xs-12 cr-body" style="margin-top: 10px;">
-            <label class="control-label col-lg-2">Código Contribuyente:</label>
-            <div class='col-lg-2'>
-                <input id="dlg_contri_hidden" type="hidden" value="0">
-                <input id="dlg_dni" type="text"  class="form-control" >
-            </div>
-            <label class="control-label col-lg-1">Año:</label>
-            <div class='col-lg-2'>
-                <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
-                @foreach ($anio_tra as $anio)
-                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                @endforeach
-                </select>
-            </div>
-            <div class="col-xs-12" style="margin-bottom: 5px;"></div>
-            <label class="control-label col-lg-2">Contribuyente:</label>
-            <div class='col-lg-7' style="padding-right: 0px;">
-                <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;" autofocus="focus" >
-            </div>
-            <div class='col-lg-3' style="padding: 0px;">
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_bus_contrib()">
-                    <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
-                </button>
+        <div class="col-xs-12">
+        <div class="col-lg-9">
+            <h1 class="txt-color-green"><b>Impresión de Formatos...</b></h1>
+        </div>
+        <div class="col-lg-3 col-md-6 col-xs-12">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Año de Trabajo <i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                    @foreach ($anio_tra as $anio)
+                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                    @endforeach
+                    </select>
+                </div>
             </div>
         </div>
+        </div>
+        
+        <div class="col-xs-12 cr-body" >
+            
+            <div class="col-xs-3" style="padding: 0px; margin-top: 5px">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
+                                <h2>Busqueda por Contribuyente</h2>
+                        </header>
+                    </div>
+                </section>
+            </div>
+        
+        <div class="col-xs-9" style="padding: 0px; margin-top: 5px; margin-bottom: 15px">
+            <div class="col-xs-3" style="padding: 0px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">Cod. &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div class=""  >
+                        <input id="dlg_contri_hidden" type="hidden" value="0">
+                    <input id="dlg_dni" type="text"  class="form-control" style="height: 32px; " >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9" style="padding: 0px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
+                    <div   >
+                        <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
+                    </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="fn_bus_contrib()">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            
+        </div>
+        </div>
+        
+       
     </div>
     <div class='cr_content col-xs-12'>
-        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
-            <table id="table_predios"></table>
-            <div id="pager_table_predios"></div>
-        </article>
         <div class="col-xs-12" style="padding: 0px; margin-top: 5px;">
             <ul style="padding: 0px;">                                        
                         <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="abrir_rep('HR');">
@@ -48,6 +77,11 @@
                         </button>
             </ul>
         </div>
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
+            <table id="table_predios"></table>
+            <div id="pager_table_predios"></div>
+        </article>
+        
     </div>
     
 </section>
@@ -61,7 +95,7 @@
         jQuery("#table_predios").jqGrid({
             url: 'gridpredio?mnza=0&ctr=0&tpre=0',
             datatype: 'json', mtype: 'GET',
-            height: '200px', autowidth: true,
+            height: '260px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pred','t_pred', 'Sector','Manzana','Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct'],
             rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos/Rusticos', align: "center",
@@ -97,6 +131,7 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
+        contrib_global=0;
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
             datatype: 'json', mtype: 'GET',
@@ -119,7 +154,10 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                             $("#table_contrib").setSelection(firstid);    
                         }
-                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
+                    if(contrib_global==0)
+                    {   contrib_global=1;
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
+                    }
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_bus_contrib_list(Id)}

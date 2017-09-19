@@ -177,7 +177,7 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td>{{$pre->tp}}</td>
-              <td>{{$pre->cod_cat." - ".$pre->nom_via_puhr}}</td>
+              <td>{{$pre->cod_cat." - ".$pre->nom_via}}</td>
               <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon,2)}}</td>
             </tr>
             @endforeach

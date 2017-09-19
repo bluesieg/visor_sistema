@@ -67,7 +67,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Desde &nbsp;<i class="fa fa-calendar"></i></span>
                         <div class=""  >
-                            <input id="dlg_bus_fini" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            <input id="dlg_bus_fini" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Hasta &nbsp;<i class="fa fa-calendar"></i></span>
                         <div class=""  >
-                            <input id="dlg_bus_ffin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            <input id="dlg_bus_ffin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
             height: '280px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Ver'],
-            rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",
+            rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
                 {name: 'nro_car', index: 'nro_car', align: 'center', width: 15},
@@ -138,6 +138,7 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
+        contrib_global=0;
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
             datatype: 'json', mtype: 'GET',
@@ -161,7 +162,10 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                             $("#table_contrib").setSelection(firstid);    
                         }
-                    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_carta(rowid);} } ); 
+                    if(contrib_global==0)
+                    {   contrib_global=1;    
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_carta(rowid);} } ); 
+                    }
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
@@ -211,7 +215,7 @@
     
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div id="div_adquiere" class="col-xs-12 cr-body" >
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
@@ -258,7 +262,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
-                                <h2>Selección de Fecha de Fiscalización ::..</h2>
+                                <h2>Selección de Fecha y Hora de Fiscalización ::..</h2>
                         </header>
                     </div>
                 </section>
@@ -267,9 +271,59 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Fecha Fizcalizacion &nbsp;<i class="fa fa-calendar"></i></span>
                         <div class=""  >
-                            <input id="dlg_fec_fis" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            <input id="dlg_fec_fis" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                         </div>
                     </div>
+                </div>
+                <div class="col-xs-4" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Hora de Fizcalizacion &nbsp;<i class="fa fa-clock-o"></i></span>
+                        <div class=""  >
+                            <input id="dlg_hor_fis" type="text" class="form-control" data-mask="99:99" style="height: 32px; width: 100%" placeholder="--:--">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                                <h2>Documentos que se deberá presentar al momento de la fiscalización ::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <form class="smart-form">
+                    <fieldset>
+                        <section>
+                            <div class="inline-group">
+                                <label class="checkbox">
+                                        <input id="cbx_con" type="checkbox"  checked="checked">
+                                        <i></i>1. Contrato de compra Venta y título de propiedad del inmueble</label>
+                                <label class="checkbox">
+                                        <input id="cbx_lic" type="checkbox" checked="checked">
+                                        <i></i>2. Licencia de construcción</label>
+                                <label class="checkbox">
+                                        <input id="cbx_der" type="checkbox"  checked="checked">
+                                        <i></i>3. Última Declaración Jurada</label>
+                                
+                            </div>
+                        </section> 
+                    </fieldset>
+                </form>
+                <form class="smart-form col-xs-1" style="padding: 0px;">
+                    <fieldset style="padding-right: 0px;">
+                        <section>
+                            <div class="inline-group">
+                                <label class="checkbox" style="margin-right: 0px;">
+                                    <input id="cbx_otr" type="checkbox" onchange="validarotros()">
+                                        <i></i>4. Otros</label>
+                            </div>
+                        </section> 
+                    </fieldset>
+                </form>
+                <div class="col-xs-11">
+                    <input id="dlg_otros" type="text" class="form-control" style="height: 32px; width: 100%" placeholder="Otros Documentos Solicitados" maxlength="100">
                 </div>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
@@ -299,7 +353,7 @@
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span>Poner Fiscalizador
                 </button>
                 
-                    <div class="table-responsive col-xs-12" style="margin-top: 10px; height: 150px; border: 1px solid #bbb; padding:10px;">
+                    <div class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
 
                         <table class="table " id="table_fiscalizadores" >
                                 <thead>

@@ -7,13 +7,15 @@
             <h1 class="txt-color-green"><b>Predios Urbanos...</b></h1>
         </div>
         <div class="col-lg-3 col-md-6 col-xs-12">
-            <label class="control-label col-lg-6">Año de Trabajo</label>
-            <div class='col-lg-6'>
-                <select id='selantra' class="form-control col-lg-8" onchange="callfilltab()">
-                @foreach ($anio_tra as $anio)
-                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                @endforeach
-                </select>
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Año de Trabajo <i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                    @foreach ($anio_tra as $anio)
+                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                    @endforeach
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -223,6 +225,55 @@
                 },
             ondblClickRow: function (Id){clickmodinst();}
         });
+        contrib_global=0;
+        jQuery("#table_contrib").jqGrid({
+            url: 'obtiene_cotriname?dat=0',
+            datatype: 'json', mtype: 'GET',
+            height: '300px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_pers','codigo','DNI/RUC','contribuyente'],
+            rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
+            colModel: [
+                {name: 'id_pers', index: 'id_pers', hidden: true},
+                {name: 'id_per', index: 'id_per', align: 'center',width: 100},
+                {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260},
+                
+            ],
+            pager: '#pager_table_contrib',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_contrib').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
+                            $("#table_contrib").setSelection(firstid);    
+                        }
+                    if(contrib_global==0)
+                    {   contrib_global=1;
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_pred(rowid);} } ); 
+                    }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){fn_bus_contrib_list_pred(Id)}
+        });
+        
+        var globalvalidador=0;
+        $("#dlg_contri").keypress(function (e) {
+            if (e.which == 13) {
+                if(globalvalidador==0)
+                {
+                    fn_bus_contrib_pred();
+                    globalvalidador=1;
+                }
+                else
+                {
+                    globalvalidador=0;
+                }
+                
+            }
+        });
+        
+        
     });
     jQuery('#rpiso_inp_estruc').keypress(function(tecla) {
         $("#rpiso_inp_estruc").val($("#rpiso_inp_estruc").val().toUpperCase());
@@ -234,26 +285,48 @@
 </script>
 @stop
 <script src="{{ asset('archivos_js/adm_tributaria/predios.js') }}"></script>
+<div id="dlg_bus_contr" style="display: none;">
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
+        <table id="table_contrib"></table>
+        <div id="pager_table_contrib"></div>
+    </article>
+</div> 
 <div id="dlg_reg_dj" style="display: none;">
                     <div class="widget-body">
                     <div  class="smart-form">
+                        <div class="col-xs-10">
                         <div class="panel-group">                
                             <div class="panel panel-success">
                                 <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class="col-xs-4"></div>
-                                    <div class="text-center col-xs-1" >
-                                        <input type="hidden" id="dlg_idpre" value="0">
-                                        <label class="label col-xs-12 text-center">Sector:</label>
-                                        <input class="text-center col-xs-12 form-control" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
+                                <div class="panel-body cr-body" style="padding-top: 15px;">
+                                    <div class="col-xs-2"></div>
+                                    
+                                    <div class="col col-3">
+                                        <div class="input-group input-group-md">
+                                            <input type="hidden" id="dlg_idpre" value="0">
+                                            <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                                            <div class="icon-addon addon-md">
+                                                <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="text-center col-xs-1" >
-                                        <label class="label col-xs-12 text-center">Manzana:</label>
-                                        <input class="text-center col-xs-12 form-control" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
+                                    <div class="col col-3">
+                                        <div class="input-group input-group-md">
+                                            <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                                            <div class="icon-addon addon-md">
+                                                <input class="text-center form-control" style="height: 32px;" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="text-center col-xs-1 " >
-                                        <label class="label col-xs-12 text-center">Lote:</label>
-                                        <input class="text-center col-xs-12 form-control" id="dlg_lot" type="text" name="dlg_lot" disabled="" maxlength="3" onkeypress="return soloDNI(event);" onBlur="ajustar(2,'dlg_lot')">
+                                    <div class="col col-2">
+                                        <div class="input-group input-group-md">
+                                            <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                                            <div class="icon-addon addon-md">
+                                                <select id='dlg_lot' class="form-control col-lg-8" style="height: 32px; text-align: center" onchange="traerfoto()">
+                                                
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +346,7 @@
                                     <div class="col col-9">
                                         <label class="label">Contribuyente/Razón Social:</label>
                                         <label class="input">
-                                            <input id="dlg_contri" type="text"  class="input-sm" disabled="" >
+                                            <input id="dlg_contri" type="text"  class="input-sm" autofocus="">
                                         </label>
                                     </div>
                       
@@ -302,7 +375,15 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="panel panel-success cr-panel-sep" style="height: 161px">
+                                <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
+                                <div class="panel-body cr-body">
+                                    <div id="dlg_img_view" style="padding-top: 10px"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="panel-group col-xs-8 " style="margin-top: 5px;  ">                
                             <div class="panel panel-success ">
                                 <div class="panel-heading bg-color-success">.:: Ubicación del Predio ::.</div>
@@ -445,7 +526,7 @@
                                     <div class='col-lg-4'>
                                         <label class="label">Fecha:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_fech" type="text"  class="input-sm datepicker"  data-dateformat='dd/mm/yy' >
+                                            <input id="dlg_inp_fech" type="text"  class="input-sm datepicker"  data-dateformat='dd/mm/yy' data-mask="99/99/9999" >
                                         </label>
                                     </div>
                                 </div>
@@ -545,13 +626,13 @@
                                     <div class='col-lg-3'>
                                         <label class="label">Area Terr.:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
+                                            <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right" placeholder="0.00">
                                         </label>
                                     </div>
                                     <div class='col-lg-3'>
                                         <label class="label">Area comun Terr.:</label>
                                         <label class="input">
-                                            <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right">
+                                            <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right" placeholder="0.00">
                                         </label>
                                     </div>
                                     <div class='col-lg-2'>

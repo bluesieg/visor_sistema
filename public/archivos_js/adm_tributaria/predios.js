@@ -1,3 +1,31 @@
+function fn_bus_contrib_pred()
+{
+    if($("#dlg_contri").val()=="")
+    {
+        mostraralertasconfoco("Ingresar Información de busqueda","#dlg_contri"); 
+        return false;
+    }
+    if($("#dlg_contri").val().length<4)
+    {
+        mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#dlg_contri"); 
+        return false;
+    }
+    jQuery("#table_contrib").jqGrid('setGridParam', {url: 'obtiene_cotriname?dat='+$("#dlg_contri").val()}).trigger('reloadGrid');
+
+    $("#dlg_bus_contr").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
+        }).dialog('open');
+       
+}
+function fn_bus_contrib_list_pred(per)
+{
+    $("#dlg_contri_hidden").val(per);
+    $("#dlg_dni").val($('#table_contrib').jqGrid('getCell',per,'nro_doc'));
+    $("#dlg_contri").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
+    $("#dlg_bus_contr").dialog("close");
+    
+}
 function callpredtab()
     {
         $("#selmnza").html('');
@@ -24,12 +52,34 @@ function callpredtab()
     function callfilltab()
     {
           jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
+          
+    }
+    function llenarlote()
+    {
+        $("#dlg_lot").html('');
+            MensajeDialogLoadAjax('dlg_lot', '.:: CARGANDO ...');
+            $.ajax({url: 'sellot?man='+$("#selmnza").val(),
+            type: 'GET',
+            success: function(r) 
+            {
+                $("#dlg_lot").append('<option value="0">--Seleccione--</option>');
+                $(r).each(function(i, v){ // indice, valor
+                    $("#dlg_lot").append('<option value="' + v.id_lote + '">' + v.codi_lote + '</option>');
+                })
+                callfilltab();        
+                MensajeDialogLoadAjaxFinish('dlg_lot');
+            },
+            error: function(data) {
+                console.log('error');
+                console.log(data);
+            }
+            });
     }
     function limpiarpred(tip)
     {
         
         auto_input("dlg_inp_usopre","autocompletar_tipo_uso",1);
-        
+        $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="65%"/></center>');
         autocompletar=1;
         $("#dlg_reg_dj").dialog({
         autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
@@ -38,7 +88,7 @@ function callpredtab()
         if(tip==1)
         {
             $("#dlg_idpre").val(0);
-            $( "#dlg_dni, #dlg_lot" ).prop( "disabled", false );
+            $( "#dlg_dni, #dlg_lot,#dlg_contri" ).prop( "disabled", false );
             $('#dlg_lot,#dlg_inp_luz,#dlg_inp_agua').val("");
             $("#btnsavepre").show();
             $("#btnmodpre").hide();
@@ -54,7 +104,7 @@ function callpredtab()
         {
             $("#hidden_dlg_inp_usopre").val(0);
             $("#dlg_inp_usopre_cod,#dlg_inp_usopre,#dlg_sel_condpre").val("");
-            $( "#dlg_dni, #dlg_lot" ).prop( "disabled", true );
+            $( "#dlg_dni, #dlg_lot,#dlg_contri" ).prop( "disabled", true );
             $("#btnsavepre").hide();
             $("#btnmodpre").show();
         }
@@ -62,12 +112,36 @@ function callpredtab()
         $("#dlg_mzna").val($("#selmnza option:selected").text());
         $('#dlg_dni,#dlg_contri').val("");
         $('#dlg_inp_condos').val("");
-        $("#dlg_inp_areter,#dlg_inp_arecomter").val(0);
+        $("#dlg_inp_areter,#dlg_inp_arecomter").val("");
         $('#dlg_inp_nvia_des,#dlg_inp_nvia,#dlg_inp_n,#dlg_inp_mz,#dlg_inp_lt,#dlg_inp_zn').val("");
         $('#dlg_inp_secc,#dlg_inp_piso,#dlg_inp_dpto,#dlg_inp_tdastand,#dlg_inp_refe, #dlg_inp_fech').val("");
         $("#s5_sel_condi,#s5_inp_basleg,#s5_inp_exp,#s5_inp_reso,#s5_inp_fechres,#s5_inp_anini,#s5_inp_anfin").val("");
     }
-    
+    function traerfoto()
+    {
+        MensajeDialogLoadAjax('dlg_img_view', '.:: Cargando ...');
+        $.ajax({url: 'traefoto_lote/'+$("#dlg_sec").val()+'/'+$("#dlg_mzna").val()+'/'+$("#dlg_lot option:selected").text(),
+        type: 'GET',
+        success: function(r) 
+        {
+            if(r!=0)
+            {
+                $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r+'" height="100%" width="90%"/></center>');
+            }
+            else
+            {
+                $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="65%"/></center>');
+            }
+            MensajeDialogLoadAjaxFinish('dlg_img_view');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_img_view');
+        }
+        }); 
+    }
     function validarcampos()
     {
         if($('#dlg_inp_condos').val()==""){$('#dlg_inp_condos').val('0');}
@@ -87,6 +161,7 @@ function callpredtab()
     
     function clicknewgrid()
     {
+        llenarlote();
         jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/0'}).trigger('reloadGrid');
         jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/0'}).trigger('reloadGrid');
         jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/0'}).trigger('reloadGrid');
@@ -106,7 +181,11 @@ function callpredtab()
         type: 'GET',
         success: function(r) 
         {
-                $("#dlg_lot").val(r[0].lote);
+            if(r[0].foto!=0)
+            {
+                $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r[0].foto+'" height="100%" width="90%"/></center>');
+            }
+                $("#dlg_lot").append($('<option>',{value:0,text: r[0].lote}));
                 $("#dlg_dni").val(r[0].nro_doc);
                 $("#dlg_contri").val(r[0].contribuyente);
                 $("#dlg_sel_condpre").val(r[0].id_cond_prop);
@@ -183,10 +262,8 @@ function callpredtab()
     }
     function dlgSave()
     {
-        if(parseInt($('#dlg_lot').val())<1||$('#dlg_lot').val()=="")
-        {
-            mostraralertasconfoco('Ingresar un número de lote...',"#dlg_lot");return false
-        }
+        if(parseInt($('#dlg_lot').val())<1||$('#dlg_lot').val()==""){mostraralertasconfoco('Ingresar un número de lote...',"#dlg_lot");return false}
+        if($('#dlg_inp_aranc').val()==""||$('#dlg_inp_aranc').val()==0){mostraralertasconfoco('No existe Arancel, comunicar al administrador...',"#dlg_inp_aranc");return false}
         if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
         if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia");return false}
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
@@ -198,7 +275,7 @@ function callpredtab()
         data:{condpre:$('#dlg_sel_condpre').val(),condos:$('#dlg_inp_condos').val(),cvia:$("#dlg_inp_nvia").val(),
         n:$("#dlg_inp_n").val(),mz:$("#dlg_inp_mz").val(),lt:$('#dlg_inp_lt').val(),zn:$('#dlg_inp_zn').val(),
         secc:$('#dlg_inp_secc').val(),piso:$('#dlg_inp_piso').val(),dpto:$("#dlg_inp_dpto").val(),int:$("#dlg_inp_tdastand").val(),
-        ref:$('#dlg_inp_refe').val(),contrib:$('#dlg_contri_hidden').val(),sec:$("#dlg_sec").val(),mzna:$("#dlg_mzna").val(),lote:$('#dlg_lot').val(),
+        ref:$('#dlg_inp_refe').val(),contrib:$('#dlg_contri_hidden').val(),lote:$('#dlg_lot').val(),
         ecc:$("#dlg_sel_estcon").val(),tpre:$("#dlg_sel_tippre").val(),tipuso:$("#hidden_dlg_inp_usopre").val(),
         ifor:$("#dlg_sel_foradq").val(),ffor:$("#dlg_inp_fech").val(),
         luz:$("#dlg_inp_luz").val(),agua:$("#dlg_inp_agua").val(),liccon:$('input:radio[name=dlg_rd_lcons]:checked').val(),
@@ -211,7 +288,7 @@ function callpredtab()
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
-            $( "#dlg_dni, #dlg_lot" ).prop( "disabled", true );
+            $( "#dlg_dni, #dlg_lot,#dlg_contri" ).prop( "disabled", true );
             $("#btnsavepre").hide();
             $("#btnmodpre").show();
         },
@@ -225,6 +302,7 @@ function callpredtab()
     }
     function dlgUpdate()
     {
+        if($('#dlg_inp_aranc').val()==""||$('#dlg_inp_aranc').val()==0){mostraralertasconfoco('No existe Arancel, comunicar al administrador...',"#dlg_inp_aranc");return false}
         if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia_des");return false}
         validarcampos();
         
@@ -374,6 +452,7 @@ function callpredtab()
         {
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id_pre}).trigger('reloadGrid');
+            jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
             $("#dlg_reg_piso").dialog('close');
         },
@@ -405,6 +484,7 @@ function callpredtab()
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+            jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
         },
         error: function(data) {
@@ -431,6 +511,7 @@ function callpredtab()
             success: function(r) 
             {
                 jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+                jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
                 MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
                 MensajeDialogLoadAjaxFinish('s1');
             },
@@ -499,7 +580,7 @@ function callpredtab()
         {
             $("#rcondo_inp_dni").val(r[0].nro_doc);
             $("#rcondo_inp_rsoc_hidden").val(r[0].id_contrib);
-            $("#rcondo_inp_rsoc").val(r[0].ape_pat+" "+r[0].ape_pat+" "+r[0].nombres);
+            $("#rcondo_inp_rsoc").val(r[0].ape_pat+" "+r[0].ape_mat+" "+r[0].nombres);
             $("#rcondo_inp_dir").val(r[0].direccion);
             $("#rcondo_inp_porcent").val(r[0].porcent);
             MensajeDialogLoadAjaxFinish('dlg_reg_condo');
@@ -530,6 +611,7 @@ function callpredtab()
         {
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id_pre}).trigger('reloadGrid');
+            jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_condo');
             $("#dlg_reg_condo").dialog('close');
         },
@@ -555,6 +637,7 @@ function callpredtab()
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+            jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_condo');
             $("#dlg_reg_condo").dialog('close');
         },
@@ -582,6 +665,7 @@ function callpredtab()
             success: function(r) 
             {   
                 jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+                jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
                 MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
                 MensajeDialogLoadAjaxFinish('s3');
             },
@@ -724,6 +808,7 @@ function callpredtab()
             
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+Id_pre}).trigger('reloadGrid');
+            jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_inst');
             $("#dlg_reg_inst").dialog('close');
         },
@@ -753,6 +838,7 @@ function callpredtab()
         {
             MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+            jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_inst');
             $("#dlg_reg_condo").dialog('close');
         },
@@ -780,6 +866,7 @@ function callpredtab()
             success: function(r) 
             {
                 jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+$('#dlg_idpre').val()}).trigger('reloadGrid');
+                jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
                 MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
                 MensajeDialogLoadAjaxFinish('s2');
             },
@@ -867,7 +954,11 @@ function callpredtab()
     function validarvalter()
     {
         if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
-        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat($("#dlg_inp_arecomter").val())),3,".",","));
+        if($("#dlg_inp_arecomter").val()==""){
+            comun=0;}
+        else{
+            comun=$("#dlg_inp_arecomter").val();}
+        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat(comun)),3,".",","));
     }
     autocompletar=0;
     function auto_input(textbox,url,extra){
