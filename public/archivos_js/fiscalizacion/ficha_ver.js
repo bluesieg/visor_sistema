@@ -68,57 +68,19 @@ function call_list_contrib_carta(tip)
     }
     
 }
-function fn_new_carta()
+
+function fiscalizar()
 {
-    limpiar_carta_req()
-    $("#dlg_new_carta").dialog({
-        autoOpen: false, modal: true, width: 1100, 
+    $("#dlg_vista_carta").dialog({
+        autoOpen: false, modal: true, width: 1300, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
-        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Generar Nueva Carta de Requerimiento</h4></div>"
+        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Datos Generales de Carta</h4></div>"
         }).dialog('open');
 }
-function limpiar_carta_req()
-{
-    $("#dlg_contri_carta_doc,#dlg_contri_carta,#dlg_contri_carta_dom,#dlg_hor_fis,#dlg_otros").val("");
-    $("#dlg_contri_carta_hidden").val(0);
-    $('#table_fiscalizadores tbody tr').each(function() {$(this).remove();});
-    $('#cbx_con,#cbx_lic,#cbx_der').prop('checked', true);
-    $('#cbx_otr').prop('checked', false);
-    $('#dlg_otros').prop('disabled', true);
-}
-function validarotros()
-{
-    if($('#cbx_otr').is(':checked'))
-    {
-        $('#dlg_otros').prop('disabled', false);
-        $("#dlg_otros").focus();
-    }
-    else
-    {
-        $('#dlg_otros').prop('disabled', true);
-    }
-}
-function poner_fisca()
-{
-    if($("#selfisca").val()==0)
-    {
-        mostraralertasconfoco("Seleccione Fiscalizador","selfisca");
-        return false;
-    }
 
-    if ( $("#table_fiscalizadores tr#"+$("#selfisca").val()).length==0 ) {
-        $('#table_fiscalizadores > tbody').append('<tr id="'+$("#selfisca").val()+'"><td style="border: 1px solid #bbb">'+$("#selfisca").val()+'</td>\n\
-                                                   <td style="border: 1px solid #bbb">'+$("#selfisca option:selected").attr("documento")+'</td>\n\
-                                                   <td style="border: 1px solid #bbb">'+$("#selfisca option:selected").text()+'</td>\n\
-                                                   <td class="text-center" style="border: 1px solid #bbb"><i class="fa fa-close" style="color:red; cursor:pointer" onclick="del_fis('+$("#selfisca").val()+')"></i></td></tr>');
-    }
-    
-}
-function del_fis(fis)
-{
-    $("#table_fiscalizadores tr#"+fis+"").remove();
-}
+
+
 function fn_confirmar_carta()
 {
 

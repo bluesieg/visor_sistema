@@ -58,7 +58,7 @@ class InstalacionesController extends Controller
         $insta->id_pred_anio = $request['id_pre'];
         $insta->antiguedad = date("Y")-$request['anio'];
         $insta->save();
-        $this->calculos_ivpp($insta->id_pre);
+        $this->calculos_ivpp($insta->id_pred_anio);
         return $insta->id_inst;
     }
 

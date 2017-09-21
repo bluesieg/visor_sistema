@@ -203,6 +203,9 @@
                             <li id="li_fisca_carta">
                                 <a href='fisca_carta_req' title="Carta de Requerimiento"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Carta Requerimiento</span></a>                            
                             </li>
+                            <li id="li_ficha_ver">
+                                <a href='fisca_ficha' title="Ingresar Ficha Verificación"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Ing. Ficha Verificación</span></a>                            
+                            </li>
                         </ul>	
                     </li> 
                     <li class="">

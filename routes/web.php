@@ -254,8 +254,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('fisca_carta_req', 'Res_DeterminacionController@carta_requerimiento'); //
         Route::get('carta_save', 'Res_DeterminacionController@carta_create'); //
         Route::get('carta_set_fisca', 'Res_DeterminacionController@fisca_enviados_create'); //
-        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}', 'Res_DeterminacionController@get_cartas_req'); //
+        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_cartas_req'); //
         Route::get('car_req_rep/{id}', 'Res_DeterminacionController@carta_repo'); //
+        Route::get('fisca_ficha', 'Res_DeterminacionController@ficha_verificacion'); //
 
     }); 
     Route::get('$',function(){ echo 0;});//url auxiliar

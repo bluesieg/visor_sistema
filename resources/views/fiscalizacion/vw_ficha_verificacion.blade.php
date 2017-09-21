@@ -3,7 +3,7 @@
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
-            <h1 class="txt-color-green"><b>Generación de Carta de Requerimiento</b></h1>
+            <h1 class="txt-color-green"><b>Ingreso de Fichas de Verificación...</b></h1>
         </div>
         <div class="col-xs-3" style="margin-top: 5px; padding-right: 23px;">
             <div class="input-group input-group-md">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-         <div class="col-xs-12 cr-body" >
+        <div class="col-xs-12 cr-body" >
             
             <div class="col-xs-4" style="padding: 0px; margin-top: 5px">
                 <section>
@@ -117,19 +117,11 @@
     <div class='cr_content col-xs-12'>
        
         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-            <article class="col-xs-11" style=" padding: 0px !important">
-                    <table id="table_cartas"></table>
+            <article class="col-xs-12" style=" padding: 0px !important">
+                <table id="table_cartas" class="col-xs-12"></table>
                     <div id="pager_table_cartas"></div>
             </article>
-            <div class="col-xs-1 text-center" style="padding-right: 0px;">
-                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new_carta();" >
-                    <span  >
-                        <i class="glyphicon glyphicon-plus"></i>
-                    </span>
-                </button>
-                    <label><b>Nuevo</b></label>
-            </div>
-            </div>
+        </div>
     </div>
     
 </section>
@@ -137,22 +129,23 @@
 <script type="text/javascript">
     $(document).ready(function (){
         $("#menu_fisca").show();
-        $("#li_fisca_carta").addClass('cr-active')
+        $("#li_ficha_ver").addClass('cr-active')
         jQuery("#table_cartas").jqGrid({
             url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver'],
+            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver','Ingresar Ficha'],
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 10},
-                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 40},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 5},
+                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 30},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 8},
                 {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 15},
                 {name: 'flg_est', index: 'flg_est', align: 'center', width: 10},
-                {name: 'id_car', index: 'id_car', align: 'center', width: 15},
+                {name: 'ver', index: 'ver', align: 'center', width: 8},
+                {name: 'fis', index: 'fis', align: 'center', width: 10},
             ],
             pager: '#pager_table_cartas',
             rowList: [20, 50],
@@ -198,6 +191,31 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
         });
+        jQuery("#table_predios_contri").jqGrid({
+            url: 'obtiene_cotriname?dat=0',
+            datatype: 'json', mtype: 'GET',
+            height: '300px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_pred_anio','codigo','Ubicaciób'],
+            rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Predios a Fiscalizar', align: "center",
+            colModel: [
+                {name: 'id_pred_anio', index: 'id_pred_anio', hidden: true},
+                {name: 'cod_cat', index: 'cod_cat', align: 'center',width: 100},
+                {name: 'dir', index: 'dir', align: 'left',width: 400},
+                
+            ],
+            pager: '#pager_table_predios_contri',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_predios_contri').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_predios_contri').jqGrid('getDataIDs')[0];
+                            $("#table_predios_contri").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
         
         
         
@@ -237,46 +255,42 @@
     });
 </script>
 @stop
-<script src="{{ asset('archivos_js/fiscalizacion/carta_reque.js') }}"></script>
+<script src="{{ asset('archivos_js/fiscalizacion/ficha_ver.js') }}"></script>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>
         <div id="pager_table_contrib"></div>
     </article>
 </div> 
-<div id="dlg_new_carta" style="display: none;">
+<div id="dlg_vista_carta" style="display: none;">
     
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-        <div id="div_adquiere" class="col-xs-12 cr-body" >
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-6" style="padding: 0px; margin-top: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                                <h2>LLenado de Información::..</h2>
+                                <h2>Información Carta de Requerimiento::..</h2>
                         </header>
                     </div>
                 </section>
-                <div class="col-xs-3" style="padding: 0px;">
+                <div class="col-xs-12" style="padding: 0px;">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">N° Doc. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon">N° Carta Requerimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="dlg_contri_carta_doc" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                            <input id="dlg_nro_car" type="text"  class="form-control" style="height: 32px; " disabled="" >
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-9" style="padding: 0px; ">
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">Contribuyente a Fiscalizar &nbsp;<i class="fa fa-male"></i></span>
+                        <span class="input-group-addon">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
                         <div>
-                            <input id="dlg_contri_carta_hidden" type="hidden" value="0">
-                            <input id="dlg_contri_carta" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
+                            <input id="dlg_contri_carta" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 100% !important" disabled="" >
                         </div>
-                        <span class="input-group-btn" style="font-size: 13px;">
-                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_carta('dlg_contri_carta')">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </span>
+                       
                     </div>
                 </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
@@ -289,128 +303,36 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
-                                <h2>Selección de Fecha y Hora de Fiscalización ::..</h2>
-                        </header>
-                    </div>
-                </section>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
                 
-                <div class="col-xs-5" style="padding: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">Fecha Fizcalizacion &nbsp;<i class="fa fa-calendar"></i></span>
-                        <div class=""  >
-                            <input id="dlg_fec_fis" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Hora de Fizcalizacion &nbsp;<i class="fa fa-clock-o"></i></span>
-                        <div class=""  >
-                            <input id="dlg_hor_fis" type="text" class="form-control" data-mask="99:99" style="height: 32px; width: 100%" placeholder="--:--">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
-                                <h2>Documentos que se deberá presentar al momento de la fiscalización ::..</h2>
-                        </header>
-                    </div>
-                </section>
-                <form class="smart-form">
-                    <fieldset>
-                        <section>
-                            <div class="inline-group">
-                                <label class="checkbox">
-                                        <input id="cbx_con" type="checkbox"  checked="checked">
-                                        <i></i>1. Contrato de compra Venta y título de propiedad del inmueble</label>
-                                <label class="checkbox">
-                                        <input id="cbx_lic" type="checkbox" checked="checked">
-                                        <i></i>2. Licencia de construcción</label>
-                                <label class="checkbox">
-                                        <input id="cbx_der" type="checkbox"  checked="checked">
-                                        <i></i>3. Última Declaración Jurada</label>
-                                
-                            </div>
-                        </section> 
-                    </fieldset>
-                </form>
-                <form class="smart-form col-xs-1" style="padding: 0px;">
-                    <fieldset style="padding-right: 0px;">
-                        <section>
-                            <div class="inline-group">
-                                <label class="checkbox" style="margin-right: 0px;">
-                                    <input id="cbx_otr" type="checkbox" onchange="validarotros()">
-                                        <i></i>4. Otros</label>
-                            </div>
-                        </section> 
-                    </fieldset>
-                </form>
-                <div class="col-xs-11">
-                    <input id="dlg_otros" type="text" class="form-control" style="height: 32px; width: 100%" placeholder="Otros Documentos Solicitados" maxlength="100">
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-users"></i> </span>
-                                <h2>Seleccion de Fizcalizadores ::..</h2>
-                        </header>
-                    </div>
-                </section>
-
-                <div class="col-xs-10" style="padding: 0px; ">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Fiscalizadores &nbsp;<i class="fa fa-list"></i></span>
+                        <span class="input-group-addon">Fecha Fiscalización &nbsp;<i class="fa fa-calendar"></i></span>
                         <div>
-                            <select id='selfisca' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                @foreach ($fiscalizadores as $fis)
-                                    <option value='{{$fis->id_user_fis}}' documento="{{trim($fis->pers_nro_doc)}}">{{trim($fis->pers_nro_doc)."-".trim($fis->fiscalizador)}}</option>
-                                @endforeach
-                            </select>                       
+                            <input id="dlg_fec_fis" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" disabled="">
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-2" onclick="poner_fisca()">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span>Poner Fiscalizador
-                </button>
                 
-                    <div class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
-
-                        <table class="table " id="table_fiscalizadores" >
-                                <thead>
-                                        <tr>
-                                            <th class="text-center" style="border: 1px solid #bbb; width: 10%; height: 30px">Codigo</th>
-                                            <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Documento</th>
-                                            <th class="text-center"  style="border: 1px solid #bbb; width: 70%;height: 30px">Nombre Fiscalizador</th>
-                                            <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Borrar</th>
-
-                                        </tr>
-                                </thead>
-                                <tbody>
-                                 
-
-                                </tbody>
-                        </table>
-
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Hora Fiscalización &nbsp;<i class="fa fa-clock-o"></i></span>
+                        <div>
+                            <input id="dlg_hor_fis" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" disabled="">
+                        </div>
                     </div>
+                </div>
             </div>
-            <ul id="sparks" >
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_confirmar_carta()">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Guardar y Generar
-                </button>
-            </ul>
+            <div class="col-xs-6" style="padding: 0px; margin-top: 0px;">
+                <article class="col-xs-12" style=" padding-left: 0px !important">
+                    <table id="table_predios_contri"></table>
+                    <div id="pager_table_predios_contri"></div>
+                </article>
+            </div>
+
+          
         </div>
     </div>
 </div> 

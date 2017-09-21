@@ -46,6 +46,9 @@ class Res_DeterminacionController extends Controller
     {
         //
     }
+    
+    /////////////////////////////carta de requerimiento
+    
     public function carta_requerimiento()
     {
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
@@ -76,7 +79,7 @@ class Res_DeterminacionController extends Controller
         $fisca->save();
         return $fisca->id_fis_env;
     }
-    public function get_cartas_req($an,$contrib,$ini,$fin,Request $request)
+    public function get_cartas_req($an,$contrib,$ini,$fin,$num,Request $request)
     {
             header('Content-type: application/json');
             $page = $_GET['page'];
@@ -93,11 +96,20 @@ class Res_DeterminacionController extends Controller
                 {
                     $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where fec_reg between '".$ini."' and '".$fin."'");
                     $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->wherebetween("fec_reg",[$ini,$fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    
                 }
                 else
                 {
-                    $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an);
-                    $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    if($num==0)
+                    {
+                        $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an);
+                        $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    }
+                    else
+                    {
+                        $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where nro_car='".$num."' and anio=".$an);
+                        $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->where("nro_car",$num)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    }
                 }
             }
             else
@@ -121,7 +133,16 @@ class Res_DeterminacionController extends Controller
             $Lista->total = $total_pages;
             $Lista->records = $count;
             foreach ($sql as $Index => $Datos) {
-                
+                if($Datos->flg_est==0)
+                {
+                    $estado="Sin Fizcalizar";
+                    $btnfis='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="fiscalizar('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Fiscalizar</button>';
+                }
+                if($Datos->flg_est==1)
+                {
+                    $estado="Fizcalizado";
+                    $btnfis='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Fiscalizar</button>';
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_car;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_car),
@@ -129,7 +150,9 @@ class Res_DeterminacionController extends Controller
                     trim($Datos->contribuyente),
                     trim($this->getCreatedAtAttribute($Datos->fec_reg)->format('d/m/Y')),
                     trim($this->getCreatedAtAttribute($Datos->fec_fis)->format('d/m/Y'))." ".$Datos->hora_fis,
+                    $estado,
                     '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="vercarta('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
+                    $btnfis
                 );
             }
             return response()->json($Lista);
@@ -141,12 +164,19 @@ class Res_DeterminacionController extends Controller
         {
             $fiscalizadores=DB::table('fiscalizacion.vw_fisca_enviados')->where('id_car',$id)->get();
             $predios=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$sql->id_contrib)->get();
-            $sql->fec_fis=$this->getCreatedAtAttribute($sql->fec_fis)->format('l d,\d\e F \d\e\l Y ');
-            $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d,\d\e F \d\e\l Y ');
+            $sql->fec_fis=$this->getCreatedAtAttribute($sql->fec_fis)->format('l d \d\e F \d\e\l Y ');
+            $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d \d\e F \d\e\l Y ');
             $view =  \View::make('fiscalizacion.reportes.carta_req', compact('sql','fiscalizadores','predios'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("alcabala.pdf");
         }
     }
+    ///////////////////////////////ficha de verificacion
+    public function ficha_verificacion()
+    {
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('fiscalizacion/vw_ficha_verificacion',compact('anio_tra'));
+    }
+    
 }
