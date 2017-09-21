@@ -100,7 +100,11 @@ function gen_rec_pago_fracc(){
     cant=Seleccionados.length;
     cuota_checks = Seleccionados.join('-');
     
-//    alert(cuota_checks);   
+    
+    if(cant==0){
+        mostraralertas('* No ha Seleccionado Cuota...');
+        return false;
+    }
 //    return false;
     $.confirm({
         title: '.:Recibo:.',
@@ -202,6 +206,7 @@ function fn_bus_contrib_fracc(){
        
 }
 function fn_bus_contrib_list_fracc(per){
+    
     $("#vw_emi_rec_fracc_contrib_hidden").val(per);
     
     $("#vw_emi_rec_fracc_cod_contrib").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    

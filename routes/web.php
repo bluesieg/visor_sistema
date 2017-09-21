@@ -31,9 +31,58 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
 
 //Route::get('/vw_general', 'General@index')->name('vw_general');
 //
-//Route::get('msg', function() {
-//    return view('fnewUsuario');
-//});
+Route::get('msg', function() {
+    $rq		= new \stdClass();
+    $rq->data	= new \stdClass();
+    $rq->auth	= new \stdClass();
+
+    $rq->auth->dni	= '80673320';		// DNI del usuario
+    $rq->auth->pas	= 'Pr0gr4m4';           // Contrasenia
+    $rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
+
+    $rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
+    $rq->data->dni	= '46981875';		// Dato que debe estar acorde al contrato del ws
+    $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+
+    $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+    $options = array(
+            'http' => array(
+            'header'  => "Content-type: application/json\r\n",
+            'method'  => 'POST',
+            'content' => json_encode($rq)
+        )
+    );
+
+    $context  = stream_context_create($options);
+
+    $result = file_get_contents($url, false, $context);
+
+    if ($result === FALSE) 
+    {  
+      echo 'Error de conexion';
+    }
+
+    $rpta = json_decode($result);
+
+
+    if($rpta->resp->code == '0000')
+    {        
+        echo $rpta->data->apPrimer."<br>";
+        echo $rpta->data->apSegundo."<br>";   
+        echo $rpta->data->prenombres."<br>";
+        echo $rpta->data->estadoCivil."<br>";
+        echo $rpta->data->direccion."<br>";
+        echo $rpta->data->ubigeo."<br>" ;
+        echo 'https://ehg.pe/delfos/'.$rpta->data->foto."<br>"; 
+        echo $rpta->data->cache."<br>";
+        
+//        var_dump($rpta);
+    }
+    else
+    {
+     echo $rpta->resp->code.'-'.$rpta->resp->text;
+    }
+});
 
 Route::get('fracc', 'General@fraccionamiento');
 
@@ -199,6 +248,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('coactiva_gen_resolucion','CoactivaController@get_doc_recibidos');
         Route::get('rec_apertura','CoactivaController@rec_apertura');
         Route::get('editor_text','CoactivaController@editor_text');
+        Route::post('update_plantilla_1','CoactivaController@update_plantilla_1');
     });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {

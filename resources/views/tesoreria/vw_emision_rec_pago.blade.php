@@ -121,7 +121,7 @@
             },
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
-                fn_bus_contrib_list(Id)
+                fn_bus_contrib_list_fracc(Id);
             }
         });
         jQuery("#table_cta_cte2").jqGrid({

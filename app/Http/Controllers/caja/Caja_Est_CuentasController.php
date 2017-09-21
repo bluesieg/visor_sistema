@@ -102,7 +102,7 @@ class Caja_Est_CuentasController extends Controller
     
     function print_est_cta_contrib($id_contrib,$desde,$hasta){
         $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
-        $fecha_larga = $this->getCreatedAtAttribute(date('d-m-Y'))->format('l,d \d\e F \d\e\l Y');
+        $fecha_larga = mb_strtoupper($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
         $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
         $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
         

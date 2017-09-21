@@ -25,7 +25,7 @@
                                 <section class="col-lg-5" style="padding-left: 5px">
                                     <div class="input-group">
                                         <span class="input-group-addon">Desde<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
-                                        <input placeholder="dd/mm/aaaa" id="vw_resep_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <input placeholder="dd/mm/aaaa" id="vw_resep_doc_fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date("d/m/Y", strtotime(date('Y-m-d')." -15 day"))}}" maxlength="10">
                                         <span class="input-group-addon">Hasta<i class="icon-append fa fa-calendar" style="margin-left: 5px;"></i></span>
                                         <input placeholder="dd/mm/aaaa" id="vw_resep_doc_fhasta" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
                                         <span class="input-group-btn">
@@ -98,6 +98,7 @@
         $(window).on('resize.jqGrid', function () {
             $("#tabla_Rec").jqGrid('setGridWidth', $("#content_2").width());
         });
+        
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
             datatype: 'json', mtype: 'GET',
@@ -173,6 +174,7 @@
     });
 </script>
 @stop
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="{{ asset('archivos_js/coactiva/emision_rec.js') }}"></script>
 <div id="dialog_gen_resol" style="display: none">
     <div class="widget-body">
@@ -215,7 +217,7 @@
     </div>
 </div>
 <div id="dlg_editor" style="display: none;">
-    <iframe id="rec_editor" width="500" height="300"></iframe>
+    <iframe id="rec_editor" width="770" height="515" marginheight="0" marginwidth="0" noresize scrolling="No" frameborder="0" style="border:1px solid #DDD"></iframe>
 </div>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">

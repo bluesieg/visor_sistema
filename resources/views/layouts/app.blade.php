@@ -383,7 +383,8 @@
         <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
         <script src="{{ asset('archivos_js/configuracion.js') }}"></script>
         
-        <script src="js/plugin/ckeditor/ckeditor.js"></script>
+        
+        <script src="{{ asset('js/plugin/ckeditor/ckeditor.js') }}"></script>
         <!--<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>--> 
 
         <!--<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->

@@ -72,7 +72,7 @@ class ConvenioController extends Controller
         $desde=$request['desde'];        
         $hasta=$request['hasta'];
         $totalg = DB::select("select count(a.id_tipo)as total from fraccionamiento.fn_deuda_frac(138) a
-                    left join fraccionamiento.convenio b on a.id_contri=b.id_contribuyente and a.anio_deu::integer=b.anio
+                    left join fraccionamiento.convenio b on a.id_contrib=b.id_contribuyente and a.anio_deu::integer=b.anio
                     where anio_deu between '".$desde."' and '".$hasta."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
@@ -96,7 +96,7 @@ class ConvenioController extends Controller
         }
         
         $sql = DB::select("select a.*, b.tipo as conv_tipo from fraccionamiento.fn_deuda_frac(".$id_contrib.") a "
-                .'left join fraccionamiento.convenio b on a.id_contri=b.id_contribuyente and a.anio_deu::integer=b.anio '
+                .'left join fraccionamiento.convenio b on a.id_contrib=b.id_contribuyente and a.anio_deu::integer=b.anio '
                 . "where anio_deu between '".$desde."' and '".$hasta."'");
 //        $sql = DB::select('');
         $Lista = new \stdClass();
@@ -298,7 +298,7 @@ class ConvenioController extends Controller
         $totales['tot_amo']= number_format($amo,2,'.',',');
         $totales['tot_inter']=number_format($inter,2,'.',',');
         $totales['tot_cc']=number_format($cc,2,'.',',');
-        $fecha_larga = $this->getCreatedAtAttribute(date('d-m-Y'))->format('l,d \d\e F \d\e\l Y');/*$this->fecha_letras(date('F j, Y'));*/
+        $fecha_larga = mb_strtoupper($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));/*$this->fecha_letras(date('F j, Y'));*/
         $view = \View::make('fraccionamiento.reporte.cronogramaPagos',compact('contrib','conv','todo','fecha_larga','totales'))->render();
 //        return $view;
 
