@@ -48,9 +48,9 @@
                     <table class="table table-striped table-forum">
                         <thead>
                         <tr>
-                            <th colspan="2">Contribuyentes</th>
-                            <th class="text-center hidden-xs hidden-sm" style="width: 200px;">Visto</th>
-                            <th class="hidden-xs hidden-sm" style="width: 200px;">Última vez</th>
+                            <th colspan="2" style="width: 60%;">Contribuyentes</th>
+                            <th class="text-center hidden-xs hidden-sm" style="width: 10%;">Visto</th>
+                            <th class="hidden-xs hidden-sm"style="width: 30%;">Última vez</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -59,8 +59,30 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
+                                <h4><a href="#" onclick="dlg_new_reporte_0(0);" id="titulo_r1">
+                                        Listado de principales contribuyentes
+                                    </a>
+                                    <small>Descripción reporte 0</small>
+                                </h4>
+                            </td>
+                            <td class="text-center hidden-xs hidden-sm">
+                                <a href="javascript:void(0);">431 veces</a>
+                            </td>
+                            <td class="hidden-xs hidden-sm">Por
+                                <a href="javascript:void(0);">{{ Auth::user()->ape_nom }}</a>
+                                <br>
+                                <small><i>January 1, 2014</i></small>
+                            </td>
+                        </tr>
+                        <!-- end TR -->
+
+
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
                                 <h4><a href="#" onclick="dlg_new_reporte(1);" id="titulo_r1">
-                                        Contribuyentes 1
+                                        Listado de datos de los contribuyentes.
                                     </a>
                                     <small>Descripción reporte 1</small>
                                 </h4>
@@ -81,7 +103,27 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_new_reporte(2);" id="titulo_r2">
-                                        Contribuyentes 2
+                                        Listado de datos contribuyentes y predios.
+                                    </a>
+                                    <small>Descripción reporte 2</small>
+                                </h4>
+                            </td>
+                            <td class="text-center hidden-xs hidden-sm">
+                                <a href="javascript:void(0);">431 veces</a>
+                            </td>
+                            <td class="hidden-xs hidden-sm">Por
+                                <a href="javascript:void(0);">{{ Auth::user()->ape_nom }}</a>
+                                <br>
+                                <small><i>January 1, 2014</i></small>
+                            </td>
+                        </tr>
+
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_new_reporte_4(4);" id="titulo_r2">
+                                        Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 2</small>
                                 </h4>
@@ -96,8 +138,6 @@
                             </td>
                         </tr>
                         <!-- end TR -->
-
-
                         </tbody>
                     </table>
 
@@ -114,9 +154,25 @@
     $(document).ready(function () {
         $("#menu_reportes").show();
         $("#li_ver_reportes").addClass('cr-active');
+
+        $("#range-slider-1").ionRangeSlider({
+            min: 0,
+            max: 100000,
+            from: 0,
+            to: 50000,
+            type: 'double',
+            step: 1,
+            postfix: "Soles",
+            prettify: false,
+            grid: true,
+            inputValuesSeparator: ';'
+        });
+
+
     });
 </script>
 @stop
+<script src="{{ asset('Js/plugin/ion-slider/ion.rangeSlider.min.js')}}"></script>
 <script src="{{ asset('archivos_js/reportes/reportes.js') }}"></script>
 
 <div id="dialog_reporte_contr" style="display: none">
@@ -175,6 +231,7 @@
                                         <label class="label">MANZANA:</label>
                                         <label class="select">
                                             <select id="selmnza" class="form-control" >
+                                                <option value='0'>-- TODOS --</option>
                                                 @foreach ($manzanas as $manzanas)
                                                     <option value='{{$manzanas->codi_mzna}}'>{{$manzanas->codi_mzna}}</option>
                                                 @endforeach
@@ -222,6 +279,82 @@
         </div>
     </div>
 </div>
+
+<div id="dialog_reporte_contr_4" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row">
+                    <section class="col col-3">
+
+                    </section>
+                    <section class="col col-6" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='selan_r4' class="form-control">
+                                @foreach ($anio_tra as $anio_4)
+                                    <option value='{{$anio_4->anio}}' >{{$anio_4->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-3">
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_reporte_contr_0" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+
+
+                <div class="row" style="padding-left: 30px;padding-right: 35px">
+                    <label class="label" style="text-align: center">RANGO:</label>
+
+                                <input id="range-slider-1" type="text" name="range_1" value="">
+                </div>
+
+                <br>
+                <div class="row" style="padding-left: 15px;padding-right: 35px">
+                    <section class="col col-3" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='selantra_r0' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio)
+                                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-3">
+                        <label class="label">MIN:</label>
+                        <label class="input">
+                            <input id="min" type="text" placeholder="0" class="input-sm">
+                        </label>
+                    </section>
+                    <section class="col col-3">
+                        <label class="label">MAX:</label>
+                        <label class="input">
+                            <input id="max" type="text" placeholder="50 000" class="input-sm">
+                        </label>
+                    </section>
+                    <section class="col col-3">
+                        <label class="label">REGISTROS:</label>
+                        <label class="input">
+                            <input id="num_reg" type="text" placeholder="10" class="input-sm">
+                        </label>
+                    </section>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 

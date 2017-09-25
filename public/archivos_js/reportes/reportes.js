@@ -1,5 +1,5 @@
 
-
+/*
 function abrir_rep()
 {
     $sector = $('#selsec').val();
@@ -8,7 +8,7 @@ function abrir_rep()
     //alert(Id + "/" + $sector + "/" + $mzna);
     window.open('pre_rep_contr/'+$sector+'/'+$mzna);
 }
-
+*/
 function limpiar_reporte(){
     $('#selsec').val('0');
     $('#selmnza').val('0');
@@ -16,6 +16,27 @@ function limpiar_reporte(){
     $('#selec_hab_urb').val('0');
     $('#hab_urb').val('');
     $('#descripcion_subtitulo').val('');
+}
+
+function dlg_new_reporte_0(num_rep){
+    //limpiar_reporte_3();
+    //$titulo = $('#titulo_r'+num_rep).html();
+    //alert($titulo);
+    //$('#descripcion_subtitulo').html('Reporte de ' + $titulo + ':');
+    $("#dialog_reporte_contr_0").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: REPORTE DE CONTRIBUYENTES :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_rep(num_rep); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+
 }
 
 function dlg_new_reporte(num_rep){
@@ -40,9 +61,37 @@ function dlg_new_reporte(num_rep){
     autocompletar_hab_urb('hab_urb');
 
 }
+
+function dlg_new_reporte_4(num_rep){
+    //limpiar_reporte_3();
+    //$titulo = $('#titulo_r'+num_rep).html();
+    //alert($titulo);
+    //$('#descripcion_subtitulo').html('Reporte de ' + $titulo + ':');
+    $("#dialog_reporte_contr_4").dialog({
+        autoOpen: false, modal: true, width: 300, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: REPORTE DE CONTRIBUYENTES :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_rep(num_rep); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+
+}
+
+
 $current_tab=1;
 function abrir_rep(num_rep)
 {
+    if(num_rep == 0) {
+
+        window.open('pre_rep_prin_contr');
+    }
+
     if($current_tab == 1 && num_rep == 1) {
         //alert('1-1');
         $sector = $('#selsec').val();
@@ -62,14 +111,27 @@ function abrir_rep(num_rep)
             MensajeAlerta('Reporte Contrituyentes', ' Habilitación Urbana no Válida.');
     }
 
-    if(num_rep == 2) {
+    if($current_tab == 1 && num_rep == 2) {
         //alert('2');
         $sector = $('#selsec').val();
         $mzna = $('#selmnza').val();
         $anio = $('#selantra').val();
         //Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
         //alert(Id + "/" + $sector + "/" + $mzna);
-        window.open('pre_rep_contr_otro');
+        window.open('pre_rep_contr_otro/'+$sector+'/'+$mzna+'/'+$anio);
+    }
+
+    if($current_tab == 1 && num_rep == 2) {
+        //alert('2');
+        var anio_hab_urb = $('#selec_hab_urb').val();
+        var id_hab_urba = $('#hiddentxt_hab_urb').val();
+        window.open('pre_rep_contr_pred_hu/'+id_hab_urba+'/'+anio_hab_urb);
+    }
+
+    if(num_rep == 4) {
+        //alert('2');
+        $anio_r4 = $('#selan_r4').val();
+        window.open('pre_rep_contr_r4/'+$anio_r4);
     }
 }
 
@@ -119,6 +181,7 @@ function callpredtab()
         type: 'GET',
         success: function(r)
         {
+            $("#selmnza").append('<option value="0"> -- TODOS -- </option>');
             $(r).each(function(i, v){ // indice, valor
                 $("#selmnza").append('<option value="' + v.id_mzna + '">' + v.codi_mzna + '</option>');
             })
