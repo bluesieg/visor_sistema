@@ -11,15 +11,23 @@ function left(){
     if(cont_rows==0 || id_gen_fis==null){return false;}
     update_env_op(id_gen_fis,1);
 }
+
 function all_right(){    
     var rows = $("#tabla_Doc_OP").getDataIDs();
     if (rows.length > 0) {
-        MensajeDialogLoadAjax('tabla_Doc_OP','Enviando...');
-        MensajeDialogLoadAjax('tabla_Doc_OP_2','Recibiendo...');
-        var i=0;
-        for(i=0;i<=(rows.length)-1;i++){
+        MensajeDialogLoadAjax('content','Cargando');
+        
+        var i = 0;
+        var id = window.setInterval(function(){
+            if(i >= (rows.length)) {
+                clearInterval(id);
+                return;
+            }            
             all_update_env_op(rows[i],2);
-        }
+            console.log(i);
+            i++;
+        }, 1000);
+
         setTimeout(function () {
             if($("input:radio[name='myradio']:checked").val()==1){
                 fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
@@ -32,16 +40,16 @@ function all_right(){
                 fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
             }
-            MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
-            MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
-        }, 1100);
+            MensajeDialogLoadAjaxFinish('content');
+        }, (rows.length+1)*1000);
     }
 }
 function all_left(){    
     var rows = $("#tabla_Doc_OP_2").getDataIDs();
     if (rows.length > 0) {
-        MensajeDialogLoadAjax('tabla_Doc_OP','Recibiendo...');
-        MensajeDialogLoadAjax('tabla_Doc_OP_2','Enviando...');
+        MensajeDialogLoadAjax('content','Cargando');
+//        MensajeDialogLoadAjax('tabla_Doc_OP','Recibiendo...');
+//        MensajeDialogLoadAjax('tabla_Doc_OP_2','Enviando...');
         var i=0;
         for(i=0;i<=(rows.length)-1;i++){
             all_update_env_op(rows[i],1);
@@ -58,19 +66,20 @@ function all_left(){
                 fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
                     '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
             }
-            MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
-            MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
+//            MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
+//            MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
+            MensajeDialogLoadAjaxFinish('content');
         }, 1100);
     }
 }
-function all_update_env_op(id_gen_fis,env_op){
+function all_update_env_op(id_gen_fis,env_op){     
     $.ajax({
         url:'updat_env_doc',
         type:'GET',
         data:{id_gen_fis:id_gen_fis,env_op:env_op},
         success:function(data){},
         error: function(){}
-    });
+    });    
 }
 function update_env_op(id_gen_fis,env_op){
     $.ajax({
@@ -91,7 +100,7 @@ function update_env_op(id_gen_fis,env_op){
             }
         },
         error: function(){}
-    });
+    });     
 }
 function radio_click(val){
     if(val==1){

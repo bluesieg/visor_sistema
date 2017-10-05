@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Recibos_Master;
 use App\Models\CtaCte;
+use App\Models\Caja_apert_cierr;
 
 class Caja_MovimientosController extends Controller {
 
@@ -93,13 +94,59 @@ class Caja_MovimientosController extends Controller {
 
     public function update(Request $request, $id) {}
     
-    function rec_fracc(){
+    function rep_dia_caja($id_caja){
+//        $master = DB::table('tesoreria.vw_recibos_resumen')->where([['id_caja',$id_caja],['fecha',date('Y-m-d')],['id_est_rec',2]])->orderBy('nro_recibo_mtr','asc')->get();
+        $master = DB::select("select ROW_NUMBER () OVER (ORDER BY nro_recibo_mtr) as nro,lpad(nro_recibo_mtr::text, 7, '0') as nro_recibo,* from tesoreria.vw_recibos_resumen where id_caja=".$id_caja." and fecha ='".date('Y-m-d')."' and id_est_rec=2");
+        $total = DB::select("select sum(total) as total from tesoreria.vw_recibos_resumen where id_caja=".$id_caja." and fecha ='".date('Y-m-d')."' and id_est_rec=2");
+        $view = \View::make('caja.reportes.rep_diario_caja', compact('master','total'))->render();        
+        $pdf = \App::make('dompdf.wrapper');        
+        $pdf->loadHTML($view)->setPaper('a4');
+        return $pdf->stream();
         
     }
     
-    public function destroy($id) {
-        //
+    function verif_aper_caja(Request $request){
+        $id_caja = $request['id_caja'];
+        $caja = DB::table('tesoreria.vw_caja_apertura')->where('id_caja',$id_caja)->where('fecha',date('Y-m-d'))->get();
+        if(count($caja)>=1){
+            return response()->json(['msg'=>'si','id_caja_dia'=>$caja[0]->id_caj_mov,'estado'=>$caja[0]->estado]);
+        }else{
+            return response()->json(['msg'=>'no']);
+        }
     }
+    function apertura_caja(Request $request){
+        $data = new Caja_apert_cierr();
+        $data->id_usuario=Auth::user()->id;
+        $data->id_caja=$request['id_caja'];
+        $data->fecha=date('Y-m-d');
+        $data->hora=date('H:i A');
+        $data->estado=1;
+        $sql = $data->save();
+        if($sql){
+            return response()->json(['msg'=>'si','id_caja_dia'=>$data->id_caj_mov]);
+        }else{
+            return response()->json(['msg'=>'no']);
+        }
+    }
+    function cierre_caja(Request $request){
+        $data = new Caja_apert_cierr();        
+        $val = $data::where("id_caj_mov", "=", $request['id_caj_mov'])->first();
+        $ult_recib = DB::table('tesoreria.cajas')->where('id_caj',$request['id_caja'])->value('ult_rec_emitido');
+        
+        if (count($val) >= 1) {
+            $val->estado=2;            
+            $val->hora_cierre=date('H:i A');            
+            $val->ultimo_recibo_mov=$ult_recib;            
+            $sql = $val->save();  
+            if($sql){
+                return response()->json(['msg'=>'si','id_caja_dia'=>$val->id_caj_mov]);
+            }else{
+                return response()->json(['msg'=>'no']);
+            }
+        }
+        
+    }
+    public function destroy($id) {}
 
     function get_grid_Caja_Mov(Request $request) {
         date_default_timezone_set('America/Lima');
@@ -196,6 +243,10 @@ class Caja_MovimientosController extends Controller {
             $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion_fracc')->where('id_rec_master',$id_rec)->get();
         }else{
             $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion')->where('id_rec_master',$id_rec)->get();
+        }
+        if($recibo[0]->clase_recibo=='1'){
+            $contrib = DB::table('adm_tri.personas')->where('id_pers',$recibo[0]->id_contrib)->first();
+            $recibo[0]->contribuyente = $contrib->pers_ape_pat.' '.$contrib->pers_ape_mat.' '.$contrib->pers_nombres;
         }
 //        dd($recibo);
 //        echo $id_rec;

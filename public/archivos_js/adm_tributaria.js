@@ -192,10 +192,10 @@ function new_persona(){
         url: 'insert_personas',
         type: 'POST',
         data:{
-            pers_ape_pat : $("#pers_pat").val() || '-',
-            pers_ape_mat : $("#pers_mat").val() || '-',
-            pers_nombres : $("#pers_nombres").val() || '-',
-            pers_raz_soc : $("#pers_raz_soc").val() || '-',
+            pers_ape_pat : $("#pers_pat").val().toUpperCase() || '-',
+            pers_ape_mat : $("#pers_mat").val().toUpperCase() || '-',
+            pers_nombres : $("#pers_nombres").val().toUpperCase() || '-',
+            pers_raz_soc : $("#pers_raz_soc").val().toUpperCase() || '-',
             pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
             pers_nro_doc : $("#pers_nro_doc").val() || '-',
             pers_sexo : $("#pers_sexo").val() || '-',
@@ -264,32 +264,32 @@ function new_contrib() {
 }
 
 function eliminar_contribuyente(id) {
-    raz_soc = $.trim($("#table_Contribuyentes").getCell(id, "contribuyente"));
-    $.confirm({
-        title: '.:Cuidado... !',
-        content: 'Los Cambios no se podran revertir...',
-        buttons: {
-            Confirmar: function () {
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: 'contribuyente_delete',
-                    type: 'POST',
-                    data: {id: id},
-                    success: function (data) {                     
-                        fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
-                        dialog_close('dialog_new_edit_Contribuyentes');
-                        MensajeExito('Eliminar Contribuyente', raz_soc + '- Ha sido Eliminado');
-                    },
-                    error: function (data) {
-                        MensajeAlerta('Eliminar Contribuyente', raz_soc + '- No se pudo Eliminar.');
-                    }
-                });
-            },
-            Cancelar: function () {
-                MensajeAlerta('Eliminar Contribuyente','Operacion Cancelada.');
-            }
-        }
-    });
+//    raz_soc = $.trim($("#table_Contribuyentes").getCell(id, "contribuyente"));
+//    $.confirm({
+//        title: '.:Cuidado... !',
+//        content: 'Los Cambios no se podran revertir...',
+//        buttons: {
+//            Confirmar: function () {
+//                $.ajax({
+//                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+//                    url: 'contribuyente_delete',
+//                    type: 'POST',
+//                    data: {id: id},
+//                    success: function (data) {                     
+//                        fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');
+//                        dialog_close('dialog_new_edit_Contribuyentes');
+//                        MensajeExito('Eliminar Contribuyente', raz_soc + '- Ha sido Eliminado');
+//                    },
+//                    error: function (data) {
+//                        MensajeAlerta('Eliminar Contribuyente', raz_soc + '- No se pudo Eliminar.');
+//                    }
+//                });
+//            },
+//            Cancelar: function () {
+//                MensajeAlerta('Eliminar Contribuyente','Operacion Cancelada.');
+//            }
+//        }
+//    });
 }
 
 function filtro_tipo_doc(tipo) {   
@@ -452,5 +452,30 @@ function autocompletar_hab_urb(textbox) {
 
 function current_tab(id_report){
     $current_tab=id_report;
+}
+
+function eliminar_contrib(){
+//    id_contrib = $('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+//    $.confirm({
+//        title: '.:Cuidado... !',
+//        content: 'Los Cambios no se podran revertir...',
+//        buttons: {
+//            Confirmar: function () {
+//                $.ajax({
+//                    type:'GET'
+//                    url:'desactivar_contrib',
+//                    data:{id_contrib:id_contrib},
+//                    success: function(data){
+//                        if(data.msg=='si'){
+//                            MensajeExito('Eliminar','Contribuyente ha sido eliminado...');
+//                            fn_actualizar_grilla('table_Contribuyentes', 'grid_contribuyentes');                                                
+//                        }
+//                    }
+//                });
+//            },
+//            Cancelar: function () {}
+//        }
+//    });
+    
 }
 

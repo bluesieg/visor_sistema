@@ -6,32 +6,174 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Traits\DatesTranslator;
+use App\Models\coactiva\coactiva_documentos;
 
 class CoactivaController extends Controller
 {
     use DatesTranslator;
-    public function index(){
-        return view('coactiva.vw_coactiva');
+    function letra(){        
+        $monto= '2012';        
+        $le = $this->num_letras($monto);
+        echo $le;
+    }
+    public function gest_exped(){
+        return view('coactiva.vw_ges_exped');
     }   
     public function recep_doc() {
         return view('coactiva.vw_recep_doc');
     }
     function emision_apertura_resolucion(){
-        return view('coactiva.vw_emision_rec');
-    }
-    function editor_text(){
         $plantilla=DB::table('coactiva.plantillas')->where('id_plant',1)->value('contenido');
-        return view('coactiva.editor_resolucion_aper',compact('plantilla'));
+        return view('coactiva.vw_emision_rec',compact('plantilla'));
+    }
+    function editar_resol(Request $request){
+        $id_doc=$request['id_doc'];
+        $resolucion=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+        $resol=new \stdClass();
+        foreach ($resolucion as $Index => $Datos) {
+            $resol->id_doc=$Datos->id_doc;
+            $resol->id_contrib=$Datos->id_contrib;
+            $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
+            $resol->nro_resol=$Datos->nro_resol;
+            $resol->fch_recep=$Datos->fch_recep;
+            $resol->anio_resol=$Datos->anio_resol;
+            $resol->monto=$Datos->monto;
+            $resol->periodos=$Datos->periodos;
+            $resol->nro_rd=$Datos->nro_rd;
+            $resol->fch_emi=$Datos->fch_emi;
+            $resol->fch_emi_l=mb_strtolower($this->getCreatedAtAttribute($Datos->fch_emi)->format('l, d \d\e F \d\e\l Y'));
+        }
+        $plantilla=DB::table('coactiva.vw_documentos')->where('id_doc',$id_doc)->value('texto');
+
+        $plantilla = str_replace('{@fch_emi@}',$resol->fch_emi_l,$plantilla);
+        $plantilla = str_replace('{@contribuyente@}',$resol->contribuyente,$plantilla);
+        $plantilla = str_replace('{@nro_resol@}',$resol->nro_resol,$plantilla);
+        $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
+        $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
+        $plantilla = str_replace('{@periodos@}',$resol->periodos,$plantilla);
+        $plantilla = str_replace('{@monto@}', number_format($resol->monto,2,'.',','),$plantilla);
+        return view('coactiva.editor_resolucion_aper',compact('plantilla','id_doc'));
     }
     
-    public function show($id)
-    {}
+    function get_expedientes(Request $request){
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        
+        $totalg = DB::select("select count(id_coa_mtr) as total from coactiva.vw_coactiva_mtr where id_contrib=".$request['id_contrib']); 
+        
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        
+        $sql = DB::table('coactiva.vw_coactiva_mtr')->where('id_contrib',$request['id_contrib'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_coa_mtr;            
+            $Lista->rows[$Index]['cell'] = array(                
+                str_replace('0','',trim($Datos->nro_procedimiento)),
+                trim($Datos->nro_exped)                               
+            );
+        }
+        return response()->json($Lista);
+    }
+    function get_docum_expediente(Request $request){
+        $id_coa_mtr=$request['id_coa_mtr'];
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        
+        $totalg = DB::select("select count(id_doc) as total from coactiva.vw_documentos where id_coa_mtr=".$id_coa_mtr); 
+        
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        
+        $sql = DB::table('coactiva.vw_documentos')->where('id_coa_mtr',$id_coa_mtr)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        $cc=0;
+        $ver = "";
+        $edit= "";
+        $fch_recep="";
+        foreach ($sql as $Index => $Datos) {
+            $cc++;            
+            if($Datos->fch_recep){
+                $fch_recep=date('d-m-Y', strtotime($Datos->fch_recep));
+            }else{
+                $fch_recep="";
+            }
+            if($Datos->id_tip_doc=='2'){
+                $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
+                $edit= "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='editar_doc(".$Datos->id_doc.")'><span class='btn-label'><i class='fa fa-pencil'></i></span>Editar</button>";
+            }
+            else if($Datos->id_tip_doc=='6'){
+                $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
+                $edit= "";
+                if($Datos->fch_recep==null){
+                    $fch_recep= "<button class='btn btn-labeled bg-color-orange txt-color-white' title='Agregar Fecha de Recepción' type='button' onclick='fecha_resep_notif(".$Datos->id_doc.")'><span class='btn-label'><i class='fa fa-calendar'></i></span>Fecha</button>";
+                }else{$fch_recep=date('d-m-Y', strtotime($Datos->fch_recep));}                
+            }
+            else if($Datos->id_tip_doc=='7'){
+                $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
+                $edit= "";
+            }
+            $Lista->rows[$Index]['id'] = $Datos->id_doc;            
+            $Lista->rows[$Index]['cell'] = array(
+                $cc,
+                date('d-m-Y', strtotime($Datos->fch_emi)),
+                trim($Datos->tip_gestion),
+                trim($Datos->nro_resol),
+                $fch_recep,
+                $ver,
+                $edit                
+            );
+        }
+        return response()->json($Lista);
+    }
 
     public function edit($id)
     {}
 
-    public function update(Request $request, $id)
-    {}
+    function fch_recep_notif(Request $request){
+        $id_doc=$request['id_doc'];
+        $fch_recep=$request['fch_recep'];
+        DB::table('coactiva.coactiva_documentos')->where('id_doc',$id_doc)->update(['fch_recep'=>$fch_recep]);
+    }
 
     public function destroy($id)
     {}
@@ -94,7 +236,7 @@ class CoactivaController extends Controller
         foreach ($sql as $Index => $Datos) {
             $Lista->rows[$Index]['id'] = $Datos->id_gen_fis;            
             $Lista->rows[$Index]['cell'] = array(
-                trim($Datos->id_gen_fis),
+                trim($Datos->id_per),
                 trim($Datos->nro_fis),
                 date('d-m-Y', strtotime($Datos->fec_reg)),
                 trim($Datos->hora_env),
@@ -111,13 +253,12 @@ class CoactivaController extends Controller
     }
     
     function get_doc_recibidos(){
-        
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
         
-        $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=1"); 
+        $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=1 and estado=0"); 
         
         $total_pages = 0;
         if (!$sidx) {
@@ -135,7 +276,7 @@ class CoactivaController extends Controller
             $start = 0;
         }
         
-        $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',2)->where('verif_env',1)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',2)->where('verif_env',1)->where('estado',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                 
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -146,6 +287,7 @@ class CoactivaController extends Controller
             $Lista->rows[$Index]['id'] = $Datos->id_gen_fis;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_gen_fis),
+                trim($Datos->id_per),
                 trim($Datos->nro_fis),
                 date('d-m-Y', strtotime($Datos->fec_reg)),
                 trim($Datos->hora_env),
@@ -154,8 +296,7 @@ class CoactivaController extends Controller
                 str_replace('-','',trim($Datos->contribuyente)),
                 trim($Datos->estado),
                 trim($Datos->verif_env),
-                $Datos->monto,
-                "<input type='checkbox' name='chk_doc' value='".$Datos->id_gen_fis."'>"
+                $Datos->monto                
             );
         }
         return response()->json($Lista); 
@@ -172,57 +313,144 @@ class CoactivaController extends Controller
         return response()->json(['msg'=>'si']);
     }
     
-    function rec_apertura(){
-        $resolucion=DB::select('select * from coactiva.vw_resol_apertura where id_contrib=138');
-        $resol=new \stdClass();
-        foreach ($resolucion as $Index => $Datos) {
-            $resol->id_resol=$Datos->id_resol;
-            $resol->id_contrib=$Datos->id_contrib;
-            $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
-            $resol->nro_resol=$Datos->nro_resol;
-            $resol->fch_resol=$Datos->fch_resol;
-            $resol->anio_resol=$Datos->anio_resol;
-            $resol->monto=$Datos->monto;
-            $resol->periodos=$Datos->periodos;
-            $resol->nro_rd=$Datos->nro_rd;
-            $resol->fch_recep=$Datos->fch_recep;
-            $resol->fch_recep_l=mb_strtolower($this->getCreatedAtAttribute($Datos->fch_recep)->format('l, d \d\e F \d\e\l Y'));
-        }
-        $plantilla=DB::table('coactiva.plantillas')->where('id_plant',1)->value('contenido');
-
-        $plantilla = str_replace('{@fch_recep@}',$resol->fch_recep_l,$plantilla);
-        $plantilla = str_replace('{@contribuyente@}',$resol->contribuyente,$plantilla);
-        $plantilla = str_replace('{@nro_resol@}',$resol->nro_resol,$plantilla);
-        $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
-        $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
-        $plantilla = str_replace('{@periodos@}',$resol->periodos,$plantilla);
-        $plantilla = str_replace('{@monto@}', number_format($resol->monto,2,'.',','),$plantilla);
-//        echo $plantilla;
-//        <div style='font-family: SourceSansPro;text-align: justify;font-size:14.8px'>Cerro Colorado,<br />
-//<strong><u>VISTOS:</u></strong> El Escrito de fecha {@fch_recep@} de la Gerencia de Administraci&oacute;n Tributaria y Rentas de la Municipalidad Distrital de Cerro Colorado, mediante el cual dicha entidad remite a este Despacho el Expediente del Contribuyente, <strong>Sr. {@contribuyente@}</strong> (en adelante el <strong>obligado</strong>), que contiene la <u>Resoluci&oacute;n de Determinacion N&deg; {@nro_rd@}-{@anio_resol@}-SGFT-MDCC/Arb</u> de fecha {@anio_resol@}, con su respectiva <u>Constancia de Notificaci&oacute;n</u> adjunta a a misma, la <u>Constancia de cosa decidida administrativa</u>, y los actuados que dieron origen a los mismos, respecto de la deuda tributaria sobre Arbitrios Municipales <u>correspondientes a los periodos {@periodos@}; y,</u><br />
-//<strong><u>CONSIDERANDO:</u></strong><br />
-//<strong><u>Primero.-</u> Premisa Normativa.-</strong> El dispositivo normativo contenido en el Art. 25&deg; de la Ley de Procedimiento de Ejecuci&oacute;n Coactiva Ley N&deg; 26979, su Reglemanto y sus modificatorias establece: <strong>Exigibilidad de la Obligaci&oacute;n.- 25.1.a)</strong> Se Considera Obligaci&oacute;n exigible coactivamente, a la establecida mediante Resoluci&oacute;n de Determinacion o de Multa, emitida por la Entidad conforme a ley, debidamente notificada y no reclamada en el plazo de Ley. <strong>25.4)</strong> Tambi&eacute;n ser&aacute;n exigibles en el mismo procedimiento de las <u>costas y gastos</u> en que la Entidad hubiera incurrido en al cobranza coactiva de la deudas tributarias. De la misma forma se tiene establecido en el Art. 29&deg; de la Ley de Procedimiento de Ejecuci&oacute;n Coactiva, Ley N&deg; 26979, su Reglamento y sus modificatorias, que dispone: <strong>Inicio del Procedimiento.- Art. 29&deg;.-</strong> El Procedimiento es iniciado por el Ejecutor Coactivo mediante notificaci&oacute;n al obligado de la Resoluci&oacute;n de Ejecuci&oacute;n Coactiva, la que contiene un mandato de cumplimiento de la obligaci&oacute;n exigible coactivamente conforme al Art&iacute;culo 25&deg; de la Presente Ley; y dentro del plazo de <u>siete (7) d&iacute;as</u> h&aacute;biles de notificado, bajo apercibimiento de dictarse alguna medida cautelar.<br />
-//<strong><u>Segundo.-</u> Premisa F&aacute;ctica.-</strong> La Entidad Administrativa, en este caso, la Gerencia de Administraci&oacute;n Tributaria y rentas de la Municipalidad Distrital de Cerro Colorado (en adelante la <strong>Entidad</strong>), mediente <strong>Resoluci&oacute;n de Determinacion N&deg; {@nro_rd@}-{@anio_resol@}-SGFT-MDCC/Arb</strong> ha determinado la suma de <strong>S/. {@monto@} (CON 00/100 SOLES)</strong> a favor de la Municipalidad Distrital de Cerro Colorado por Concepto de Impuesto Predial, correspondiente a los periodos detallados en la respectiva Resoluci&oacute;n.<br />
-//<strong><u>Tercero.-</u></strong> De autos se tiene que, la Entidad ha practicado la notificaci&oacute;n de la <strong>Resoluci&oacute;n de Determinaci&oacute;n N&deg; {@nro_rd@}-{@anio_resol@}-SGFT-MDCC/Arb</strong>, la misma que ha sido <u>debidamente notificada al Obligado</u>, tal como se puede verificar en la <u>constancia de notificaci&oacute;n</u> de fecha {@fch_recep@}, sin que el obligado haya realizado acto de impugnaci&oacute;n alguno en la v&iacute;a administrativa dentro del plazo de ley, por lo que la Gerencia de Administraci&oacute;n Tributaria ha expedido la <u>constancia de cosa decidida administrativa</u> en la cual indica que el acto administrativo no ha sido objeto de impugnaci&oacute;n alguno dentro del plazo de Ley, de tal forma ha quedado <u>consentido</u> y en consecuencia ha adquirido la calidad de Cosa Decidida Administrativamente.
-//<div><strong><u>Cuarto.-</u></strong> Por lo tanto, estando a los considerandos y los antecedentes adjuntos, se advierte que <u>la obligaci&oacute;n es exigible coactivamente</u>, la deuda tributaria se ha establecido en acto administrativo emitido por la entidad, esto es, mediante la <strong>Resoluci&oacute;n de Determinaci&oacute;n N&deg; {@nro_rd@}-{@anio_resol@}-SGFT-MDCC/Arb</strong>, en la cual <strong>se ha identificado plenamente al Obligado (deudor tributario), as&iacute; como la cuant&iacute;a del Tributo y los Intereses, el monto total de la deuda y el periodo a que corresponde</strong>, la misma que ha sido <u>debidamente notificada al Obligado en su oportunidad</u>.<br />
-//<strong><u>Quinto.-</u></strong> En consecuencia, existiendo obligaci&oacute;n exigible coactivamente contenido en una Resoluci&oacute;n de Determinaci&oacute;n debidamente notificada, la misma que ha sido ejecutoriada y/o consentida, y solicitado a este Despacho por la Entidad en contra del Obligado para su cumplimiento, es viable dar inicio al Procedimiento de Ejecuci&oacute;n Coactiva en contra del Obligado, otorgandole el plazo de siete d&iacute;as h&aacute;biles de notificada la presente, a efectos de que cumpla con pagar la deuda tributaria sobre Impuesto Predial a favor de la Entidad; y estando a lo establecido en el Art. 9&deg; y 192&deg; de la Ley de Procedimiento Administrativo General Ley N&deg; 27444, y a lo establecido en el dispositivo normativo contenido en el Art. 25&deg; y 29&deg; de la Ley de Procedimiento de Ejecuci&oacute;n Coactiva Ley N&deg; 26979, su reglamento y sus modificatorias, y dentro de las facultades concedidas por la Ley citada;<br />
-//<strong><u>SE RESUELVE:</u></strong><br />
-//<strong><u>PRIMERO.-</u> ADMITIR A TR&Aacute;MITE </strong>la solicitud presentada por la Entidad, en tal sentido, <strong>SE DISPONE EL INICIO</strong> del Procedimiento de Ejecuci&oacute;n Coactiva en contra del Obligado, <strong>Sr. {@contribuyente@}</strong>, a qui&eacute;n se debe notificar con copia del acto administrativo generador de la Obligaci&oacute;n Tributaria, su correspondiente Constancia de notificaci&oacute;n, as&iacute; como la Constancia de cosa decidida administrativa.<br />
-//<strong><u>SEGUNDO.-</u> SE DISPONE REQUERIR</strong> al Obligado, <strong>Sr. {@contribuyente@}</strong>, para que en el <strong>PLAZO DE SIETE (07) D&Iacute;AS H&Aacute;BILES</strong> de notificado, <strong>CUMPLA CON PAGAR A FAVOR DE LA MUNICIPALIDAD DISTRITAL DE CERRO COLORADO, LA SUMA DE S/. {@monto@} (CON 00/100 SOLES)</strong> por concepto de <u>Arbitrios Municipales correspondiente a los a&ntilde;os {@periodos@}</u>, del predio ubicado en la Libertad Mariano Melgar 101, Distrito de Cerro Colorado, conforme se expresa en la Resoluci&oacute;n de Determinaci&oacute;n N&deg; {@nro_rd@}-{@anio_resol@}-SGFT-MDCC/Arb, m&aacute;s el pago de los <u>intereses actualizados</u> a la fecha de cancelaci&oacute;n de la obligaci&oacute;n, as&iacute; como las <u>costas y gastos</u> ocasionados a la entidad, BAJO APERCIBIMIENTO DE DICTARSE <u>MEDIDA CAUTELAR Y/O EMBARGOS</u> ESTABLECIDAS EN LA LEY DE PROCEDIMIENTO DE EJECUCI&Oacute;N COACTIVA, SU REGLAMENTO Y SUS MODIFICATORIAS.<br />
-//<strong><u>Se Adjunta:</u></strong> Copia de la Resoluci&oacute;n de Determincaci&oacute;n N&deg; {@nro_rd@}-{@anio_resol@}-SGFT-MDCC/Arb, la Constancia de notificaci&oacute;n, y la Constancia de cosa decidida administrativa.<br />
-//<strong>T&oacute;mese Raz&oacute;n y H&aacute;gase Saber.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.</strong></div>
-//</div>
+    function open_document($id_doc,$id_coa_mtr){
+        $documento=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
         
-        $view = \View::make('coactiva.reportes.rec_apertura',compact('plantilla','resol'))->render();
+        if($documento[0]->id_tip_doc=='2'){            
+            $resol=new \stdClass();
+            foreach ($documento as $Index => $Datos) {
+                $resol->id_doc=$Datos->id_doc;
+                $resol->id_contrib=$Datos->id_contrib;
+                $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
+                $resol->nro_resol=$Datos->nro_resol;
+                $resol->fch_recep=$Datos->fch_recep;
+                $resol->anio_resol=$Datos->anio_resol;
+                $resol->monto=$Datos->monto;
+                $resol->periodos=$Datos->periodos;
+                $resol->nro_rd=$Datos->nro_rd;
+                $resol->fch_emi=$Datos->fch_emi;
+                $resol->fch_emi_l=mb_strtolower($this->getCreatedAtAttribute($Datos->fch_emi)->format('l, d \d\e F \d\e\l Y'));
+            }
+            $plantilla=DB::table('coactiva.vw_documentos')->where('id_doc',$id_doc)->value('texto');
+
+            $plantilla = str_replace('{@fch_emi@}',$resol->fch_emi_l,$plantilla);
+            $plantilla = str_replace('{@contribuyente@}',$resol->contribuyente,$plantilla);
+            $plantilla = str_replace('{@nro_resol@}',$resol->nro_resol,$plantilla);
+            $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
+            $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
+            $plantilla = str_replace('{@periodos@}',$resol->periodos,$plantilla);
+            $plantilla = str_replace('{@monto@}', number_format($resol->monto,2,'.',','),$plantilla);
+
+            $view = \View::make('coactiva.reportes.rec_apertura',compact('plantilla','resol'))->render();
+            $pdf = \App::make('dompdf.wrapper');            
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream();
+        }else if($documento[0]->id_tip_doc=='6'){
+            $documento=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+            $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
+            $view = \View::make('coactiva.reportes.c_notificacion',compact('documento','nro_resol'))->render();
+            $pdf = \App::make('dompdf.wrapper');            
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream();
+        }else if($documento[0]->id_tip_doc=='7'){
+//            $documento=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+            
+            $view = \View::make('coactiva.reportes.req_pago')->render();
+            $pdf = \App::make('dompdf.wrapper');            
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream();
+        }
+        
+    }
+    
+    function update_documento(Request $request){
+        $contenido = $request['contenido'];
+        $id_doc = $request['id_doc'];
+       
+        $update = DB::table('coactiva.coactiva_documentos')->where('id_doc',$id_doc)
+                        ->update(['texto'=>$contenido]);
+        if($update){return response()->json(['msg'=>'si']);}
+    }
+    
+    function grid_all_resoluciones(){
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        
+        $totalg = DB::select("select count(id_resol) as total from coactiva.vw_resol_apertura"); 
+        
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        
+        $sql = DB::table('coactiva.vw_resol_apertura')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_resol;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_resol),
+                trim($Datos->fch_resol),                
+                trim($Datos->anio_resol),
+                trim($Datos->nro_resol),
+                str_replace('-','',trim($Datos->contribuyente)),                
+                "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='ver_resol(".$Datos->id_resol.")'><span class='btn-label'><i class='fa fa-file-text-o'></i></span> Ver REC</button>",
+                trim($Datos->texto),
+                "<button class='btn btn-labeled bg-color-orange txt-color-white' type='button' onclick='editor_resolucion(".$Datos->id_resol.")'><span class='btn-label'><i class='fa fa-pencil'></i></span> Editar REC</button>",
+                "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='print_notif(".$Datos->id_resol.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Notificación</button>"                
+            );
+        }
+        return response()->json($Lista); 
+    }
+    
+    function imp_cons_notif($id_resol){
+        $resolucion=DB::select('select * from coactiva.vw_resol_apertura where id_resol='.$id_resol);
+        $view = \View::make('coactiva.reportes.c_notificacion',compact('resolucion'))->render();
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a4');
         return $pdf->stream();
     }
     
-    function update_plantilla_1(Request $request){
-        $contenido = $request['contenido'];
-        dd($contenido);
-        $update = DB::table('coactiva.plantillas')->where('id_plant',1)
-                        ->update(['contenido'=>$contenido]);
+    function add_documento(Request $request){
+//        $id=$request['id_rd'];
+        DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$request['id_coa_mtr'])
+                        ->update(['estado'=>1]);
+        
+        $data = new coactiva_documentos();
+        $data->id_coa_mtr = $request['id_coa_mtr'];
+        $data->id_tip_doc = $request['id_tip_doc'];
+        $data->fch_emi = date('Y-m-d');
+        $data->anio = date('Y');
+        $data->periodos = date('Y');        
+        $insert = $data->save();
+        
+//        $data=array();
+//        $data['id_contrib']=$request['id_contrib'];
+//        $data['fch']=date('Y-m-d');
+//        $data['anio']=date('Y');
+//        $data['monto']=$request['monto'];
+//        $data['periodos']=date('Y');
+//        $insert=DB::table('coactiva.resol_apertura')->insert($data);
+        if($insert){
+            return response()->json(['msg'=>'si']);
+        }
     }
+    
 }

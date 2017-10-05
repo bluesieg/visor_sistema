@@ -47,21 +47,13 @@
                     <td><b>Materia</b></td>
                     <td>:&nbsp;TRIBUTARIA<br/></td>
                 </tr>
-                <tr>
-                    <td><b>Domicilio</b></td>
-                    <td>:&nbsp;La Libertad Mariano Melgar 101, Cerro Colorado - Arequipa<br/></td>
-                </tr>
-                <tr>
-                    <td><b>Ubicacion de Predio</b></td>
-                    <td>:&nbsp;La Libertad Mariano Melgar 101, Cerro Colorado - Arequipa<br/></td>
-                </tr>
             </table>
             </div>
         <br>
         <div style="text-align:center"><b>RESOLUCIÓN DE EJECUCIÓN COACTIVA NRO. 001-2017 / OEC-MDCC</b></div><br>
         
         <div style="text-align: justify;font-size:15px;overflow:auto">           
-            @php echo $plantilla @endphp
+            
         </div>     
     </body>
 </html>

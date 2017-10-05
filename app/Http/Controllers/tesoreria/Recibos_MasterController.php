@@ -190,7 +190,7 @@ class Recibos_MasterController extends Controller
         $id_contrib = $request['id_contrib'];
         $id_pred = $request['id_pred'];
         $anio=$request['anio'];
-        $totalg = DB::select("select count(id_pgo_arb) as total from arbitrios.vw_cta_arbitrios where id_contri='".$id_contrib."' and id_pred='".$id_pred."' and anio=".$anio);
+        $totalg = DB::select("select count(id_pgo_arb) as total from arbitrios.vw_cta_arbitrios where id_contrib='".$id_contrib."' and id_pred_anio='".$id_pred."' and anio=".$anio);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -212,7 +212,7 @@ class Recibos_MasterController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contri',$id_contrib)->where('id_pred',$id_pred)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contrib',$id_contrib)->where('id_pred_anio',$id_pred)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -351,12 +351,21 @@ class Recibos_MasterController extends Controller
     function verif_est_cta(Request $request){
         $check=str_split($request['check']);
         $id_contrib=$request['id_contrib'];
+        
+//        echo $check[0].',';
+//        echo end($check);
+        
         $array =  array();
         for($i=$check[0];$i<=end($check);$i++){
-            $sql=DB::table('adm_tri.vw_cta_cte2')->value('trim'.$i.'_est');            
-            if($sql=='2'){ $array[]=$i; }
+            $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',103)->value('trim'.$i.'_est');
+            if($sql==2){ 
+                $array[]=$i;
+            }
         }
+
+//        print_r($array);
         return $array;
+//        dd($array);
         
     }
 }

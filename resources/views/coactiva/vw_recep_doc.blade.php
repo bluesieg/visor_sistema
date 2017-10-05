@@ -137,10 +137,10 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fecha','Hora', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','Monto S/.','Recibir'],
+            colNames: ['id_contrib', 'Nro', 'Fecha','Hora', 'Año','N° Documento', 'Contribuyente o Razon Social','estado','verif','Monto S/.','Recibir'],
             rowNum: 15, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption:'Documentos Enviados', align: "center",
             colModel: [
-                {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
+                {name: 'id_contrib', index: 'id_contrib', hidden: true},
                 {name: 'nro_fis', index: 'nro_fis', align: 'center', width: 80},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 60},
                 {name: 'hora', index: 'hora', align: 'center', width: 60},

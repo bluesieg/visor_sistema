@@ -104,6 +104,15 @@ class ContribuyentesController extends Controller
         //
     }
     
+    function desactiva_contrib(){
+//        $id_contrib=$request['id_rd'];
+//        $update = DB::table('adm_tri.contribuyentes')->where('$id_contrib',$id_contrib)
+//                        ->update(['activo'=>0]);
+//        if($update){
+//            return response()->json(['msg'=>'si']);
+//        }
+    }
+    
     function insert_persona(Request $request){
         $data = new Personas();
         $data->pers_ape_pat = $request['pers_ape_pat'];

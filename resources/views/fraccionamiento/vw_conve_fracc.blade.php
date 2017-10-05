@@ -40,11 +40,7 @@
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <table id="table_Convenios"></table>
-            <div id="pager_table_Convenios">
-                <div style="float: right; font-weight: bold;">
-                    Total S/. <input type="text" id="vw_emision_rec_pago_total_global" class="input-sm text-right" style="width: 143px; height: 21px;padding-right: 4px;" readonly="">
-                </div>                    
-            </div>
+            <div id="pager_table_Convenios"></div>
         </article>
     </div>
 </section>
@@ -58,12 +54,13 @@
             url: 'grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val(),
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
-            colNames: ['Nro.Convenio', 'Año','id_contrib', 'Fecha', 'Interes', 'N° Cuotas', 'Estado', 'Total'],
+            colNames: ['Nro.Convenio', 'Año','id_contrib','Contribuyente', 'Fecha', 'Interes', 'N° Cuotas', 'Estado', 'Total'],
             rowNum: 20, sortname: 'id_conv', sortorder: 'desc', viewrecords: true, caption: 'Resumen Recibos', align: "center",
             colModel: [                
                 {name: 'nro_convenio', index: 'nro_convenio',align: 'center',width: 80},
                 {name: 'anio', index: 'anio',width: 80,align: 'center'},
-                {name: 'id_contribuyente', index: 'id_contribuyente', hidden:true},
+                {name: 'id_contribuyente', index: 'id_contribuyente',hidden:true},
+                {name: 'id_contribuyente', index: 'id_contribuyente',width: 200},
                 {name: 'fec_reg', index: 'fec_reg', width: 80,align: 'center'},
                 {name: 'interes', index: 'interes',align: 'center', width: 80},
                 {name: 'nro_cuotas', index: 'nro_cuotas', width: 80,align: 'center'},
@@ -73,15 +70,6 @@
             pager: '#pager_table_Convenios',
             rowList: [15, 25],
             gridComplete: function () {
-//                $("#table_Convenios").closest(".ui-jqgrid").block({
-//                    message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Este Prestamo esta Cancelado</div>",
-//                    theme: true,
-//                    themedCSS:{
-//                        width: "40%",
-//                        left: "30%",
-//                        border: "3px solid #a00"
-//                    }
-//                });
                 var rows = $("#table_Convenios").getDataIDs();
                 if (rows.length > 0) {
                     var firstid = jQuery('#table_Convenios').jqGrid('getDataIDs')[0];

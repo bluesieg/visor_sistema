@@ -157,6 +157,7 @@ class ConvenioController extends Controller
                 $Datos->nro_convenio,
                 trim($Datos->anio),                
                 $Datos->id_contribuyente,
+                str_replace('-','',$Datos->contribuyente),
                 $Datos->fec_reg,
                 $Datos->interes,
                 $Datos->nro_cuotas,

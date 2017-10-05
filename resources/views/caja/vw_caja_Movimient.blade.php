@@ -21,6 +21,8 @@
                                         <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
                                         <h2 style="font-size:20px">CAJA: </h2>
                                         <input type="hidden" id="vw_caja_id_cajero">
+                                        <input type="hidden" id="vw_caja_estado" value="0">
+                                        <input type="hidden" id="vw_caja_dia">
                                         <input type="text" id="vw_caja_mov_cajero" class="input-sm" style="font-size:20px;border: 0px;background: none;" disabled="">
                                     </header>
                                 </div>
@@ -38,7 +40,7 @@
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-3" style="padding-left: 5px;">
+                                <section class="col-lg-2" style="padding-left: 5px;">
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Codigo:</span>
                                         <div class="icon-addon addon-md">
@@ -46,16 +48,34 @@
                                         </div>
                                     </div>
                                 </section>
-                                <section class="col-lg-6 text-align-right" style="padding-left: 5px;">
-                                    <button onclick="dialog_caja_mov_realizar_pago();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
+                                <section class="col-lg-7 text-align-right" style="padding-left: 5px;">                                    
+                                    <button onclick="apertura();" id="vw_caja_mov_btn_apert" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Aperturar Caja
                                     </button>
-                                    <button id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                    <button onclick="cierre();" id="vw_caja_mov_btn_cierre" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Cerrar Caja
                                     </button>
-                                    <button onclick="imp_pago_rec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                    <button onclick="dialog_caja_mov_realizar_pago();" id="" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
                                     </button>
+                                    <div class="btn-group">
+                                        <a class="btn btn-labeled bg-color-magenta txt-color-white" href="javascript:void(0);"><span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Impresiones</a>                                        
+                                        <a class="btn dropdown-toggle bg-color-magenta txt-color-white" data-toggle="dropdown" href="javascript:void(0);"><span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a onclick="reporte_diario_caja();" href="javascript:void(0);">Reporte Diario Caja</a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0);">Consolidado</a>
+                                            </li>
+                                            <li>
+                                                <a onclick="reimprimir_recib();">Re-Imprimir Recibo</a>
+                                            </li>                                            
+                                        </ul>
+                                    </div>
+<!--                                    <button onclick="reimprimir_recib();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                    </button>-->
                                 </section>
                             </div>
                         </div>
@@ -79,7 +99,7 @@
     
     var id_caja = 0;
     sumTotal = 0;
-    $(document).ready(function () {
+    $(document).ready(function () {        
         $("#menu_caja").show();
         $("#li_menu_caja_movimientos").addClass('cr-active');
         jQuery("#tabla_Caja_Movimientos").jqGrid({
@@ -127,7 +147,7 @@
             }
         });
 
-          $("#dialog_select_caja").dialog({
+        $("#dialog_select_caja").dialog({
             autoOpen: false, modal: true, height: 250, width: 400, 
             show: {effect: "fade", duration: 300}, resizable: false,
             closeOnEscape: false,
@@ -139,11 +159,12 @@
                         $("#vw_caja_id_cajero").val($("#vw_caj_movimientos_select_caja").val());
                         $("#vw_caja_mov_cajero").val($("#vw_caj_movimientos_select_caja :selected").text());
                         dialog_close('dialog_select_caja');
+                        verif_apertura_caja(); 
                     }
                 }],            
             open: function (event,ui){
                 $(this).parent().children().children('.ui-dialog-titlebar-close').hide();
-            }
+            }            
         }).dialog('open');
     });
 </script>

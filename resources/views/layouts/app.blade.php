@@ -156,6 +156,29 @@
                         </ul>
                     </li>
                     <li class="">
+                        <a href="#" title="Presupuesto"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Presupuesto.</span></a>
+                        <ul id="menu_presupuesto">
+                            <li id="li_pres_gen">
+                                <a href='generica' title="Generica"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Generica</span></a>                            
+                            </li>
+                            <li id="li_pres_subgen">
+                                <a href="sub_generica" title="Sub Generica"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Sub Generica</span></a>
+                            </li>
+                            <li id="li_pres_subgendeta">
+                                <a href="sub_gen_detalle" title="Sub Generica Detalle"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-home"></i> <span class="menu-item-parent">Sub Generica Detalle</span></a>
+                            </li>
+                            <li id="li_pres_especi">
+                                <a href='especifica' title="Especifica"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-tree-deciduous"></i> <span class="menu-item-parent">Especifica</span></a>                            
+                            </li>
+                            <li id="li_pres_especideta">
+                                <a href="especi_detalle" title="Especifica Detalle"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Especifica Detalle</span></a>
+                            </li>
+                            <li id="li_pres_proced">
+                                <a href="procedimientos" title="Procedimientos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Procedimientos</span></a>
+                            </li>
+                        </ul>	
+                    </li>
+                    <li class="">
                         <a href="#" title="Administracion Tributaria"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Adm. Tributaria.</span></a>
                         <ul id="menu_admtri">
                             <li id="li_config_contribuyentes">
@@ -231,6 +254,9 @@
                     <li class="">
                         <a href="#" title="Cobranza Coactiva"><i class="fa fa-lg fa-fw fa-rebel"></i> <span class="menu-item-parent">Coactiva</span></a>
                         <ul id="menu_coactiva">                            
+                            <li id="li_gesion_exped">
+                                <a href="gestion_expedientes" title="Gestion de Expedientes"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Gestion Expediente</span></a>
+                            </li>
                             <li id="li_emision_rec">
                                 <a href="emision_rec" title="Apertura de Ejecucion Coactiva"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Emision REC</span></a>
                             </li>

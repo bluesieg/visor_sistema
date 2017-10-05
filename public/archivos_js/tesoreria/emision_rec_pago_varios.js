@@ -104,6 +104,10 @@ function detalle_recibo() {
 }
 
 function insert_Recibos_Master() {
+    rowCount = $('#t_dina_det_recibo > tbody > tr').length;
+    if(rowCount==0){        
+        return false;
+    }    
     MensajeDialogLoadAjax('vw_emision_rec_pag_varios', 'Generando Recibo...');
     $.ajax({
         url: 'emi_recibo_master/create',

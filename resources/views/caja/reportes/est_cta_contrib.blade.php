@@ -22,7 +22,7 @@
 
     </head>    
     <body>
-        <img src="img/escudo.png" style="position:absolute;margin-top: 0px;margin-left: 12px; width: 55px;height: 60px;" >
+        <img src="img/escudo.png" style="position:absolute;margin-top: 0px;margin-left: 12px; width: 55px;height: 65px;" >
         <center>
             <h3 style="color:#018F4B;margin-bottom:0px;font-size: 20px;">MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h3>
             <div style="background:#01A858; margin-top: 20px;height: 1px"></div>

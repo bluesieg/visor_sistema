@@ -129,11 +129,16 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('updat_env_doc','EnvDocCoactivaController@up_env_doc');
         Route::get('listado_op','EnvDocCoactivaController@imp_op');
     });
+    Route::group(['namespace' => 'presupuesto'], function() {
+        Route::resource('generica', 'GenericaController');
+        Route::get('get_generica','GenericaController@get_generica');
+        Route::resource('sub_generica', 'SubGenericaController');
+        Route::get('get_subgenerica','SubGenericaController@get_subgenerica');
+    });
     
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
-    
     Route::post('contribuyente_update', 'adm_tributaria\Contribuyentes@modificar_contribuyente'); //update contribuyente
-    Route::post('contribuyente_delete', 'adm_tributaria\Contribuyentes@eliminar_contribuyente'); //eliminar contribuyente
+    
     Route::get('autocomplete_contrib', 'adm_tributaria\Contribuyentes@get_autocomplete_contrib'); //eliminar contribuyente
     
     Route::get('obtiene_cotriop', 'adm_tributaria\Contribuyentes@get_cotrib_op'); //
@@ -170,10 +175,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
     });
     Route::group(['namespace' => 'caja'], function() {
-//        Route::get('mod_caj_generica', 'Caja_ClaIn_Generica@vw_show_generica')->name('mod_caj_gen'); // VW_EMISION_CALSIFICADOR DE INGRESOS GENERICA        
         Route::resource('caja_movimient','Caja_MovimientosController');
         Route::get('imp_pago_rec','Caja_MovimientosController@reportes_caja_mov');
         Route::get('grid_Caja_Movimientos','Caja_MovimientosController@get_grid_Caja_Mov');
+        Route::get('verif_apertura_caja','Caja_MovimientosController@verif_aper_caja');
+        Route::get('apertura_caja','Caja_MovimientosController@apertura_caja');
+        Route::get('cierre_caja','Caja_MovimientosController@cierre_caja');
+        Route::get('reporte_diario_caja/{id_caja}','Caja_MovimientosController@rep_dia_caja');
     });
     Route::group(['namespace'=>'caja'],function(){///ESTADO DE CUENTAS
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
@@ -192,14 +200,22 @@ Route::group(['middleware' => 'auth'], function() {
     });    
     Route::group(['namespace'=>'coactiva'],function(){///COACTIVA/////////////
         Route::resource('coactiva','CoactivaController');
+        Route::get('gestion_expedientes','CoactivaController@gest_exped');
+        Route::get('get_exped','CoactivaController@get_expedientes');
+        Route::get('get_doc_exped','CoactivaController@get_docum_expediente');
+        Route::get('coactiva_recep_doc','CoactivaController@get_doc');
+        Route::get('recib_doc_coactiva','CoactivaMasterController@resep_documentos');
+        Route::get('add_documento_exped','CoactivaController@add_documento');
+        Route::get('abrirdocumento/{id_doc}/{id_coa_mtr}','CoactivaController@open_document');
+        Route::get('editar_resol','CoactivaController@editar_resol');
+        Route::post('update_documento','CoactivaController@update_documento');
+        Route::get('agreg_fch_recep_notif','CoactivaController@fch_recep_notif');
+        Route::get('num_letra','CoactivaController@letra');
+        
         Route::get('emision_rec','CoactivaController@emision_apertura_resolucion');
         Route::get('recepcion_doc','CoactivaController@recep_doc');
-        Route::get('coactiva_recep_doc','CoactivaController@get_doc');
-        Route::get('recib_doc_coactiva','CoactivaController@resep_documentos');
         Route::get('coactiva_gen_resolucion','CoactivaController@get_doc_recibidos');
-        Route::get('rec_apertura','CoactivaController@rec_apertura');
-        Route::get('editor_text','CoactivaController@editor_text');
-        Route::post('update_plantilla_1','CoactivaController@update_plantilla_1');
+        Route::get('all_resoluciones','CoactivaController@grid_all_resoluciones');
     });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {

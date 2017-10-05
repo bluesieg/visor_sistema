@@ -117,10 +117,10 @@
                     var firstid = jQuery('#table_contrib').jqGrid('getDataIDs')[0];
                     $("#table_contrib").setSelection(firstid);
                 }
-
             },
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
+                fn_bus_contrib_list(Id);
                 fn_bus_contrib_list_fracc(Id);
             }
         });
@@ -157,7 +157,7 @@
                         }
                         if (val == '0.000' && idarray[i] == 104) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")' checked>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")' disabled='disabled' checked>", {'text-align': 'center'});
                         }
                     }
                     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(idarray[i], 'ivpp'));

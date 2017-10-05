@@ -3,9 +3,11 @@
     <head>        
         <title> REC </title>
         <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
-        <!--<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">-->
-        <!--<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">-->
+        
+        <link href="{{ asset('css/smartadmin-production-plugins.min.css') }}" rel="stylesheet" type="text/css" media="screen">
+        <link href="{{ asset('css/smartadmin-production.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/smartadmin-skins.min.css') }}" rel="stylesheet">
+       <meta name="csrf-token" content="{{ csrf_token() }}">
         <style>
         html {
             margin: 0;
@@ -22,6 +24,7 @@
         <header>
             <span class="widget-icon"> <i class="fa fa-pencil"></i> </span>
             <h2>EDITAR RESOLUCIÓN DE APERTURA</h2>
+            <input type="hidden" id="id_doc" value="{{$id_doc}}">
         </header>
         <div>
             <div class="widget-body no-padding">
@@ -31,15 +34,18 @@
             </div>
         </div>
     </div>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-       
-
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+       <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+       <script src="{{ asset('archivos_js/global_function.js') }}"></script>
+       <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+       <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
         <!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
         <script src="js/plugin/ckeditor/ckeditor.js"></script>
 
-        <script type="text/javascript">
+        <script type="text/javascript">            
             $(document).ready(function () {
                 CKEDITOR.replace('ckeditor', {height: '220px', startupFocus: true,on: {'instanceReady': function (evt) { evt.editor.execCommand('maximize'); }}});
+                
                 CKEDITOR.plugins.registered['save'] = {
                     init: function (editor) {
                        var command = editor.addCommand('save',{
@@ -47,17 +53,23 @@
                             exec: function (editor) { 
                                 var contenido = CKEDITOR.instances['ckeditor_plantilla_1'].getData();
                                 $.ajax({
-//                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                     type: 'POST',
-                                    url: 'update_plantilla_1',
-                                    data:{contenido:contenido},
-                                    success: function(){}
+                                    url: 'update_documento',
+                                    data:{contenido:contenido,id_doc:$("#id_doc").val()},
+                                    success: function(data){ 
+                                        if(data.msg=='si'){
+                                            MensajeExito('PLANTILLA','Guardado Correctamente');
+                                        }                                        
+                                    }
                                 });
                             }
                        });
                        editor.ui.addButton('Save', { label: 'Save', command: 'save' });
                     }
-                }
+                };
+                
+                
             });
         </script>
     </body>

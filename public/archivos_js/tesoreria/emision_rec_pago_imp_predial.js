@@ -25,6 +25,7 @@ function gen_recibo_imp_predial(){
         Seleccionados.push($(this).val());
     });
     s_checks = Seleccionados.join('');
+    ss_checks = Seleccionados.join('-');
     
     if($("#vw_emi_rec_imp_pred_glosa").val()==''){
         mostraralertasconfoco('Ingrese Glosa del recibo.','#vw_emi_rec_imp_pred_glosa');
@@ -34,7 +35,7 @@ function gen_recibo_imp_predial(){
         mostraralertasconfoco('Ingrese un Contribuyente','#vw_emi_rec_imp_pre_contrib');
         return false;
     }
-    if(select_check==0){
+    if(s_checks==0){
         mostraralertasconfoco('Haga click en un Trimestre para Generar el Recibo','#vw_emi_rec_imp_pre_contrib');
         return false;
     }
@@ -44,25 +45,23 @@ function gen_recibo_imp_predial(){
         type:'GET',
         data:{check:s_checks,id_contrib:$("#vw_emi_rec_imp_pre_id_pers").val()},
         success: function(data){
-            if(data.length>0){
-                interrup=1;
+            if(data.length>0){                
                 mostraralertas('No se Puede Generar El Recibo<br>Trimestre(s): '+data+', Estan en Cobranza Coactiva'); 
-//                break;
-            }else{interrup=0;}
+            }else{
+                gen_rec_imp_pred(s_checks);
+            }
         }        
     });
-    
-//    if(interrup==1){return false;}
-//    e.preventDefault();
+}
+function gen_rec_imp_pred(s_checks){
     var formatosSeleccionados = new Array();
     $('input[type=checkbox][name=chk_trim_form]:checked').each(function() {
         formatosSeleccionados.push($(this).val());
     });
     formatos_checks = formatosSeleccionados.join('');
-    
     $.confirm({
         title: '.:Recibo:.',
-        content: 'Generar Recibo por '+select_check+' trimestre(s)',
+        content: 'Generar Recibo por '+ss_checks+' trimestre(s)',
         buttons: {
             Confirmar: function () {
                 MensajeDialogLoadAjax('vw_emision_rec_pag_imp_predial', 'Generando Recibo...');
@@ -197,14 +196,12 @@ function fn_bus_contrib_predial(){
         mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#dlg_contri"); 
         return false;
     }
-    fn_actualizar_grilla('table_contrib','obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val());                  
-//    jQuery("#table_contrib").jqGrid('setGridParam', {url: 'obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val()}).trigger('reloadGrid');
+    fn_actualizar_grilla('table_contrib','obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val());
     jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
     $("#dlg_bus_contr").dialog({
         autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
-        }).dialog('open');
-       
+        }).dialog('open');       
 }
 function fn_bus_contrib_list(per){
     $("#vw_emi_rec_imp_pre_id_pers").val(per);

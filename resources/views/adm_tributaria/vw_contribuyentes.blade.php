@@ -25,15 +25,12 @@
                             <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
-                            <button id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
+<!--                            <button onclick="eliminar_contrib();" id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                            </button>
+                            </button>-->
                             <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                             </button>
-<!--                            <button onclick="reniec();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reniec
-                            </button>                  -->
                         </div>                        
                     </div>
                 </div> 
@@ -107,12 +104,6 @@
                 var rows = $("#table_Contribuyentes").getDataIDs();
                 for (var i = 0; i < rows.length; i++) {
                     var tipo_doc = $("#table_Contribuyentes").getCell(rows[i], "tipo_doc");
-//                    if (tipo_doc == '02') {                        
-//                        $("#table_Contribuyentes").jqGrid('setCell', rows[i],'tipo_doc', 'DNI');
-//                    }
-//                    if (tipo_doc == '00') {                        
-//                        $("#table_Contribuyentes").jqGrid('setCell', rows[i],'tipo_doc', 'RUC');
-//                    }
                 }
                 if (rows.length > 0) {
                     var firstid = jQuery('#table_Contribuyentes').jqGrid('getDataIDs')[0];
