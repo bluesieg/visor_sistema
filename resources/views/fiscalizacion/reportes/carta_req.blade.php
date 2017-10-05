@@ -24,7 +24,7 @@
                     <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
                 </div>
             </td>
-            <td style="width: 10%;border: 0px;"></td>
+            <td style="width: 10%;border: 0px; text-align: center"><b>Año a Fiscalizar<br>{{$sql->anio_fis}}</b></td>
             </tr>
             
         </table>

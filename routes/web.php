@@ -119,6 +119,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('insert_personas','ContribuyentesController@insert_persona');
         Route::get('grid_contribuyentes', 'ContribuyentesController@grid_contrib'); // tabla grilla Contribuyentes 
         Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
+        Route::get('pre_rep_contr/{sect}/{mzna}/{anio}','ContribuyentesController@reporte_contribuyentes');
+        Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ContribuyentesController@reporte_contribuyentes_hab_urb');
+        Route::get('pre_rep_contr_otro','ContribuyentesController@reporte_contribuyentes_otro');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
         /*ENVIO DE DOCUEMNTOS EJECUCION COACTIVA*/
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
@@ -196,6 +199,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('coactiva_gen_resolucion','CoactivaController@get_doc_recibidos');
         Route::get('rec_apertura','CoactivaController@rec_apertura');
         Route::get('editor_text','CoactivaController@editor_text');
+        Route::post('update_plantilla_1','CoactivaController@update_plantilla_1');
     });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
@@ -248,12 +252,20 @@ Route::group(['middleware' => 'auth'], function() {
     });  
     Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
         Route::resource('reso_deter', 'Res_DeterminacionController');
-        Route::get('fisca_carta_req', 'Res_DeterminacionController@carta_requerimiento'); //
-        Route::get('carta_save', 'Res_DeterminacionController@carta_create'); //
-        Route::get('carta_set_fisca', 'Res_DeterminacionController@fisca_enviados_create'); //
-        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}', 'Res_DeterminacionController@get_cartas_req'); //
-        Route::get('car_req_rep/{id}', 'Res_DeterminacionController@carta_repo'); //
-
+        Route::resource('carta_reque', 'Carta_RequerimientoController');
+        Route::resource('piso_fisca', 'Pisos_ficController');
+        Route::resource('insta_fisca', 'Instalaciones_ficController');
+        Route::resource('ficha_veri', 'Ficha_verificacionController');
+        Route::resource('hoja_liquidacion', 'Hoja_liquidacionController');
+        Route::resource('reso_determinacion', 'Resolucion_DeterminacionController');
+        Route::get('carta_set_fisca', 'Carta_RequerimientoController@fisca_enviados_create'); //
+        Route::get('car_req_rep/{id}', 'Carta_RequerimientoController@carta_repo'); //
+        Route::get('hoja_liq_rep/{id}', 'Hoja_liquidacionController@hoja_repo'); //
+        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}', 'Carta_RequerimientoController@get_cartas_req'); //
+        Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}', 'Hoja_liquidacionController@get_hojas_liq'); //
+        Route::get('trae_pred_carta/{car}', 'Carta_RequerimientoController@get_predios_carta'); //
+        Route::get('traepisos_fic/{id}/{fic}', 'Pisos_FicController@listpisos_fic'); //
+        Route::get('traeinsta_fic/{id}/{fic}', 'Instalaciones_FicController@listinsta_fic'); //
     }); 
     Route::get('$',function(){ echo 0;});//url auxiliar
 

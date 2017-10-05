@@ -185,24 +185,28 @@
                         }
                     if(contrib_global==0)
                     {   contrib_global=1;    
-                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_carta(rowid);} } ); 
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_ficha(rowid);} } ); 
                     }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){fn_bus_contrib_list(Id)}
+            ondblClickRow: function (Id){fn_bus_contrib_list_ficha(Id)}
         });
         jQuery("#table_predios_contri").jqGrid({
-            url: 'obtiene_cotriname?dat=0',
+            url: 'trae_pred_carta/0',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pred_anio','codigo','Ubicaciób'],
-            rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Predios a Fiscalizar', align: "center",
+            colNames: ['id_pred_anio','id_fic','id_puente','Tipo','codigo','Ubicación','N° Ficha ver','Fiscalizar'],
+            rowNum: 20, sortname: 'id_puente', sortorder: 'asc', viewrecords: true, caption: 'Predios a Fiscalizar', align: "center",
             colModel: [
                 {name: 'id_pred_anio', index: 'id_pred_anio', hidden: true},
-                {name: 'cod_cat', index: 'cod_cat', align: 'center',width: 100},
-                {name: 'dir', index: 'dir', align: 'left',width: 400},
-                
+                {name: 'id_puente', index: 'id_puente', hidden: true},
+                {name: 'id_fic', index: 'id_fic', hidden: true},
+                {name: 'tp', index: 'tp', align: 'center',width: 30},
+                {name: 'cod_cat', index: 'cod_cat', align: 'center',width: 70},
+                {name: 'dir', index: 'dir', align: 'left',width: 450},
+                {name: 'est', index: 'est', align: 'left',width: 60},
+                {name: '', index: '', align: 'left',width: 115},
             ],
             pager: '#pager_table_predios_contri',
             rowList: [13, 20],
@@ -216,9 +220,77 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
-        
-        
-        
+        jQuery("#table_pisos").jqGrid({
+            url: 'traepisos_fic/0/0',
+            datatype: 'json', mtype: 'GET',
+            height: '200px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_pi','Piso', 'Fecha', 'MEP', 'ECS', 'ECC', 'Muro', 'Techo', 'Piso', 'Puerta','Reves','baños','I.Elect','Area Constr.','id_pisos_fic','Fiscalizado'],
+            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Pisos del Predio', align: "center",
+            colModel: [
+                {name: 'id_pi', index: 'id_pi', hidden: true},
+                {name: 'piso', index: 'piso', align: 'center', width: 40},
+                {name: 'fech', index: 'fech', align: 'center', width: 50},
+                {name: 'mep', index: 'mep', align: 'center', width: 70},
+                {name: 'ecs', index: 'ecs', align: 'center', width: 70},
+                {name: 'ecc', index: 'ecc', align: 'center', width: 70},
+                {name: 'muro', index: 'muro', width: 70,align: "center"},
+                {name: 'techo', index: 'techo', width: 70,align: 'center'},
+                {name: 'piso', index: 'piso', width: 70,align: 'center'},
+                {name: 'puerta', index: 'puerta', width: 70,align: 'center'},
+                {name: 'reves', index: 'reves', width: 70,align: 'center'},
+                {name: 'banio', index: 'banio', width: 70,align: 'center'},
+                {name: 'I.Elect', index: 'I.Elect', width: 70,align: 'center'},
+                {name: 'aconst', index: 'aconst', width: 80,align: 'center'},
+                {name: 'id_pisos_fic', index: 'id_pisos_fic', hidden: true},
+                {name: 'fis', index: 'fis', width: 70,align: 'center'}
+            ],
+            pager: '#pager_table_pisos',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_pisos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_pisos').jqGrid('getDataIDs')[0];
+                            $("#table_pisos").setSelection(firstid);    
+                        }
+                },
+            ondblClickRow: function (Id){clickmodpiso();}
+        });
+        jQuery("#table_instal").jqGrid({
+            url: 'traeinsta_fic/0/0',
+            datatype: 'json', mtype: 'GET',
+            height: '200px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['cod_obra','Código', 'Descripción', 'año de antiguedad', 'MEP','ECS','ECC','lARGO','ANCHO','ALTO','UND.MED','PROD.TOTAL','id_inst_fic','Fiscalizado'],
+            rowNum: 20, sortname: 'id_inst', sortorder: 'desc', viewrecords: true, caption: 'Instalación del Predio', align: "center",
+            colModel: [
+                {name: 'cod_obra', index: 'cod_obra', hidden: true},
+                {name: 'cod_inst', index: 'cod_inst', align: 'center', width: 50},
+                {name: 'des', index: 'des', align: 'left', width: 210},
+                {name: 'anio', index: 'anio', align: 'center', width: 80},
+                {name: 'mep', index: 'mel', align: 'center', width: 50},
+                {name: 'ecs', index: 'ecs', align: 'center', width: 50},
+                {name: 'ecc', index: 'ecc', align: 'center', width: 50},
+                {name: 'dim_lar', index: 'dim_lar', align: 'center', width: 80},
+                {name: 'dim_anch', index: 'dim_anch', align: 'center', width: 80},
+                {name: 'dim_alt', index: 'dim_alt', align: 'center', width: 80},
+                {name: 'uni_med', index: 'uni_med', align: 'center', width: 70},
+                {name: 'tot_inst', index: 'tot_inst', align: 'right', width: 80},
+                {name: 'id_inst_fic', index: 'id_inst_fic', hidden: true},
+                {name: 'fis', index: 'fis', width: 70,align: 'center'}
+
+            ],
+            pager: '#pager_table_instal',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_instal').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_instal').jqGrid('getDataIDs')[0];
+                            $("#table_instal").setSelection(firstid);    
+                        }
+                },
+            ondblClickRow: function (Id){clickmodinst();}
+        });
         var globalvalidador=0;
         $("#dlg_contri").keypress(function (e) {
             if (e.which == 13) {
@@ -252,6 +324,13 @@
                 call_list_contrib_carta(3);
             }
         });
+        jQuery('#rpiso_inp_estruc_fis').keypress(function(tecla) {
+        $("#rpiso_inp_estruc_fis").val($("#rpiso_inp_estruc_fis").val().toUpperCase());
+        if(tecla.charCode < 65 || tecla.charCode > 73)
+        {
+            if(tecla.charCode < 97 || tecla.charCode > 105) return false;
+        }
+    });
     });
 </script>
 @stop
@@ -266,7 +345,7 @@
     
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
-            <div class="col-xs-6" style="padding: 0px; margin-top: 0px;">
+            <div class="col-xs-5" style="padding: 0px; margin-top: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
@@ -320,12 +399,12 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Hora Fiscalización &nbsp;<i class="fa fa-clock-o"></i></span>
                         <div>
-                            <input id="dlg_hor_fis" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" disabled="">
+                            <input id="dlg_hor_fis" type="text"  class="form-control " style="height: 32px;font-size: 0.9em;" disabled="">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-6" style="padding: 0px; margin-top: 0px;">
+            <div class="col-xs-7" style="padding: 0px; margin-top: 0px;">
                 <article class="col-xs-12" style=" padding-left: 0px !important">
                     <table id="table_predios_contri"></table>
                     <div id="pager_table_predios_contri"></div>
@@ -337,8 +416,797 @@
     </div>
 </div> 
 
+<div id="dlg_reg_dj" style="display: none;">
+                    <div class="widget-body">
+                    <div  class="smart-form">
+                        <div class="col-xs-10">
+                             
+                        <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
+                            <div class="panel panel-success">
+                                <div class="panel-heading bg-color-success">N° Ficha de Verificacion</div>
+                                <div class="panel-body cr-body">
+                                   
+                                    <div class="col col-12" style=" margin-top: 8px;">
+                                        <div class="input-group input-group-md">
+                                            <input type="hidden" id="dlg_idfic" value="0">
+                                            <span class="input-group-addon">Numero &nbsp;<i class="fa fa-hashtag"></i></span>
+                                            <div class="icon-addon addon-md" style="padding: 0px;">
+                                                <input id="dlg_nro_ficha" class="col-xs-12 form-control"  style="height: 32px; padding-left: 10px; padding-right: 0px;" type="text" maxlength="7" onkeypress="return soloDNI(event);" onblur="ajustar(6, 'dlg_nro_ficha')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                            
+                            
+                        <div class="panel-group col-xs-9 " style="margin-top: 5px">               
+                            <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.</div>
+                                <div class="panel-body cr-body" style="padding-top: 8px;">
+                                    <div class="col col-4">
+                                        <div class="input-group input-group-md">
+                                            <input type="hidden" id="dlg_idpre" value="0">
+                                            <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                                            <div class="icon-addon addon-md">
+                                                <input class="text-center col-xs-12 form-control"  style="height: 32px; width: 90%" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-4">
+                                        <div class="input-group input-group-md">
+                                            <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                                            <div class="icon-addon addon-md">
+                                                <input class="text-center form-control" style="height: 32px; ; width: 90%" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-4">
+                                        <div class="input-group input-group-md">
+                                            <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                                            <div class="icon-addon addon-md">
+                                                <select id='dlg_lot' class="form-control col-lg-8" style="height: 32px; text-align: center; width: 90%" onchange="traerfoto()">
+                                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="panel-group col-xs-6 " style="margin-top: 5px">                
+                            <div class="panel panel-success">
+                                <div class="panel-heading bg-color-success">.:: Datos del Propietario (Contribuyente) ::.</div>
+                                <div class="panel-body cr-body">
+                                    <div class="col col-3" style="padding-right: 0px; margin-top: 8px;">
+                                        <div class="input-group input-group-md" style="padding: 0px;">
+                                            <input type="hidden" id="dlg_idpre" value="0">
+                                            <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                            <div class="icon-addon addon-md" style="padding: 0px;">
+                                                <input id="dlg_dni_pred" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-9" style="padding-right: 10px; margin-top: 8px;">
+                                        <div class="input-group input-group-md" >
+                                            <input type="hidden" id="dlg_idpre" value="0">
+                                            <span class="input-group-addon"><i class="fa fa-male"></i></span>
+                                            <div class="icon-addon addon-md" >
+                                                <input id="dlg_contri_pred" class="col-xs-12 form-control"  style="height: 32px; padding-left: 5px; padding-right: 0px;" type="text" disabled="" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                      
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-group col-xs-6 " style="margin-top: 5px;  ">                
+                            <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">.:: Ubicación del Predio ::.</div>
+                                <div class="panel-body cr-body">
+                                   
+                                    <div class="col col-12" style=" margin-top: 8px;">
+                                        <div class="input-group input-group-md">
+                                            <input type="hidden" id="dlg_idpre" value="0">
+                                            <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
+                                            <div class="icon-addon addon-md" style="padding: 0px;">
+                                                <input id="dlg_inp_direcc" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="panel panel-success cr-panel-sep" style="height: 154px">
+                                <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
+                                <div class="panel-body cr-body">
+                                    <div id="dlg_img_view" style="padding-top: 5px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                            <div class="panel panel-success ">
+                                <div class="panel-heading bg-color-success">Condicion de Propiedad</div>
+                                <div class="panel-body cr-body" style="margin-top: 8px">
+                                    <div class="col-xs-12" style="padding-left: 15px;">
+                                        <select id="dlg_sel_condpre"  class="form-control" style="width: 85%">
+                                            @foreach ($condicion as $condicion)
+                                            <option value='{{$condicion->id_cond}}' >{{$condicion->descripcion}}</option>
+                                            @endforeach
+                                        </select>                       
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-group col-xs-1 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                            <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">Codominios</div>
+                                <div class="panel-body cr-body" style="margin-top: 8px">
+                                    <div class="col-xs-12" >
+                                        <label class="input" style="padding-left: 15px;">
+                                            <input id="dlg_inp_condos" type="number"  class="input-sm" style="width: 85%" >
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                            <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">Estado de Construccion</div>
+                                <div class="panel-body cr-body" style="margin-top: 8px">
+                                    <div class='col-xs-12 pd_dlg_cr'>
+                                        <select id='dlg_sel_estcon' class="form-control" style="width: 85%" >
+                                                @foreach ($ecc as $eccpre)
+                                                <option value='{{$eccpre->id_ecc}}' >{{$eccpre->descripcion}}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                            <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">Tipo de Predio</div>
+                                <div class="panel-body cr-body" style="margin-top: 8px">
+                                    <div class='col col-12 '>
+                                        <select id='dlg_sel_tippre' class="form-control" >
+                                            @foreach ($tpre as $tpre)
+                                                <option value='{{$tpre->id_tip_p}}' >{{$tpre->descrip_tip_pre}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5" style="padding: 0px;">
+                            <div class="panel-group col-xs-3 " style="margin-top: 5px; ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                    <div class="panel-heading bg-color-success">Arancel</div>
+                                    <div class="panel-body cr-body">
+                                        <div class='col-xs-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;" >
+                                            <label class="input">
+                                                <input id="dlg_inp_aranc" type="text"  class="input-sm" disabled="" style="text-align: right;width: 85%">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-group col-xs-3 " style="margin-top: 5px;   ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                    <div class="panel-heading bg-color-success">Area Terr</div>
+                                    <div class="panel-body cr-body">
+                                        <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
+                                            <label class="input">
+                                                <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right;width: 85%" placeholder="0.00">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                    <div class="panel-heading bg-color-success">Area comun Terr</div>
+                                    <div class="panel-body cr-body">
+                                        <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
+                                            <label class="input">
+                                                <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right;width: 85%" placeholder="0.00">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-group col-xs-3 " style="margin-top: 5px; ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                <div class="panel-heading bg-color-success">Valor de Terreno</div>
+                                <div class="panel-body cr-body">
+                                    <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
+                                        <label class="input">
+                                            <input id="dlg_inp_valterr" type="text"  class="input-sm" disabled="" style="text-align: right; width: 85%">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-group col-xs-9 " style="margin-bottom: 5px  ">                
+                            <div class="panel panel-success">
+                                <div class="panel-body cr-body">
+                                    <div class="col col-12" style=" margin-top: 10px;">
+                                        <div class="input-group input-group-md">
+                                            <input type="hidden" id="dlg_idpre" value="0">
+                                            <span class="input-group-addon">Observaciones &nbsp;<i class="fa fa-asterisk"></i></span>
+                                            <div class="icon-addon addon-md" style="padding: 0px;">
+                                                <input id="dlg_observa" class="col-xs-12 form-control"  style="height: 32px; padding-left: 10px; padding-right: 0px;" type="text" maxlength="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <button id="btnsaveficha" class="btn bg-color-green txt-color-white cr-btn-big" onclick="dlgsave();" style="margin-left: 10px; width: 97%" >
+                                <span style="left:-40px !important">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                </span>
+                                <label>Guardar Ficha de Verificación</label>
+                            </button>
+                            <button id="btnmodficha" class="btn bg-color-blue txt-color-white cr-btn-big" onclick="dlgupdate();" style="margin-left: 10px; width: 97%" >
+                                <span style="left:-40px !important">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                </span>
+                                <label>Modificar Ficha de Verificación</label>
+                            </button>
+                        </div> 
+                    </div>
+                    
+                    <div class="col-xs-12" style="margin-top: 5px; margin-bottom: 10px">
+                            <ul id="tabs1" class="nav nav-tabs bordered">
+                                <li class="active">
+                                    <a href="#s1" data-toggle="tab" aria-expanded="true">
+                                        Construcciones
+                                        <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                        Otras Instalaciones
+                                        <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent1" class="tab-content padding-10">
+                                <div id="s1" class="tab-pane fade active in" style="height: 300px">
+                                        <div class="col-xs-10">
+                                            <table id="table_pisos" ></table>
+                                            <div id="pager_table_pisos"></div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewpiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nuevo Piso</label>
+                                            </button>
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodpiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Piso</label>
+                                            </button>
+                                            
+                                        </div>
+                                </div>
+                                <div id="s2" class="tab-pane fade" style="height: 300px">
+                                    <div class="col-xs-10">
+                                        <table id="table_instal" ></table>
+                                        <div id="pager_table_instal"></div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewinst()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nueva Inst</label>
+                                            </button>
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodinst()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Inst</label>
+                                            </button>
+                                            
+                                        </div>
+                                </div>
+                                
+                                
+                            </div>
+                    </div>    
+                </div>
+</div>
+<div id="dlg_reg_piso" style="display: none;">
+    <div class="widget-body" >
+        <div  class="smart-form">
+            <div class="panel-group col-xs-6" style="margin-bottom: 10px;">
+                    <div class="panel panel-success " >
+                        <div class="panel-heading bg-color-success">.:: Datos del piso Declarado ::.</div>
+                        <div class="panel-body cr-body">
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idpiso" value="0">
+                            <label class="label">N° Piso:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_nro" type="text" class="input-sm" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col-lg-6 '>
+                            <label class="label">Año de construccion:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_fech" type="text"  class="input-sm" disabled="" >
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-xs-3 pd_dlg_cr'>
+                            <label class="label">Clasificación:</label>
+                            <select id='rpiso_inp_clasi' class="form-control col-lg-8" disabled="">
+                                @foreach ($pisclasi as $pisclasi1)
+                                <option value='{{$pisclasi1->id_cla_pre}}' descri="{{$pisclasi1->desc_clasific}}" >{{$pisclasi1->id_cla_pre}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_clasi_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Material:</label>
+                            <select id='rpiso_inp_mat' class="form-control col-lg-8" disabled="">
+                                @foreach ($pismat as $pismat1)
+                                <option value='{{$pismat1->id_mep}}' descri="{{$pismat1->mep}}" >{{$pismat1->id_mep}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_mat_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Conservación:</label>
+                            <select id='rpiso_inp_econserv' class="form-control col-lg-8" disabled="">
+                                @foreach ($pisecs as $pisecs1)
+                                <option value='{{$pisecs1->id_ecs}}' descri="{{$pisecs1->ecs}}" >{{$pisecs1->id_ecs}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_econserv_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Construcción:</label>
+                            <select id='rpiso_inp_econstr' class="form-control col-lg-8" disabled="">
+                                @foreach ($ecc as $ecc2)
+                                <option value='{{$ecc2->id_ecc}}' descri="{{$ecc2->descripcion}}" >{{$ecc2->id_ecc}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_econstr_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-5 pd_dlg_cr'>
+                            <label class="label">Estructuras:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_estruc" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        
+                        <div class='col-lg-3 '>
+                            <label class="label">Area Construida:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_aconst" type="text"  class="input-sm text-right" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col-lg-3'>
+                            <label class="label">Areas Comunes:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_acomun" type="text"  class="input-sm text-right" disabled="" >
+                            </label>
+                        </div>
+                    </div>
+                    </div>
+               
+            </div>
+            <div class="panel-group col-xs-6" style="margin-bottom: 10px;">
+                    <div class="panel panel-success cr-panel-sep" >
+                        <div class="panel-heading bg-color-success">.:: Datos del piso Fiscalizado ::.</div>
+                        <div class="panel-body cr-body">
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idpiso_fis" value="0">
+                            <label class="label">N° Piso:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_nro_fis" type="text"  class="input-sm" maxlength="5" >
+                            </label>
+                        </div>
+                        <div class='col-lg-6 '>
+                            <label class="label">Año de construccion:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_fech_fis" type="text"  class="input-sm" maxlength="4" >
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-xs-3 pd_dlg_cr'>
+                            <label class="label">Clasificación:</label>
+                            <select id='rpiso_inp_clasi_fis' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_clasi_fis',0)">
+                                @foreach ($pisclasi as $pisclasi1)
+                                <option value='{{$pisclasi1->id_cla_pre}}' descri="{{$pisclasi1->desc_clasific}}" >{{$pisclasi1->id_cla_pre}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_clasi_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Material:</label>
+                            <select id='rpiso_inp_mat_fis' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_mat_fis',0)">
+                                @foreach ($pismat as $pismat1)
+                                <option value='{{$pismat1->id_mep}}' descri="{{$pismat1->mep}}" >{{$pismat1->id_mep}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_mat_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Conservación:</label>
+                            <select id='rpiso_inp_econserv_fis' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econserv_fis',0)">
+                                @foreach ($pisecs as $pisecs1)
+                                <option value='{{$pisecs1->id_ecs}}' descri="{{$pisecs1->ecs}}" >{{$pisecs1->id_ecs}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_econserv_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Construcción:</label>
+                            <select id='rpiso_inp_econstr_fis' class="form-control col-lg-8" onchange="callchangeoption('rpiso_inp_econstr_fis',0)">
+                                @foreach ($ecc as $ecc2)
+                                <option value='{{$ecc2->id_ecc}}' descri="{{$ecc2->descripcion}}" >{{$ecc2->id_ecc}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rpiso_inp_econstr_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-5 pd_dlg_cr'>
+                            <label class="label">Estructuras:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_estruc_fis" type="text"  class="input-sm" maxlength="7" placeholder="7 Letras Entre A-I">
+                            </label>
+                        </div>
+                        
+                        <div class='col-lg-3 '>
+                            <label class="label">Area Construida:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_aconst_fis" type="text"  class="input-sm text-right" placeholder="0.00" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                        <div class='col-lg-3'>
+                            <label class="label">Areas Comunes:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_acomun_fis" type="text"  class="input-sm text-right" placeholder="0.00" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                    </div>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+</div>  
 
 
+
+<div id="dlg_reg_inst" style="display: none;">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group col-xs-6" style="margin-bottom: 10px;">
+                <div class="panel-group">                
+                    <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos de Instalación Declarada ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class='col-lg-1 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idinst" value="0">
+                            <label class="label">Codigo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_des_cod" type="text"  class="input-sm" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col-lg-6'>
+                            <label class="label">Descripción:</label>
+                            <label class="input">
+                                <input id="hidden_rinst_inp_des" type="hidden" value="0">
+                                <input id="rinst_inp_des" type="text"  class="input-sm" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col-lg-2'>
+                            <label class="label">U.Med.:</label>
+                            <label class="input">
+                                <input id="rinst_inp_undmed" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class='col-lg-2'>
+                            <label class="label">Año Construc.:</label>
+                            <label class="input">
+                                <input id="rinst_inp_anio" type="text"  class="input-sm" disabled="" >
+                            </label>
+                        </div>
+                        
+                        <div col="col-xs-12"></div>
+                        <div class='col-xs-3 pd_dlg_cr'>
+                            <label class="label">Clasificación:</label>
+                            <select id='rinst_inp_clasi' class="form-control col-lg-8" disabled="">
+                                @foreach ($pisclasi as $pisinst)
+                                <option value='{{$pisinst->id_cla_pre}}' descri="{{$pisinst->desc_clasific}}" >{{$pisinst->id_cla_pre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_clasi_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Material:</label>
+                            <select id='rinst_inp_mat' class="form-control col-lg-8" disabled="">
+                                @foreach ($pismat as $pismat2)
+                                <option value='{{$pismat2->id_mep}}' descri="{{$pismat2->mep}}" >{{$pismat2->id_mep}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_mat_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Conservación:</label>
+                            <select id='rinst_inp_econserv' class="form-control col-lg-8" disabled="">
+                                @foreach ($pisecs as $pisecs2)
+                                <option value='{{$pisecs2->id_ecs}}' descri="{{$pisecs2->ecs}}" >{{$pisecs2->id_ecs}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_econserv_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Construcción:</label>
+                            <select id='rinst_inp_econstr' class="form-control col-lg-8" disabled="">
+                                @foreach ($ecc as $ecc3)
+                                <option value='{{$ecc3->id_ecc}}' descri="{{$ecc3->descripcion}}" >{{$ecc3->id_ecc}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_econstr_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        
+                    </div>
+                    <div class="panel-heading bg-color-success">.:: Dimensiones Verificadas ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class='col col-3'>
+                            <label class="label">Largo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_largo" type="text"  class="input-sm text-right" disabled="">
+                            </label>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Ancho:</label>
+                            <label class="input">
+                                <input id="rinst_inp_ancho" type="text"  class="input-sm text-right" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Alto:</label>
+                            <label class="input">
+                                <input id="rinst_inp_alto" type="text"  class="input-sm text-right" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Cantidad:</label>
+                            <label class="input">
+                                <input id="rinst_inp_canti" type="text"  class="input-sm text-right" disabled="" >
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="panel-group col-xs-6" style="margin-bottom: 10px;">
+                <div class="panel-group">                
+                <div class="panel panel-success cr-panel-sep">
+                    <div class="panel-heading bg-color-success">.:: Datos de Instalación Fiscalizada ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class='col-lg-1 pd_dlg_cr'>
+                            <input type="hidden" id="dlg_idinst_fis" value="0">
+                            <label class="label">Codigo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_des_fis_cod" type="text"  class="input-sm" maxlength="2" disabled="" >
+                            </label>
+                        </div>
+                        <div class='col-lg-6'>
+                            <label class="label">Descripción:</label>
+                            <label class="input">
+                                <input id="hidden_rinst_inp_des_fis" type="hidden" value="0">
+                                <input id="rinst_inp_des_fis" type="text"  class="input-sm" maxlength="150" >
+                            </label>
+                        </div>
+                        <div class='col-lg-2'>
+                            <label class="label">U.Med.:</label>
+                            <label class="input">
+                                <input id="rinst_inp_undmed_fis" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class='col-lg-2'>
+                            <label class="label">Año Construc.:</label>
+                            <label class="input">
+                                <input id="rinst_inp_anio_fis" type="text"  class="input-sm" maxlength="4" onkeypress="return soloDNI(event);" >
+                            </label>
+                        </div>
+                        
+                        <div col="col-xs-12"></div>
+                        <div class='col-xs-3 pd_dlg_cr'>
+                            <label class="label">Clasificación:</label>
+                            <select id='rinst_inp_clasi_fis' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_clasi_fis',0)">
+                                @foreach ($pisclasi as $pisinst)
+                                <option value='{{$pisinst->id_cla_pre}}' descri="{{$pisinst->desc_clasific}}" >{{$pisinst->id_cla_pre}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_clasi_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Material:</label>
+                            <select id='rinst_inp_mat_fis' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_mat_fis',0)">
+                                @foreach ($pismat as $pismat2)
+                                <option value='{{$pismat2->id_mep}}' descri="{{$pismat2->mep}}" >{{$pismat2->id_mep}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_mat_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Conservación:</label>
+                            <select id='rinst_inp_econserv_fis' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econserv_fis',0)">
+                                @foreach ($pisecs as $pisecs2)
+                                <option value='{{$pisecs2->id_ecs}}' descri="{{$pisecs2->ecs}}" >{{$pisecs2->id_ecs}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_econserv_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        <div class="col-xs-12"></div>
+                        <div class='col-lg-3 pd_dlg_cr'>
+                            <label class="label">Estado Construcción:</label>
+                            <select id='rinst_inp_econstr_fis' class="form-control col-lg-8" onchange="callchangeoption('rinst_inp_econstr_fis',0)">
+                                @foreach ($ecc as $ecc3)
+                                <option value='{{$ecc3->id_ecc}}' descri="{{$ecc3->descripcion}}" >{{$ecc3->id_ecc}}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                        <div class='col-xs-8'>
+                            <label class="label">&nbsp;</label>
+                            <label class="input">
+                                <input id="rinst_inp_econstr_fis_des" type="text"  class="input-sm" disabled="">
+                            </label>
+                        </div>
+                        
+                    </div>
+                    <div class="panel-heading bg-color-success">.:: Dimensiones Verificadas ::.</div>
+                    <div class="panel-body cr-body">
+                        <div class='col col-3'>
+                            <label class="label">Largo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_largo_fis" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Ancho:</label>
+                            <label class="input">
+                                <input id="rinst_inp_ancho_fis" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);"  >
+                            </label>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Alto:</label>
+                            <label class="input">
+                                <input id="rinst_inp_alto_fis" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Cantidad:</label>
+                            <label class="input">
+                                <input id="rinst_inp_canti_fis" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" >
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div> 
 @endsection
 
 

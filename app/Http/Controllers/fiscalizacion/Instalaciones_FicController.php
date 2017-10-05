@@ -1,33 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\adm_tributaria;
+namespace App\Http\Controllers\fiscalizacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\Instalaciones;
-use App\Models\Predios\Predios_Anio;
-use App\Models\Predios\Predios_Contribuyentes;
+use App\Models\fiscalizacion\Instalaciones_Fic;
 
-class InstalacionesController extends Controller
+class Instalaciones_FicController extends Controller
 {
 
     public function index()
     {
-        //
     }
-    public function calculos_ivpp($id)
-    {
-        DB::select("select adm_tri.actualiza_base_predio(".$id.")");
-        $Predios_Anio=new Predios_Anio;
-        $Predios_Anio=  $Predios_Anio::where("id_pred_anio","=",$id )->first();
-        $Predios_Contribuyentes=new Predios_Contribuyentes;
-        $Predios_Contribuyentes=  $Predios_Contribuyentes::where("id_pred","=",$Predios_Anio->id_pred )->first();
-        DB::select("select adm_tri.calcular_ivpp($Predios_Anio->anio,$Predios_Contribuyentes->id_contrib)");
-    }
+
     public function create(Request $request)
     {
-        $insta=new Instalaciones;
+        $insta=new Instalaciones_Fic;
         $cat_instal= DB::table('catastro.instalaciones')->where('id_instal',$request['inst'])->get()->first();
         if(count($cat_instal)>=1)
         {
@@ -55,29 +44,27 @@ class InstalacionesController extends Controller
         $insta->ecs = $request['ecs'];
         $insta->ecc = $request['ecc'];
         $insta->id_cla = $request['cla'];
-        $insta->id_pred_anio = $request['id_pre'];
+        $insta->id_fic = $request['id_fic'];
+        $insta->id_inst = $request['ins'];
         $insta->antiguedad = date("Y")-$request['anio'];
         $insta->save();
-        $this->calculos_ivpp($insta->id_pred_anio);
-        return $insta->id_inst;
+        return $insta->id_inst_fic;
     }
 
-  
     public function store(Request $request)
     {
-        return "llego store";
     }
 
     public function show($id)
     {
-        $instvw= DB::table('adm_tri.vw_instalaciones')->where('id_inst',$id)->get();
+        $instvw= DB::table('fiscalizacion.vw_instalaciones_fic')->where('id_inst_fic',$id)->get();
         return $instvw;
     }
 
-    public function edit(Request $request,$id)
+    public function edit($id,Request $request)
     {
-        $insta=new Instalaciones;
-        $val=  $insta::where("id_inst","=",$id )->first();
+        $insta=new Instalaciones_Fic;
+        $val=  $insta::where("id_inst_fic","=",$id )->first();
         if(count($val)>=1)
         {
             $cat_instal= DB::table('catastro.instalaciones')->where('id_instal',$request['inst'])->get()->first();
@@ -108,37 +95,27 @@ class InstalacionesController extends Controller
             $val->ecc = $request['ecc'];
             $val->id_cla = $request['cla'];
             $val->antiguedad = date("Y")-$request['anio'];
-            
             $val->save();
-            $this->calculos_ivpp($val->id_pred_anio);
         }
         return "edit".$id;
     }
 
-
     public function update(Request $request, $id)
     {
-        //
     }
 
-     public function destroy(Request $request)
+    public function destroy($id)
     {
-        $pred_anio=0;
-        $insta=new Instalaciones;
-        $val=  $insta::where("id_inst","=",$request['id'] )->first();
-        if(count($val)>=1)
-        {
-            $pred_anio=$val->id_pred_anio;
-            $val->delete();
-        }
-        $this->calculos_ivpp($pred_anio);
-        return "destroy ".$request['id'];
     }
-    
-    public function listinsta($id)
+    public function listinsta_fic($id,$fic)
     {
+        if($id==0)
+        {
+            return 0;
+        }
         header('Content-type: application/json');
         $totalg = DB::select("select count(id_inst) as total from adm_tri.vw_instalaciones where id_pred_anio='$id'");
+        $totalficg = DB::select("select count(id_inst_fic) as total from fiscalizacion.vw_instalaciones_fic where id_fic='$fic' and id_inst=0");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -148,7 +125,7 @@ class InstalacionesController extends Controller
         if (!$sidx) {
             $sidx = 1;
         }
-        $count = $totalg[0]->total;
+        $count = $totalg[0]->total+$totalficg[0]->total;
         if ($count > 0) {
             $total_pages = ceil($count / $limit);
         }
@@ -160,13 +137,19 @@ class InstalacionesController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pred_anio='$id' order by id_inst asc");
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        $ix=-1;
+        $sql = DB::select("select * from adm_tri.vw_instalaciones where id_pred_anio='$id' order by id_inst asc");
         foreach ($sql as $Index => $Datos) {
+            $fiscalizado='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
+            if($Datos->id_inst_fic)
+            {
+                $fiscalizado='<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle"><i class="glyphicon glyphicon-ok"></i></a>';
+            }
+            $ix=$Index;
             $Lista->rows[$Index]['id'] = $Datos->id_inst;
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_inst),
@@ -182,6 +165,33 @@ class InstalacionesController extends Controller
                 trim($Datos->unid_medida),
                 trim($Datos->tot_inst),
                 trim($Datos->id_inst_fic),
+                $fiscalizado
+            );
+        }
+        $sqlisnta = DB::select("select * from fiscalizacion.vw_instalaciones_fic where id_fic='$fic' and id_inst=0  order by id_inst_fic asc");
+        foreach ($sqlisnta as $Index => $Datos) {
+            $fiscalizado='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
+            if($Datos->id_inst_fic)
+            {
+                $fiscalizado='<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle"><i class="glyphicon glyphicon-ok"></i></a>';
+            }
+            $ix++;
+            $Lista->rows[$ix]['id'] = $Datos->id_inst."-".$ix;
+            $Lista->rows[$ix]['cell'] = array(
+                trim($Datos->id_inst),
+                trim($Datos->cod_instal),
+                trim($Datos->descrip_instal),
+                trim($Datos->anio),
+                trim($Datos->mep),
+                trim($Datos->ecs),
+                trim($Datos->ecc),
+                trim($Datos->dim_lar),
+                trim($Datos->dim_anch),
+                trim($Datos->dim_alt),
+                trim($Datos->unid_medida),
+                trim($Datos->tot_inst),
+                trim($Datos->id_inst_fic),
+                $fiscalizado
             );
         }
         return response()->json($Lista);

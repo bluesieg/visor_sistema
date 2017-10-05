@@ -165,16 +165,16 @@ function fn_confirmar_carta()
 }
 function fn_save_carta()
 {
-    con=0;lic=0;der=0;otro=0;
+    con=0;lic=0;der=0;otro=0;otrotext="-"
     if($('#cbx_con').prop('checked')){con=1;}
     if($('#cbx_lic').prop('checked')){lic=1;}
     if($('#cbx_der').prop('checked')){der=1;}
-    if($('#cbx_otr').prop('checked')){otro=1;}
+    if($('#cbx_otr').prop('checked')){otro=1;otrotext=$("#dlg_otros").val()}
     
     MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
-        $.ajax({url: 'carta_save',
+        $.ajax({url: 'carta_reque/create',
         type: 'GET',
-        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val(),hor:$("#dlg_hor_fis").val(),con:con,lic:lic,der:der,otro:otro,otrotext:$("#dlg_otros").val()},
+        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val(),hor:$("#dlg_hor_fis").val(),con:con,lic:lic,der:der,otro:otro,otrotext:otrotext,anfis:$("#selanafis").val()},
         success: function(r) 
         {
             if(r>0)

@@ -193,7 +193,7 @@
                         <a href="#" title="Recaudación"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Recaudación</span></a>
                         <ul id="menu_recaudacion">
                             <li id="li_reca_op">
-                                <a href='ordenpago' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar OP</span></a>                            
+                                <a href='ordenpago' title="Orden de Pago(OP)"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar O.P.</span></a>                            
                             </li>
                         </ul>	
                     </li> 
@@ -201,10 +201,16 @@
                         <a href="#" title="Fiscalización"><i class="fa fa-lg fa-fw fa-institution"></i> <span class="menu-item-parent">Fiscalización</span></a>
                         <ul id="menu_fisca">
                             <li id="li_fisca_carta">
-                                <a href='fisca_carta_req' title="Carta de Requerimiento"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Carta Requerimiento</span></a>                            
+                                <a href='carta_reque' title="Carta de Requerimiento"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Carta Requerimiento</span></a>                            
                             </li>
                             <li id="li_ficha_ver">
-                                <a href='fisca_ficha' title="Ingresar Ficha Verificación"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Ing. Ficha Verificación</span></a>                            
+                                <a href='ficha_veri' title="Ingresar Ficha Verificación"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Ing. Ficha Verificación</span></a>                            
+                            </li>
+                            <li id="li_hoja_liq">
+                                <a href='hoja_liquidacion' title="Crear Hoja de Liquidación"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Hoja de Liquidación</span></a>                            
+                            </li>
+                            <li id="li_reso_deter">
+                                <a href='reso_deter' title="Crear Resolución de Determinación"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar R.D.</span></a>                            
                             </li>
                         </ul>	
                     </li> 

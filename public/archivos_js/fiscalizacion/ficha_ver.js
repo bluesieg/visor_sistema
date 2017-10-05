@@ -19,7 +19,7 @@ function fn_bus_contrib_carta(input)
         title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
         }).dialog('open');
 }
-function fn_bus_contrib_list_carta(per)
+function fn_bus_contrib_list_ficha(per)
 {
     $("#"+inputglobal+"_hidden").val(per);
     $("#"+inputglobal).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
@@ -69,110 +69,760 @@ function call_list_contrib_carta(tip)
     
 }
 
-function fiscalizar()
+function datos_carta($id)
 {
+    limpiar_carta();
     $("#dlg_vista_carta").dialog({
         autoOpen: false, modal: true, width: 1300, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Datos Generales de Carta</h4></div>"
         }).dialog('open');
+        traer_carta($id);
 }
-
-
-
-function fn_confirmar_carta()
+function limpiar_carta()
 {
-
-    if($("#dlg_contri_carta_hidden").val()==0||$("#dlg_contri_carta_hidden").val()=="")
-    {
-        mostraralertasconfoco("Seleccione Contribuyente a fiscalizar","dlg_contri_carta");
-        return false;
-    }
-    if($("#dlg_fec_fis").val()==0||$("#dlg_fec_fis").val()=="")
-    {
-        mostraralertasconfoco("Seleccione Fecha de Fizcalización","dlg_fec_fis");
-        return false;
-    }
-    if($("#dlg_hor_fis").val()==0||$("#dlg_hor_fis").val()=="")
-    {
-        mostraralertasconfoco("Seleccione Hora de Fizcalización","dlg_hor_fis");
-        return false;
-    }
-    if($('#table_fiscalizadores > tbody tr').length==0)
-    {
-        mostraralertasconfoco("Agregar Fizcalizadores","selfisca");
-        return false;
-    }
-    if($('#dlg_otros').prop('checked')&&$('#dlg_otros').val()==""){otro=1;}
-    $.SmartMessageBox({
-            title : "Confirmación Final!",
-            content : "Está por generar Carta de Requerimiento para este Contribuyente, desea Grabar la información",
-            buttons : '[Cancelar][Aceptar]'
-    }, function(ButtonPressed) {
-            if (ButtonPressed === "Aceptar") {
-
-                    fn_save_carta();
-            }
-            if (ButtonPressed === "Cancelar") {
-                    $.smallBox({
-                            title : "No se Guardo",
-                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
-                            color : "#C46A69",
-                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
-                            timeout : 3000
-                    });
-            }
-    });
+    $("#dlg_nro_car,#dlg_contri_carta,#dlg_contri_carta_dom,#dlg_fec_fis,#dlg_hor_fis").val("");
 }
-function fn_save_carta()
+function traer_carta($id)
 {
-    con=0;lic=0;der=0;otro=0;
-    if($('#cbx_con').prop('checked')){con=1;}
-    if($('#cbx_lic').prop('checked')){lic=1;}
-    if($('#cbx_der').prop('checked')){der=1;}
-    if($('#cbx_otr').prop('checked')){otro=1;}
-    
-    MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
-        $.ajax({url: 'carta_save',
+    MensajeDialogLoadAjax('dlg_vista_carta', '.:: CARGANDO ...');
+    $.ajax({url: 'carta_reque/'+$id,
         type: 'GET',
-        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val(),hor:$("#dlg_hor_fis").val(),con:con,lic:lic,der:der,otro:otro,otrotext:$("#dlg_otros").val()},
         success: function(r) 
         {
-            if(r>0)
-            {
-                $('#table_fiscalizadores tbody tr').each(function() {
-                    fisca=$(this).attr("id");
-                    $.ajax({url: 'carta_set_fisca',
-                    type: 'GET',
-                    data:{car:r,fis: fisca},
-                    success: function(data) 
-                    {
-                        MensajeExito("Fiscalizador Insertado","Su Registro Fue Insertado con Éxito...",4000);
-                    },
-                    error: function(data) {
-                        mostraralertas("no inserto Fiscalizador, Comunicar al Administrador");
-                        console.log('error');
-                        console.log(data);
-                    }
-                    });
-                });
-            }
-            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-            call_list_contrib_carta(1);
-            MensajeDialogLoadAjaxFinish('dlg_new_carta');
-            $("#dlg_new_carta").dialog("close");
-            vercarta(r);
+            $("#dlg_nro_car").val(r[0].nro_car);
+            $("#dlg_contri_carta").val(r[0].contribuyente);
+            $("#dlg_contri_carta_dom").val(r[0].ref_dom_fis);
+            $("#dlg_fec_fis").val(r[0].fec_fis);
+            $("#dlg_hor_fis").val(r[0].hora_fis);
+            jQuery("#table_predios_contri").jqGrid('setGridParam', {url: 'trae_pred_carta/'+$id}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_vista_carta');
+
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
-            MensajeDialogLoadAjaxFinish('dlg_new_carta');
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_vista_carta');
+            $("#dlg_vista_carta").dialog('close');
+        }
+        });
+}
+
+function vercarta(id)
+{
+    window.open('car_req_rep/'+id);
+}
+autocompletar=0;
+function limpiarpred()
+{
+    $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="65%"/></center>');
+    autocompletar=1;
+    $("#dlg_reg_dj").dialog({
+    autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.: Ficha Unica de Verificación Del Impuesto Predial :.</h4></div>",
+    });
+    $("#dlg_sel_condpre,#dlg_nro_ficha,#dlg_observa").val("");
+    $( "#dlg_dni, #dlg_lot" ).prop( "disabled", true );
+    $('#dlg_inp_condos').val("");
+    $("#dlg_inp_areter,#dlg_inp_arecomter").val("");
+}
+function clickmodgrid(Id)
+{
+   limpiarpred();
+   $("#dlg_reg_dj").dialog('open');
+   MensajeDialogLoadAjax('dlg_reg_dj', '.:: Cargando ...');
+   id_fic=$('#table_predios_contri').jqGrid('getCell',Id,'id_fic');
+   if(id_fic>0)
+   {
+       $("#dlg_idfic").val(id_fic);
+       url='ficha_veri/'+id_fic;
+       $("#btnsaveficha").hide();
+        $("#btnmodficha").show();
+   }
+   else
+   {
+       id_fic=0;
+        $("#dlg_idfic").val(0);
+        url='predios_urbanos/'+Id;
+        $("#btnsaveficha").show();
+        $("#btnmodficha").hide();
+   }
+   $.ajax({url: url,
+    type: 'GET',
+    success: function(r) 
+    {
+        if(id_fic>0)
+        {
+            $("#dlg_nro_ficha").val(r[0].nro_fic);
+            $("#dlg_observa").val(r[0].observaciones);
+        }
+        if(r[0].foto!=0)
+        {
+            $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r[0].foto+'" height="100%" width="90%"/></center>');
+        }
+            $("#dlg_sec").val(r[0].sec);
+            $("#dlg_mzna").val(r[0].mzna);
+            $("#dlg_lot").append($('<option>',{value:0,text: r[0].lote}));
+            $("#dlg_dni_pred").val(r[0].nro_doc);
+            $("#dlg_contri_pred").val(r[0].contribuyente);
+            $("#dlg_sel_condpre").val(r[0].id_cond_prop);
+            $("#dlg_inp_condos").val(r[0].nro_condominios);
+            $("#dlg_sel_estcon").val(r[0].id_est_const);
+            $("#dlg_sel_tippre").val(r[0].id_tip_pred);
+            $("#dlg_inp_aranc").val(r[0].arancel);
+            $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,3,".",","));
+            $("#dlg_inp_areter").val(r[0].are_terr);
+            $("#dlg_inp_arecomter").val(r[0].are_com_terr);
+            dir=r[0].nom_via;
+            if(r[0].nro_mun!=""){
+                dir=dir+" N° "+r[0].nro_mun;
+            }
+            if(r[0].mzna_dist!=""){
+                dir=dir+" Mzna "+r[0].mzna_dist;
+            }
+            if(r[0].lote_dist!=""){
+                dir=dir+" Lt "+r[0].lote_dist;
+            }
+            if(r[0].zona!=""){
+                dir=dir+" Zn "+r[0].zona;
+            }
+            $("#dlg_inp_direcc").val(dir+" "+r[0].habilitacion);
+            $("#dlg_inp_direcc").attr('title',dir+" "+r[0].habilitacion);
+            MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id+'/'+id_fic}).trigger('reloadGrid');
+            jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id+'/'+id_fic}).trigger('reloadGrid');
+
+
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+    }
+    }); 
+
+
+
+}
+function dlgsave()
+{
+    if($("#dlg_nro_ficha").val()==""){mostraralertasconfoco("Ingresar Número de ficha de Verificación","dlg_nro_ficha");return false}
+    if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
+    if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
+    Id=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+    puente=$('#table_predios_contri').jqGrid('getCell',Id,'id_puente');
+    ajustar(6, 'dlg_nro_ficha');
+    MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
+        $.ajax({url: 'ficha_veri/create',
+        type: 'GET',
+        data:{puente:puente,
+            nro:$("#dlg_nro_ficha").val(),
+            obs:$("#dlg_observa").val(),
+            cprop:$("#dlg_sel_condpre").val(),
+                condos:$("#dlg_inp_condos").val(),
+                ecc:$("#dlg_sel_estcon").val(),
+                tp:$("#dlg_sel_tippre").val(),
+                arcancel:$("#dlg_inp_aranc").val(),
+                ater:$("#dlg_inp_areter").val(),
+                acomun:$("#dlg_inp_arecomter").val()},
+        success: function(r) 
+        {
+            $("#dlg_idfic").val(r);
+            $("#btnsaveficha").hide();
+            $("#btnmodficha").show();
+            carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
+            jQuery("#table_predios_contri").jqGrid('setGridParam', {url: 'trae_pred_carta/'+carta}).trigger('reloadGrid');
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+            
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_dj');
             console.log('error');
             console.log(data);
         }
         });
 }
-function vercarta(id)
+function dlgupdate()
 {
-    window.open('car_req_rep/'+id);
+    if($("#dlg_nro_ficha").val()==""){mostraralertasconfoco("Ingresar Número de ficha de Verificación","dlg_nro_ficha");return false}
+    if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
+    if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
+    id=$("#dlg_idfic").val();
+    ajustar(6, 'dlg_nro_ficha');
+    MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
+        $.ajax({url: 'ficha_veri/'+id+'/edit',
+        type: 'GET',
+        data:{
+            nro:$("#dlg_nro_ficha").val(),
+            obs:$("#dlg_observa").val(),
+            cprop:$("#dlg_sel_condpre").val(),
+                condos:$("#dlg_inp_condos").val(),
+                ecc:$("#dlg_sel_estcon").val(),
+                tp:$("#dlg_sel_tippre").val(),
+                arcancel:$("#dlg_inp_aranc").val(),
+                ater:$("#dlg_inp_areter").val(),
+                acomun:$("#dlg_inp_arecomter").val()},
+        success: function(r) 
+        {
+            carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
+            jQuery("#table_predios_contri").jqGrid('setGridParam', {url: 'trae_pred_carta/'+carta}).trigger('reloadGrid');
+            MensajeExito("Se Modificó Correctamente","Su Registro Fue Modificado con Éxito...",4000);
+            MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+            
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+            console.log('error');
+            console.log(data);
+        }
+        });
+}
+
+function validarvalter()
+{
+    if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
+    $("#dlg_inp_valterr").val( formato_numero($("#dlg_inp_aranc").val()*$("#dlg_inp_areter").val(),2,".",","));
+}
+
+
+function creardlgpiso()
+{
+ $("#dlg_reg_piso").dialog({
+    autoOpen: false, modal: true, width: 1200, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  REGISTRO DE CONSTRUCCIONES :.</h4></div>",
+    buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            id:"btnpissave",
+            "class": "btn btn-primary bg-color-green",
+            click: function () {pisoSave();}
+        },
+        {
+            html: "<i class='fa fa-save'></i>&nbsp; Modificar",
+            "class": "btn btn-primary bg-color-blue",
+            id:"btnpismod",
+            click: function () {pisoUpdate();}
+        },
+        {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-primary bg-color-red",
+            click: function () {$(this).dialog("close");}
+        }],
+    }).dialog('open');
+}
+function clicknewpiso()
+{
+    $('#dlg_idpiso').val(0);
+    if($("#dlg_idfic").val()==0)
+    {
+        mostraralertas("Para Crear Piso, Primero Guardar Ficha de Fiscalización...");
+        return false;
+    }
+    if($('#dlg_sel_estcon').val()==1)
+    {
+        mostraralertas("No se puede crear piso en un terreno sin construir..");
+        return false;
+    }
+    limpiapisodeclaracion();
+    limpiarpisofic();
+    creardlgpiso();
+    $("#btnpissave").show();
+    $("#btnpismod").hide();
+}
+function limpiapisodeclaracion()
+{
+    $("#rpiso_inp_nro,#rpiso_inp_fech,#rpiso_inp_econstr,#rpiso_inp_estruc,#rpiso_inp_aconst,#rpiso_inp_acomun").val("")
+    $("#rpiso_inp_clasi").val($("#rpiso_inp_clasi option:first").val());
+    $("#rpiso_inp_mat").val($("#rpiso_inp_mat option:first").val());
+    $("#rpiso_inp_econserv").val($("#rpiso_inp_econserv option:first").val());
+    $("#rpiso_inp_econstr").val($("#rpiso_inp_econstr option:first").val());
+    
+    callchangeoption("rpiso_inp_clasi",0);
+    callchangeoption("rpiso_inp_mat",0);
+    callchangeoption("rpiso_inp_econserv",0);
+    callchangeoption("rpiso_inp_econstr",0);
+}
+function limpiarpisofic()
+{
+    $("#rpiso_inp_nro_fis,#rpiso_inp_fech_fis,#rpiso_inp_econstr_fis,#rpiso_inp_estruc_fis,#rpiso_inp_aconst_fis,#rpiso_inp_acomun_fis").val("")
+    $("#rpiso_inp_clasi_fis").val($("#rpiso_inp_clasi option:first").val());
+    $("#rpiso_inp_mat_fis").val($("#rpiso_inp_mat option:first").val());
+    $("#rpiso_inp_econserv_fis").val($("#rpiso_inp_econserv option:first").val());
+    $("#rpiso_inp_econstr_fis").val($("#rpiso_inp_econstr option:first").val());
+    callchangeoption("rpiso_inp_clasi_fis",0);
+    callchangeoption("rpiso_inp_mat_fis",0);
+    callchangeoption("rpiso_inp_econserv_fis",0);
+    callchangeoption("rpiso_inp_econstr_fis",0);
+}
+function clickmodpiso()
+{
+    limpiapisodeclaracion();
+    limpiarpisofic();
+    if($("#dlg_idfic").val()==0)
+    {
+        mostraralertas("Para Crear Piso, Primero Guardar Ficha de Fiscalización...");
+        return false;
+    }
+    Id=$('#table_pisos').jqGrid ('getGridParam', 'selrow');
+    $('#dlg_idpiso').val(Id);
+    creardlgpiso();
+    id_pisos_fic=$('#table_pisos').jqGrid('getCell',Id,'id_pisos_fic');
+    if(id_pisos_fic>0)
+    {
+        $("#btnpissave").hide();
+        $("#btnpismod").show();
+        $("#dlg_idpiso_fis").val(id_pisos_fic);
+        traerpisofic(id_pisos_fic);
+    }
+    else
+     {
+        $("#btnpissave").show();
+        $("#btnpismod").hide();
+        $("#dlg_idpiso_fis").val(0);
+    } 
+    MensajeDialogLoadAjax('dlg_reg_piso', '.:: Cargando ...');
+    if(Id.slice(0,1)>0)
+    {
+        $.ajax({url: 'pisos_predios/'+Id,
+        type: 'GET',
+        success: function(r) 
+        {
+            $("#rpiso_inp_nro").val(r[0].cod_piso);
+            $("#rpiso_inp_fech").val(r[0].ani_const);
+            $("#rpiso_inp_clasi").val(parseInt(r[0].clas));
+            $("#rpiso_inp_mat").val(r[0].mep);
+            $("#rpiso_inp_econserv").val(r[0].esc);
+            $("#rpiso_inp_econstr").val(parseInt(r[0].ecc));
+            $("#rpiso_inp_estruc").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
+            $("#rpiso_inp_aconst").val(r[0].area_const);
+            $("#rpiso_inp_acomun").val(r[0].val_areas_com);
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            callchangeoption("rpiso_inp_clasi",0);
+            callchangeoption("rpiso_inp_mat",0);
+            callchangeoption("rpiso_inp_econserv",0);
+            callchangeoption("rpiso_inp_econstr",0);
+
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            $("#dlg_reg_piso").dialog('close');
+        }
+        });
+    }
+}
+function traerpisofic(Id)
+{
+   $.ajax({url: 'piso_fisca/'+Id,
+    type: 'GET',
+    success: function(r) 
+    {
+        $("#rpiso_inp_nro_fis").val(r[0].cod_piso);
+        $("#rpiso_inp_fech_fis").val(r[0].ani_const);
+        $("#rpiso_inp_clasi_fis").val(parseInt(r[0].clas));
+        $("#rpiso_inp_mat_fis").val(r[0].mep);
+        $("#rpiso_inp_econserv_fis").val(r[0].esc);
+        $("#rpiso_inp_econstr_fis").val(parseInt(r[0].ecc));
+        $("#rpiso_inp_estruc_fis").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
+        $("#rpiso_inp_aconst_fis").val(r[0].area_const);
+        $("#rpiso_inp_acomun_fis").val(r[0].val_areas_com);
+        MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+        callchangeoption("rpiso_inp_clasi_fis",0);
+        callchangeoption("rpiso_inp_mat_fis",0);
+        callchangeoption("rpiso_inp_econserv_fis",0);
+        callchangeoption("rpiso_inp_econstr_fis",0);
+
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+        $("#dlg_reg_piso").dialog('close');
+    }
+    }); 
+}
+function callchangeoption(input,tip)
+{
+    $("#"+input+"_des").val($("#"+input+" option:selected").attr("descri"));
+    if(tip==1)
+    {
+        $("#dlg_inp_aranc").val($("#"+input+" option:selected").attr("aran"));
+        validarvalter();
+
+    }
+}
+    
+function pisoSave()
+{
+    if($("#rpiso_inp_nro_fis").val()==""){mostraralertasconfoco("Ingresar Nro Piso","#rpiso_inp_nro"); return false}
+    if($("#rpiso_inp_fech_fis").val()==""){mostraralertasconfoco("Ingresar Año de Construccion del Piso","#rpiso_inp_fech"); return false}
+    if($("#rpiso_inp_fech_fis").val()<1800){mostraralertasconfoco("Ingresar Año de Construccion Valido de 4 cifras","#rpiso_inp_fech"); return false}
+    if($("#rpiso_inp_clasi_fis").val()==""){mostraralertasconfoco("Ingresar Estado de Conservación","#rpiso_inp_econserv"); return false}
+    if($("#rpiso_inp_mat_fis").val()==""){mostraralertasconfoco("Ingresar Estado de Conservación","#rpiso_inp_econserv"); return false}
+    if($("#rpiso_inp_econserv_fis").val()==""){mostraralertasconfoco("Ingresar Estado de Conservación","#rpiso_inp_econserv"); return false}
+    if($("#rpiso_inp_econstr_fis").val()==""){mostraralertasconfoco("Ingresar Estado de Construcción","#rpiso_inp_econstr"); return false}
+    if($("#rpiso_inp_estruc_fis").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
+    if($("#rpiso_inp_estruc_fis").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
+    if($("#rpiso_inp_aconst_fis").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
+    if($("#rpiso_inp_acomun_fis").val()==""){$("#rpiso_inp_acomun_fis").val(0);}
+    MensajeDialogLoadAjax('dlg_reg_piso', '.:: Guardando ...');
+    Id_fic=$("#dlg_idfic").val();
+    id_pis=$("#dlg_idpiso").val();
+    $("#rpiso_inp_estruc_fis").val().toUpperCase();
+    $.ajax({url: 'piso_fisca/create',
+    type: 'GET',
+    data:{nro:$("#rpiso_inp_nro_fis").val(),fech:$("#rpiso_inp_fech_fis").val(),clasi:$("#rpiso_inp_clasi_fis").val(),
+    mep:$("#rpiso_inp_mat_fis").val(),estconserv:$("#rpiso_inp_econserv_fis").val(),estconst:$("#rpiso_inp_econstr_fis").val(),
+    estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),id_fic:Id_fic,id_pis:id_pis},
+    success: function(r) 
+    {
+        MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+        Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+        Id_fic=$("#dlg_idfic").val();
+        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+        $("#dlg_reg_piso").dialog('close');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+        console.log('error');
+        console.log(data);
+    }
+    });
+}
+function pisoUpdate()
+{
+        if($("#rpiso_inp_nro_fis").val()==""){mostraralertasconfoco("Ingresar Nro Piso","#rpiso_inp_nro"); return false}
+        if($("#rpiso_inp_fech_fis").val()==""){mostraralertasconfoco("Ingresar Año de Construccion del Piso","#rpiso_inp_fech"); return false}
+        if($("#rpiso_inp_fech_fis").val()<1800){mostraralertasconfoco("Ingresar Año de Construccion Valido de 4 cifras","#rpiso_inp_fech"); return false}
+        if($("#rpiso_inp_estruc_fis").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
+        if($("#rpiso_inp_estruc_fis").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
+        if($("#rpiso_inp_aconst_fis").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
+        if($("#rpiso_inp_acomun_fis").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
+        MensajeDialogLoadAjax('dlg_reg_piso', '.:: Modificando ...');
+        
+        $.ajax({url: 'piso_fisca/'+$("#dlg_idpiso_fis").val()+'/edit',
+        type: 'GET',
+        data:{nro:$("#rpiso_inp_nro_fis").val(),fech:$("#rpiso_inp_fech_fis").val(),clasi:$("#rpiso_inp_clasi_fis").val(),
+        mep:$("#rpiso_inp_mat_fis").val(),estconserv:$("#rpiso_inp_econserv_fis").val(),estconst:$("#rpiso_inp_econstr_fis").val(),
+        estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val()},
+        success: function(r) 
+        {
+            MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+            Id_fic=$("#dlg_idfic").val();
+            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            $("#dlg_reg_piso").dialog('close');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_reg_piso');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+
+function auto_input(textbox,url,extra){
+        if(autocompletar==0)
+        {
+            $.ajax({
+                   type: 'GET',
+                   url: url,
+                   data:{an:$("#selantra").val()},
+                   success: function(data){               
+                        var $local_todo=data;          
+                         $("#"+textbox).autocomplete({
+                              source: $local_todo,
+                              focus: function(event, ui) {
+                                     $("#"+textbox).val(ui.item.label);                             
+                                     return false;
+                              },
+                              select: function(event, ui) {
+                                     $("#"+textbox).val(ui.item.label);
+                                     $("#hidden_"+textbox).val(ui.item.value);
+                                     if(extra==2)
+                                     {
+                                        $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis,#rinst_inp_alto_fis,#rinst_inp_canti_fis" ).val(0);
+                                        $("#rinst_inp_undmed_fis").val(ui.item.und);
+                                        if(ui.item.und=="UND")
+                                        {
+                                            $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis,#rinst_inp_alto_fis" ).prop( "disabled", true );
+                                            $( "#rinst_inp_canti_fis" ).prop( "disabled", false );
+                                        }
+                                        if(ui.item.und=="M2" || ui.item.und=="ML")
+                                        {
+                                            $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis" ).prop( "disabled", false );
+                                            $( "#rinst_inp_canti_fis,#rinst_inp_alto_fis" ).prop( "disabled", true );
+                                        }
+                                        $("#"+textbox+"_cod").val(ui.item.codi);
+                                     }
+                                      return false;
+                              }   
+                          });             
+                    }
+            });
+        }
+}
+function creardlginst()
+{
+    autocompletar=0;
+    auto_input("rinst_inp_des_fis","autocompletar_insta",2);
+    autocompletar=1;
+ $("#dlg_reg_inst").dialog({
+    autoOpen: false, modal: true, width: 1200, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  REGISTRO DE INSTALACIONES :.</h4></div>",
+    buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            id:"btninstsave",
+            "class": "btn btn-primary bg-color-green",
+            click: function () {instSave();}
+        },
+        {
+            html: "<i class='fa fa-save'></i>&nbsp; Modificar",
+            "class": "btn btn-primary bg-color-blue",
+            id:"btninstmod",
+            click: function () {instUpdate();}
+        },
+        {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-primary bg-color-red",
+            click: function () {$(this).dialog("close");}
+        }],
+    }).dialog('open');
+}
+function clicknewinst()
+{
+    $("#dlg_idinst").val(0);
+   if($('#dlg_idfic').val()==0)
+    {
+        mostraralertas("Primero Guardar Predio...");
+        return false;
+    }
+    limpiaintsdeclara();
+    limpiarinstfic();
+    creardlginst();
+    $("#btninstsave").show();
+    $("#btninstmod").hide();
+    
+}
+function limpiaintsdeclara()
+{
+    $("#hidden_rinst_inp_des").val(0)
+    
+    $("#rinst_inp_des,#rinst_inp_des_cod,#rinst_inp_undmed,#rinst_inp_anio,#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto,#rinst_inp_canti").val("")
+    $("#rinst_inp_mat").val($("#rinst_inp_mat option:first").val());
+    $("#rinst_inp_econserv").val($("#rinst_inp_econserv option:first").val());
+    $("#rinst_inp_econstr").val($("#rinst_inp_econstr option:first").val());
+    $("#rinst_inp_clasi").val($("#rinst_inp_clasi option:first").val());
+    callchangeoption("rinst_inp_mat",0);
+    callchangeoption("rinst_inp_econserv",0);
+    callchangeoption("rinst_inp_econstr",0);
+    callchangeoption("rinst_inp_clasi",0);
+
+}
+function limpiarinstfic()
+{
+    $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis,#rinst_inp_alto_fis,#rinst_inp_canti_fis" ).prop( "disabled", true );
+    $("#rinst_inp_des_fis,#rinst_inp_des_fis_cod,#rinst_inp_undmed_fis,#rinst_inp_anio_fis,#rinst_inp_largo_fis,#rinst_inp_ancho_fis,#rinst_inp_alto_fis,#rinst_inp_canti_fis").val("")
+    $("#rinst_inp_mat_fis").val($("#rinst_inp_mat_fis option:first").val());
+    $("#rinst_inp_econserv_fis").val($("#rinst_inp_econserv_fis option:first").val());
+    $("#rinst_inp_econstr_fis").val($("#rinst_inp_econstr_fis option:first").val());
+    $("#rinst_inp_clasi_fis").val($("#rinst_inp_clasi_fis option:first").val());
+    callchangeoption("rinst_inp_mat_fis",0);
+    callchangeoption("rinst_inp_econserv_fis",0);
+    callchangeoption("rinst_inp_econstr_fis",0);
+    callchangeoption("rinst_inp_clasi_fis",0); 
+}
+function clickmodinst()
+{
+    limpiaintsdeclara();
+    limpiarinstfic();
+    if($('#dlg_idfic').val()==0)
+    {
+        mostraralertas("Primero Guardar Predio...");
+        return false;
+    }
+    Id=$('#table_instal').jqGrid ('getGridParam', 'selrow');
+    $('#dlg_idinst').val(Id);
+    creardlginst();
+    id_inst_fic=$('#table_instal').jqGrid('getCell',Id,'id_inst_fic');
+    if(id_inst_fic>0)
+    {
+        $("#btninstsave").hide();
+        $("#btninstmod").show();
+        $("#dlg_idinst_fis").val(id_inst_fic);
+        traerinstfic(id_inst_fic);
+    }
+    else
+     {
+        $("#btninstsave").show();
+        $("#btninstmod").hide();
+        $("#dlg_idinst_fis").val(0);
+    } 
+
+    MensajeDialogLoadAjax('dlg_reg_inst', '.:: Cargando ...');
+    if(Id.slice(0,1)>0)
+    {
+        $.ajax({url: 'instalaciones_predios/'+Id,
+    type: 'GET',
+    success: function(r) 
+    {
+        $("#rinst_inp_des_cod").val(r[0].cod_instal);
+        $("#rinst_inp_des").val(r[0].descrip_instal);
+        $("#hidden_rinst_inp_des").val(r[0].id_instal);
+        $("#rinst_inp_undmed").val(r[0].unid_medida);
+        if(r[0].unid_medida=="UND")
+        {
+            $( "#rinst_inp_canti" ).val(r[0].pro_tot);
+
+        }
+        if(r[0].unid_medida=="M2" || r[0].unid_medida=="ML")
+        {
+            $( "#rinst_inp_canti" ).val(0);
+        }
+        $("#rinst_inp_anio").val(r[0].anio);
+        $("#rinst_inp_mat").val(r[0].mep);
+        $("#rinst_inp_econserv").val(r[0].ecs);
+        $("#rinst_inp_econstr").val(parseInt(r[0].ecc));
+        $("#rinst_inp_largo").val(r[0].dim_lar);
+        $("#rinst_inp_ancho").val(r[0].dim_anch);
+        $("#rinst_inp_alto").val(r[0].dim_alt);
+        $("#rinst_inp_clasi").val(r[0].id_cla);
+        callchangeoption("rinst_inp_mat",0);
+        callchangeoption("rinst_inp_econserv",0);
+        callchangeoption("rinst_inp_econstr",0);
+        callchangeoption("rinst_inp_clasi",0);
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+        $("#dlg_reg_inst").dialog('close');
+    }
+    });
+    }
+}
+function traerinstfic(Id)
+{
+   $.ajax({url: 'insta_fisca/'+Id,
+    type: 'GET',
+    success: function(r) 
+    {
+        $("#rinst_inp_des_fis_cod").val(r[0].cod_instal);
+        $("#rinst_inp_des_fis").val(r[0].descrip_instal);
+        $("#hidden_rinst_inp_des_fis").val(r[0].id_instal);
+        $("#rinst_inp_undmed_fis").val(r[0].unid_medida);
+        if(r[0].unid_medida=="UND")
+        {
+            $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis,#rinst_inp_alto_fis" ).prop( "disabled", true );
+            $( "#rinst_inp_canti_fis" ).prop( "disabled", false );
+            $( "#rinst_inp_canti_fis" ).val(r[0].pro_tot);
+
+        }
+        if(r[0].unid_medida=="M2" || r[0].unid_medida=="ML")
+        {
+            $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis" ).prop( "disabled", false );
+            $( "#rinst_inp_canti_fis,#rinst_inp_alto_fis" ).prop( "disabled", true );
+            $( "#rinst_inp_canti_fis" ).val(0);
+        }
+        $("#rinst_inp_anio_fis").val(r[0].anio);
+        $("#rinst_inp_mat_fis").val(r[0].mep);
+        $("#rinst_inp_econserv_fis").val(r[0].ecs);
+        $("#rinst_inp_econstr_fis").val(parseInt(r[0].ecc));
+        $("#rinst_inp_largo_fis").val(r[0].dim_lar);
+        $("#rinst_inp_ancho_fis").val(r[0].dim_anch);
+        $("#rinst_inp_alto_fis").val(r[0].dim_alt);
+        $("#rinst_inp_clasi_fis").val(r[0].id_cla)
+        callchangeoption("rinst_inp_mat_fis",0);
+        callchangeoption("rinst_inp_econserv_fis",0);
+        callchangeoption("rinst_inp_econstr_fis",0);
+        callchangeoption("rinst_inp_clasi_fis",0);
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+        $("#dlg_reg_inst").dialog('close');
+    }
+    }); 
+}
+function instSave()
+{
+    if($("#hidden_rinst_inp_des_fis").val()==0){mostraralertasconfoco("seleccionar Instalación","#rinst_inp_des_fis"); return false}
+    if($("#rinst_inp_anio_fis").val()==""){mostraralertasconfoco("Ingresar Año de Construcción","#rinst_inp_anio_fis"); return false}
+    if($("#rinst_inp_largo_fis").val()==""){mostraralertasconfoco("Ingresar largo","#rinst_inp_largo_fis"); return false}
+    if($("#rinst_inp_ancho_fis").val()==""){mostraralertasconfoco("Ingresar Ancho","#rinst_inp_ancho_fis"); return false}
+    if($("#rinst_inp_alto_fis").val()==""){mostraralertasconfoco("Ingresar Alto","#rinst_inp_alto_fis"); return false}
+    MensajeDialogLoadAjax('dlg_reg_inst', '.:: Guardando ...');
+    Id_fic=$("#dlg_idfic").val();
+    id_ins=$("#dlg_idinst").val();
+    $.ajax({url: 'insta_fisca/create',
+    type: 'GET',
+    data:{inst:$("#hidden_rinst_inp_des_fis").val(),anio:$("#rinst_inp_anio_fis").val(),largo:$("#rinst_inp_largo_fis").val(),
+        ancho:$("#rinst_inp_ancho_fis").val(),alto:$("#rinst_inp_alto_fis").val(),mep:$("#rinst_inp_mat_fis").val(),
+        ecs:$("#rinst_inp_econserv_fis").val(),ecc:$("#rinst_inp_econstr_fis").val(),id_fic:Id_fic,cla:$("#rinst_inp_clasi_fis").val(),
+        cant:$("#rinst_inp_canti_fis").val(),ins:id_ins},
+    success: function(r) 
+    {
+        MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+        Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+        jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+        $("#dlg_reg_inst").dialog('close');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+        console.log('error');
+        console.log(data);
+    }
+    });
+}
+function instUpdate()
+{
+    if($("#hidden_rinst_inp_des_fis").val()==0){mostraralertasconfoco("seleccionar Instalación","#rinst_inp_des_fis"); return false}
+    if($("#rinst_inp_anio_fis").val()==""){mostraralertasconfoco("Ingresar Año de Construcción","#rinst_inp_anio_fis"); return false}
+    if($("#rinst_inp_largo_fis").val()==""){mostraralertasconfoco("Ingresar largo","#rinst_inp_largo_fis"); return false}
+    if($("#rinst_inp_ancho_fis").val()==""){mostraralertasconfoco("Ingresar Ancho","#rinst_inp_ancho_fis"); return false}
+    if($("#rinst_inp_alto_fis").val()==""){mostraralertasconfoco("Ingresar Alto","#rinst_inp_alto_fis"); return false}
+    MensajeDialogLoadAjax('dlg_reg_inst', '.:: Modificando ...');
+    
+    $.ajax({url: 'insta_fisca/'+$('#dlg_idinst_fis').val()+'/edit',
+    type: 'GET',
+    data:{inst:$("#hidden_rinst_inp_des_fis").val(),anio:$("#rinst_inp_anio_fis").val(),largo:$("#rinst_inp_largo_fis").val(),
+        ancho:$("#rinst_inp_ancho_fis").val(),alto:$("#rinst_inp_alto_fis").val(),mep:$("#rinst_inp_mat_fis").val(),
+        ecs:$("#rinst_inp_econserv_fis").val(),ecc:$("#rinst_inp_econstr_fis").val(),cla:$("#rinst_inp_clasi_fis").val(),
+        cant:$("#rinst_inp_canti_fis").val()},
+    success: function(r) 
+    {
+        MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+        Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+        Id_fic=$("#dlg_idfic").val();
+        jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+        $("#dlg_reg_inst").dialog('close');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_reg_inst');
+        console.log('error');
+        console.log(data);
+    }
+    });
 }

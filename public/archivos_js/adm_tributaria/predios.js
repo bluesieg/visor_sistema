@@ -185,7 +185,8 @@ function callpredtab()
             {
                 $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r[0].foto+'" height="100%" width="90%"/></center>');
             }
-                $("#dlg_lot").append($('<option>',{value:0,text: r[0].lote}));
+            $("#dlg_lot").html("");
+            $("#dlg_lot").append('<option value="' + r[0].id_lote + '">' + r[0].lote+ '</option>');
                 $("#dlg_dni").val(r[0].nro_doc);
                 $("#dlg_contri").val(r[0].contribuyente);
                 $("#dlg_sel_condpre").val(r[0].id_cond_prop);
@@ -267,7 +268,7 @@ function callpredtab()
         if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
         if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia");return false}
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
-        if($('#dlg_inp_areter').val()==null||$('#dlg_inp_areter').val()==0){mostraralertasconfoco('Ingresar area del terreno...',"#dlg_inp_areter");return false}
+        if($('#dlg_inp_areter').val()==null||$('#dlg_inp_areter').val()==""){mostraralertasconfoco('Ingresar area del terreno...',"#dlg_inp_areter");return false}
         validarcampos();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: Guardando ...');
         $.ajax({url: 'predios_urbanos/create',

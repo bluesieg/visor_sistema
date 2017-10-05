@@ -1,31 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\adm_tributaria;
+namespace App\Http\Controllers\fiscalizacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\Pisos;
-use App\Models\Predios;
-use App\Models\Predios\Predios_Anio;
-use App\Models\Predios\Predios_Contribuyentes;
-class PisosController extends Controller
+use App\Models\fiscalizacion\Pisos_Fic;
+
+class Pisos_FicController extends Controller
 {
-   
     public function index()
     {
-        //
     }
-    
     public function create(Request $request)
     {
-        
-        $pisos=new Pisos;
-        $totapisos = DB::select("select count(id_pisos) as total from adm_tri.pisos where id_pred_anio='".$request['id_pre']."'");
+        $pisos=new Pisos_Fic;
+        $totapisos = DB::select("select count(id_pisos_fic) as total from fiscalizacion.pisos_fic where id_fic='".$request['id_fic']."'");
         $pisos->anio = date("Y");
         $pisos->cod_piso = $request['nro'];
         $pisos->ani_const = $request['fech'];
-        $pisos->fch_const = "01/01/".$request['fech'];
         $pisos->ant_ano = date("Y") - $request['fech'];
         $pisos->clas = "0".$request['clasi'];
         $pisos->mep = $request['mep'];
@@ -40,43 +33,28 @@ class PisosController extends Controller
         $pisos->ins_ele = substr($request['estru'],6,1);
         $pisos->area_const = $request['aconst'];
         $pisos->val_areas_com = $request['acomun'];
+        $pisos->id_fic = $request['id_fic'];
+        $pisos->id_pisos = $request['id_pis'];
         $pisos->num_pis = $totapisos[0]->total+1;
-        $pisos->id_pred_anio = $request['id_pre'];
         $pisos->save();
-        $this->calculos_ivpp($request['id_pre']);
-        return $pisos->id_pisos;
-    }
-    public function calculos_ivpp($id)
-    {
-        DB::select("select adm_tri.fn_count_pisos(".$id.")");
-        DB::select("select adm_tri.actualiza_base_predio(".$id.")");
-        $Predios_Anio=new Predios_Anio;
-        $Predios_Anio=  $Predios_Anio::where("id_pred_anio","=",$id )->first();
-        $Predios_Contribuyentes=new Predios_Contribuyentes;
-        $Predios_Contribuyentes=  $Predios_Contribuyentes::where("id_pred","=",$Predios_Anio->id_pred )->first();
-        DB::select("select adm_tri.calcular_ivpp($Predios_Anio->anio,$Predios_Contribuyentes->id_contrib)");
+        return $pisos->id_pisos_fic;
     }
     public function store(Request $request)
     {
-        //
     }
-
-
     public function show($id)
     {
-        $pisovw= DB::table('adm_tri.vw_pisos')->where('id_pisos',$id)->get();
+        $pisovw= DB::table('fiscalizacion.vw_pisos_fic')->where('id_pisos_fic',$id)->get();
         return $pisovw;
     }
-
     public function edit(Request $request,$id)
     {
-        $pisos=new Pisos;
-        $val=  $pisos::where("id_pisos","=",$id )->first();
+        $pisos=new Pisos_Fic;
+        $val=  $pisos::where("id_pisos_fic","=",$id )->first();
         if(count($val)>=1)
         {
             $val->cod_piso = $request['nro'];
             $val->ani_const = $request['fech'];
-            $val->fch_const = "01/01/".$request['fech'];
             $val->ant_ano = date("Y") - $request['fech'];
             $val->clas = "0".$request['clasi'];
             $val->mep = $request['mep'];
@@ -92,37 +70,29 @@ class PisosController extends Controller
             $val->area_const = $request['aconst'];
             $val->val_areas_com = $request['acomun'];
             $val->save();
-            
-            
-            $this->calculos_ivpp($val->id_pred_anio);
-       
         }
         return "edit".$id;
     }
 
-   
     public function update(Request $request, $id)
+    {
+    }
+
+    public function destroy($id)
     {
         //
     }
-
-    public function destroy(Request $request)
-    {   
-        $pred=0;
-        $pisos=new Pisos;
-        $val=  $pisos::where("id_pisos","=",$request['id'] )->first();
-        if(count($val)>=1)
-        {
-            $pred_anio=$val->id_pred_anio;
-            $val->delete();
-        }
-        $this->calculos_ivpp($pred_anio);
-        return "destroy ".$request['id'];
-    }
-    public function listpisos($id)
+    
+    
+    public function listpisos_fic($id,$fic)
     {
+        if($id==0)
+        {
+            return 0;
+        }
         header('Content-type: application/json');
         $totalg = DB::select("select count(id_pisos) as total from adm_tri.vw_pisos where id_pred_anio='$id'");
+        $totalgfic = DB::select("select count(id_pisos_fic) as total from fiscalizacion.vw_pisos_fic where id_fic='$fic' and id_pisos=0");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -132,7 +102,7 @@ class PisosController extends Controller
         if (!$sidx) {
             $sidx = 1;
         }
-        $count = $totalg[0]->total;
+        $count = $totalg[0]->total+$totalgfic[0]->total;
         if ($count > 0) {
             $total_pages = ceil($count / $limit);
         }
@@ -149,13 +119,20 @@ class PisosController extends Controller
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        $ix=-1;
+        
         foreach ($sql as $Index => $Datos) {
+            $fiscalizado='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
+            if($Datos->id_pisos_fic)
+            {
+                $fiscalizado='<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle"><i class="glyphicon glyphicon-ok"></i></a>';
+            }
+            $ix=$Index;
             $Lista->rows[$Index]['id'] = $Datos->id_pisos;
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_pisos),
                 trim($Datos->cod_piso),
-                date("d/m/Y",strtotime(str_replace("/", "-", $Datos->fch_const))),
+                $Datos->ani_const,
                 trim($Datos->mep),
                 trim($Datos->esc), 
                 trim($Datos->ecc),
@@ -167,7 +144,36 @@ class PisosController extends Controller
                 trim($Datos->aca_ban),               
                 trim($Datos->ins_ele),               
                 trim($Datos->area_const),               
-                trim($Datos->id_pisos_fic),               
+                trim($Datos->id_pisos_fic),
+                $fiscalizado
+            );
+        }
+        $sqlfic = DB::select("select * from fiscalizacion.vw_pisos_fic where id_fic='$fic' and id_pisos=0 order by id_pisos_fic asc");
+        foreach ($sqlfic as $Index => $Datos) {
+            $fiscalizado='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
+            if($Datos->id_pisos_fic)
+            {
+                $fiscalizado='<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle"><i class="glyphicon glyphicon-ok"></i></a>';
+            }
+            $ix++;
+            $Lista->rows[$ix]['id'] = $Datos->id_pisos."-".$ix;
+            $Lista->rows[$ix]['cell'] = array(
+                trim($Datos->id_pisos),
+                trim($Datos->cod_piso),
+                $Datos->ani_const,
+                trim($Datos->mep),
+                trim($Datos->esc), 
+                trim($Datos->ecc),
+                trim($Datos->est_mur),
+                trim($Datos->est_tch),
+                trim($Datos->aca_pis),               
+                trim($Datos->aca_pta),               
+                trim($Datos->aca_rev),               
+                trim($Datos->aca_ban),               
+                trim($Datos->ins_ele),               
+                trim($Datos->area_const),               
+                trim($Datos->id_pisos_fic),  
+                $fiscalizado
             );
         }
         return response()->json($Lista);

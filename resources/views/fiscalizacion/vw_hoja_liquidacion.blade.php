@@ -3,7 +3,7 @@
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
-            <h1 class="txt-color-green"><b>Generación de Carta de Requerimiento</b></h1>
+            <h1 class="txt-color-green"><b>Generación de Hoja de Liquidacion</b></h1>
         </div>
         <div class="col-xs-3" style="margin-top: 5px; padding-right: 23px;">
             <div class="input-group input-group-md">
@@ -24,7 +24,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                <h2>Busqueda de Cartas por Contribuyente</h2>
+                                <h2>Busqueda de Hojas por Contribuyente</h2>
                         </header>
                     </div>
                 </section>
@@ -55,7 +55,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 5px; padding: 0px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                <h2>Busqueda Por Número Carta de Requerimiento</h2>
+                                <h2>Busqueda Por Número de Hoja de Liquidación</h2>
                         </header>
                     </div>
                 </section>
@@ -64,14 +64,14 @@
             <div class="col-xs-8" style="padding: 0px; margin-top: 5px">
                 <div class="col-xs-10" style="padding: 0px;">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">Número Carta Requerimiento &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon">Número Hoja Liquidación &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
                             <input id="dlg_bus_num" type="text"  class="form-control" style="height: 32px; " maxlength="7" onkeypress="return soloNumeroTab(event);" >
                         </div>
                     </div>
                 </div>
                 <div class='col-lg-2'style="padding: 0px;" >
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="call_list_contrib_carta(3)">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_carta(4)">
                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                     </button>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 5px; padding: 0px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                <h2>Busqueda de Carta Por Fechas</h2>
+                                <h2>Busqueda de Hoja Por Fechas</h2>
                         </header>
                     </div>
                 </section>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class='col-lg-2'style="padding: 0px;" >
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="call_list_contrib_carta(2)">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_carta(5)">
                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                     </button>
                 </div>
@@ -118,11 +118,11 @@
        
         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
             <article class="col-xs-11" style=" padding: 0px !important">
-                    <table id="table_cartas"></table>
-                    <div id="pager_table_cartas"></div>
+                    <table id="table_hojas"></table>
+                    <div id="pager_table_hojas"></div>
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
-                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new_carta();" >
+                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_sel_carta();" >
                     <span  >
                         <i class="glyphicon glyphicon-plus"></i>
                     </span>
@@ -137,30 +137,61 @@
 <script type="text/javascript">
     $(document).ready(function (){
         $("#menu_fisca").show();
-        $("#li_fisca_carta").addClass('cr-active')
-        jQuery("#table_cartas").jqGrid({
+        $("#li_hoja_liq").addClass('cr-active')
+        jQuery("#table_hojas").jqGrid({
+            url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Días Plazo','Días Trasncurridos','Ver'],
+            rowNum: 20, sortname: 'id_hoja_liq', sortorder: 'desc', viewrecords: true, caption: 'Hojas de Liquidación', align: "center",
+            colModel: [
+                {name: 'id_hoja_liq', index: 'id_hoja_liq', hidden: true},
+                {name: 'nro_hoja', index: 'nro_hoja', align: 'center', width: 10},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 35},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 15},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
+                {name: 'dia_plazo', index: 'dia_plazo', align: 'center', width: 10},
+                {name: 'dias', index: 'dias', align: 'center', width: 10},
+                {name: '', index: '', align: 'center', width: 10},
+            ],
+            pager: '#pager_table_hojas',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_hojas').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_hojas').jqGrid('getDataIDs')[0];
+                            $("#table_hojas").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        jQuery("#table_sel_cartas").jqGrid({
             url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver'],
+            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fecha Fiscalizacion','Estado','Ver','Ficha', 'Crear Hoja Liquidacion'],
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 10},
-                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 40},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
-                {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 15},
-                {name: 'flg_est', index: 'flg_est', align: 'center', width: 10},
-                {name: 'id_car', index: 'id_car', align: 'center', width: 15},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 100},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 370},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 150},
+                {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 150},
+                {name: 'flg_est', index: 'flg_est', align: 'center', width: 120},
+                {name: 'ver', index: 'ver',hidden: true},
+                {name: 'ficha', index: 'ficha', hidden: true},
+                {name: 'hoja', index: 'hoja', align: 'center', width: 150},
             ],
-            pager: '#pager_table_cartas',
+            pager: '#pager_table_sel_cartas',
             rowList: [20, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_cartas').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_sel_cartas').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_cartas').jqGrid('getDataIDs')[0];
-                            $("#table_cartas").setSelection(firstid);    
+                    var firstid = jQuery('#table_sel_cartas').jqGrid('getDataIDs')[0];
+                            $("#table_sel_cartas").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
@@ -192,21 +223,50 @@
                         }
                     if(contrib_global==0)
                     {   contrib_global=1;    
-                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_carta(rowid);} } ); 
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_lis_hl(rowid);} } ); 
                     }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){fn_bus_contrib_list_carta(Id)}
+            ondblClickRow: function (Id){fn_bus_lis_hl(Id)}
         });
         
-        
+        jQuery("#table_predios_contri").jqGrid({
+            url: 'trae_pred_carta/0',
+            datatype: 'json', mtype: 'GET',
+            height: '300px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_pred_anio','id_fic','id_puente','Tipo','codigo','Ubicación','N° Ficha ver','Fiscalizar','Fiscalizado'],
+            rowNum: 20, sortname: 'id_puente', sortorder: 'asc', viewrecords: true, caption: 'Predios Correspondientes', align: "center",
+            colModel: [
+                {name: 'id_pred_anio', index: 'id_pred_anio', hidden: true},
+                {name: 'id_puente', index: 'id_puente', hidden: true},
+                {name: 'id_fic', index: 'id_fic', hidden: true},
+                {name: 'tp', index: 'tp', hidden: true},
+                {name: 'cod_cat', index: 'cod_cat', hidden: true},
+                {name: 'dir', index: 'dir', align: 'left',width: 445},
+                {name: 'est', index: 'est', align: 'center',width: 60},
+                {name: '', index: '',hidden: true},
+                {name: '', index: '',align: 'center',width: 70},
+            ],
+            pager: '#pager_table_predios_contri',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_predios_contri').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_predios_contri').jqGrid('getDataIDs')[0];
+                            $("#table_predios_contri").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
         
         var globalvalidador=0;
         $("#dlg_contri").keypress(function (e) {
             if (e.which == 13) {
                 if(globalvalidador==0)
                 {
-                    fn_bus_contrib_carta("dlg_contri");
+                    fn_bus_contrib_hl("dlg_contri");
                     globalvalidador=1;
                 }
                 else
@@ -216,11 +276,12 @@
                 
             }
         });
+       
         $("#dlg_contri_carta").keypress(function (e) {
             if (e.which == 13) {
                 if(globalvalidador==0)
                 {
-                    fn_bus_contrib_carta("dlg_contri_carta");
+                    fn_bus_contrib_hl("dlg_contri_carta");
                     globalvalidador=1;
                 }
                 else
@@ -231,41 +292,53 @@
         });
         $("#dlg_bus_num").keypress(function (e) {
             if (e.which == 13) {
-                call_list_contrib_carta(3);
+                buscar_carta(4);
+            }
+        });
+        $("#dlg_bus_num_carta").keypress(function (e) {
+            if (e.which == 13) {
+                buscar_carta(3);
             }
         });
     });
 </script>
 @stop
-<script src="{{ asset('archivos_js/fiscalizacion/carta_reque.js') }}"></script>
+<script src="{{ asset('archivos_js/fiscalizacion/hoja_liquidacion.js') }}"></script>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>
         <div id="pager_table_contrib"></div>
     </article>
 </div> 
-<div id="dlg_new_carta" style="display: none;">
+<div id="dlg_sel_carta" style="display: none;">
     
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-        <div id="div_adquiere" class="col-xs-12 cr-body" >
+        <div  class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                                <h2>LLenado de Información::..</h2>
+                                <h2>Seleccione Carta de Requerimiento Relacionada::..</h2>
                         </header>
                     </div>
                 </section>
-                <div class="col-xs-3" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">N° Doc. &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div class=""  >
-                            <input id="dlg_contri_carta_doc" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="col-xs-10" style="padding: 0px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Número Carta &nbsp;<i class="fa fa-hashtag"></i></span>
+                            <div class=""  >
+                                <input id="dlg_bus_num_carta" type="text"  class="form-control" style="height: 32px; " maxlength="7" onkeypress="return soloNumeroTab(event);" >
+                            </div>
                         </div>
                     </div>
+                    <div class='col-lg-2'style="padding: 0px;" >
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_carta(3)">
+                            <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
+                        </button>
+                    </div>
                 </div>
-                <div class="col-xs-9" style="padding: 0px; ">
+                <div class="col-xs-10" style="padding: 0px; margin-top: 10px;">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Contribuyente a Fiscalizar &nbsp;<i class="fa fa-male"></i></span>
                         <div>
@@ -273,156 +346,103 @@
                             <input id="dlg_contri_carta" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
                         </div>
                         <span class="input-group-btn" style="font-size: 13px;">
-                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_carta('dlg_contri_carta')">
+                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_hl('dlg_contri_carta')">
                                 <i class="glyphicon glyphicon-search"></i>
                             </button>
                         </span>
                     </div>
                 </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xs-12" style="padding: 0px; margin-top: 0px; margin-bottom: 20px">
+        <table id="table_sel_cartas"></table>
+        <div id="pager_table_sel_cartas"></div>
+   </div>
+</div> 
+
+<div id="dlg_new_hoja" style="display: none;">
+    
+    <div class='cr_content col-xs-6 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Información Carta de Requerimiento::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">N° Carta Requerimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="dlg_nro_car" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
-                
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">Domicilio Fiscal &nbsp;<i class="fa fa-map"></i></span>
+                        <span class="input-group-addon">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
                         <div>
-                            <input id="dlg_contri_carta_dom" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" disabled="">
+                            <input id="dlg_contri_disable" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 100% !important" disabled="" >
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
-                                <h2>Selección de Fecha y Hora de Fiscalización ::..</h2>
-                        </header>
-                    </div>
-                </section>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <article class="col-xs-12" style=" padding-left: 0px !important">
+                    <table id="table_predios_contri"></table>
+                    <div id="pager_table_predios_contri"></div>
+                </article>
                 
-                <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Fecha Fizcalizacion &nbsp;<i class="fa fa-calendar"></i></span>
-                        <div class=""  >
-                            <input id="dlg_fec_fis" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Hora de Fizcalizacion &nbsp;<i class="fa fa-clock-o"></i></span>
-                        <div class=""  >
-                            <input id="dlg_hor_fis" type="text" class="form-control" data-mask="99:99" style="height: 32px; width: 100%" placeholder="--:--">
-                        </div>
-                    </div>
-                </div>
-                 <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Año a Fiscalizar <i class="fa fa-cogs"></i></span>
-                        <div class="icon-addon addon-md">
-                            <select id='selanafis' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
-                            @foreach ($anio_tra as $anio)
-                            <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                            @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+        </div>
+    </div>
+    <div class='cr_content col-xs-6 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
-                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
-                                <h2>Documentos que se deberá presentar al momento de la fiscalización ::..</h2>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Información Hoja de Liquidación::..</h2>
                         </header>
                     </div>
                 </section>
-                <form class="smart-form">
-                    <fieldset>
-                        <section>
-                            <div class="inline-group">
-                                <label class="checkbox">
-                                        <input id="cbx_con" type="checkbox"  checked="checked">
-                                        <i></i>1. Contrato de compra Venta y título de propiedad del inmueble</label>
-                                <label class="checkbox">
-                                        <input id="cbx_lic" type="checkbox" checked="checked">
-                                        <i></i>2. Licencia de construcción</label>
-                                <label class="checkbox">
-                                        <input id="cbx_der" type="checkbox"  checked="checked">
-                                        <i></i>3. Última Declaración Jurada</label>
-                                
-                            </div>
-                        </section> 
-                    </fieldset>
-                </form>
-                <form class="smart-form col-xs-1" style="padding: 0px;">
-                    <fieldset style="padding-right: 0px;">
-                        <section>
-                            <div class="inline-group">
-                                <label class="checkbox" style="margin-right: 0px;">
-                                    <input id="cbx_otr" type="checkbox" onchange="validarotros()">
-                                        <i></i>4. Otros</label>
-                            </div>
-                        </section> 
-                    </fieldset>
-                </form>
-                <div class="col-xs-11">
-                    <input id="dlg_otros" type="text" class="form-control" style="height: 32px; width: 100%" placeholder="Otros Documentos Solicitados" maxlength="100">
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-users"></i> </span>
-                                <h2>Seleccion de Fizcalizadores ::..</h2>
-                        </header>
-                    </div>
-                </section>
-
-                <div class="col-xs-10" style="padding: 0px; ">
+                <div class="col-xs-6" style="padding: 0px;">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">Fiscalizadores &nbsp;<i class="fa fa-list"></i></span>
-                        <div>
-                            <select id='selfisca' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                @foreach ($fiscalizadores as $fis)
-                                    <option value='{{$fis->id_user_fis}}' documento="{{trim($fis->pers_nro_doc)}}">{{trim($fis->pers_nro_doc)."-".trim($fis->fiscalizador)}}</option>
-                                @endforeach
-                            </select>                       
+                        <span class="input-group-addon">Días de Plazo a pagar &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-calendar-plus-o"></i></span>
+                        <div class="">
+                            <input id="dlg_hoja_plazo" type="text"  class="form-control" style="height: 32px; " placeholder="" onkeypress="return soloNumeroTab(event);" autocomplete="off">
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-2" onclick="poner_fisca()">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span>Poner Fiscalizador
-                </button>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Días Fiscalizacion in situ. &nbsp;<i class="fa fa-info-circle"></i></span>
+                        <div class=""  >
+                            <input id="dlg_hoja_insitu" type="text"  class="form-control" style="height: 32px; " placeholder="Ej. 12, 13, 14 de Octubre del {{date("Y")}}" maxlength="100"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 text-right" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md" style="display: none">
+                        <div class=""  >
+                            <input  type="text"  class="form-control" style="height: 32px; " >
+                        </div>
+                    </div>
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 230px;" onclick="fn_confirmar_hoja()" >
+                        <span>
+                            <i class="glyphicon glyphicon-plus-sign"></i>
+                        </span>
+                        <label>Crear Hoja de Liquidación</label>
+                    </button>
+                </div>
                 
-                    <div class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
-
-                        <table class="table " id="table_fiscalizadores" >
-                                <thead>
-                                        <tr>
-                                            <th class="text-center" style="border: 1px solid #bbb; width: 10%; height: 30px">Codigo</th>
-                                            <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Documento</th>
-                                            <th class="text-center"  style="border: 1px solid #bbb; width: 70%;height: 30px">Nombre Fiscalizador</th>
-                                            <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Borrar</th>
-
-                                        </tr>
-                                </thead>
-                                <tbody>
-                                 
-
-                                </tbody>
-                        </table>
-
-                    </div>
             </div>
-            <ul id="sparks" >
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_confirmar_carta()">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Guardar y Generar
-                </button>
-            </ul>
         </div>
     </div>
 </div> 

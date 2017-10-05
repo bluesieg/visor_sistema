@@ -107,7 +107,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Desde &nbsp;<i class="fa fa-calendar"></i></span>
                         <div class=""  >
-                            <input id="dlg_bus_fini" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            <input id="dlg_bus_fini" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Hasta &nbsp;<i class="fa fa-calendar"></i></span>
                         <div class=""  >
-                            <input id="dlg_bus_ffin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            <input id="dlg_bus_ffin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                         </div>
                     </div>
                 </div>
@@ -530,7 +530,7 @@
                         <div class="input-group input-group-md">
                             <span class="input-group-addon">Fecha Transferencia &nbsp;<i class="fa fa-calendar"></i></span>
                             <div class="icon-addon addon-md">
-                                <input id="dlg_fec_trans" type="text" name="request" placeholder="Ingresar Fecha" class="datepicker" data-dateformat='dd/mm/yy' style="height: 32px; padding-left: 5px;width: 100%;">
+                                <input id="dlg_fec_trans" type="text" name="request" placeholder="Ingresar Fecha" class="datepicker" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; padding-left: 5px;width: 100%;">
                             </div>
                         </div>
                     </div>
