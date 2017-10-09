@@ -127,7 +127,7 @@ class Hoja_liquidacionController extends Controller
                 }
                 if($Datos->flg_est==1)
                 {
-                    $estado="Fizcalizado";
+                    $estado=$Datos->nro_rd;
                     $btnrd='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> R.D. creada</button>';
                 }
                 $Lista->rows[$Index]['id'] = $Datos->id_hoja_liq;            

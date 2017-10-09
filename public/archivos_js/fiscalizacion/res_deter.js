@@ -1,5 +1,5 @@
 var inputglobal="";
-function fn_bus_contrib_hl(input)
+function fn_bus_contrib_rd(input)
 {
     inputglobal=input;
     if($("#"+input).val()=="")
@@ -19,43 +19,48 @@ function fn_bus_contrib_hl(input)
         title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
         }).dialog('open');
 }
-function fn_bus_lis_hl(per)
+function fn_bus_lis_rd(per)
 {
     $("#"+inputglobal+"_hidden").val(per);
     $("#"+inputglobal).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     if(inputglobal=="dlg_contri")
     {
-        buscar_carta(1);
+        buscar_rd(1);
     }
-    if(inputglobal=="dlg_contri_carta")
+    if(inputglobal=="dlg_contri_hoja")
     {
-        buscar_carta(2);
+        buscar_rd(2);
     }
     $("#dlg_bus_contr").dialog("close");
 }
 
-function buscar_carta(tip)
+function buscar_rd(tip)
 {
+    if(tip==0)
+    {
+        $("#table_rd").jqGrid("clearGridData", true);
+        jQuery("#table_rd").jqGrid('setGridParam', {url: 'trae_rd/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+    }
     if(tip==1)
     {
-        $("#table_hojas").jqGrid("clearGridData", true);
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        $("#table_rd").jqGrid("clearGridData", true);
+        jQuery("#table_rd").jqGrid('setGridParam', {url: 'trae_rd/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
     }
     if(tip==2)
     {
-        $("#table_sel_cartas").jqGrid("clearGridData", true);
-        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_carta_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        $("#table_sel_hojas").jqGrid("clearGridData", true);
+        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/'+$("#dlg_contri_carta_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
     }
     if(tip==3)
     {
-        if($("#dlg_bus_num_carta").val()=="")
+        if($("#dlg_bus_num_hoja").val()=="")
         {
             mostraralertasconfoco("Ingresar Numero","#dlg_bus_num_carta"); 
             return false;
         }
-        ajustar(6,'dlg_bus_num_carta')
-        num=$("#dlg_bus_num_carta").val();
-        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        ajustar(6,'dlg_bus_num_hoja')
+        num=$("#dlg_bus_num_hoja").val();
+        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
     }
     if(tip==4)
     {
@@ -66,7 +71,8 @@ function buscar_carta(tip)
         }
         ajustar(6,'dlg_bus_num')
         num=$("#dlg_bus_num").val();
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        $("#table_rd").jqGrid("clearGridData", true);
+        jQuery("#table_rd").jqGrid('setGridParam', {url: 'trae_rd/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
     }
     if(tip==5)
     {
@@ -77,7 +83,8 @@ function buscar_carta(tip)
         }
         ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
         fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/0/0/'+ini+'/'+fin+'/0'}).trigger('reloadGrid');
+        $("#table_rd").jqGrid("clearGridData", true);
+        jQuery("#table_rd").jqGrid('setGridParam', {url: 'trae_rd/0/0/'+ini+'/'+fin+'/0'}).trigger('reloadGrid');
     }
 }
 function fn_sel_hoja()
@@ -127,7 +134,8 @@ function fn_save_rd(id)
             MensajeDialogLoadAjaxFinish('dlg_sel_hoja');
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             $("#dlg_sel_hoja").dialog("close");
-            verhoja(r);
+            buscar_rd(0);
+            verrd(r);
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -137,7 +145,7 @@ function fn_save_rd(id)
         }
         });
 }
-function verhoja(id)
+function verrd(id)
 {
-    window.open('hoja_liq_rep/'+id);
+    window.open('rd_rep/'+id);
 }

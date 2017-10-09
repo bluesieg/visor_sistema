@@ -36,6 +36,11 @@ function fn_bus_lis_hl(per)
 
 function buscar_carta(tip)
 {
+    if(tip==0)
+    {
+        $("#table_hojas").jqGrid("clearGridData", true);
+        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+    }
     if(tip==1)
     {
         $("#table_hojas").jqGrid("clearGridData", true);
@@ -179,6 +184,7 @@ function fn_save_hoja()
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
                 $("#dlg_new_hoja").dialog("close");
                 $("#dlg_sel_carta").dialog("close");
+                buscar_carta(0);
                 verhoja(r);
             }
             

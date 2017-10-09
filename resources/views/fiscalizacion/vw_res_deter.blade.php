@@ -39,7 +39,7 @@
                             <input id="dlg_contri" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
                         </div>
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_carta('dlg_contri')">
+                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_rd('dlg_contri')">
                                 <i class="glyphicon glyphicon-search"></i>
                             </button>
                         </span>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class='col-lg-2'style="padding: 0px;" >
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_carta(4)">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_rd(4)">
                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                     </button>
                 </div>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class='col-lg-2'style="padding: 0px;" >
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_carta(5)">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_rd(5)">
                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                     </button>
                 </div>
@@ -139,20 +139,17 @@
         $("#menu_fisca").show();
         $("#li_reso_deter").addClass('cr-active')
         jQuery("#table_rd").jqGrid({
-            url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0',
+            url: 'trae_rd/'+$("#selantra").val()+'/0/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Días Plazo','Días Trasncurridos','Ver'],
-            rowNum: 20, sortname: 'id_hoja_liq', sortorder: 'desc', viewrecords: true, caption: 'Resoluciones de Determinación', align: "center",
+            colNames: ['id_rd', 'N° R.D.', 'contribuyente','Registro','Ver'],
+            rowNum: 20, sortname: 'id_rd', sortorder: 'desc', viewrecords: true, caption: 'Resoluciones de Determinación', align: "center",
             colModel: [
-                {name: 'id_hoja_liq', index: 'id_hoja_liq', hidden: true},
-                {name: 'nro_hoja', index: 'nro_hoja', align: 'center', width: 10},
+                {name: 'id_rd', index: 'id_rd', hidden: true},
+                {name: 'nro_rd', index: 'nro_rd', align: 'center', width: 10},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 35},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 15},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
-                {name: 'dia_plazo', index: 'dia_plazo', align: 'center', width: 10},
-                {name: 'dias', index: 'dias', align: 'center', width: 10},
                 {name: '', index: '', align: 'center', width: 10},
             ],
             pager: '#pager_table_rd',
@@ -224,50 +221,21 @@
                         }
                     if(contrib_global==0)
                     {   contrib_global=1;    
-                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_lis_hl(rowid);} } ); 
+                        jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_lis_rd(rowid);} } ); 
                     }
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_bus_lis_hl(Id)}
         });
         
-        jQuery("#table_predios_contri").jqGrid({
-            url: 'trae_pred_carta/0',
-            datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
-            toolbarfilter: true,
-            colNames: ['id_pred_anio','id_fic','id_puente','Tipo','codigo','Ubicación','N° Ficha ver','Fiscalizar','Fiscalizado'],
-            rowNum: 20, sortname: 'id_puente', sortorder: 'asc', viewrecords: true, caption: 'Predios Correspondientes', align: "center",
-            colModel: [
-                {name: 'id_pred_anio', index: 'id_pred_anio', hidden: true},
-                {name: 'id_puente', index: 'id_puente', hidden: true},
-                {name: 'id_fic', index: 'id_fic', hidden: true},
-                {name: 'tp', index: 'tp', hidden: true},
-                {name: 'cod_cat', index: 'cod_cat', hidden: true},
-                {name: 'dir', index: 'dir', align: 'left',width: 445},
-                {name: 'est', index: 'est', align: 'center',width: 60},
-                {name: '', index: '',hidden: true},
-                {name: '', index: '',align: 'center',width: 70},
-            ],
-            pager: '#pager_table_predios_contri',
-            rowList: [13, 20],
-            gridComplete: function () {
-                    var idarray = jQuery('#table_predios_contri').jqGrid('getDataIDs');
-                    if (idarray.length > 0) {
-                    var firstid = jQuery('#table_predios_contri').jqGrid('getDataIDs')[0];
-                            $("#table_predios_contri").setSelection(firstid);    
-                        }
-                },
-            onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
-        });
+     
         
         var globalvalidador=0;
         $("#dlg_contri").keypress(function (e) {
             if (e.which == 13) {
                 if(globalvalidador==0)
                 {
-                    fn_bus_contrib_hl("dlg_contri");
+                    fn_bus_contrib_rd("dlg_contri");
                     globalvalidador=1;
                 }
                 else
@@ -278,11 +246,11 @@
             }
         });
        
-        $("#dlg_contri_carta").keypress(function (e) {
+        $("#dlg_contri_hoja").keypress(function (e) {
             if (e.which == 13) {
                 if(globalvalidador==0)
                 {
-                    fn_bus_contrib_hl("dlg_contri_carta");
+                    fn_bus_contrib_rd("dlg_contri_hoja");
                     globalvalidador=1;
                 }
                 else
@@ -293,12 +261,12 @@
         });
         $("#dlg_bus_num").keypress(function (e) {
             if (e.which == 13) {
-                buscar_carta(4);
+                buscar_rd(4);
             }
         });
-        $("#dlg_bus_num_carta").keypress(function (e) {
+        $("#dlg_bus_num_hoja").keypress(function (e) {
             if (e.which == 13) {
-                buscar_carta(3);
+                buscar_rd(3);
             }
         });
     });
@@ -327,9 +295,9 @@
                 <div class="col-xs-6" style="padding: 0px;">
                     <div class="col-xs-10" style="padding: 0px;">
                         <div class="input-group input-group-md">
-                            <span class="input-group-addon">Número Carta &nbsp;<i class="fa fa-hashtag"></i></span>
+                            <span class="input-group-addon">Número Hoja Liquidación &nbsp;<i class="fa fa-hashtag"></i></span>
                             <div class=""  >
-                                <input id="dlg_bus_num_carta" type="text"  class="form-control" style="height: 32px; " maxlength="7" onkeypress="return soloNumeroTab(event);" >
+                                <input id="dlg_bus_num_hoja" type="text"  class="form-control" style="height: 32px; " maxlength="7" onkeypress="return soloNumeroTab(event);" >
                             </div>
                         </div>
                     </div>
@@ -343,11 +311,11 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Contribuyente a Fiscalizar &nbsp;<i class="fa fa-male"></i></span>
                         <div>
-                            <input id="dlg_contri_carta_hidden" type="hidden" value="0">
-                            <input id="dlg_contri_carta" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
+                            <input id="dlg_contri_hoja_hidden" type="hidden" value="0">
+                            <input id="dlg_contri_hoja" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
                         </div>
                         <span class="input-group-btn" style="font-size: 13px;">
-                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_hl('dlg_contri_carta')">
+                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_rd('dlg_contri_hoja')">
                                 <i class="glyphicon glyphicon-search"></i>
                             </button>
                         </span>

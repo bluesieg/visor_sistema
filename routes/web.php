@@ -80,7 +80,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('mznas_x_sector', 'MapController@mznas_x_sector');
         Route::post('get_lotes_x_sector', 'MapController@get_lotes_x_sector');
         Route::post('get_predios_rentas','MapController@get_predios_rentas');
-        Route::get('get_hab_urb', 'MapController@get_hab_urb')->name('get.hab.urb');
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
@@ -282,8 +281,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('carta_set_fisca', 'Carta_RequerimientoController@fisca_enviados_create'); //
         Route::get('car_req_rep/{id}', 'Carta_RequerimientoController@carta_repo'); //
         Route::get('hoja_liq_rep/{id}', 'Hoja_liquidacionController@hoja_repo'); //
+        Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo'); //
         Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}', 'Carta_RequerimientoController@get_cartas_req'); //
         Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}', 'Hoja_liquidacionController@get_hojas_liq'); //
+        Route::get('trae_rd/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_rd'); //
         Route::get('trae_pred_carta/{car}', 'Carta_RequerimientoController@get_predios_carta'); //
         Route::get('traepisos_fic/{id}/{fic}', 'Pisos_FicController@listpisos_fic'); //
         Route::get('traeinsta_fic/{id}/{fic}', 'Instalaciones_FicController@listinsta_fic'); //
@@ -300,11 +301,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('pre_rep_contr_otro/{sect}/{mzna}/{anio}','ReportesController@reporte_contribuyentes_otro');
         Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ReportesController@reporte_contribuyentes_hab_urb');
         Route::get('pre_rep_contr_pred_hu/{cod_hab_urb}/{anio}','ReportesController@reporte_contribuyentes_pred_hu');
-        Route::get('pre_rep_prin_contr/{anio}/{min}/{max}/{num_reg}','ReportesController@reporte_prin_contribuyentes');
-        Route::get('pre_rep_condic/{anio}/{sect}/{cond}','ReportesController@reporte_por_condicion');
-        Route::get('pre_rep_num_pred_uso/{anio}/{sect}/{uso}','ReportesController@reporte_num_pred_uso');
-        Route::get('pre_rep_adult_pensio/{anio}/{sect}','ReportesController@reporte_adult_pensio');
-
+        Route::get('pre_rep_prin_contr','ReportesController@reporte_prin_contribuyentes');
 
     });
 });

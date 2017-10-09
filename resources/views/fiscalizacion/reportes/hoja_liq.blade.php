@@ -29,7 +29,7 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>Hoja de Liquidación de Deuda Tributaria (Reparo) N° {{$sql->nro_hoja}}-{{$sql->anio_fis}}-SGFT-GAT-MDCC</b></div></center>
+        <center><div Class="asunto" style="margin-top: 10px;"><b>Hoja de Liquidación de Deuda Tributaria (Reparo) N° {{$sql->nro_hoja}}-{{$sql->anio}}-SGFT-GAT-MDCC</b></div></center>
         <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
         <table style="margin-top: 10px; margin-bottom: 10px !important; border-bottom: 1px solid black">
@@ -50,7 +50,7 @@
             </tr>
             <tr>
                 <td style="border:0px;">
-                    <b>Presente:</b>
+                    <b>Presente.-</b>
                 </td>
             </tr>
             <tr>
@@ -75,7 +75,7 @@
                 {{$fic->nro_fic}}, 
             @endforeach
             emitidas en fechas {{$sql->dias_fisca}} en los predios de su propiedad; se ha procedido a emitir la siguiente liquidación
-            previa a la emisión de la Resolución e Determinación, <B>CONCEDIÉNDOLE UN PLAZO DE {{$sql->dia_plazo}} DÍAS HÁBILES</B>
+            previa a la emisión de la Resolución de Determinación, <B>CONCEDIÉNDOLE UN PLAZO DE {{$sql->dia_plazo}} DÍAS HÁBILES</B>
             contados a partir de recepcionada la presente para que Uds. puedan Formular cualquier observación
             y/o inquietud, debiendo según el caso adjuntar los documentos sustentatorios; de no encontrarse ninguna
             observación deberá efectuar el pago dentro del plazo ya señalado.<br>
