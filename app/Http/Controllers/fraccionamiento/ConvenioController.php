@@ -42,30 +42,15 @@ class ConvenioController extends Controller
         return $data->id_conv;
     }
 
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request){}
 
-    public function show($id)
-    {
-        //
-    }
+    public function show($id){}
 
-    public function edit($id)
-    {
-        //
-    }
+    public function edit($id){}
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function update(Request $request, $id){}
 
-    public function destroy($id)
-    {
-        //
-    }
+    public function destroy($id){}
     
     function list_deuda_contrib(Request $request){
         $id_contrib=$request['id_contrib'];

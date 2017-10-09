@@ -258,13 +258,7 @@
                                     <label class="input">                                        
                                         <input id="vw_conve_fracc_fracc_deuda" type="text" class="input-sm" disabled="">
                                     </label>                       
-                                </section>
-                                <section class="col col-3" style="padding-left:5px;">
-                                    <label class="label">Cod.Convenio:</label>
-                                    <label class="input">                                        
-                                        <input id="vw_conve_fracc_fracc_cod_conve" type="text" class="input-sm" maxlength="10">
-                                    </label>                       
-                                </section>
+                                </section>                                
                                 <section class="col col-3" style="padding-left:5px">
                                       <label class="label">&nbsp;</label>
                                         <a onclick="realizar_table_fracc();" class="btn btn-primary btn-sm">Ver Fraccionamiento</a>                    

@@ -12,7 +12,7 @@ class CoactivaController extends Controller
 {
     use DatesTranslator;
     function letra(){        
-        $monto= '2012';        
+        $monto= 2012;        
         $le = $this->num_letras($monto);
         echo $le;
     }

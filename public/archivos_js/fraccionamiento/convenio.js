@@ -287,9 +287,9 @@ function fn_bus_contrib_list(per){
     anio=$("#vw_emi_rec_imp_pre_anio").val();
     
     $("#vw_conve_fracc_contrib").attr('maxlength',tam);
-//    id_pers=$('#table_contrib').jqGrid('getCell',per,'id_pers');
     fn_actualizar_grilla('table_Deuda_Contrib_Arbitrios','grid_deu_contrib_arbitrios?id_contrib='+per+'&desde='+$("#vw_conve_fracc_anio_desde").val()+'&hasta='+$("#vw_conve_fracc_anio_hasta").val());
-    $("#dlg_bus_contr").dialog("close");    
+    $("#dlg_bus_contr").dialog("close");
+    
 }
 
 function grid_deuda_arbitrios(){
@@ -297,7 +297,7 @@ function grid_deuda_arbitrios(){
         url: 'grid_deu_contrib_arbitrios?id_contrib=0&desde=0&hasta=0',
         datatype: 'json', mtype: 'GET',
         height: 100, autowidth: true,
-        colNames: ['id_tipo','tipo', 'Deuda','Año','Select'],
+        colNames: ['id_tipo','tipo', 'Deuda','Año','Seleccionar'],
         rowNum: 5, sortname: 'anio', sortorder: 'desc', viewrecords: true,caption:'Deuda Contribuyente', align: "center",
         colModel: [
             {name: 'id_tipo', index: 'id_tipo', hidden:true},
@@ -315,12 +315,14 @@ function grid_deuda_arbitrios(){
                 $("#table_Deuda_Contrib_Arbitrios").setSelection(firstid);
             }
             $("#vw_conve_fracc_ttotal").val('0.00');
+            tot_deuda=0;
         },            
         ondblClickRow: function (Id) {}
     });    
 }
 tot_deuda=0;
 function check_tot_fracc(val,source){
+    
     if($(source).is(':checked')){
         tot_deuda=tot_deuda+val;
     } else {
@@ -348,6 +350,10 @@ function act_des_hast(){
     desde = $("#vw_conve_fracc_anio_desde").val();
     hasta = $("#vw_conve_fracc_anio_hasta").val();
     fn_actualizar_grilla('table_Deuda_Contrib_Arbitrios','grid_deu_contrib_arbitrios?id_contrib='+per+'&desde='+desde+'&hasta='+hasta);
+    
+    
+//    $("#vw_conve_fracc_ttotal").val('000.00');
+//    tot_deuda=0;
 }
 
 sumaFecha = function(d, fecha){

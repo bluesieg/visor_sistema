@@ -396,7 +396,7 @@
                                 <section class="col col-2" style="padding-left:5px">
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
-                                        <select onchange="" id="vw_emi_rec_imp_pre_anio" class="input-sm">                                       
+                                        <select onchange="filter_anio(this.value);" id="vw_emi_rec_imp_pre_anio" class="input-sm">                                       
                                             @foreach ($anio as $anio1)                                        
                                             <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
                                             @endforeach                                    

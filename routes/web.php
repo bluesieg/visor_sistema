@@ -134,6 +134,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_generica','GenericaController@get_generica');
         Route::resource('sub_generica', 'SubGenericaController');
         Route::get('get_subgenerica','SubGenericaController@get_subgenerica');
+        Route::resource('sub_gen_detalle', 'SubGenDetalleController');
+        Route::get('get_subgenerica_detalle','SubGenDetalleController@get_subgen_detalle');
+        Route::resource('especifica', 'EspecificaController');
+        Route::get('get_especifica','EspecificaController@get_espec');
     });
     
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes

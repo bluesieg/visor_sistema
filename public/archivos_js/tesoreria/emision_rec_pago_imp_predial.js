@@ -1,4 +1,4 @@
-  
+ 
 function dialog_emi_rec_pag_imp_predial() {    
     $("#vw_emision_rec_pag_imp_predial").dialog({
         autoOpen: false, modal: true, width: 815, show: {effect: "fade", duration: 300}, resizable: false,
@@ -33,6 +33,12 @@ function gen_recibo_imp_predial(){
     }
     if($("#vw_emi_rec_imp_pre_contrib").val()==''){
         mostraralertasconfoco('Ingrese un Contribuyente','#vw_emi_rec_imp_pre_contrib');
+        return false;
+    }
+    
+    tot_trim = parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val());
+    if(tot_trim==0){
+        mostraralertas('No hay trimestres para seleccionar o Todos los Trimestres estan pagados');
         return false;
     }
     if(s_checks==0){
@@ -215,6 +221,9 @@ function fn_bus_contrib_list(per){
     id_contrib=$('#table_contrib').jqGrid('getCell',per,'id_pers');
     fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib='+id_contrib+'&ano_cta='+anio);
     $("#dlg_bus_contr").dialog("close");    
+}
+function filter_anio(anio){
+    fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib='+id_contrib+'&ano_cta='+anio);
 }
 
 function limpiar_form_rec_imp_predial(){

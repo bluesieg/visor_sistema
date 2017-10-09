@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Estado de Cta</title>
+        <title>Estado de Cta</title>        
         <style>        
             @font-face {
                 font-family: SourceSansPro;
@@ -13,6 +13,20 @@
                 margin-top: 0.5cm;
                 margin-bottom: 0.5cm;
                 border: 1px solid blue;
+            }
+            .contenedor>span {
+		display:inline-block;
+		vertical-align:middle;
+		line-height:normal;
+            }
+            .contenedor{
+                position:absolute;
+                padding:5px;                
+                width: 1022px;                
+                background-color: #DDD;
+                color: red;
+                border: 1px none #000000;opacity: 0.7;
+                filter: alpha(opacity=50);
             }
             footer { position: fixed; bottom: -20px; left: 0px; right: 0px; height: 70px; }
             .t1, .t2 { border-collapse: collapse; }
@@ -31,7 +45,7 @@
             </div>
         </center>
         
-        <div style="margin-top: 20px;">
+        <div style="margin-top: 0px;">
             <!--<center><b>DATOS DEL CONTRIBUYENTE</b></center>-->
             <table style="font-size:14px;margin-top: 10px;">
                 <tr>
@@ -60,8 +74,9 @@
                 </tr>
             </table>
         </div>
-        <div style="margin-top: 20px;"> <center> PREDIAL Y FORMATOS</center></div>
-        <div style="margin-top: 20px;">            
+        
+        <div style="margin-top: 10px;"> 
+            <div> <center> PREDIAL Y FORMATOS</center></div>
             <table style="width: 100%;" class="t1">
                 <thead>
                     <tr>
@@ -98,45 +113,90 @@
                     @endforeach                                     
                 </tbody>
             </table>
-        </div>
-        <div style="margin-top: 20px;"> <center> ARBITRIOS</center></div>
-        <div style="margin-top: 20px;">            
-            <table style="width: 100%;" class="t1">
-                <thead>
-                    <tr>
-                        <th align="center" width="5%">Año</th>
-                        <th align="center" width="30%">Descripcion</th>
-                        <th align="center" width="10%">Trim I</th>
-                        <th align="center" width="10%">Abono</th>
-                        <th align="center" width="10%">Trim II</th>
-                        <th align="center" width="10%">Abono</th>
-                        <th align="center" width="10%">Trim III</th>
-                        <th align="center" width="10%">Abono</th>
-                        <th align="center" width="10%">Trim IV</th>
-                        <th align="center" width="10%">Abono</th>
-                        <th align="center" width="10%">Deuda Tot.</th>
-                        <th align="center" width="10%">Saldo</th>
-                    </tr>                                        
-                </thead>
-                <tbody>                    
-                    @foreach($arb as $arb)
-                    <tr>                        
-                        <td style="text-align: center">{{ $arb->anio }}</td>
-                        <td style="text-align: left">{{ $arb->descripcion }}</td>
-                        <td style="text-align: right">{{ $arb->trim_1 }}</td>
-                        <td style="text-align: right">{{ number_format($arb->abo_trim_1,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $arb->trim_2 }}</td>
-                        <td style="text-align: right">{{ number_format($arb->abo_trim_2,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $arb->trim_3 }}</td>
-                        <td style="text-align: right">{{ number_format($arb->abo_trim_3,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $arb->trim_4 }}</td>
-                        <td style="text-align: right">{{ number_format($arb->abo_trim_4,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $arb->ani_total }}</td>
-                        <td style="text-align: right">{{ $arb->deuda_arb }}</td>
-                    </tr>
-                    @endforeach                    
-                </tbody>
-            </table>
-        </div>
+            @if(isset($convenio[0]))
+                @if($convenio[0]->tipo==1 || $convenio[0]->tipo==3)
+                    <div class="contenedor" style="left: 0px;top: 280px;height: 43px;"><center><h2 style="margin-top:6px">En Fraccionamiento</h2></center></div>
+                @endif
+            @endif
+            
+        </div>        
+        @if (count($arb) > 1)
+            <div style="margin-top: 10px;" id="div_arb">
+                <div> <center> ARBITRIOS</center></div>
+                <table style="width: 100%;" class="t1" id="est_cta_t_arb">
+                    <thead>
+                        <tr>
+                            <th align="center" width="5%">Año</th>
+                            <th align="center" width="30%">Descripcion</th>
+                            <th align="center" width="10%">Trim I</th>
+                            <th align="center" width="10%">Abono</th>
+                            <th align="center" width="10%">Trim II</th>
+                            <th align="center" width="10%">Abono</th>
+                            <th align="center" width="10%">Trim III</th>
+                            <th align="center" width="10%">Abono</th>
+                            <th align="center" width="10%">Trim IV</th>
+                            <th align="center" width="10%">Abono</th>
+                            <th align="center" width="10%">Deuda Tot.</th>
+                            <th align="center" width="10%">Saldo</th>
+                        </tr>                                        
+                    </thead>
+                    <tbody>                    
+                        @foreach($arb as $arb)
+                        <tr>                        
+                            <td style="text-align: center">{{ $arb->anio }}</td>
+                            <td style="text-align: left">{{ $arb->descripcion }}</td>
+                            <td style="text-align: right">{{ $arb->trim_1 }}</td>
+                            <td style="text-align: right">{{ number_format($arb->abo_trim_1,2,'.',',') }}</td>
+                            <td style="text-align: right">{{ $arb->trim_2 }}</td>
+                            <td style="text-align: right">{{ number_format($arb->abo_trim_2,2,'.',',') }}</td>
+                            <td style="text-align: right">{{ $arb->trim_3 }}</td>
+                            <td style="text-align: right">{{ number_format($arb->abo_trim_3,2,'.',',') }}</td>
+                            <td style="text-align: right">{{ $arb->trim_4 }}</td>
+                            <td style="text-align: right">{{ number_format($arb->abo_trim_4,2,'.',',') }}</td>
+                            <td style="text-align: right">{{ $arb->ani_total }}</td>
+                            <td style="text-align: right">{{ $arb->deuda_arb }}</td>
+                        </tr>
+                        @endforeach                    
+                    </tbody>
+                </table>
+                @if($convenio[0]->tipo==2 || $convenio[0]->tipo==3)
+                    <div class="contenedor" style="left: 0px;top: 362px;height: 78px;"><center><h2 style="margin-top:20px">En Fraccionamiento</h2></center></div>
+                @endif
+            </div>
+        @endif
+        @if ($fracc>1)
+            <div style="margin-top: 10px;" id="div_arb">
+                <div> <center> FRACCIONAMIENTO</center></div>
+                <table style="width: 100%;" class="t1">
+                    <thead>
+                        <tr>
+                            <th align="center" width="5%">Nro</th>
+                            <th align="center" width="20%">Fecha de Pago</th>                            
+                            <th align="center" width="20%">Estado</th>
+                            <th align="center" width="20%">Fecha que Pagó</th>
+                            <th align="center" width="20%">Cuota Mensual</th>
+                        </tr>                                        
+                    </thead>
+                    <tbody>                    
+                        @foreach($fracc as $fracc)
+                        <tr>                        
+                            <td style="text-align: center">{{ $fracc->nro_cuota }}</td>
+                            <td style="text-align: center">{{ $fracc->fec_pago }}</td>
+                            <td style="text-align: center">{{ $fracc->estado }}</td>                            
+                            <td style="text-align: center">{{ $fracc->fecha_q_pago }}</td>
+                            <td style="text-align: center">S/.&nbsp;{{ number_format($fracc->total,2,'.',',') }}</td>
+                        </tr>
+                        @endforeach                    
+                    </tbody>
+                </table>                
+            </div>
+        @endif        
+        <script src="{{ asset('archivos_js/reportes/est_cta.js') }}"></script>
+        <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
+        <script type="text/javascript">            
+            $(document).ready(function() {
+                
+            });
+        </script>
     </body>
 </html>

@@ -57,13 +57,13 @@ class Caja_MovimientosController extends Controller {
 //                        $costo_sol= $val->total;
 //                        dd($costo_sol);
                         for($i=$prim;$i<=$ult;$i++){
-                            $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',103)
+                            $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',103)->where('ano_cta',date('Y'))
                                     ->update(['abo'.$i.'_cta'=>$pre_x_trim,'fec_abo'.$i=>date('d-m-Y')]);
                         }
                         if($value_formato_pred[0]->sum==0){
-                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',104)->value('ivpp');
+                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',104)->where('ano_cta',date('Y'))->value('ivpp');
                             for($x=1;$x<=4;$x++){
-                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',104)
+                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',104)->where('ano_cta',date('Y'))
                                         ->update(['abo'.$x.'_cta'=>($value_formato_pred/4),'fec_abo'.$x=>date('d-m-Y')]);
                             }
                         }
@@ -82,6 +82,17 @@ class Caja_MovimientosController extends Controller {
                             for($i=$prim;$i<=$ult;$i++){                                
                                 DB::table('fraccionamiento.detalle_convenio')->where('id_conv_mtr',trim($val->cod_fracc))->where('nro_cuota',$i)
                                         ->update(['estado' => 1,'fecha_q_pago'=> date('Y-m-d')]);
+                            }
+                        }
+                        $nro_cuotas = DB::select('select * from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr='.$val->cod_fracc.' order by nro_cuota desc');
+                        $pagados=DB::select("select sum(cod_estado) as pagados from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr=".$val->cod_fracc);
+                        if($nro_cuotas[0]->nro_cuota==$pagados[0]->pagados){
+                            DB::table('fraccionamiento.convenio')->where('id_conv',trim($val->cod_fracc))
+                                        ->update(['estado' => 3]);
+                            $pre_x_trim= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',103)->where('ano_cta',date('Y'))->value('car1_cta');
+                            for($i=1;$i<=4;$i++){                                
+                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',103)
+                                        ->update(['abo'.$i.'_cta'=>$pre_x_trim,'fec_abo'.$i=>date('d-m-Y')]);
                             }
                         }
                         return $id.'fraccionamiento';
