@@ -31,7 +31,7 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte de Cantidad de Contribuyentes y Predios por Zonas</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
             AÑO: {{ $anio }}
     </div>

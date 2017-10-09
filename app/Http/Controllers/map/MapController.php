@@ -34,9 +34,10 @@ class MapController extends Controller
 //        else return view('auth/login');
 
         //$lotes = DB::select('SELECT ST_AsGeoJSON(geometria) from catastro.lotes;');
-        $sectores = DB::connection('mapa')->select('SELECT gid, entity, codigo, sector FROM mdcc_2017.sectores_cat order by codigo asc;');
-
-        return view('cartografia/cartografia_predios', compact('sectores'));
+        //$sectores = DB::connection('mapa')->select('SELECT gid, entity, codigo, sector FROM mdcc_2017.sectores_cat order by codigo asc;');
+        $sectores = DB::select('SELECT  id_sec, sector FROM catastro.sectores order by sector asc;');
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('cartografia/cartografia_predios', compact('sectores','anio_tra'));
     }
 
     function get_manzanas(){
@@ -56,7 +57,7 @@ class MapController extends Controller
                   FROM espacial.manzanas limit 10;");*/
 
 
-        $mznas = DB::connection('mapa')->select("SELECT json_build_object(
+        $mznas = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -81,7 +82,26 @@ class MapController extends Controller
         return response()->json($mznas);
     }
     function get_limites(){
-        $limites = DB::connection('mapa')->select("SELECT json_build_object(
+
+        $limites =  DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id',         id,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                               'gid', gid
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM cartografia.limites) row) features;");
+
+        return response()->json($limites);
+
+        /*
+        $limites =>select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -98,10 +118,28 @@ class MapController extends Controller
                           ) AS feature
                           FROM (SELECT * FROM mdcc_2017.limites_distritales) row) features;");
 
-        return response()->json($limites);
+        return response()->json($limites);*/
     }
     function get_sectores(){
 
+        $sectores = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_sec',         id_sec,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'sector', sector
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.sectores) row) features;");
+
+        return response()->json($sectores);
+
+        /*
         $sectores = DB::connection('mapa')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -120,12 +158,35 @@ class MapController extends Controller
                           ) AS feature
                           FROM (SELECT * FROM mdcc_2017.sectores_cat) row) features;");
 
-        return response()->json($sectores);
+        return response()->json($sectores);*/
     }
 
     function get_lotes_x_sector(Request $req){
 
-        $lotes = DB::connection('mapa')->select("SELECT json_build_object(
+
+        $lotes = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_lote',         id_lote,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                               'id_lote', id_lote,
+                                'id_mzna', id_mzna,
+                                'codi_lote', codi_lote,
+                                'id_hab_urb', id_hab_urb,
+                                'id_sect',id_sect
+                             )
+                          ) AS feature
+                          FROM (select l.id_lote, l.id_mzna, l.codi_lote, l.id_hab_urb, l.geom, m.id_sect from  catastro.lotes l
+                                join catastro.manzanas m on m.id_mzna = l.id_mzna where id_sect = '".$req->codigo."') row) features ;");
+
+        return response()->json($lotes);
+        /*
+        $lotes = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -148,24 +209,73 @@ class MapController extends Controller
                           ) AS feature
                           FROM (SELECT * FROM mdcc_2017.lotes where cod_sect = '".$req->codigo."') row) features;");
 
-        return response()->json($lotes);
+        return response()->json($lotes);*/
     }
 
 
     function get_centro_sector(Request $reques){
         //dd($reques->codigo);
-        $centro_sector = DB::connection('mapa')->select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from mdcc_2017.sectores_cat where codigo = '" . $reques->codigo . "'");
+        /*
+        $centro_sector = DB::select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from mdcc_2017.sectores_cat where codigo = '" . $reques->codigo . "'");
+        return response()->json($centro_sector);*/
+        $centro_sector = DB::select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from catastro.sectores where id_sec = '" . $reques->codigo . "'");
         return response()->json($centro_sector);
+
     }
 
     function mznas_x_sector(Request $req){
-        $mznas=DB::connection('mapa')->select("SELECT gid, mz_cat FROM mdcc_2017.manzanas where sector_cat = '". $req->codigo."';");
+        $mznas=DB::select("SELECT id_mzna, codi_mzna FROM catastro.manzanas where id_sect = '". $req->codigo."';");
 
         return view("principal/fpart/vw_select_mznas", compact('mznas'));
+
+        /*
+        $mznas=DB::select("SELECT gid, mz_cat FROM mdcc_2017.manzanas where sector_cat = '". $req->codigo."';");
+        return view("principal/fpart/vw_select_mznas", compact('mznas'));*/
         //return view('catastro/vw_part_dlg_new_memoria_descriptiva', compact('mznas'));
     }
 
+    function get_hab_urb(){
+        $sectores = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id',         gid,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                              'cod_hab',cod_hab,
+                              'nom_hab_urb',nom_hab_urb,
+                               'gid', gid
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM cartografia.hab_urba) row) features;");
+
+        return response()->json($sectores);
+    }
+
     function geogetmznas_x_sector(Request $req){
+
+        $mznas = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_mzna',         id_mzna,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                               'id_mzna', id_mzna,
+                                'id_sect', id_sect,
+                                'codi_mzna', codi_mzna
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.manzanas where id_sect = '".$req->codigo."') row) features;");
+
+        return response()->json($mznas);
+        /*
         $mznas = DB::connection('mapa')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -187,12 +297,37 @@ class MapController extends Controller
                              )
                           ) AS feature
                           FROM (SELECT * FROM mdcc_2017.manzanas where sector_cat = '".$req->codigo."') row) features;");
-
+*/
         return response()->json($mznas);
     }
 
     function get_predios_rentas(Request $req){
-        $predios = DB::connection('mapa')->select("SELECT json_build_object(
+
+        $predios = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_lote',         id_lote,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                               'id_lote', id_lote,
+                                'id_mzna', id_mzna,
+                                'codi_lote', codi_lote,
+                                'id_hab_urb', id_hab_urb,
+                                'id_sect',id_sect
+                             )
+                          ) AS feature
+                          FROM (SELECT lotes.id_lote, lotes.id_mzna, lotes.codi_lote, lotes.id_hab_urb, lotes.geom, m.id_sect, pred_urb.anio FROM catastro.lotes lotes
+join catastro.manzanas m on m.id_mzna = lotes.id_mzna
+JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_urb.id_mzna = lotes.id_mzna and pred_urb.id_lote = lotes.id_lote where id_sect = '".$req->codigo ."') row) features;");
+
+        return response()->json($predios);
+
+        /*
+        $predios = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -221,7 +356,7 @@ class MapController extends Controller
 'SELECT sec, mzna, lote FROM adm_tri.predios')
  AS tb1(sec1 CHARACTER VARYING,mzna1 CHARACTER VARYING,lote1 CHARACTER VARYING)) as tb1
                                     on tb1.sec1 = lotes.cod_sect and tb1.mzna1 = lotes.cod_mza and tb1.lote1 = lotes.cod_lote where cod_sect = '".$req->codigo ."' ) row) features;");
-        return response()->json($predios);
+        return response()->json($predios);*/
     }
 
 }

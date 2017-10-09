@@ -11,11 +11,13 @@
 </head>
 <body>
 <main>
+
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
                 <img src="img/escudo.png" height="70px"/>
-            </td>            <td style="width: 80%; padding-top: 10px; border:0px;">
+            </td>
+            <td style="width: 80%; padding-top: 10px; border:0px;">
                 <div id="details" class="clearfix">
                     <div id="invoice" >
                         <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
@@ -26,11 +28,12 @@
             </td>
             <td style="width: 10%;border: 0px;"></td>
         </tr>
+
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>Listado de Contribuyentes(Pricos,Mecos,Pecos)</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE CANTIDAD DE CONTRITUYENTES CON DEDUCCIÓN DE 50 UIT</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
-        AÑO: {{ $anio }}, MONTO DE: {{$min}} hasta {{$max}}
+    Pensionista y Adulto Mayor
     </div>
 
     <input type="hidden" value=" {{$num= 1}}">
@@ -42,13 +45,11 @@
             <thead>
             <tr >
                 <th style="width: 3%;">N°</th>
-                <th style="width: 5%">DNI/RUC</th>
-                <th style="width: 25%;">CONTRIBUYENTE</th>
-                <th style="width: 35%">DOMICILIO</th>
-                <th style="width: 10%">TELEFONO</th>
-                <th style="width: 10%">EMAIL</th>
-                <th style="width: 6%">IMPUESTO</th>
-                <th style="width: 6%">SALDO</th>
+                <th style="width: 10%;">CÓDIGO</th>
+                <th style="width: 10%">DNI/RUC</th>
+                <th style="width: 30%;">CONTRIBUYENTE</th>
+                <th style="width: 30%;">CONYUGUE O REP LEGAL</th>
+                <th style="width: 40%">DOMICILIO</th>
             </tr>
             </thead>
             <tbody>
@@ -56,19 +57,16 @@
             @foreach ($sql as $cont)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{ $cont->nro_doc }}</td>
-                    <td style="text-align: left;">{{$cont->contribuyente}}</td>
-                    <td style="text-align: left;">{{ $cont->dom_fis }}</td>
-                    <td style="text-align: left;">{{ $cont->tlfno_fijo }} - {{ $cont->tlfono_celular }}</td>
-                    <td style="text-align: left;">{{ $cont->email }}</td>
-                    <td style="text-align: center;">{{ $cont->ivpp }}</td>
-                    <td style="text-align: center;">{{ $cont->saldo }}</td>
+                    <td style="text-align: center;">{{ $cont->id_persona }}</td>
+                    <td style="text-align: center;">{{$cont->nro_doc}}</td>
+                    <td style="text-align: left;">{{ $cont->contribuyente }}</td>
+                    <td style="text-align: left;">{{ $cont->conviviente }}</td>
+                    <td style="text-align: left;">{{$cont->dom_fis}}</td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
-
     <p class="pagenum" style="padding-top: 130px;text-align: center"> Gerencia de Administración Tributaria - Página</p>
 </body>
 

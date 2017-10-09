@@ -138,6 +138,7 @@ function get_mzns_por_sector(id_sec){
     //var map = new ol.Map("map");
     // add layers here"POINT(-71.546226195617 -16.3045550718574)"
    // map.setCenter(new ol.LonLat(-71.546226195617, -16.3045550718574), 5);
+
     if(id_sec != '0')
     {
         //alert(id_sec);
@@ -267,7 +268,7 @@ function label_manzanas(feature, resolution) {
             color: 'rgba(255, 0, 0, 0.1)'
         }),
         text: new ol.style.Text({
-            text: feature.get('mz_cat')
+            text: feature.get('codi_mzna')
         })
     });
 }
@@ -289,7 +290,7 @@ function label_lotes(feature) {
             }),
             // get the text from the feature - `this` is ol.Feature
             // and show only under certain resolution
-            text: map.getView().getZoom() > 16 ? feature.get('nom_lote') : ''
+            text: map.getView().getZoom() > 16 ? feature.get('codi_lote') : ''
         })
          /*
         text: new ol.style.Text({
@@ -302,6 +303,9 @@ function label_lotes(feature) {
 function get_predios(){
     //alert(1);
     var sector = $('#sectores_map').val();
+    var anio = $('#anio_pred').val();
+
+    //alert(sector + "/" + anio);
 
     //alert($('#draw_predios').is(':checked'));
     if($('#draw_predios').is(':checked')){
@@ -311,7 +315,8 @@ function get_predios(){
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 url: 'get_predios_rentas',
                 type: 'POST',
-                data: {codigo: sector},
+                data: {codigo: sector,
+                        anio:anio},
                 success: function (data) {
                     //alert(data[0].json_build_object);
                     //alert(geojson_manzanas2);
@@ -372,7 +377,7 @@ function label_predios(feature) {
             }),
             // get the text from the feature - `this` is ol.Feature
             // and show only under certain resolution
-            text: map.getView().getZoom() > 16 ? feature.get('nom_lote') : ''
+            text: map.getView().getZoom() > 16 ? feature.get('codi_lote') : ''
         })
         /*
          text: new ol.style.Text({

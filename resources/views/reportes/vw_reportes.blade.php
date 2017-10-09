@@ -5,7 +5,7 @@
         <div class='cr_content col-xs-12'>
             <div class="col-xs-12">
                 <div class="col-lg-9">
-                    <h1 class="txt-color-green"><b>Listado de Reportes Principales...</b></h1>
+                    <h1 class="txt-color-green"><b>Listado de Reportes</b></h1>
                 </div>
                 <div class="col-lg-3 col-md-6 col-xs-12">
                 </div>
@@ -60,7 +60,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_new_reporte_0(0);" id="titulo_r1">
-                                        Listado de principales contribuyentes
+                                        Listado de Contribuyentes(Pricos,Mecos,Pecos)
                                     </a>
                                     <small>Descripción reporte 0</small>
                                 </h4>
@@ -103,7 +103,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_new_reporte(2);" id="titulo_r2">
-                                        Listado de datos contribuyentes y predios.
+                                        Listado de datos Contribuyentes  y predios.
                                     </a>
                                     <small>Descripción reporte 2</small>
                                 </h4>
@@ -138,6 +138,91 @@
                             </td>
                         </tr>
                         <!-- end TR -->
+
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_new_reporte_5(5);" id="titulo_r2">
+                                        Reporte de cantidad de contribuyentes exonerados.
+                                    </a>
+                                    <small>Descripción reporte 5</small>
+                                </h4>
+                            </td>
+                            <td class="text-center hidden-xs hidden-sm">
+                                <a href="javascript:void(0);">431 veces</a>
+                            </td>
+                            <td class="hidden-xs hidden-sm">Por
+                                <a href="javascript:void(0);">{{ Auth::user()->ape_nom }}</a>
+                                <br>
+                                <small><i>January 1, 2014</i></small>
+                            </td>
+                        </tr>
+                        <!-- end TR -->
+
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_new_reporte_6(6);" id="titulo_r2">
+                                        Reporte número de Predios de la emision predial por Usos.
+                                    </a>
+                                    <small>Descripción reporte 5</small>
+                                </h4>
+                            </td>
+                            <td class="text-center hidden-xs hidden-sm">
+                                <a href="javascript:void(0);">431 veces</a>
+                            </td>
+                            <td class="hidden-xs hidden-sm">Por
+                                <a href="javascript:void(0);">{{ Auth::user()->ape_nom }}</a>
+                                <br>
+                                <small><i>January 1, 2014</i></small>
+                            </td>
+                        </tr>
+                        <!-- end TR -->
+
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_new_reporte_6(6);" id="titulo_r2">
+                                        Reporte del monto de la emisión predial afecto y exonerado.
+                                    </a>
+                                    <small>Descripción reporte 5</small>
+                                </h4>
+                            </td>
+                            <td class="text-center hidden-xs hidden-sm">
+                                <a href="javascript:void(0);">431 veces</a>
+                            </td>
+                            <td class="hidden-xs hidden-sm">Por
+                                <a href="javascript:void(0);">{{ Auth::user()->ape_nom }}</a>
+                                <br>
+                                <small><i>January 1, 2014</i></small>
+                            </td>
+                        </tr>
+                        <!-- end TR -->
+
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_new_reporte_7(7);" id="titulo_r2">
+                                        Reporte de cantidad de contribuyentes con deducción de 50 UIT(Pensionista y adulto mayor) y monto de la base imponible.
+                                    </a>
+                                    <small>Descripción reporte 5</small>
+                                </h4>
+                            </td>
+                            <td class="text-center hidden-xs hidden-sm">
+                                <a href="javascript:void(0);">431 veces</a>
+                            </td>
+                            <td class="hidden-xs hidden-sm">Por
+                                <a href="javascript:void(0);">{{ Auth::user()->ape_nom }}</a>
+                                <br>
+                                <small><i>January 1, 2014</i></small>
+                            </td>
+                        </tr>
+                        <!-- end TR -->
+
                         </tbody>
                     </table>
 
@@ -165,7 +250,76 @@
             postfix: "Soles",
             prettify: false,
             grid: true,
-            inputValuesSeparator: ';'
+            inputValuesSeparator: ';',
+            onFinish: function(data) {
+                console.log(data);
+                $("#min").val(data.from);
+                $("#max").val(data.to);
+            }
+        });
+
+        var $range = $("#range-slider-1"),
+                $from = $("#min"),
+                $to = $("#max"),
+                range,
+                min = 0,
+                max = 100000,
+                from,
+                to;
+
+        var updateValues = function () {
+            $from.prop("value", from);
+            $to.prop("value", to);
+        };
+
+        $range.ionRangeSlider({
+            type: "double",
+            min: min,
+            max: max,
+            prettify_enabled: false,
+            grid: true,
+            grid_num: 10,
+            onChange: function (data) {
+                from = data.from;
+                to = data.to;
+
+                updateValues();
+            }
+        });
+
+        range = $range.data("ionRangeSlider");
+
+        var updateRange = function () {
+            range.update({
+                from: from,
+                to: to
+            });
+        };
+
+        $from.on("change", function () {
+            from = +$(this).prop("value");
+            if (from < min) {
+                from = min;
+            }
+            if (from > to) {
+                from = to;
+            }
+
+            updateValues();
+            updateRange();
+        });
+
+        $to.on("change", function () {
+            to = +$(this).prop("value");
+            if (to > max) {
+                to = max;
+            }
+            if (to < from) {
+                to = from;
+            }
+
+            updateValues();
+            updateRange();
         });
 
 
@@ -222,8 +376,8 @@
                                         <label class="label">SECTOR:</label>
                                         <label class="select">
                                             <select id='selsec' class="form-control col-lg-8" onchange="callpredtab();">
-                                                @foreach ($sectores as $sectores)
-                                                    <option value='{{$sectores->id_sec}}' >{{$sectores->sector}}</option>
+                                                @foreach ($sectores as $sect)
+                                                    <option value='{{$sect->id_sec}}' >{{$sect->sector}}</option>
                                                 @endforeach
                                             </select><i></i> </label>
                                     </section>
@@ -232,8 +386,8 @@
                                         <label class="select">
                                             <select id="selmnza" class="form-control" >
                                                 <option value='0'>-- TODOS --</option>
-                                                @foreach ($manzanas as $manzanas)
-                                                    <option value='{{$manzanas->codi_mzna}}'>{{$manzanas->codi_mzna}}</option>
+                                                @foreach ($manzanas as $mzna)
+                                                    <option value='{{$mzna->codi_mzna}}'>{{$mzna->codi_mzna}}</option>
                                                 @endforeach
                                             </select><i></i> </label>
                                     </section>
@@ -332,13 +486,13 @@
                     <section class="col col-3">
                         <label class="label">MIN:</label>
                         <label class="input">
-                            <input id="min" type="text" placeholder="0" class="input-sm">
+                            <input id="min" type="text" placeholder="0" onkeypress="update_slider_min();" class="input-sm" value="0">
                         </label>
                     </section>
                     <section class="col col-3">
                         <label class="label">MAX:</label>
                         <label class="input">
-                            <input id="max" type="text" placeholder="50 000" class="input-sm">
+                            <input id="max" type="text" onkeypress="update_slider_max();" placeholder="50 000" class="input-sm" value="50000">
                         </label>
                     </section>
                     <section class="col col-3">
@@ -355,6 +509,114 @@
     </div>
 </div>
 
+<div id="dialog_reporte_contr_5" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row">
+                    <section class="col col-4" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='selantra_5' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_5)
+                                    <option value='{{$anio_5->anio}}' >{{$anio_5->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">SECTOR:</label>
+                        <label class="select">
+                            <select id='selsec_5' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($sectores as $sector_5)
+                                    <option value='{{$sector_5->id_sec}}' >{{$sector_5->sector}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-4" id="div_condicion" style="padding-left:5px;padding-right:5px">
+                        <label class="label">CONDICIÓN:</label>
+                        <label class="select_5">
+                            <select id="selcond_5" class="form-control" >
+                                @foreach ($condicion as $cond)
+                                    <option value='{{$cond->id_exo}}' >{{$cond->desc_exon}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_reporte_contr_6" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row">
+                    <section class="col col-3" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='selantra_6' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_5)
+                                    <option value='{{$anio_5->anio}}' >{{$anio_5->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-3" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">SECTOR:</label>
+                        <label class="select">
+                            <select id='selsec_6' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($sectores as $sector_5)
+                                    <option value='{{$sector_5->id_sec}}' >{{$sector_5->sector}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-6" id="div_condicion">
+                        <label class="label">USO:</label>
+                        <label class="select_5">
+                            <select id="seluso_6" class="form-control col-lg-12" >
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($usos_predio_arb as $usos)
+                                    <option value='{{$usos->id_uso_arb}}' >{{$usos->uso_arbitrio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_reporte_contr_7" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row">
+                    <section class="col col-6" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='selantra_7' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_7)
+                                    <option value='{{$anio_7->anio}}' >{{$anio_7->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-6" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">SECTOR:</label>
+                        <label class="select">
+                            <select id='selsec_7' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($sectores as $sector_7)
+                                    <option value='{{$sector_7->id_sec}}' >{{$sector_7->sector}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

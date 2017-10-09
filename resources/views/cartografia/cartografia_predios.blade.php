@@ -43,16 +43,7 @@
         </div>
     </div>
         </form>
-    <!--
-    <section class="col col-xs-12"style="position: absolute; alignment:center;width:150px;top:80px;left:10px;">
-        <select id="sectores" class="input-sm col-xs-12" onchange="get_mzns_por_sector(this.value);">
-            <option value='0' >--- Sector ---</option>
-            @foreach ($sectores as $s)
-                <option value='{{$s->codigo}}' >{{$s->sector}}</option>
-            @endforeach
-        </select><i></i>
-    </section>
-    -->
+
 @section('page-js-script')
     <script type="text/javascript">
 
@@ -133,25 +124,40 @@
 
             var selectList = document.createElement("select");
             selectList.id = "sectores_map";
-            selectList.className = "input-sm col-xs-5";
+            selectList.className = "input-sm col-xs-3";
             selectList.onchange = function(e){
                 console.log(e);
                 get_mzns_por_sector(this.value);
                 //alert(this.value);
             }
 
+            var selectList_anio = document.createElement("select");
+            selectList_anio.id = "anio_pred";
+            selectList_anio.className = "input-sm col-xs-3";
+
+
             var sectores = {!! json_encode($sectores) !!};
             var option = document.createElement("option");
             option.value = '0';
-            option.text = "--- Sector ---";
+            option.text = "- Sector -";
             selectList.appendChild(option);
            // alert(global_cod_alm[0].codigo);
             for (var i = 0; i < sectores.length; i++) {
                 var option = document.createElement("option");
-                option.value = sectores[i].codigo;
+                option.value = sectores[i].id_sec;
                 option.text = sectores[i].sector;
                 selectList.appendChild(option);
             }
+
+            var anio = {!! json_encode($anio_tra) !!};
+            // alert(global_cod_alm[0].codigo);
+            for (var i = 0; i < anio.length; i++) {
+                var option_anio = document.createElement("option");
+                option_anio.value = anio[i].anio;
+                option_anio.text = anio[i].anio;
+                selectList_anio.appendChild(option_anio);
+            }
+
 
             var checkbox = document.createElement('input');
             checkbox.type = "checkbox";
@@ -179,6 +185,8 @@
             element.className = 'ol-unselectable ol-mycontrol';
 
             element.appendChild(selectList);
+            element.appendChild(div2);
+            element.appendChild(selectList_anio);
             element.appendChild(div2);
             element.appendChild(label);
 
@@ -242,6 +250,11 @@
                             type: 'base',
                             visible: true,
                             source: new ol.source.OSM()
+                        }),
+                        new ol.layer.Tile({
+                            title: 'BLANK',
+                            type: 'base',
+                            visible: false
                         })
                     ]
                 })
@@ -302,6 +315,30 @@
             }
         });
 
+        $.ajax({url: 'get_hab_urb',
+            type: 'GET',
+            async: false,
+            success: function(r)
+            {
+                geojson_hab_urb_cat1 = JSON.parse(r[0].json_build_object);
+                var format_hab_urb_cat1 = new ol.format.GeoJSON();
+                var features_hab_urb_cat1 = format_hab_urb_cat1.readFeatures(geojson_hab_urb_cat1,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_hab_urb_cat1 = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+
+                jsonSource_hab_urb_cat1.addFeatures(features_hab_urb_cat1);
+                lyr_hab_urb_cat1 = new ol.layer.Vector({
+                    source:jsonSource_hab_urb_cat1,
+                    style: polygonStyleFunction_hab_urb,
+                    title: "Habilitaciones Urbanas"
+                });
+                map.addLayer(lyr_hab_urb_cat1);
+            }
+        });
+
+
         map.getView().fit([-7986511.592568, -1853075.694599, -7949722.367052, -1825746.555644], map.getSize());
         var fullscreen = new ol.control.FullScreen();
         map.addControl(fullscreen);
@@ -316,10 +353,26 @@
                     color: 'rgba(0, 0, 255, 0.1)'
                 }),
                 text: new ol.style.Text({
-                    text: feature.get('codigo')
+                    text: feature.get('sector')
                 })
             });
         }
+
+        function polygonStyleFunction_hab_urb(feature, resolution) {
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'black',
+                    width: 2
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 255, 0, 0.1)'
+                }),
+                text: new ol.style.Text({
+                    text: feature.get('cod_hab')
+                })
+            });
+        }
+
 
         function label_manzanas_full(feature) {
             return new ol.style.Style({

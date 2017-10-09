@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('mznas_x_sector', 'MapController@mznas_x_sector');
         Route::post('get_lotes_x_sector', 'MapController@get_lotes_x_sector');
         Route::post('get_predios_rentas','MapController@get_predios_rentas');
+        Route::get('get_hab_urb', 'MapController@get_hab_urb')->name('get.hab.urb');
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
@@ -299,7 +300,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('pre_rep_contr_otro/{sect}/{mzna}/{anio}','ReportesController@reporte_contribuyentes_otro');
         Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ReportesController@reporte_contribuyentes_hab_urb');
         Route::get('pre_rep_contr_pred_hu/{cod_hab_urb}/{anio}','ReportesController@reporte_contribuyentes_pred_hu');
-        Route::get('pre_rep_prin_contr','ReportesController@reporte_prin_contribuyentes');
+        Route::get('pre_rep_prin_contr/{anio}/{min}/{max}/{num_reg}','ReportesController@reporte_prin_contribuyentes');
+        Route::get('pre_rep_condic/{anio}/{sect}/{cond}','ReportesController@reporte_por_condicion');
+        Route::get('pre_rep_num_pred_uso/{anio}/{sect}/{uso}','ReportesController@reporte_num_pred_uso');
+        Route::get('pre_rep_adult_pensio/{anio}/{sect}','ReportesController@reporte_adult_pensio');
+
 
     });
 });

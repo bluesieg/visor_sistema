@@ -17,11 +17,13 @@ class ReportesController extends Controller
         $tip_doc=DB::select('select * from adm_tri.tipo_documento');
         $tip_contrib=DB::select('select * from adm_tri.tipo_contribuyente');
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        $sectores =  DB::table('catastro.sectores') ->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
+        $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
+        $condicion = DB::table('adm_tri.exoneracion')->get();
+        $usos_predio_arb = DB::table('adm_tri.uso_predio_arbitrios')->get();
         //$sectores = DB::select('select * from catastro.sectores order by id_sec');
         $hab_urb = DB::select('select id_hab_urb,nomb_hab_urba from catastro.hab_urb');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
-        return view('reportes.vw_reportes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas','anio_tra','hab_urb'));
+        return view('reportes.vw_reportes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas','anio_tra','hab_urb','condicion','usos_predio_arb'));
     }
 
     function consultar_persona(Request $request){
@@ -115,13 +117,13 @@ class ReportesController extends Controller
         }
     }
 
-    function reporte_prin_contribuyentes(){
+    function reporte_prin_contribuyentes($anio,$min,$max,$num_reg){
 
-        $sql=DB::table('reportes.vw_pricos')->get();
+        $sql=DB::table('reportes.vw_pricos')->where('ano_cta',$anio)->where('ivpp','>',$min)->where('ivpp','<',$max)->limit($num_reg)->orderBy('ivpp', 'desc')->get();
 
         if(count($sql)>0)
         {
-            $view =  \View::make('reportes.contribuyentes0', compact('sql'))->render();
+            $view =  \View::make('reportes.contribuyentes0', compact('sql','anio','min','max'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream("PRUEBA".".pdf");
@@ -167,5 +169,84 @@ class ReportesController extends Controller
 
     }
 
+    public function reporte_por_condicion($anio,$sector,$condicion){
+
+        //$sql=DB::table('reportes.vw_pricos')->where('ano_cta',$anio)->where('ivpp','>',$min)->where('ivpp','<',$max)->limit($num_reg)->get();
+        if($sector == 0){
+            $sql = DB::table('reportes.vw_contribuyentes_condicion')->where('anio',$anio)->where('id_cond_exonerac',$condicion)->get();
+        }
+        else{
+            $sql = DB::table('reportes.vw_contribuyentes_condicion')->where('anio',$anio)->where('id_sect',$sector)->where('id_cond_exonerac',$condicion)->get();
+        }
+
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes.contribuyentes_condicion', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+    }
+
+    public function reporte_num_pred_uso($anio,$sector,$uso){
+
+        if($sector != 0 && $uso != 0){
+            $sql = DB::table('reportes.vw_num_predios_uso')->where('anio',$anio)->where('id_sec',$sector)->where('id_uso_arb',$uso)->get();
+            //$sql = DB::table('reportes.vw_num_predios_uso')->get();
+        }
+        elseif($sector == 0 && $uso != 0){
+            $sql = DB::table('reportes.vw_num_predios_uso')->where('anio',$anio)->where('id_uso_arb',$uso)->get();//->where('anio',$anio)->where('id_sect',$sector)->where('id_cond_exonerac',$condicion)->limit(100)->get();
+
+        }elseif($sector != 0 && $uso == 0){
+            $sql = DB::table('reportes.vw_num_predios_uso')->where('anio',$anio)->where('id_sec',$sector)->get();
+        }else{
+            $sql = DB::table('reportes.vw_num_predios_uso')->where('anio',$anio)->get();
+        }
+
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes.num_pred_uso', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+
+    }
+
+    public function reporte_adult_pensio($anio,$sector){
+
+        if($sector == 0){
+            $sql = DB::table('reportes.vw_contribuyentes_condicion')->where('anio',$anio)->where(function($sql) {
+                $sql->where('id_cond_exonerac', 4)
+                    ->orWhere('id_cond_exonerac', 5);
+            })->get();
+        }
+        else{
+            $sql = DB::table('reportes.vw_contribuyentes_condicion')->where('anio',$anio)->where('id_sect',$sector)->where(function($sql) {
+                $sql->where('id_cond_exonerac', 4)
+                    ->orWhere('id_cond_exonerac', 5);
+            })->get();
+        }
+
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes.contr_adulto_pensionista', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+    }
 
 }
