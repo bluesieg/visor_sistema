@@ -76,7 +76,7 @@ function all_update_env_op(id_gen_fis,env_op){
     $.ajax({
         url:'updat_env_doc',
         type:'GET',
-        data:{id_gen_fis:id_gen_fis,env_op:env_op},
+        data:{id_gen_fis:id_gen_fis,env_op:env_op,doc_ini:2},
         success:function(data){},
         error: function(){}
     });    

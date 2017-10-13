@@ -11,40 +11,108 @@ class Caja_Est_CuentasController extends Controller
 {
     use DatesTranslator;
 
-    public function index()
-    {     
+    public function index(){     
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         return view('caja/vw_caja_est_cuentas',compact('anio'));
     }
-
-    public function create()
-    {
-        //
+    function vw_fracc_est_cta(){
+        $anio = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('caja/vw_fracc_est_cta',compact('anio'));
     }
+    function conv_fracc_estcta(Request $request){
+        $id_contrib=$request['id_contrib'];      
+        $totalg = DB::select("select count(id_conv) as total from fraccionamiento.vw_convenios where id_contribuyente='".$id_contrib."'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
 
-    public function store(Request $request)
-    {
-        //
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('fraccionamiento.vw_convenios')->where('id_contribuyente',$id_contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        foreach ($sql as $Index => $Datos) {            
+            $Lista->rows[$Index]['id'] = $Datos->id_conv;
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->nro_convenio,
+                trim($Datos->anio),                
+                $Datos->id_contribuyente,
+                str_replace('-','',$Datos->contribuyente),
+                $Datos->fec_reg,
+                $Datos->interes,
+                $Datos->nro_cuotas,
+                trim($Datos->est_actual),
+                $Datos->total_convenio
+            );
+        }        
+        return response()->json($Lista);
     }
+    function get_det_fracc(Request $request){
+        $id_conv=$request['id_conv'];      
+        $totalg = DB::select("select count(id_conv_mtr) as total from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr=".$id_conv);
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
 
-    public function show($id)
-    {
-        //
-    }
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
 
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+        $sql = DB::table('fraccionamiento.vw_trae_cuota_conv')->where('id_conv_mtr',$id_conv)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        $fch_q_pago="";
+        foreach ($sql as $Index => $Datos) {
+            if($Datos->fecha_q_pago){
+                $fch_q_pago=$this->getCreatedAtAttribute($Datos->fecha_q_pago)->format('d-F-Y');
+            }else{
+                $fch_q_pago="";
+            }
+            $Lista->rows[$Index]['id'] = $Datos->id_det_conv;
+            $Lista->rows[$Index]['cell'] = array(
+                $Datos->nro_cuota,
+                $this->getCreatedAtAttribute($Datos->fec_pago)->format('d-F-Y'),
+                $Datos->estado,
+                $fch_q_pago,
+                $Datos->total,
+            );
+        }        
+        return response()->json($Lista);
     }
     
     function caja_est_cuentas(Request $request){
@@ -100,7 +168,7 @@ class Caja_Est_CuentasController extends Controller
         return response()->json($Lista);
     }
     
-    function print_est_cta_contrib($id_contrib,$desde,$hasta){
+    function print_est_cta_contrib($id_contrib,$desde,$hasta){        
         $fracc="";
         $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
         $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
@@ -117,5 +185,20 @@ class Caja_Est_CuentasController extends Controller
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a4','landscape');
         return $pdf->stream();
+    }
+    
+    function print_estcta_fracc($id_contrib,$id_conv){
+        
+        $conv = DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
+        $fracc = DB::select("select * from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr=".$id_conv." order by nro_cuota");
+        $cc=$fracc[0]->total;
+        $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
+        
+        $fecha_larga = mb_strtoupper($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
+        $view = \View::make('caja.reportes.est_cta_fracc',compact('contrib','conv','fecha_larga','fracc'))->render();
+        $pdf = \App::make('dompdf.wrapper');            
+        $pdf->loadHTML($view)->setPaper('a4');
+        return $pdf->stream();            
+
     }
 }

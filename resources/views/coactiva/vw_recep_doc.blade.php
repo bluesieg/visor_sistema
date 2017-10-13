@@ -60,8 +60,8 @@
                                         <span class="input-group-addon">Documento<i class="icon-append fa fa-file-text" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
                                             <select id="vw_recep_doc_tip_doc" class="form-control">
-                                                <option value="1">(OP) Orden de Pago</option>
-                                                <option value="2">(RD) Res. de Determin.</option>
+                                                <option value="2">(OP) Orden de Pago</option>
+                                                <option value="1">(RD) Res. de Determin.</option>
                                             </select>
                                         </div>
                                     </div>
@@ -131,7 +131,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#menu_coactiva").show();
-        $("#li_recep_doc").addClass('cr-active');        
+        $("#li_recep_doc").addClass('cr-active');
+        tip_bus=$("input:radio[name='myradio_resep_doc']:checked").val();
         jQuery("#t_recep_doc").jqGrid({
             url: 'coactiva_recep_doc?tip_doc=0',
             datatype: 'json', mtype: 'GET',

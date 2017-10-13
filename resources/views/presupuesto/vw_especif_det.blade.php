@@ -37,23 +37,23 @@
                         </div>
                     </section>
                     <section class="col col-lg-6">
-                        <h1 class="txt-color-green"><b>Especifica...</b></h1>
+                        <h1 class="txt-color-green"><b>Especifica Detalle...</b></h1>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="text-right">                                    
                                     <label>Filtro Año:</label>
-                                    <select id="vw_especifica_anio"  class="input-sm">
+                                    <select id="vw_esp_det_anio"  class="input-sm">
                                         @foreach ($anio as $anio)
                                         <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                         @endforeach
                                     </select><i></i>                                    
-                                    <button onclick="dlg_especifica();" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                    <button onclick="dlg_esp_detalle();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                                     </button>
-                                    <button onclick="up_dlg_especifica();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                    <button onclick="up_dlg_esp_detalle();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                     </button>
-                                    <button onclick="del_especifica();" id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                                    <button onclick="del_esp_detalle();" type="button" class="btn btn-labeled btn-danger">
                                         <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                     </button>
                                 </div>                        
@@ -67,7 +67,13 @@
                                     <table id="table_Especifica"></table>
                                     <div id="p_table_Especifica"></div>
                                     </div> 
-                                </section>                                     
+                                </section>
+                                <section style="padding-right:5px;">
+                                    <div class="well well-sm well-light" style="padding:0px; margin-top: -10px">
+                                    <table id="table_Esp_Detalle"></table>
+                                    <div id="p_table_Esp_Detalle"></div>
+                                    </div> 
+                                </section>
                             </div>
                         </div>
                     </section>
@@ -81,10 +87,10 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $("#menu_presupuesto").show();
-    $("#li_pres_especi").addClass('cr-active');
+    $("#li_pres_especideta").addClass('cr-active');
     MensajeDialogLoadAjax('content','Cargando');
     jQuery("#table_Generica").jqGrid({
-        url: 'get_generica?anio='+$("#vw_especifica_anio").val(),
+        url: 'get_generica?anio='+$("#vw_esp_det_anio").val(),
         datatype: 'json', mtype: 'GET',
         height: 100, autowidth: true,        
         colNames: ['Codigo', 'Descripción - Genérica'],
@@ -102,14 +108,14 @@ $(document).ready(function () {
                 $("#table_Generica").setSelection(firstid);
             }
         },
-        onSelectRow: function (Id) { fn_actualizar_grilla('table_SubGenerica','get_subgenerica?anio='+$("#vw_especifica_anio").val()+'&id_gener='+Id); },               
+        onSelectRow: function (Id) { fn_actualizar_grilla('table_SubGenerica','get_subgenerica?anio='+$("#vw_esp_det_anio").val()+'&id_gener='+Id); },               
     });
     
     setTimeout(function(){ 
         id_gener = $('#table_Generica').jqGrid ('getGridParam', 'selrow');
         if(!id_gener){ id_gener=0; }
         jQuery("#table_SubGenerica").jqGrid({
-            url: 'get_subgenerica?anio='+$("#vw_especifica_anio").val()+'&id_gener='+id_gener,
+            url: 'get_subgenerica?anio='+$("#vw_esp_det_anio").val()+'&id_gener='+id_gener,
             datatype: 'json', mtype: 'GET',
             height: 100, autowidth: true,
             toolbarfilter: true,
@@ -130,14 +136,14 @@ $(document).ready(function () {
                     $('#table_SubGen_Detalle').jqGrid('clearGridData');
                 }
             },
-            onSelectRow: function (Id) { fn_actualizar_grilla('table_SubGen_Detalle','get_subgenerica_detalle?anio='+$("#vw_especifica_anio").val()+'&id_sub_gen='+Id);},            
+            onSelectRow: function (Id) { fn_actualizar_grilla('table_SubGen_Detalle','get_subgenerica_detalle?anio='+$("#vw_esp_det_anio").val()+'&id_sub_gen='+Id);},            
         });        
     }, 500);
     setTimeout(function(){ 
         id_sub_gen = $('#table_SubGenerica').jqGrid ('getGridParam', 'selrow');
         if(!id_sub_gen){ id_sub_gen=0; }
         jQuery("#table_SubGen_Detalle").jqGrid({
-            url: 'get_subgenerica_detalle?anio='+$("#vw_especifica_anio").val()+'&id_sub_gen='+id_sub_gen,
+            url: 'get_subgenerica_detalle?anio='+$("#vw_esp_det_anio").val()+'&id_sub_gen='+id_sub_gen,
             datatype: 'json', mtype: 'GET',
             height: 100, autowidth: true,
             toolbarfilter: true,
@@ -159,16 +165,16 @@ $(document).ready(function () {
                     $('#table_Especifica').jqGrid('clearGridData');                    
                 }
             },
-            onSelectRow: function (Id) {fn_actualizar_grilla('table_Especifica','get_especifica?anio='+$("#vw_especifica_anio").val()+'&id_sub_gen_det='+Id);}            
+            onSelectRow: function (Id) {fn_actualizar_grilla('table_Especifica','get_especifica?anio='+$("#vw_esp_det_anio").val()+'&id_sub_gen_det='+Id);}            
         });        
     }, 1000);
     setTimeout(function(){ 
         id_sub_gen_det = $('#table_SubGen_Detalle').jqGrid ('getGridParam', 'selrow');
         if(!id_sub_gen_det){ id_sub_gen_det=0; }
         jQuery("#table_Especifica").jqGrid({
-            url: 'get_especifica?anio='+$("#vw_especifica_anio").val()+'&id_sub_gen_det='+id_sub_gen_det,
+            url: 'get_especifica?anio='+$("#vw_esp_det_anio").val()+'&id_sub_gen_det='+id_sub_gen_det,
             datatype: 'json', mtype: 'GET',
-            height: 350, autowidth: true,
+            height: 100, autowidth: true,
             toolbarfilter: true,
             colNames: ['cod_especifica','Codigo', 'Descripción - Especifica'],
             rowNum: 15, sortname: 'id_especif', sortorder: 'asc', viewrecords: true, caption: 'Especifica', align: "center",
@@ -184,13 +190,41 @@ $(document).ready(function () {
                 if (idarray.length > 0) {
                     var firstid = jQuery('#table_Especifica').jqGrid('getDataIDs')[0];
                     $("#table_Especifica").setSelection(firstid);
+                }else{
+                    $('#table_Esp_Detalle').jqGrid('clearGridData');                    
                 }
             },
-            onSelectRow: function (Id) {},
-            ondblClickRow: function (Id) {up_dlg_especifica();}
+            onSelectRow: function (Id){fn_actualizar_grilla('table_Esp_Detalle','get_esp_detalle?anio='+$("#vw_esp_det_anio").val()+'&id_espec='+Id);}            
+        });        
+    }, 1500);
+    setTimeout(function(){ 
+        id_espec = $('#table_Especifica').jqGrid ('getGridParam', 'selrow');
+        if(!id_espec){ id_espec=0; }
+        jQuery("#table_Esp_Detalle").jqGrid({
+            url: 'get_esp_detalle?anio='+$("#vw_esp_det_anio").val()+'&id_espec='+id_espec,
+            datatype: 'json', mtype: 'GET',
+            height: 180, autowidth: true,
+            toolbarfilter: true,
+            colNames: ['cod_esp_det','Codigo', 'Descripción - Especifica'],
+            rowNum: 15, sortname: 'id_espec_det', sortorder: 'asc', viewrecords: true, caption: 'Especifica Detalle', align: "center",
+            colModel: [     
+                {name: 'cod_esp_det', index: 'cod_esp_det',hidden:true},
+                {name: 'cod', index: 'cod', align: 'center', width: 50},
+                {name: 'desc', index: 'desc', align: 'left', width: 300}            
+            ],
+            pager: '#p_table_Esp_Detalle',
+            rowList: [15, 20],
+            gridComplete: function () {
+                var idarray = jQuery('#table_Esp_Detalle').jqGrid('getDataIDs');
+                if (idarray.length > 0) {
+                    var firstid = jQuery('#table_Esp_Detalle').jqGrid('getDataIDs')[0];
+                    $("#table_Esp_Detalle").setSelection(firstid);
+                }
+            },            
+            ondblClickRow: function (Id) {up_dlg_esp_detalle();}
         });
         MensajeDialogLoadAjaxFinish('content');
-    }, 1500);
+    }, 2500);
     $(window).on('resize.jqGrid', function () {
         $("#table_Generica").jqGrid('setGridWidth', $("#con2").width());
         $("#table_SubGenerica").jqGrid('setGridWidth', $("#con3").width());
@@ -198,8 +232,8 @@ $(document).ready(function () {
 });
 </script>
 @stop
-<script src="{{ asset('archivos_js/presupuesto/especifica.js') }}"></script>
-<div id="dlg_especifica" style="display: none;">
+<script src="{{ asset('archivos_js/presupuesto/esp_detalle.js') }}"></script>
+<div id="dlg_esp_detalle" style="display: none;">
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
@@ -209,13 +243,13 @@ $(document).ready(function () {
                             <section>
                                 <label class="label">Código:</label>
                                 <label class="input">
-                                    <input id="especifica_cod" onkeypress="return soloDNI(event);" type="text" placeholder="0" class="input-sm" style="width:80px;">
+                                    <input id="esp_det_cod" onkeypress="return soloDNI(event);" type="text" placeholder="0" class="input-sm" style="width:80px;">
                                 </label>                        
                             </section>
                             <section>
                                 <label class="label">Descripción:</label>
                                 <label class="input">
-                                    <input id="especifica_desc" type="text" placeholder="Descripción" class="input-sm text-uppercase">
+                                    <input id="esp_det_desc" type="text" placeholder="Descripción" class="input-sm text-uppercase">
                                 </label>                      
                             </section>
                         </fieldset>

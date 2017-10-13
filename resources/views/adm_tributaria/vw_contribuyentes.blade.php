@@ -25,8 +25,8 @@
                             <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
-<!--                            <button onclick="eliminar_contrib();" id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
-                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+<!--                            <button onclick="dlg_new_persona(46981875);" id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Persona
                             </button>-->
                             <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
@@ -133,9 +133,9 @@
             if (e.which == 13) { 
                 tipo = $("#cb_tip_doc_3").val();
                 if(tipo=='02'){
-                    fn_consultar_dni(); 
+                    get_datos_dni(); 
                 }else if (tipo=='00'){
-                    fn_consultar_ruc();
+                    get_datos_ruc();
                 }
             }
         });        
@@ -351,55 +351,63 @@
                 <div class="panel panel-success" style="border: 0px !important;">
 <!--                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>-->
                     <div class="panel-body">
-                        <fieldset>
+                        <fieldset class="col col-lg-9">
                             <div class="row">
                                 <section class="col col-6" style="padding-right:5px;">
                                     <label class="label">Tipo Documento:</label>                                   
                                     <label class="select">
-                                        <select id="cb_tip_doc_3" onchange="filtro_tipo_doc_pers(this.value);" class="input-sm">
+                                        <select id="cb_tip_doc_3" name="cb_tip_doc_3" onchange="filtro_tipo_doc_pers(this.value);" class="input-sm">
                                         @foreach ($tip_doc as $tip_doc3)
                                         <option value='{{$tip_doc3->tip_doc}}' >{{trim($tip_doc3->tipo_documento)}}</option>
                                         @endforeach                                          
                                         </select><i></i> </label>                                                       
                                 </section>
-                                <section class="col col-6" style="padding-left:5px;">
+                                <section class="col col-4" style="padding-left:5px;padding-right: 5px;">
                                     <label class="label">Nro. Documento:</label>
                                     <label class="input">
-                                        <input id="pers_nro_doc" type="text" onkeypress="return soloDNI(event);" maxlength="8" placeholder="00000000" class="input-sm">
-                                    </label>                                                                                            
+                                        <input id="pers_nro_doc" name="pers_nro_doc" type="text" onkeypress="return soloDNI(event);" maxlength="8" placeholder="00000000" class="input-sm">
+                                    </label>                                    
+                                </section>
+                                <section class="col col-2" style="padding-left:5px;">
+                                    <label class="label">&nbsp;</label>
+                                    <button onclick="btn_bus_getdatos();" type="button" class="btn btn-labeled btn-primary">
+                                        <span class="btn-label" style="left: 0px;">
+                                            <i class="fa fa-search"></i>
+                                        </>Buscar
+                                   </button>
                                 </section>
                             </div>
                             <div class="row">
                                 <section class="col col-3" style="padding-right:5px;">
                                     <label class="label">Ape.Paterno:</label>
                                     <label class="input">
-                                        <input id="pers_pat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                        <input id="pers_pat" name="pers_pat" type="text" maxlength="50" class="input-sm text-uppercase">
                                     </label>                                    
                                 </section>
                                 <section class="col col-3" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Ape.Materno:</label>
                                     <label class="input">
-                                        <input id="pers_mat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                        <input id="pers_mat" name="pers_mat" type="text" maxlength="50" class="input-sm text-uppercase">
                                     </label>                                                                     
                                 </section>
                                 <section class="col col-6" style="padding-left:5px;">
                                     <label class="label">Nombres:</label>
                                     <label class="input">
-                                        <input id="pers_nombres" type="text" maxlength="100" class="input-sm text-uppercase">
+                                        <input id="pers_nombres" name="pers_nombres" type="text" maxlength="100" class="input-sm text-uppercase">
                                     </label>                                                                     
                                 </section> 
                             </div>                            
                             <section>
                                 <label class="label">Razon Social:</label>
                                 <label class="input">
-                                    <input id="pers_raz_soc" type="text" class="input-sm text-uppercase">
+                                    <input id="pers_raz_soc" name="pers_raz_soc" type="text" class="input-sm text-uppercase">
                                 </label>                                                 
                             </section>
                             <div class="row">
                                 <section class="col col-6" style="padding-right:5px;">
                                     <label class="label">Sexo:</label>                                   
                                     <label class="select">
-                                        <select id="pers_sexo" class="input-sm text-uppercase">
+                                        <select id="pers_sexo" name="pers_sexo" class="input-sm text-uppercase">
                                             <option value="-">Seleccionar</option>
                                             <option value="1">Masculino</option>
                                             <option value="0">Femenino</option>        
@@ -408,16 +416,15 @@
                                 <section class="col col-6" style="padding-left:5px;">
                                     <label class="label">Fecha Nac.:</label>
                                     <label class="input">
-                                        <input id="pers_fnac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="dia/mes/año" class="input-sm">
+                                        <input id="pers_fnac" name="pers_fnac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="dia/mes/año" class="input-sm">
                                     </label>                                                                                                          
                                 </section>                                
                             </div>
-<!--                            <section>
-                                <label class="label">Domicilio Fiscal:</label>
-                                <label class="input">
-                                    <input id="pers_dom_fis" type="text" class="input-sm text-uppercase">
-                                </label>                                
-                            </section>-->
+                        </fieldset>
+                        <fieldset class="col col-lg-3 text-align-center">
+                            <section>
+                             <img id="pers_foto" src="{{asset('img/avatars/male.png')}}" name="pers_foto" style="width: 160px;height: 220px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">   
+                            </section>
                         </fieldset>
                     </div>
                 </div>

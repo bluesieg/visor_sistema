@@ -60,7 +60,7 @@
                 {name: 'nro_convenio', index: 'nro_convenio',align: 'center',width: 80},
                 {name: 'anio', index: 'anio',width: 80,align: 'center'},
                 {name: 'id_contribuyente', index: 'id_contribuyente',hidden:true},
-                {name: 'id_contribuyente', index: 'id_contribuyente',width: 200},
+                {name: 'contribuyente', index: 'contribuyente',width: 200},
                 {name: 'fec_reg', index: 'fec_reg', width: 80,align: 'center'},
                 {name: 'interes', index: 'interes',align: 'center', width: 80},
                 {name: 'nro_cuotas', index: 'nro_cuotas', width: 80,align: 'center'},

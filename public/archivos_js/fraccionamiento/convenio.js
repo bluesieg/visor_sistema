@@ -126,6 +126,16 @@ function array_det_convenio(id_conv) {
         console.log(i);
         btn_insert_det_conv(i, id_conv);                       
     }
+//    var i = 0;
+//    var id = window.setInterval(function(){
+//        if(i >= n_cuotas) {
+//            clearInterval(id);
+//            return;
+//        } 
+//        btn_insert_det_conv(i+1, id_conv);
+//        console.log(i+1);
+//        i++;
+//    }, 300);
     fn_actualizar_grilla('table_Convenios','grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val());
     setTimeout(function(){
         MensajeDialogLoadAjaxFinish('vw_conve_fracc_fraccionar');

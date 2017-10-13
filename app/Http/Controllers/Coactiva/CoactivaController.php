@@ -12,7 +12,7 @@ class CoactivaController extends Controller
 {
     use DatesTranslator;
     function letra(){        
-        $monto= 2012;        
+        $monto= '2.00';        
         $le = $this->num_letras($monto);
         echo $le;
     }
@@ -187,7 +187,7 @@ class CoactivaController extends Controller
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
         
-        if($tip_doc=='1'){
+        if($tip_doc=='2'){
             if($tip_bus=='1'){
                 $desde= str_replace('/','-',$request['desde']);
                 $hasta=str_replace('/','-',$request['hasta']);
@@ -198,7 +198,15 @@ class CoactivaController extends Controller
                 $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=0 and nro_fis between '".$del."' and '".$al."' ");            
             }
         }else{
-            $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=0 and verif_env=0");            
+            if($tip_bus=='1'){
+                $desde= str_replace('/','-',$request['desde']);
+                $hasta=str_replace('/','-',$request['hasta']);
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=0 and fch_env between '".$desde."' and '".$hasta."' ");            
+            }else if($tip_bus=='2'){
+                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
+                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
+                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=0 and nro_fis between '".$del."' and '".$al."' ");            
+            }
         }
         
 
@@ -218,7 +226,7 @@ class CoactivaController extends Controller
             $start = 0;
         }
         
-        if($tip_doc=='1'){
+        if($tip_doc=='2'){
             if($tip_bus=='1'){
                 $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',2)->where('verif_env',0)->whereBetween('fch_env',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
             }else if($tip_bus=='2'){
@@ -353,9 +361,23 @@ class CoactivaController extends Controller
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
         }else if($documento[0]->id_tip_doc=='7'){
-//            $documento=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
-            
-            $view = \View::make('coactiva.reportes.req_pago')->render();
+            $doc=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+            $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
+            $resol=new \stdClass();
+            foreach ($doc as $Index => $Datos) {
+                $resol->id_doc=$Datos->id_doc;
+                $resol->id_contrib=$Datos->id_contrib;
+                $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
+                $resol->nro_resol=$nro_resol;
+                $resol->nro_exped=$Datos->nro_exped;
+                $resol->anio_resol=$Datos->anio_resol;
+                $resol->monto=$Datos->monto;
+                $resol->periodos=$Datos->periodos;
+                $resol->nro_rd=$Datos->nro_rd;
+                $resol->dom_fis=$Datos->dom_fis;
+                $resol->fch_larga=mb_strtolower($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
+            }
+            $view = \View::make('coactiva.reportes.req_pago',compact('resol'))->render();
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();

@@ -146,7 +146,7 @@ function update_contrib(){
 
 function dlg_new_persona(nro_doc){
     $("#dialog_Personas").dialog({
-        autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 750, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: PERSONAS :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
@@ -164,19 +164,27 @@ function dlg_new_persona(nro_doc){
     $("#pers_nro_doc").val(nro_doc);
     tipo = $("#cb_tip_doc_3").val();
     if(tipo=='02'){
-        fn_consultar_dni();
+        get_datos_dni();
         $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
         $("#pers_raz_soc").removeAttr('disabled');        
         $("#pers_raz_soc").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
         $("#pers_nro_doc").attr('maxlength',8);        
-    }else if (tipo=='00'){
-        fn_consultar_ruc();
+    }else if (tipo=='00'){        
+        get_datos_ruc();
         $("#pers_raz_soc").removeAttr('disabled');
         $("#pers_raz_soc").val('');
         $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
         $("#pers_nro_doc").attr('maxlength',11);        
+    }
+}
+function btn_bus_getdatos(){
+    tipo = $("#cb_tip_doc_3").val();
+    if(tipo=='02'){
+        get_datos_dni(); 
+    }else if (tipo=='00'){
+        get_datos_ruc();
     }
 }
 function new_persona(){
@@ -186,7 +194,6 @@ function new_persona(){
             return false;
         }
     }
-
     $.ajax({  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         url: 'insert_personas',
@@ -199,7 +206,8 @@ function new_persona(){
             pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
             pers_nro_doc : $("#pers_nro_doc").val() || '-',
             pers_sexo : $("#pers_sexo").val() || '-',
-            pers_fnac : $("#pers_fnac").val() || '1900-01-01'
+            pers_fnac : $("#pers_fnac").val() || '1900-01-01',
+            pers_foto:$("#pers_foto").attr("src")
         },
         success: function (data) {
             if(data){
@@ -210,10 +218,11 @@ function new_persona(){
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
         }
-    });    
+    }); 
 }
 function limpiar_personas(){
     $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac").val('');
+    $("#pers_foto").attr("src", "img/avatars/male.png");
 }
 
 function new_contrib() { 
@@ -322,6 +331,7 @@ function filtro_tipo_doc_pers(tipo) {
         $("#pers_nro_doc").attr('maxlength',11);
         $("#pers_nro_doc").val('');
         $("#pers_pat,#pers_mat,#pers_nombres").val('');
+        $("#pers_foto").attr("src", "img/avatars/male.png");
     }
 }
 
@@ -454,7 +464,7 @@ function current_tab(id_report){
     $current_tab=id_report;
 }
 
-function eliminar_contrib(){
+//function eliminar_contrib(){
 //    id_contrib = $('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
 //    $.confirm({
 //        title: '.:Cuidado... !',
@@ -475,7 +485,5 @@ function eliminar_contrib(){
 //            },
 //            Cancelar: function () {}
 //        }
-//    });
-    
-}
-
+//    });    
+//}

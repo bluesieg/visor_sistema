@@ -1,7 +1,7 @@
 function dialog_especifica(tipe){
     $("#dlg_especifica").dialog({
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.: Sub - Generica :.</h4></div>",
+        title: "<div class='widget-header'><h4>.: Especifica :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-primary",

@@ -23,12 +23,12 @@ class EnvDocCoactivaController extends Controller
         $data->fch_ini = date('Y-m-d');
         $data->estado = 1;
         $data->anio = date('Y');
+        $data->doc_ini=2;
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_gen_fis);
             return $data->id_coa_mtr;
         }
-        
     }
     public function create_coa_documentos($id_coa_mtr,$id_gen_fis){
         $fch_emi = DB::table('recaudacion.orden_pago_master')->where('id_gen_fis',$id_gen_fis)->value('fch_env');
@@ -140,7 +140,7 @@ class EnvDocCoactivaController extends Controller
             if (count($val) >= 1) {
                 $val->env_op=$request['env_op'];            
                 $val->fch_env=date('d-m-Y');            
-                $val->hora_env=date('h:i A');            
+                $val->hora_env=date('h:i A');
                 $val->save();
             }
             $sql = $this->create_coa_master($val->id_contrib,$request['id_gen_fis']);

@@ -171,7 +171,7 @@
                                 <a href='especifica' title="Especifica"><i class="glyphicon glyphicon-lg glyphicon-fw glyphicon-tree-deciduous"></i> <span class="menu-item-parent">Especifica</span></a>                            
                             </li>
                             <li id="li_pres_especideta">
-                                <a href="especi_detalle" title="Especifica Detalle"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Especifica Detalle</span></a>
+                                <a href="especifica_detalle" title="Especifica Detalle"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Especifica Detalle</span></a>
                             </li>
                             <li id="li_pres_proced">
                                 <a href="procedimientos" title="Procedimientos"><i class="fa fa-lg fa-fw fa-print"></i> <span class="menu-item-parent">Procedimientos</span></a>
@@ -209,6 +209,9 @@
                             </li>
                             <li id="li_vent_est_cta">
                                 <a href="estado_de_cta" title="Estado de Cuentas"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Estado de Cuentas</span></a>
+                            </li>                            
+                            <li id="li_vent_est_cta_fracc">
+                                <a href="est_cta_fracc" title="Estado de Cuenta de Fraccinamiento"><i class="fa fa-lg fa-exchange"></i> <span class="menu-item-parent">Consulta Fraccionam.</span></a>
                             </li>
                         </ul>	
                     </li>
@@ -234,6 +237,9 @@
                             </li>
                             <li id="li_reso_deter">
                                 <a href='reso_deter' title="Crear Resolución de Determinación"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Generar R.D.</span></a>                            
+                            </li>
+                            <li id="li_env_rd_a_coac">
+                                <a href='env_rd_coactiva' title="Enviar RD a Coactiva"><i class="fa fa-file-text-o"></i> <span class="menu-item-parent">Envio RD a Coactiva</span></a>                            
                             </li>
                         </ul>	
                     </li> 

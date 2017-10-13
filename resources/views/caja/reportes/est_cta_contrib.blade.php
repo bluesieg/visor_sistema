@@ -163,34 +163,7 @@
                     <div class="contenedor" style="left: 0px;top: 362px;height: 78px;"><center><h2 style="margin-top:20px">En Fraccionamiento</h2></center></div>
                 @endif
             </div>
-        @endif
-        @if ($fracc>1)
-            <div style="margin-top: 10px;" id="div_arb">
-                <div> <center> FRACCIONAMIENTO</center></div>
-                <table style="width: 100%;" class="t1">
-                    <thead>
-                        <tr>
-                            <th align="center" width="5%">Nro</th>
-                            <th align="center" width="20%">Fecha de Pago</th>                            
-                            <th align="center" width="20%">Estado</th>
-                            <th align="center" width="20%">Fecha que Pagó</th>
-                            <th align="center" width="20%">Cuota Mensual</th>
-                        </tr>                                        
-                    </thead>
-                    <tbody>                    
-                        @foreach($fracc as $fracc)
-                        <tr>                        
-                            <td style="text-align: center">{{ $fracc->nro_cuota }}</td>
-                            <td style="text-align: center">{{ $fracc->fec_pago }}</td>
-                            <td style="text-align: center">{{ $fracc->estado }}</td>                            
-                            <td style="text-align: center">{{ $fracc->fecha_q_pago }}</td>
-                            <td style="text-align: center">S/.&nbsp;{{ number_format($fracc->total,2,'.',',') }}</td>
-                        </tr>
-                        @endforeach                    
-                    </tbody>
-                </table>                
-            </div>
-        @endif        
+        @endif               
         <script src="{{ asset('archivos_js/reportes/est_cta.js') }}"></script>
         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
         <script type="text/javascript">            

@@ -53,16 +53,6 @@ class ContribuyentesController extends Controller
       
     }
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
     public function edit(Request $request, $id)
     {
         $contrib = new Contribuyentes();
@@ -93,16 +83,6 @@ class ContribuyentesController extends Controller
             return $val->id_contrib;
         }
     }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
     
     function desactiva_contrib(){
 //        $id_contrib=$request['id_rd'];
@@ -123,6 +103,9 @@ class ContribuyentesController extends Controller
         $data->pers_nro_doc = $request['pers_nro_doc'];
         $data->pers_sexo = $request['pers_sexo'];
         $data->pers_fnac = $request['pers_fnac'];
+        $image=$request['pers_foto'];
+        $img_file = file_get_contents($image);
+        $data->pers_foto = base64_encode($img_file);
         $data->save();        
         return $data->id_pers;
     }
@@ -135,6 +118,90 @@ class ContribuyentesController extends Controller
                     'contrib' => trim(str_replace('-','',$contribuyente[0]->contribuyente)),
                     'id_pers' => trim(str_replace('-','',$contribuyente[0]->id_pers)),
             ]);
+        }
+    }
+    function get_datos_dni(Request $request){
+        $rq		= new \stdClass();
+        $rq->data	= new \stdClass();
+        $rq->auth	= new \stdClass();
+
+        $rq->auth->dni	= '80673320';		// DNI del usuario
+        $rq->auth->pas	= 'Pr0gr4m4';           // Contrasenia
+        $rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
+
+        $rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
+        $rq->data->dni	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
+        $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+
+        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+        $options = array(
+                'http' => array(
+                'header'  => "Content-type: application/json\r\n",
+                'method'  => 'POST',
+                'content' => json_encode($rq)
+            )
+        );
+
+        $context  = stream_context_create($options);
+
+        $result = file_get_contents($url, false, $context);
+
+        if ($result === FALSE){  
+          echo 'Error de conexion';
+        }
+
+        $rpta = json_decode($result);
+
+        if($rpta->resp->code == '0000'){
+            $Lista=new \stdClass();
+            $Lista->ape_pat=$rpta->data->apPrimer;
+            $Lista->ape_mat=$rpta->data->apSegundo;
+            $Lista->nombres=$rpta->data->prenombres;
+            $Lista->est_civil=$rpta->data->estadoCivil;
+            $Lista->dir=$rpta->data->direccion;
+            $Lista->ubigeo=$rpta->data->ubigeo;
+            $Lista->foto='https://ehg.pe/delfos/'.$rpta->data->foto;
+            return response()->json($Lista);
+        }
+    }
+    function get_datos_ruc(Request $request){
+        $rq		= new \stdClass();
+        $rq->data	= new \stdClass();
+        $rq->auth	= new \stdClass();
+
+        $rq->auth->dni	= '80673320';		// DNI del usuario
+        $rq->auth->pas	= 'Pr0gr4m4';           // Contrasenia
+        $rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
+
+        $rq->data->ws	= 'getDatosRuc';	// Web Service al que se va a llamar
+        $rq->data->ruc	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
+        $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+
+        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+        $options = array(
+                'http' => array(
+                'header'  => "Content-type: application/json\r\n",
+                'method'  => 'POST',
+                'content' => json_encode($rq)
+            )
+        );
+
+        $context  = stream_context_create($options);
+
+        $result = file_get_contents($url, false, $context);
+
+        if ($result === FALSE){  
+          echo 'Error de conexion';
+        }
+
+        $rpta = json_decode($result);
+
+        if($rpta->resp->code == '0000'){
+            $Lista=new \stdClass();
+            $Lista->raz_soc=$rpta->data->ddp_nombre;
+            return response()->json($Lista);
+        }else{
+            echo $rpta->resp->code.'-'.$rpta->resp->text;
         }
     }
     
@@ -344,3 +411,4 @@ class ContribuyentesController extends Controller
     }
 
 }
+/* ?? 'https://visualsociology.org/wp-content/plugins/userpro/img/default_avatar_male.jpg'*/

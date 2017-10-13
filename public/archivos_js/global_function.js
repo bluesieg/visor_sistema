@@ -364,43 +364,39 @@ function fn_actualizar_grilla(grilla, url) {
 }
 
 var global_captcha_reniec = 0;
-
-function fn_consultar_dni() {
+function get_datos_dni() {    
     nro_doc = ($("#pers_nro_doc").val()).trim();    
     MensajeDialogLoadAjax('dialog_Personas', 'Realizando Busqueda en Reniec...');
     $.ajax({
         type: 'GET',
-        url: 'http://py-devs.com/api/dni/' + nro_doc + '/?format=json',
-        datatype: 'json',
+        url: 'get_datos_dni?nro_doc='+nro_doc,        
         success: function (data) {
-            $("#pers_pat").val(data.ape_paterno);
-            $("#pers_mat").val(data.ape_materno);
+            $("#pers_pat").val(data.ape_pat);
+            $("#pers_mat").val(data.ape_mat);
             $("#pers_nombres").val(data.nombres);
-            MensajeDialogLoadAjaxFinish('dialog_Personas');
+            $("#pers_foto").attr("src",data.foto);            
         },
-        error: function (data) {
-            mostraralertas('* No se Encontró el DNI<br>* Porfavor Ingrese los Datos Manualmente...');
-            MensajeDialogLoadAjaxFinish('dialog_Personas');
+        error: function (data){            
+            mostraralertas('* No se Encontró el DNI<br>* Porfavor Ingrese los Datos Manualmente...');            
         }
     });
-    
+    setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 2000);
 }
-function fn_consultar_ruc() {
+function get_datos_ruc(){
     nro_doc = ($("#pers_nro_doc").val()).trim(); 
     MensajeDialogLoadAjax('dialog_Personas', 'Realizando Busqueda en Sunat...');
     $.ajax({
         type: 'GET',
-        url: 'http://py-devs.com/api/ruc/' + nro_doc + '/?format=json',
+        url: 'get_datos_ruc?nro_doc='+nro_doc,
         datatype: 'json',
         success: function (data) {
-            $("#pers_raz_soc").val(data.nombre);
-            MensajeDialogLoadAjaxFinish('dialog_Personas');
+            $("#pers_raz_soc").val(data.raz_soc);            
         },
         error: function (data) {
-            mostraralertas('* No se Encontró el RUC<br>Porfavor Ingrese los Datos Manualmente...');
-            MensajeDialogLoadAjaxFinish('dialog_Personas');
+            mostraralertas('* No se Encontró el RUC<br>Porfavor Ingrese los Datos Manualmente...');            
         }
-    });    
+    });
+    setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 2000);
 }
 function formato_numero(numero, decimales, separador_decimal, separador_miles) { // v2007-08-06
     numero = parseFloat(numero);

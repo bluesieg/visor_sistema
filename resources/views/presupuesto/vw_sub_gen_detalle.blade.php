@@ -121,8 +121,7 @@ $(document).ready(function () {
             },
             onSelectRow: function (Id) { fn_actualizar_grilla('table_SubGen_Detalle','get_subgenerica_detalle?anio='+$("#vw_subgen_anio").val()+'&id_sub_gen='+Id);},
             ondblClickRow: function (Id) {}
-        });
-        MensajeDialogLoadAjaxFinish('content');
+        });        
     }, 500);
     setTimeout(function(){ 
         id_sub_gen = $('#table_SubGenerica').jqGrid ('getGridParam', 'selrow');    

@@ -31,17 +31,7 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
 
 //Route::get('/vw_general', 'General@index')->name('vw_general');
 //
-//Route::get('msg', function() {
-//    return view('fnewUsuario');
-//});
-
 Route::get('fracc', 'General@fraccionamiento');
-
-//Route::get('/usuarios', function () {
-//    return view("administracion/vw_usuarios");
-//})->name('usuarios');
-
-
 
 Route::group(['middleware' => 'auth'], function() {
     /******************** ********    CONFIGURACION CATASTRAL   ****************************/
@@ -122,6 +112,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('pre_rep_contr/{sect}/{mzna}/{anio}','ContribuyentesController@reporte_contribuyentes');
         Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ContribuyentesController@reporte_contribuyentes_hab_urb');
         Route::get('pre_rep_contr_otro','ContribuyentesController@reporte_contribuyentes_otro');
+        Route::get('get_datos_dni','ContribuyentesController@get_datos_dni');
+        Route::get('get_datos_ruc','ContribuyentesController@get_datos_ruc');
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
         /*ENVIO DE DOCUEMNTOS EJECUCION COACTIVA*/
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
@@ -138,6 +130,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_subgenerica_detalle','SubGenDetalleController@get_subgen_detalle');
         Route::resource('especifica', 'EspecificaController');
         Route::get('get_especifica','EspecificaController@get_espec');
+        Route::resource('especifica_detalle', 'Esp_DetalleController');
+        Route::get('get_esp_detalle', 'Esp_DetalleController@get_esp_detalle');
     });
     
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
@@ -191,6 +185,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
         Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
         Route::get('caja_imp_est_cta/{id_contrib}/{desde}/{hasta}','Caja_Est_CuentasController@print_est_cta_contrib');
+        Route::get('est_cta_fracc','Caja_Est_CuentasController@vw_fracc_est_cta');
+        Route::get('get_conv_fracc_estcta','Caja_Est_CuentasController@conv_fracc_estcta');
+        Route::get('get_det_fracc','Caja_Est_CuentasController@get_det_fracc');
+        Route::get('imp_est_cta_fracc/{id_contrib}/{id_conv}','Caja_Est_CuentasController@print_estcta_fracc');
     });
     Route::group(['namespace' => 'fraccionamiento'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
         Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');        
@@ -289,6 +287,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('trae_pred_carta/{car}', 'Carta_RequerimientoController@get_predios_carta'); //
         Route::get('traepisos_fic/{id}/{fic}', 'Pisos_FicController@listpisos_fic'); //
         Route::get('traeinsta_fic/{id}/{fic}', 'Instalaciones_FicController@listinsta_fic'); //
+        Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
+        Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');
+        Route::get('update_env_rd','EnvRD_CoactivaController@fis_env_rd');
     }); 
     Route::get('$',function(){ echo 0;});//url auxiliar
 
