@@ -74,7 +74,7 @@
         </table>
         </b>
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
-            Se requiere la cancelación de la deuda contenida en el presente documento, en el plzado 20 días hábiles contados a partir del día
+            Se requiere la cancelación de la deuda contenida en el presente documento, en el plazo de 20 días hábiles contados a partir del día
             siguiente de su notificación, bajo apercibimiento de iniciar el procedimiento de Ejecución Coactiva.<br>
             La presente se emite por los tributos y periodos que se indican cuyo monto se ha actualizado al {{$sql->fec_reg}}, luego de esa fecha se
             actualizara con la Tasa de Interes Moratorio de 1.2% conforme lo fijado mediante ordenanza municipal N° 297-2010-MDCC.<br>

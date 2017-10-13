@@ -481,7 +481,6 @@
                                 <div class="panel-body cr-body">
                                     <div class="col col-3" style="padding-right: 0px; margin-top: 8px;">
                                         <div class="input-group input-group-md" style="padding: 0px;">
-                                            <input type="hidden" id="dlg_idpre" value="0">
                                             <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
                                             <div class="icon-addon addon-md" style="padding: 0px;">
                                                 <input id="dlg_dni_pred" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
@@ -490,7 +489,6 @@
                                     </div>
                                     <div class="col col-9" style="padding-right: 10px; margin-top: 8px;">
                                         <div class="input-group input-group-md" >
-                                            <input type="hidden" id="dlg_idpre" value="0">
                                             <span class="input-group-addon"><i class="fa fa-male"></i></span>
                                             <div class="icon-addon addon-md" >
                                                 <input id="dlg_contri_pred" class="col-xs-12 form-control"  style="height: 32px; padding-left: 5px; padding-right: 0px;" type="text" disabled="" >
@@ -510,7 +508,6 @@
                                    
                                     <div class="col col-12" style=" margin-top: 8px;">
                                         <div class="input-group input-group-md">
-                                            <input type="hidden" id="dlg_idpre" value="0">
                                             <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
                                             <div class="icon-addon addon-md" style="padding: 0px;">
                                                 <input id="dlg_inp_direcc" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
@@ -528,7 +525,7 @@
                             <div class="panel panel-success cr-panel-sep" style="height: 154px">
                                 <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
                                 <div class="panel-body cr-body">
-                                    <div id="dlg_img_view" style="padding-top: 5px"></div>
+                                    <div id="dlg_img_view" style="padding-top: 10px" onclick="viewlong()"></div>
                                 </div>
                             </div>
                         </div>
@@ -538,7 +535,7 @@
                                 <div class="panel-heading bg-color-success">Condicion de Propiedad</div>
                                 <div class="panel-body cr-body" style="margin-top: 8px">
                                     <div class="col-xs-12" style="padding-left: 15px;">
-                                        <select id="dlg_sel_condpre"  class="form-control" style="width: 85%">
+                                        <select id="dlg_sel_condpre"  class="form-control" style="width: 85%" onchange="validacond()">
                                             @foreach ($condicion as $condicion)
                                             <option value='{{$condicion->id_cond}}' >{{$condicion->descripcion}}</option>
                                             @endforeach
@@ -549,11 +546,11 @@
                         </div>
                         <div class="panel-group col-xs-1 " style="margin-top: 5px; margin-bottom: 5px  ">                
                             <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">Codominios</div>
+                                <div class="panel-heading bg-color-success">% Codominio</div>
                                 <div class="panel-body cr-body" style="margin-top: 8px">
                                     <div class="col-xs-12" >
                                         <label class="input" style="padding-left: 15px;">
-                                            <input id="dlg_inp_condos" type="number"  class="input-sm" style="width: 85%" >
+                                            <input id="dlg_inp_condos"  type="text"  class="input-sm text-right" maxlength="3" onkeypress="return soloNumeroTab(event);" disabled="" style="width: 85%">
                                         </label>
                                     </div>
                                 </div>
@@ -645,7 +642,6 @@
                                 <div class="panel-body cr-body">
                                     <div class="col col-12" style=" margin-top: 10px;">
                                         <div class="input-group input-group-md">
-                                            <input type="hidden" id="dlg_idpre" value="0">
                                             <span class="input-group-addon">Observaciones &nbsp;<i class="fa fa-asterisk"></i></span>
                                             <div class="icon-addon addon-md" style="padding: 0px;">
                                                 <input id="dlg_observa" class="col-xs-12 form-control"  style="height: 32px; padding-left: 10px; padding-right: 0px;" type="text" maxlength="100">
@@ -1204,6 +1200,13 @@
                 </div>
             </div>
             </div>
+        </div>
+    </div>
+</div>
+<div id="dlg_view_foto" style="display: none;">
+    <div class="panel panel-success cr-panel-sep" style="height: 650px">
+        <div class="panel-body cr-body">
+            <div id="dlg_img_view_big" style="padding-top: 0px"></div>
         </div>
     </div>
 </div> 

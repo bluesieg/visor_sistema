@@ -128,7 +128,7 @@ class Carta_RequerimientoController extends Controller
                 }
                 if($Datos->flg_est==1)
                 {
-                    $estado="Fizcalizado";
+                    $estado="Con Hoja de Liq.";
                     $btnfis='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Fiscalizar</button>';
                     $btnhoj='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Hoja de liq. creada</button>';
                 }

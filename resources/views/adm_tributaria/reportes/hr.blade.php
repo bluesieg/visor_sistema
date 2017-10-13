@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -178,7 +178,7 @@
               <td>{{ $loop->iteration }}</td>
               <td>{{$pre->tp}}</td>
               <td>{{$pre->cod_cat." - ".$pre->nom_via}}</td>
-              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon,2)}}</td>
+              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon,3,".",",")}}</td>
             </tr>
             @endforeach
         </tbody>
@@ -191,17 +191,17 @@
                   <td style="width: 50%; border:0px;" rowspan="3"></td>
                   <td class="nro">18</td>
                   <th style="width: 22.5%">BASE IMPONIBLE</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon'),2) }}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon'),3,".",",") }}</td>
               </tr>
               <tr>
                   <td class="nro">19</td>
                   <th>IMPUESTO ANUAL</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql->ivpp,2)}}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql->ivpp,3,".",",")}}</td>
               </tr>
               <tr>
                   <td class="nro">20</td>
                   <th>IMPUESTO TRIMESTRAL</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format(($sql->ivpp/4),2)}}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format(($sql->ivpp/4),3,".",",")}}</td>
               </tr>
             </thead>
         </table>

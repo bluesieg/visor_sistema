@@ -9,7 +9,7 @@
             <div class="input-group input-group-md">
                 <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
                 <div class="icon-addon addon-md">
-                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="buscar_carta(0)">
                     @foreach ($anio_tra as $anio)
                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                     @endforeach

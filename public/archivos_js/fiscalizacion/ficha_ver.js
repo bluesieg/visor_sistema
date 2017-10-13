@@ -69,6 +69,7 @@ function call_list_contrib_carta(tip)
     
 }
 
+
 function datos_carta($id)
 {
     limpiar_carta();
@@ -114,6 +115,18 @@ function vercarta(id)
 {
     window.open('car_req_rep/'+id);
 }
+function validacond()
+{
+    if($("#dlg_sel_condpre").val()==5||$("#dlg_sel_condpre option:selected").text()=="Condominio")
+    {
+        $("#dlg_inp_condos").prop('disabled', false);
+    }
+    else
+    {
+        $("#dlg_inp_condos").val(100);
+        $("#dlg_inp_condos").prop('disabled', true);
+    }
+}
 autocompletar=0;
 function limpiarpred()
 {
@@ -130,6 +143,7 @@ function limpiarpred()
 }
 function clickmodgrid(Id)
 {
+    $("#dlg_idpre").val(Id);
    limpiarpred();
    $("#dlg_reg_dj").dialog('open');
    MensajeDialogLoadAjax('dlg_reg_dj', '.:: Cargando ...');
@@ -169,6 +183,7 @@ function clickmodgrid(Id)
             $("#dlg_contri_pred").val(r[0].contribuyente);
             $("#dlg_sel_condpre").val(r[0].id_cond_prop);
             $("#dlg_inp_condos").val(r[0].nro_condominios);
+            validacond();
             $("#dlg_sel_estcon").val(r[0].id_est_const);
             $("#dlg_sel_tippre").val(r[0].id_tip_pred);
             $("#dlg_inp_aranc").val(r[0].arancel);
@@ -212,7 +227,7 @@ function dlgsave()
     if($("#dlg_nro_ficha").val()==""){mostraralertasconfoco("Ingresar Número de ficha de Verificación","dlg_nro_ficha");return false}
     if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
     if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
-    Id=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+    Id=$("#dlg_idpre").val();
     puente=$('#table_predios_contri').jqGrid('getCell',Id,'id_puente');
     ajustar(6, 'dlg_nro_ficha');
     MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
@@ -392,20 +407,25 @@ function clickmodpiso()
         type: 'GET',
         success: function(r) 
         {
-            $("#rpiso_inp_nro").val(r[0].cod_piso);
-            $("#rpiso_inp_fech").val(r[0].ani_const);
-            $("#rpiso_inp_clasi").val(parseInt(r[0].clas));
-            $("#rpiso_inp_mat").val(r[0].mep);
-            $("#rpiso_inp_econserv").val(r[0].esc);
-            $("#rpiso_inp_econstr").val(parseInt(r[0].ecc));
-            $("#rpiso_inp_estruc").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
-            $("#rpiso_inp_aconst").val(r[0].area_const);
-            $("#rpiso_inp_acomun").val(r[0].val_areas_com);
+            $("#rpiso_inp_nro,#rpiso_inp_nro_fis").val(r[0].cod_piso);
+            $("#rpiso_inp_fech,#rpiso_inp_fech_fis").val(r[0].ani_const);
+            $("#rpiso_inp_clasi,#rpiso_inp_clasi_fis").val(parseInt(r[0].clas));
+            $("#rpiso_inp_mat, #rpiso_inp_mat_fis").val(r[0].mep);
+            $("#rpiso_inp_econserv, #rpiso_inp_econserv_fis").val(r[0].esc);
+            $("#rpiso_inp_econstr, #rpiso_inp_econstr_fis").val(parseInt(r[0].ecc));
+            $("#rpiso_inp_estruc, #rpiso_inp_estruc_fis").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
+            $("#rpiso_inp_aconst, #rpiso_inp_aconst_fis").val(r[0].area_const);
+            $("#rpiso_inp_acomun, #rpiso_inp_acomun_fis").val(r[0].val_areas_com);
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
             callchangeoption("rpiso_inp_clasi",0);
             callchangeoption("rpiso_inp_mat",0);
             callchangeoption("rpiso_inp_econserv",0);
             callchangeoption("rpiso_inp_econstr",0);
+            
+            callchangeoption("rpiso_inp_clasi_fis",0);
+            callchangeoption("rpiso_inp_mat_fis",0);
+            callchangeoption("rpiso_inp_econserv_fis",0);
+            callchangeoption("rpiso_inp_econstr_fis",0);
 
         },
         error: function(data) {
@@ -485,7 +505,7 @@ function pisoSave()
     success: function(r) 
     {
         MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+        Id_pre=$("#dlg_idpre").val();
         Id_fic=$("#dlg_idfic").val();
         jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
         MensajeDialogLoadAjaxFinish('dlg_reg_piso');
@@ -518,7 +538,7 @@ function pisoUpdate()
         success: function(r) 
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-            Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+            Id_pre=$("#dlg_idpre").val();
             Id_fic=$("#dlg_idfic").val();
             jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
@@ -781,7 +801,7 @@ function instSave()
     success: function(r) 
     {
         MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+        Id_pre=$("#dlg_idpre").val();
         jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
         MensajeDialogLoadAjaxFinish('dlg_reg_inst');
         $("#dlg_reg_inst").dialog('close');
@@ -812,7 +832,7 @@ function instUpdate()
     success: function(r) 
     {
         MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        Id_pre=$('#table_predios_contri').jqGrid ('getGridParam', 'selrow');
+        Id_pre=$("#dlg_idpre").val();
         Id_fic=$("#dlg_idfic").val();
         jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
         MensajeDialogLoadAjaxFinish('dlg_reg_inst');
@@ -825,4 +845,13 @@ function instUpdate()
         console.log(data);
     }
     });
+}
+function viewlong()
+{
+    $("#dlg_img_view_big").html("");
+    $("#dlg_view_foto").dialog({
+    autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+    }).dialog('open');
+    $("#dlg_img_view_big").html($("#dlg_img_view").html());
 }

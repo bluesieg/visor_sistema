@@ -122,7 +122,7 @@
         jQuery("#table_arbitrios").jqGrid({
             url: 'gridarbitrios?pre=0&an=0',
             datatype: 'json', mtype: 'GET',
-            height: '130px', autowidth: true,
+            height: '230px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_arb','Cod. Predio', 'Año','Piso', 'Frec. Barrido', 'Costo Barrido','Frecu. Recojo Residuos',
                 'Costo Recojo Residuos','Cat. Parques y Jadines',
@@ -221,7 +221,7 @@
 </div> 
 <div id="dlg_new_arbi" style="display: none;">
     <input type="hidden" id="inp_hidd_arb" value="0" />
-    <div class="col-xs-6">
+    <div class="col-xs-6" style="background-color: white">
         <div class="panel-body" style="padding-left: 0px;" >
              <label class="label col-xs-4 text-align-left" style="font-size: 1.4em; color:black; padding: 0px;">Mes de Inicio</label>
                 <div class="col-xs-4" style="padding: 0px">
@@ -250,7 +250,7 @@
                 </div>
          </div>
     </div>
-    <div class="col-xs-6 text-align-right">
+    <div class="col-xs-6 text-align-right" style="background-color: white">
         <h1 id="tit_anio" class="txt-color-green" style="margin-bottom: 0px;"> </h1>
     </div>
     <div class="col-xs-12">
@@ -449,16 +449,7 @@
         <!-- end widget div -->
      </div>
     </div>
-    <div class="col-xs-12 text-align-right" style="padding: 0px; margin-top: 5px;">
-        <ul style="padding: 0px;">                                        
-            <button id="btnsavearb" type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="savearb()">
-                <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar Arbítrios
-            </button>
-            <button id="btnupdatearb" type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="updatearb()">
-                <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Modificar Arbítrios
-            </button>
-        </ul>
-    </div>
+    
 </div> 
 @endsection
 

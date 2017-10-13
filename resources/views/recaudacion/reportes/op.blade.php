@@ -65,8 +65,8 @@
         </table>
         </b>
         <div style="width: 100%; text-align: justify">
-            Se requiere la cancelacion de la deuda contenida en el presente documento, en el plazao de 20 días habiles contados a partir del día siguiente de la notificación, bajo apercibimiento de iniciar procedimiento de ejecución coactiva.<br>
-            La presente de emite por los tributos y periodos que se indican, cuyo monto se ha actualizaco a la FECHA DE EMISION, luego de esta fecha se actualizara con la tasa diaria de 0.04% conforme a la tasa de interes fijada.<br>
+            Se requiere la cancelacion de la deuda contenida en el presente documento, en el plazo de 20 días hábiles contados a partir del día siguiente de la notificación, bajo apercibimiento de iniciar procedimiento de ejecución coactiva.<br>
+            La presente de emite por los tributos y periodos que se indican, cuyo monto se ha actualizaco a la FECHA DE EMISIÓN, luego de esta fecha se actualizara con la tasa diaria de 0.04% conforme a la tasa de interes fijada.<br>
             <b>Monto Determinante:</b><br>
             Se ha verificado la existencia de una deuda tributaria no cancelada dentro de los plazos establecidos.<br>
             

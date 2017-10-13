@@ -210,6 +210,25 @@ class PredioController extends Controller
         }        
         return response()->json($todo);
     }
+    public function validar(Request $request)
+    {
+        $count = DB::table('adm_tri.vw_predi_urba')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->count();
+        if($count==0)
+        {
+            return $count;
+        }
+        else
+        {
+            $poseedores=DB::table('adm_tri.vw_predi_urba')->select('contribuyente')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->get();
+            $lista="";
+            foreach ($poseedores as $contri)
+            {
+                $lista=$lista."<br>".$contri->contribuyente;
+            }
+            return $lista;
+        }
+    }
+
     public function listpredio(Request $request)
     {
         header('Content-type: application/json');
@@ -296,7 +315,6 @@ class PredioController extends Controller
 
     public function reporte($tip,$id,$an,$contri) 
     {
-        
         if($tip=='HR'||$tip=='hr')
         {
             $sql = DB::select("select adm_tri.calcular_ivpp($an,$contri)");

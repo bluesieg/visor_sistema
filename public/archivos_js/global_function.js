@@ -438,7 +438,7 @@ var focoglobal = "";
 function mostraralertasconfoco(texto, foco)
 {
     $.SmartMessageBox({
-            title : "Alerta del Sistema!",
+            title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Alerta del Sistema!",
             content : texto,
             buttons : '[Aceptar]'
     }, function(ButtonPressed) {

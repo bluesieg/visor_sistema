@@ -145,7 +145,7 @@ function fn_confirmar_carta()
     if($('#dlg_otros').prop('checked')&&$('#dlg_otros').val()==""){otro=1;}
     $.SmartMessageBox({
             title : "Confirmación Final!",
-            content : "Está por generar Carta de Requerimiento para este Contribuyente, desea Grabar la información",
+            content : "Está por generar Carta de Requerimiento para este Contribuyente, desea Grabar la información?",
             buttons : '[Cancelar][Aceptar]'
     }, function(ButtonPressed) {
             if (ButtonPressed === "Aceptar") {

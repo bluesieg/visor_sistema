@@ -294,16 +294,16 @@
                                 <div class="panel-body cr-body">
                                     <div class="col col-8">
                                         <label class="label">Condicion de Propiedad:</label>                                   
-                                        <select id="dlg_sel_condpre"  class="form-control">
+                                        <select id="dlg_sel_condpre"  class="form-control" onchange="validacond()">
                                             @foreach ($condicion as $condicion)
                                             <option value='{{$condicion->id_cond}}' >{{$condicion->descripcion}}</option>
                                             @endforeach
                                         </select>                       
                                      </div>
                                     <div class="col col-4">
-                                        <label class="label">Condominios</label>
+                                        <label class="label">% Condomin.</label>
                                         <label class="input">
-                                            <input id="dlg_inp_condos" type="number"  class="input-sm" >
+                                            <input id="dlg_inp_condos"  type="text"  class="input-sm text-right" maxlength="3" onkeypress="return soloNumeroTab(event);" disabled="">
                                         </label>
                                     </div>
                                 </div>
@@ -512,12 +512,7 @@
                                         <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                     </a>
                                 </li>
-                                <li class="">
-                                    <a href="#s4" data-toggle="tab" aria-expanded="false">
-                                        Pensionista
-                                        <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
-                                    </a>
-                                </li>
+                                
                             </ul>
                             <div id="myTabContent1" class="tab-content padding-10">
                                 <div id="s1" class="tab-pane fade active in" style="height: 300px">
@@ -598,82 +593,7 @@
                                             </button>
                                         </div>
                                 </div>
-                                <div id="s4" class="tab-pane fade" style="height: 300px">
-                                    <div class="col-xs-10" style="padding: 0px;"> 
-                                        <div class="widget-body">
-                                        <div  class="smart-form">
-                                            <div class="panel-group">                
-                                                <div class="panel panel-success" >
-                                                    <div class="panel-heading bg-color-success">.:: Condición de Inafecto, Exonerado y Beneficiario ::.</div>
-                                                    <div class="panel-body cr-body">
-                                                        
-                                                        <div class='col-lg-3 pd_dlg_cr'>
-                                                            <label class="label">Condicion de Propiedad:</label>                                   
-                                                            <select id="s5_sel_condi"  class="form-control">
-                                                                @foreach ($condi_pen as $condi_pen)
-                                                                <option value='{{$condi_pen->id_con}}' >{{$condi_pen->desc_con}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-xs-12"></div>
-                                                        <div class='col-lg-7 pd_dlg_cr'>
-                                                            <label class="label">Base Legal:</label>
-                                                            <label class="input">
-                                                                <input id="s5_inp_basleg" type="text"  class="input-sm" maxlength="50" >
-                                                            </label>
-                                                        </div>
-                                                        <div class='col-lg-3 '>
-                                                            <label class="label">Expediente N°:</label>
-                                                            <label class="input">
-                                                                <input id="s5_inp_exp" type="text"  class="input-sm"  maxlength="10">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-xs-12"></div>
-                                                        <div class='col-lg-3 pd_dlg_cr'>
-                                                            <label class="label">Resolución N°:</label>
-                                                            <label class="input">
-                                                                <input id="s5_inp_reso" type="text"  class="input-sm" maxlength="10" >
-                                                            </label>
-                                                        </div>
-                                                        <div class='col-lg-3 '>
-                                                            <label class="label">Fecha Resolución:</label>
-                                                            <label class="input">
-                                                                <input id="s5_inp_fechres" type="text"  class="input-sm" data-mask="99/99/9999" data-mask-placeholder="-" >
-                                                            </label>
-                                                        </div>
-                                                        <div class='col-lg-2 '>
-                                                            <label class="label">Año Inicio:</label>
-                                                            <label class="input">
-                                                                <input id="s5_inp_anini" type="text" maxlength="4"  >
-                                                            </label>
-                                                        </div>
-                                                        <div class='col-lg-2 '>
-                                                            <label class="label">Año Fin:</label>
-                                                            <label class="input">
-                                                                <input id="s5_inp_anfin" type="text" maxlength="4"  >
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                     </div>
-                                    </div>
-                                    <div class="col-xs-2" style="padding: 3px;">
-                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicksavePensi()" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-plus-sign"></i>
-                                                </span>
-                                                <label>Grabar pens.</label>
-                                            </button>
-                                            <button id="btn_s5_delpen" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="clickdelPensi()" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-plus-sign"></i>
-                                                </span>
-                                                <label>Borrar pens.</label>
-                                            </button>
-                                        </div>
-                                </div>
+                                
                             </div>
                     </div>    
                 </div>

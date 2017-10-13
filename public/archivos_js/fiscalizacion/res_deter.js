@@ -93,7 +93,7 @@ function fn_sel_hoja()
         autoOpen: false, modal: true, width: 1100, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
-        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Crear Hoja de Liquidación</h4></div>"
+        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Crear Resolución de Determinación</h4></div>"
         }).dialog('open');
         jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
 }

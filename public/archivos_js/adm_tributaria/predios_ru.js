@@ -44,6 +44,12 @@ function llamarcambio()
         $("#dlg_reg_dj").dialog({
         autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  REGISTRO DE DECLARACIONES JURADAS :.</h4></div>",
+        buttons: [
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
         });
         if(tip==1)
         {
@@ -52,6 +58,8 @@ function llamarcambio()
             $("#btnsavepre").show();
             $("#btnmodpre").hide();
             $("#dlg_sel_condpre,#dlg_sel_estcon,#dlg_sel_tippre,#dlg_sel_foradq").val(1);
+            $('#dlg_inp_condos').val(100);
+            $("#dlg_inp_condos").prop('disabled', true);
            
             
         }
@@ -60,16 +68,27 @@ function llamarcambio()
             $("#hidden_dlg_inp_usopre").val(0);
             $("#dlg_inp_usopre_cod,#dlg_inp_usopre,#dlg_sel_condpre").val("");
             $( "#dlg_dni, #dlg_lot,#dlg_contri" ).prop( "disabled", true );
+            $('#dlg_inp_condos').val("");
             $("#btnsavepre").hide();
             $("#btnmodpre").show();
         }
         $("#dlg_sel_gpoterr").val(2);
         $('#dlg_dni,#dlg_contri,#dlg_inp_fech').val("");
-        $('#dlg_inp_condos').val("");
         $("#dlg_inp_areter").val("");
         $("#s5_sel_condi,#s5_inp_basleg,#s5_inp_exp,#s5_inp_reso,#s5_inp_fechres,#s5_inp_anini,#s5_inp_anfin").val("");
     }
-    
+    function validacond()
+    {
+        if($("#dlg_sel_condpre").val()==5||$("#dlg_sel_condpre option:selected").text()=="Condominio")
+        {
+            $("#dlg_inp_condos").prop('disabled', false);
+        }
+        else
+        {
+            $("#dlg_inp_condos").val(100);
+            $("#dlg_inp_condos").prop('disabled', true);
+        }
+    }
     function validarcampos()
     {
         if($('#dlg_inp_condos').val()==""){$('#dlg_inp_condos').val('0');}
@@ -109,6 +128,7 @@ function llamarcambio()
                 $("#dlg_contri").val(r[0].contribuyente);
                 $("#dlg_sel_condpre").val(r[0].id_cond_prop);
                 $("#dlg_inp_condos").val(r[0].nro_condominios);
+                validacond();
                 $("#dlg_sel_estcon").val(r[0].id_est_const);
                 $("#dlg_sel_tippre").val(r[0].id_tip_pred);
                 $("#dlg_sel_foradq").val(r[0].id_form_adq);
@@ -132,32 +152,6 @@ function llamarcambio()
                 jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
                 jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id}).trigger('reloadGrid');
                 jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/'+Id}).trigger('reloadGrid');
-                $.ajax({url: 'pensionista_predios/'+Id,
-                type: 'GET',
-                success: function(r) 
-                {
-                    if(r!=0)
-                    {
-                        $("#s5_sel_condi").val(r[0].id_con);
-                        $("#s5_inp_basleg").val(r[0].bas_leg);
-                        $("#s5_inp_exp").val(r[0].nro_exp);
-                        $("#s5_inp_reso").val(r[0].nro_res);
-                        $("#s5_inp_fechres").val(r[0].fec_res);
-                        $("#s5_inp_anini").val(r[0].ani_ini);
-                        $("#s5_inp_anfin").val(r[0].ani_fin);
-                        $("#btn_s5_delpen").show();
-                    }
-                    else
-                    {
-                        $("#btn_s5_delpen").hide();
-                    }
-                },
-                error: function(data) {
-                    mostraralertas("hubo un error, Comunicar al Administrador");
-                    console.log('error');
-                    console.log(data);
-                }
-                });
 
         },
         error: function(data) {
@@ -177,6 +171,7 @@ function llamarcambio()
         if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
         if($('#dlg_sel_gpocatterr').val()==null){mostraralertasconfoco('Seleccion categoria de Tierras...',"#dlg_sel_gpocatterr");return false}
+        if($('#dlg_inp_condos').val()>100){mostraralertasconfoco('Porcentaje de Posesión no puede ser Mayor al 100%...',"#dlg_inp_condos");return false}
         validarcampos();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: Guardando ...');
         $.ajax({url: 'predios_rural/create',
@@ -210,6 +205,7 @@ function llamarcambio()
     function dlgUpdate()
     {
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
+        if($('#dlg_inp_condos').val()>100){mostraralertasconfoco('Porcentaje de Posesión no puede ser Mayor al 100%...',"#dlg_inp_condos");return false}
         validarcampos();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
         $.ajax({url: 'predios_rural/'+$('#dlg_idpre').val()+'/edit',
@@ -752,68 +748,7 @@ function llamarcambio()
         });
     }
     
-    function  clicksavePensi()
-    {
-        
-        Id_pre=$('#dlg_idpre').val();
-        if(Id_pre==0)
-        {
-            mostraralertas("Primero Guardar Predio...");
-            return false;
-        }
-        if($("#s5_sel_condi").val()==null){mostraralertasconfoco("seleccionar Condición","#s5_sel_condi");return false;}
-        if($("#s5_inp_basleg").val()==""){mostraralertasconfoco("Ingresar Base Legal","#s5_inp_basleg");return false;}
-        if($("#s5_inp_exp").val()==""){mostraralertasconfoco("Ingresar Nro Expediente","#s5_inp_exp");return false;}
-        if($("#s5_inp_reso").val()==""){mostraralertasconfoco("Ingresar Nro Resolución","#s5_inp_reso");return false;}
-        if($("#s5_inp_fechres").val()==""){mostraralertasconfoco("Ingresar Fecha Resolución","#s5_inp_fechres");return false;}
-        if($("#s5_inp_anini").val()==""){mostraralertasconfoco("Ingresar Año de inicio","#s5_inp_anini");return false;}
-        if($("#s5_inp_anfin").val()==""){mostraralertasconfoco("Ingresar Año de Fin","#s5_inp_anfin");return false;}
-        
-        
-        MensajeDialogLoadAjax('s5', '.:: Guardando ...');
-        $.ajax({url: 'pensionista_predios/create',
-        type: 'GET',
-        data:{condi:$("#s5_sel_condi").val(),basleg:$("#s5_inp_basleg").val(),exp:$("#s5_inp_exp").val(),
-            reso:$("#s5_inp_reso").val(),fechreso:$("#s5_inp_fechres").val(),anini:$("#s5_inp_anini").val(),
-            anfin:$("#s5_inp_anfin").val(),id_pre:Id_pre},
-        success: function(r) 
-        {
-            
-            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-            MensajeDialogLoadAjaxFinish('s5');
-            $("#btn_s5_delpen").show();
-        },
-        error: function(data) {
-            mostraralertas("hubo un error, Comunicar al Administrador");
-            MensajeDialogLoadAjaxFinish('s5');
-            console.log('error');
-            console.log(data);
-        }
-        });
-    }
-    function  clickdelPensi()
-    {
-        Id_pre=$('#dlg_idpre').val();
-        MensajeDialogLoadAjax('s5', '.:: Eliminando ...');
-        $.ajax({
-            url: 'pensionista_predios/destroy',
-            type: 'post',
-            data: {_method: 'delete', _token:$("#btn_s5_delpen").data('token'),id:Id_pre},
-            success: function(r) 
-            {
-                $("#s5_sel_condi,#s5_inp_basleg,#s5_inp_exp,#s5_inp_reso,#s5_inp_fechres,#s5_inp_anini,#s5_inp_anfin").val("");
-                $("#btn_s5_delpen").hide();
-                MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
-                MensajeDialogLoadAjaxFinish('s5');
-            },
-            error: function(data) {
-                mostraralertas("hubo un error, Comunicar al Administrador");
-                MensajeDialogLoadAjaxFinish('s5');
-                console.log('error');
-                console.log(data);
-            }
-        });
-    }
+    
     function callchangeoption(input,tip)
     {
         

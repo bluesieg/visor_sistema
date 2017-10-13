@@ -9,7 +9,7 @@
             <div class="input-group input-group-md">
                 <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
                 <div class="icon-addon addon-md">
-                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="buscar_rd(0)">
                     @foreach ($anio_tra as $anio)
                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                     @endforeach
@@ -288,7 +288,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                                <h2>Seleccione Carta de Requerimiento Relacionada::..</h2>
+                                <h2>Seleccione Hoja de Liquidación Relacionada::..</h2>
                         </header>
                     </div>
                 </section>

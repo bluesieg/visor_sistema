@@ -148,7 +148,25 @@ function create_arb()
     limpiararb();
     $("#dlg_new_arbi").dialog({
         autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.: Arbítrios :.</h4></div>"       
+        title: "<div class='widget-header'><h4>.: Arbítrios :.</h4></div>" ,
+        buttons: [
+            {
+                id:"btnsavearb",
+                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar Arbítrios',
+                "class": "btn btn-labeled bg-color-green txt-color-white",
+                click: function () {savearb();}
+            },
+//            {
+//                id:"btnupdatearb",
+//                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Modificar Arbítrios',
+//                "class": "btn btn-labeled bg-color-blue txt-color-white",
+//                click: function () {updatearb();}
+//            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
     }).dialog('open');
 }
 
