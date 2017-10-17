@@ -51,12 +51,65 @@ class Carta_RequerimientoController extends Controller
     public function show($id)
     {
         $carta=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$id)->get();
+        $carta[0]->fec_fis_ini=$this->getCreatedAtAttribute($carta[0]->fec_fis)->format('d/m/Y');
         $carta[0]->fec_fis=$this->getCreatedAtAttribute($carta[0]->fec_fis)->format('l d \d\e F \d\e\l Y ');
         return $carta;
     }
-
-    public function edit($id)
+    public function get_fisca_enviados($id)
     {
+        $fiscalizadores=DB::table('fiscalizacion.vw_fisca_enviados')->where('id_car',$id)->get();
+        return $fiscalizadores;
+    }
+    public function fisca_enviado_destroy(Request $request)
+    {
+        $fisca=new Fisca_Enviados;
+        $val=  $fisca::where("id_fis_env","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id'];
+    }
+
+    public function edit(Request $request,$id)
+    {
+        $carta=new Carta_Requerimiento;
+        $val=  $carta::where("id_car","=",$id )->first();
+        if(count($val)>=1)
+        {
+            if($request['otrotext']=="-"){
+                 $otrotext="" ;
+            }
+            else{
+                $otrotext=$request['otrotext'];
+            }
+            $val->soli_contra=$request['con'];
+            $val->soli_licen=$request['lic'];
+            $val->soli_dercl=$request['der'];
+            $val->soli_otro=$request['otro'];
+            $val->otro_text=$otrotext;
+            $val->fec_fis=$request['fec'];
+            $val->hora_fis=$request['hor'];
+            $val->anio_fis=$request['anfis'];
+            $val->save();
+        }
+        return $id;
+    }
+    public function anular_carta(Request $request)
+    {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['id'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $carta=new Carta_Requerimiento;
+        $val=  $carta::where("id_car","=",$request['id'])->first();
+        if(count($val)>=1)
+        {
+            $val->flg_anu=1;
+            $val->save();
+        }
+        return $request['id'];
     }
 
     public function update(Request $request, $id)
@@ -120,6 +173,7 @@ class Carta_RequerimientoController extends Controller
             $Lista->total = $total_pages;
             $Lista->records = $count;
             foreach ($sql as $Index => $Datos) {
+                $anu="";
                 if($Datos->flg_est==0)
                 {
                     $estado="Sin Hoja de Liq.";
@@ -129,8 +183,12 @@ class Carta_RequerimientoController extends Controller
                 if($Datos->flg_est==1)
                 {
                     $estado="Con Hoja de Liq.";
-                    $btnfis='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Fiscalizar</button>';
+                    $btnfis='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button" onclick="datos_carta('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Fiscalizar</button>';
                     $btnhoj='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Hoja de liq. creada</button>';
+                }
+                if($Datos->flg_anu==1)
+                {
+                    $anu='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
                 }
                 $Lista->rows[$Index]['id'] = $Datos->id_car;            
                 $Lista->rows[$Index]['cell'] = array(
@@ -141,8 +199,11 @@ class Carta_RequerimientoController extends Controller
                     trim($this->getCreatedAtAttribute($Datos->fec_fis)->format('d/m/Y'))." ".$Datos->hora_fis,
                     $estado,
                     '<button class="btn btn-labeled btn-warning" type="button" onclick="vercarta('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
+                    $anu,
                     $btnfis,
                     $btnhoj
+                    
+                    
                 );
             }
             return response()->json($Lista);

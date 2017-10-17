@@ -14,6 +14,16 @@ class Pisos_FicController extends Controller
     }
     public function create(Request $request)
     {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['carta'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $pisos=new Pisos_Fic;
         $totapisos = DB::select("select count(id_pisos_fic) as total from fiscalizacion.pisos_fic where id_fic='".$request['id_fic']."'");
         $pisos->anio = date("Y");
@@ -49,6 +59,16 @@ class Pisos_FicController extends Controller
     }
     public function edit(Request $request,$id)
     {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['carta'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $pisos=new Pisos_Fic;
         $val=  $pisos::where("id_pisos_fic","=",$id )->first();
         if(count($val)>=1)
@@ -71,7 +91,7 @@ class Pisos_FicController extends Controller
             $val->val_areas_com = $request['acomun'];
             $val->save();
         }
-        return "edit".$id;
+        return $id;
     }
 
     public function update(Request $request, $id)

@@ -270,26 +270,30 @@ Route::group(['middleware' => 'auth'], function() {
         
     });  
     Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
-        Route::resource('reso_deter', 'Res_DeterminacionController');
+        /////carta de requerimiendo
         Route::resource('carta_reque', 'Carta_RequerimientoController');
-        Route::resource('piso_fisca', 'Pisos_ficController');
-        Route::resource('insta_fisca', 'Instalaciones_ficController');
-        Route::resource('ficha_veri', 'Ficha_verificacionController');
-        Route::resource('hoja_liquidacion', 'Hoja_liquidacionController');
-        Route::resource('reso_determinacion', 'Resolucion_DeterminacionController');
         Route::get('carta_set_fisca', 'Carta_RequerimientoController@fisca_enviados_create'); //
         Route::get('car_req_rep/{id}', 'Carta_RequerimientoController@carta_repo'); //
-        Route::get('hoja_liq_rep/{id}', 'Hoja_liquidacionController@hoja_repo'); //
-        Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo'); //
         Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}', 'Carta_RequerimientoController@get_cartas_req'); //
-        Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}', 'Hoja_liquidacionController@get_hojas_liq'); //
-        Route::get('trae_rd/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_rd'); //
         Route::get('trae_pred_carta/{car}', 'Carta_RequerimientoController@get_predios_carta'); //
+        Route::get('trae_fisca_carta/{car}', 'Carta_RequerimientoController@get_fisca_enviados'); //
+        Route::get('fis_env_del', 'Carta_RequerimientoController@fisca_enviado_destroy'); //
+        Route::get('carta_anula', 'Carta_RequerimientoController@fisca_enviado_destroy'); //
+        //// ficha de verificacion
+        Route::resource('ficha_veri', 'Ficha_verificacionController');
+        Route::resource('piso_fisca', 'Pisos_ficController');
         Route::get('traepisos_fic/{id}/{fic}', 'Pisos_FicController@listpisos_fic'); //
+        Route::resource('insta_fisca', 'Instalaciones_ficController');
         Route::get('traeinsta_fic/{id}/{fic}', 'Instalaciones_FicController@listinsta_fic'); //
-        Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
-        Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');
-        Route::get('update_env_rd','EnvRD_CoactivaController@fis_env_rd');
+        ////// hoja de liquidación
+        Route::resource('hoja_liquidacion', 'Hoja_liquidacionController');
+        Route::get('hoja_liq_rep/{id}', 'Hoja_liquidacionController@hoja_repo'); //
+        Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}', 'Hoja_liquidacionController@get_hojas_liq'); //
+        /////// resolucion de determinación
+        Route::resource('reso_deter', 'Res_DeterminacionController');
+        Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo');
+        Route::get('trae_rd/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_rd'); //
+        
     }); 
     Route::get('$',function(){ echo 0;});//url auxiliar
 

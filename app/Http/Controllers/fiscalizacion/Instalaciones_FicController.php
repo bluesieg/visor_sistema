@@ -16,6 +16,16 @@ class Instalaciones_FicController extends Controller
 
     public function create(Request $request)
     {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['carta'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $insta=new Instalaciones_Fic;
         $cat_instal= DB::table('catastro.instalaciones')->where('id_instal',$request['inst'])->get()->first();
         if(count($cat_instal)>=1)
@@ -63,6 +73,16 @@ class Instalaciones_FicController extends Controller
 
     public function edit($id,Request $request)
     {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['carta'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $insta=new Instalaciones_Fic;
         $val=  $insta::where("id_inst_fic","=",$id )->first();
         if(count($val)>=1)
@@ -97,7 +117,7 @@ class Instalaciones_FicController extends Controller
             $val->antiguedad = date("Y")-$request['anio'];
             $val->save();
         }
-        return "edit".$id;
+        return $id;
     }
 
     public function update(Request $request, $id)

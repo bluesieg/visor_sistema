@@ -230,6 +230,7 @@ function dlgsave()
     Id=$("#dlg_idpre").val();
     puente=$('#table_predios_contri').jqGrid('getCell',Id,'id_puente');
     ajustar(6, 'dlg_nro_ficha');
+    carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
     MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
         $.ajax({url: 'ficha_veri/create',
         type: 'GET',
@@ -242,17 +243,28 @@ function dlgsave()
                 tp:$("#dlg_sel_tippre").val(),
                 arcancel:$("#dlg_inp_aranc").val(),
                 ater:$("#dlg_inp_areter").val(),
-                acomun:$("#dlg_inp_arecomter").val()},
+                acomun:$("#dlg_inp_arecomter").val(),
+                carta:carta
+            },
         success: function(r) 
         {
-            $("#dlg_idfic").val(r);
-            $("#btnsaveficha").hide();
-            $("#btnmodficha").show();
-            carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
+            if(r==0)
+            {
+                MensajeAlerta("No se Puede Crear","ya existe una hoja de Liquidación relacionada...",4000);
+            }
+            if(r==-1)
+            {
+                MensajeAlerta("No se Puede Crear","La Carta Relacionada está Anulada...",4000);
+            }
+            if(r>0)
+            {
+                $("#dlg_idfic").val(r);
+                $("#btnsaveficha").hide();
+                $("#btnmodficha").show();
+                MensajeExito("Se Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            }
             jQuery("#table_predios_contri").jqGrid('setGridParam', {url: 'trae_pred_carta/'+carta}).trigger('reloadGrid');
-            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
-            
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -269,6 +281,7 @@ function dlgupdate()
     if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
     id=$("#dlg_idfic").val();
     ajustar(6, 'dlg_nro_ficha');
+    carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
     MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
         $.ajax({url: 'ficha_veri/'+id+'/edit',
         type: 'GET',
@@ -276,19 +289,30 @@ function dlgupdate()
             nro:$("#dlg_nro_ficha").val(),
             obs:$("#dlg_observa").val(),
             cprop:$("#dlg_sel_condpre").val(),
-                condos:$("#dlg_inp_condos").val(),
-                ecc:$("#dlg_sel_estcon").val(),
-                tp:$("#dlg_sel_tippre").val(),
-                arcancel:$("#dlg_inp_aranc").val(),
-                ater:$("#dlg_inp_areter").val(),
-                acomun:$("#dlg_inp_arecomter").val()},
+            condos:$("#dlg_inp_condos").val(),
+            ecc:$("#dlg_sel_estcon").val(),
+            tp:$("#dlg_sel_tippre").val(),
+            arcancel:$("#dlg_inp_aranc").val(),
+            ater:$("#dlg_inp_areter").val(),
+            acomun:$("#dlg_inp_arecomter").val(),
+            carta:carta    
+        },
         success: function(r) 
         {
-            carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
+            if(r==0)
+            {
+                MensajeAlerta("No se Puede Modificar","ya existe una hoja de Liquidación relacionada...",4000);
+            }
+            if(r==-1)
+            {
+                MensajeAlerta("No se Puede Modificar","La Carta Relacionada está Anulada...",4000);
+            }
+            if(r>0)
+            {
+                MensajeExito("Se Modificó Correctamente","Su Registro Fue Modificado con Éxito...",4000);
+            }
             jQuery("#table_predios_contri").jqGrid('setGridParam', {url: 'trae_pred_carta/'+carta}).trigger('reloadGrid');
-            MensajeExito("Se Modificó Correctamente","Su Registro Fue Modificado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
-            
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -497,17 +521,29 @@ function pisoSave()
     Id_fic=$("#dlg_idfic").val();
     id_pis=$("#dlg_idpiso").val();
     $("#rpiso_inp_estruc_fis").val().toUpperCase();
+    carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
     $.ajax({url: 'piso_fisca/create',
     type: 'GET',
     data:{nro:$("#rpiso_inp_nro_fis").val(),fech:$("#rpiso_inp_fech_fis").val(),clasi:$("#rpiso_inp_clasi_fis").val(),
     mep:$("#rpiso_inp_mat_fis").val(),estconserv:$("#rpiso_inp_econserv_fis").val(),estconst:$("#rpiso_inp_econstr_fis").val(),
-    estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),id_fic:Id_fic,id_pis:id_pis},
+    estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),id_fic:Id_fic,id_pis:id_pis,carta:carta},
     success: function(r) 
     {
-        MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        Id_pre=$("#dlg_idpre").val();
-        Id_fic=$("#dlg_idfic").val();
-        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        if(r==0)
+        {
+            MensajeAlerta("No se Puede Modificar","ya existe una hoja de Liquidación relacionada...",4000);
+        }
+        if(r==-1)
+        {
+            MensajeAlerta("No se Puede Modificar","La Carta Relacionada está Anulada...",4000);
+        }
+        if(r>0)
+        {
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            Id_pre=$("#dlg_idpre").val();
+            Id_fic=$("#dlg_idfic").val();
+            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        }
         MensajeDialogLoadAjaxFinish('dlg_reg_piso');
         $("#dlg_reg_piso").dialog('close');
     },
@@ -529,18 +565,29 @@ function pisoUpdate()
         if($("#rpiso_inp_aconst_fis").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
         if($("#rpiso_inp_acomun_fis").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
         MensajeDialogLoadAjax('dlg_reg_piso', '.:: Modificando ...');
-        
+        carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
         $.ajax({url: 'piso_fisca/'+$("#dlg_idpiso_fis").val()+'/edit',
         type: 'GET',
         data:{nro:$("#rpiso_inp_nro_fis").val(),fech:$("#rpiso_inp_fech_fis").val(),clasi:$("#rpiso_inp_clasi_fis").val(),
         mep:$("#rpiso_inp_mat_fis").val(),estconserv:$("#rpiso_inp_econserv_fis").val(),estconst:$("#rpiso_inp_econstr_fis").val(),
-        estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val()},
+        estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),carta:carta},
         success: function(r) 
         {
-            MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-            Id_pre=$("#dlg_idpre").val();
-            Id_fic=$("#dlg_idfic").val();
-            jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+            if(r==0)
+            {
+                MensajeAlerta("No se Puede Modificar","ya existe una hoja de Liquidación relacionada...",4000);
+            }
+            if(r==-1)
+            {
+                MensajeAlerta("No se Puede Modificar","La Carta Relacionada está Anulada...",4000);
+            }
+            if(r>0)
+            {
+                MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+                Id_pre=$("#dlg_idpre").val();
+                Id_fic=$("#dlg_idfic").val();
+                jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+            }
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
             $("#dlg_reg_piso").dialog('close');
         },
@@ -792,17 +839,29 @@ function instSave()
     MensajeDialogLoadAjax('dlg_reg_inst', '.:: Guardando ...');
     Id_fic=$("#dlg_idfic").val();
     id_ins=$("#dlg_idinst").val();
+    carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
     $.ajax({url: 'insta_fisca/create',
     type: 'GET',
     data:{inst:$("#hidden_rinst_inp_des_fis").val(),anio:$("#rinst_inp_anio_fis").val(),largo:$("#rinst_inp_largo_fis").val(),
         ancho:$("#rinst_inp_ancho_fis").val(),alto:$("#rinst_inp_alto_fis").val(),mep:$("#rinst_inp_mat_fis").val(),
         ecs:$("#rinst_inp_econserv_fis").val(),ecc:$("#rinst_inp_econstr_fis").val(),id_fic:Id_fic,cla:$("#rinst_inp_clasi_fis").val(),
-        cant:$("#rinst_inp_canti_fis").val(),ins:id_ins},
+        cant:$("#rinst_inp_canti_fis").val(),ins:id_ins,carta:carta},
     success: function(r) 
     {
-        MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        Id_pre=$("#dlg_idpre").val();
-        jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        if(r==0)
+        {
+            MensajeAlerta("No se Puede Modificar","ya existe una hoja de Liquidación relacionada...",4000);
+        }
+        if(r==-1)
+        {
+            MensajeAlerta("No se Puede Modificar","La Carta Relacionada está Anulada...",4000);
+        }
+        if(r>0)
+        {
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            Id_pre=$("#dlg_idpre").val();
+            jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        }
         MensajeDialogLoadAjaxFinish('dlg_reg_inst');
         $("#dlg_reg_inst").dialog('close');
     },
@@ -822,19 +881,30 @@ function instUpdate()
     if($("#rinst_inp_ancho_fis").val()==""){mostraralertasconfoco("Ingresar Ancho","#rinst_inp_ancho_fis"); return false}
     if($("#rinst_inp_alto_fis").val()==""){mostraralertasconfoco("Ingresar Alto","#rinst_inp_alto_fis"); return false}
     MensajeDialogLoadAjax('dlg_reg_inst', '.:: Modificando ...');
-    
+    carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
     $.ajax({url: 'insta_fisca/'+$('#dlg_idinst_fis').val()+'/edit',
     type: 'GET',
     data:{inst:$("#hidden_rinst_inp_des_fis").val(),anio:$("#rinst_inp_anio_fis").val(),largo:$("#rinst_inp_largo_fis").val(),
         ancho:$("#rinst_inp_ancho_fis").val(),alto:$("#rinst_inp_alto_fis").val(),mep:$("#rinst_inp_mat_fis").val(),
         ecs:$("#rinst_inp_econserv_fis").val(),ecc:$("#rinst_inp_econstr_fis").val(),cla:$("#rinst_inp_clasi_fis").val(),
-        cant:$("#rinst_inp_canti_fis").val()},
+        cant:$("#rinst_inp_canti_fis").val(),carta:carta},
     success: function(r) 
     {
-        MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        Id_pre=$("#dlg_idpre").val();
-        Id_fic=$("#dlg_idfic").val();
-        jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        if(r==0)
+        {
+            MensajeAlerta("No se Puede Modificar","ya existe una hoja de Liquidación relacionada...",4000);
+        }
+        if(r==-1)
+        {
+            MensajeAlerta("No se Puede Modificar","La Carta Relacionada está Anulada...",4000);
+        }
+        if(r>0)
+        {
+            MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            Id_pre=$("#dlg_idpre").val();
+            Id_fic=$("#dlg_idfic").val();
+            jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id_pre+'/'+Id_fic}).trigger('reloadGrid');
+        }
         MensajeDialogLoadAjaxFinish('dlg_reg_inst');
         $("#dlg_reg_inst").dialog('close');
     },

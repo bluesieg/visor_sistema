@@ -97,7 +97,7 @@
             datatype: 'json', mtype: 'GET',
             height: '260px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pred','t_pred', 'Sector','Manzana','Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','A.Terreno','id_via','S/.Terreno','S/.Construct'],
+            colNames: ['id_pred','t_pred', 'Sector','Manzana','Lote Cat', 'Código Predial', 'Mz Dist', 'Lt Dist', 'N° Munic', 'Est. Construcción', 'Contribuyente o Razon Social', 'Calle/Vía','id_via','A.Terreno','S/.Terreno','S/.Construct'],
             rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos/Rusticos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},

@@ -122,7 +122,7 @@
                     <div id="pager_table_cartas"></div>
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
-                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new_carta();" >
+                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new_carta(0);" >
                     <span  >
                         <i class="glyphicon glyphicon-plus"></i>
                     </span>
@@ -143,7 +143,7 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver'],
+            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver','Anulado'],
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
@@ -153,6 +153,7 @@
                 {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 15},
                 {name: 'flg_est', index: 'flg_est', align: 'center', width: 10},
                 {name: 'id_car', index: 'id_car', align: 'center', width: 15},
+                {name: 'flg_anu', index: 'flg_anu', align: 'center', width: 10},
             ],
             pager: '#pager_table_cartas',
             rowList: [20, 50],
@@ -164,7 +165,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){fn_new_carta(Id);}
         });
         contrib_global=0;
         jQuery("#table_contrib").jqGrid({
@@ -245,10 +246,11 @@
     </article>
 </div> 
 <div id="dlg_new_carta" style="display: none;">
-    
+    <input type="hidden" id="hidden_id_carta" value="0"/>
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div id="div_adquiere" class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div id="div_anulado" style="font-size: 2.0em; font-weight: bold; color: red"><a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a> ---Fue Anulado---</div>
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
@@ -273,7 +275,7 @@
                             <input id="dlg_contri_carta" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
                         </div>
                         <span class="input-group-btn" style="font-size: 13px;">
-                            <button class="btn btn-default" type="button" onclick="fn_bus_contrib_carta('dlg_contri_carta')">
+                            <button id="bus_dlg_contri_carta" class="btn btn-default" type="button" onclick="fn_bus_contrib_carta('dlg_contri_carta')">
                                 <i class="glyphicon glyphicon-search"></i>
                             </button>
                         </span>
@@ -394,11 +396,11 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-2" onclick="poner_fisca()">
+                <button id="btn_pon_fiscalizador" type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-2" onclick="poner_fisca()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span>Poner Fiscalizador
                 </button>
                 
-                    <div class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
+                    <div id="div_table_fis" class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
 
                         <table class="table " id="table_fiscalizadores" >
                                 <thead>
@@ -419,8 +421,14 @@
                     </div>
             </div>
             <ul id="sparks" >
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_confirmar_carta()">
+                <button id="btn_save" type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_confirmar_carta()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Guardar y Generar
+                </button>
+                <button id="btn_anular" type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="fn_anular_carta()">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Anular Carta
+                </button>
+                <button id="btn_mod" type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="fn_confirmar_carta()">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar y Grabar
                 </button>
             </ul>
         </div>

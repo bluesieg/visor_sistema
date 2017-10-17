@@ -26,6 +26,16 @@ class Ficha_verificacionController extends Controller
 
     public function create(Request $request)
     {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['carta'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $ficha=new Ficha_Verificacion;
         $ficha->nro_fic=$request['nro'];
         $ficha->id_puente=$request['puente'];
@@ -57,6 +67,16 @@ class Ficha_verificacionController extends Controller
 
     public function edit($id,Request $request)
     {
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        if(count($nro_hojas)>0)
+        {
+            return 0;
+        }
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['carta'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $ficha=new Ficha_Verificacion;
         $val=  $ficha::where("id_fic","=",$id )->first();
         if(count($val)>=1)
@@ -73,7 +93,7 @@ class Ficha_verificacionController extends Controller
             $val->val_ter=($request['ater']+$request['acomun'])*$request['arcancel'];
             $val->save();
         }
-        return "edit".$id;
+        return $id;
     }
 
     public function update(Request $request, $id)
