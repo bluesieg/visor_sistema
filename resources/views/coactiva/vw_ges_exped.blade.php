@@ -216,12 +216,65 @@
                         <label class="radio">
                                 <input type="radio" name="add_doc_radio" value="8">
                                 <i></i>CARTA INFORMATIVA</label>
+                        <label class="radio">
+                                <input type="radio" name="add_doc_radio" value="9">
+                                <i></i>ACTA DE APERSONAMIENTO</label>
                 </section>
             </div>
         </div>
     </div>    
 </div>
-
+<div id="vw_coa_acta_apersonamiento" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Acta de Apersonamiento ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <div class="row">                                
+                                <section class="col col-3" style="padding-right: 5px;">                                    
+                                    <label class="label">N° Cuotas:</label>
+                                    <label class="input">
+                                        <input id="nro_cuo_apersonamiento" type="text" class="input-sm">
+                                    </label>                      
+                                </section
+                                <section class="col col-3" style="padding-right: 5px;">                                    
+                                    <label class="label">Monto:</label>
+                                    <label class="input">
+                                        <input id="nro_cuo_monto" type="text" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-6" style="padding-right:5px;">                                    
+                                    <button onclick="add_cuo_acta_aper();" class="btn btn-primary btn-lg" style="margin-top:11px" type="button" title="Agregar Cuotas al Acta">
+                                        <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Agregar Cuotas
+                                    </button>
+                                </section>                                                      
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>                
+                <div class="panel panel-success" style="border: 0px !important;height: 325px; overflow-y: scroll">
+                    <div class="panel-heading bg-color-success">.:: Vista Cuotas ::.</div>
+                    <div class="panel-body">    
+                        <div style="border: 1px solid #DDD; margin-bottom: 6px;">
+                            <table id="t_dina_acta_aper" class="table table-bordered table-sm" cellspacing="10px">
+                                <thead>
+                                    <tr>
+                                        <th width="5%" style="text-align: center">N°</th>                                        
+                                        <th width="20%" style="text-align: center">Fecha de Pago</th>
+                                        <th width="20%" style="text-align: center">Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>                   
+        </div>        
+    </div>
+</div>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>

@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <td><b>Ubicacion del Predio</b></td>
-                    <td>:&nbsp;</td>
+                    <td>:&nbsp;{{$resol->ubi_pred}}</td>
                 </tr>
                 <tr>
                     <td><b>Referencia</b></td>
@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td>&nbsp;&nbsp;Resolucion de Determinación N° 0001-2017-SGFT-MDCC/ARB</td>
+                    <td>&nbsp;&nbsp;{{$resol->doc_ini}} N° 0001-2017-SGFT-MDCC/ARB</td>
                 </tr>
                 <tr>
                     <td><b>Fecha</b></td>
@@ -69,10 +69,10 @@
         <div style="text-align: justify;font-size:13px;overflow:auto"> 
             <p>
             Mediente el Presente escrito y en atención a las Resoluciones de referencia, le recordamos que la oficina de Ejecución Coactiva, mediante <b>Resolución de Ejecución Coactiva N° {{ $resol->nro_exped.'-'.$resol->anio_resol }}/OEC-MDCC</b>
-            se ha dado inicio al procedimiento de ejecución coactiva, a fin de que usted cumpla con pagar la deuda establecida mediante <b>Resolución de Determinación N° 0001-2016-SGFT-MDCC/ARB,</b> 
-            ascendiente a la suma de <b>S/. 816.84 (ochocientos diesiseis con 84/100 Nuevos soles)</b> por concepto de Arbitrios correspondiente a los años {{$resol->periodos}}, 
+            se ha dado inicio al procedimiento de ejecución coactiva, a fin de que usted cumpla con pagar la deuda establecida mediante <b>Resolución de Determinación N° {{ $resol->nro_resol.'-'.$resol->anio_resol }}-SGFT-MDCC/ARB,</b> 
+            ascendiente a la suma de <b>S/. {{$resol->monto}} ({{$resol->monto_letra}})</b> por concepto de Arbitrios correspondiente a los años {{$resol->periodos}}, 
             <b>más los intereses actualizados a la fecha de pago,</b> así como tambien el pago de <u>costas y gastos</u> ocasionados a la entidad en la cobranza coactiva de dicha deuda tributaria, 
-            respecto del predio ubicado en {{$resol->dom_fis}}, Arequipa requiriéndose el cumplimiento de pago dentro de los plazos expresamente 
+            respecto del predio ubicado en {{$resol->ubi_pred}}, Arequipa requiriéndose el cumplimiento de pago dentro de los plazos expresamente 
             establecidos en la ley, <u>bajo apercibimiento de ley en caso de incumplimiento;</u> la misma que fue <u>debidamente notificada</u> con copia del acto administrativo 
             que sirve de título ejecutivo, su correspondiente constancia de notificación, así como también, la constancia de cosa decidida administrativamente, sin embargo, dicha 
             Resolución de Ejecución Coactiva <b>NO HA SIDO CUMPLIDA</b> hasta la fecha.

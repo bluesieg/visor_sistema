@@ -26,7 +26,58 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
     Route::post('oficinas_insert_new', 'configuracion\Oficinas_Uit@oficinas_insert_new');
     Route::post('oficinas_delete', 'configuracion\Oficinas_Uit@oficinas_delete');
 });
+Route::get('dni',function (){
+    $rq		= new \stdClass();
+    $rq->data	= new \stdClass();
+    $rq->auth	= new \stdClass();
 
+    $rq->auth->dni	= '80673320';		// DNI del usuario
+    $rq->auth->pas	= 'Pr0gr4m4';           // Contrasenia
+    $rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
+
+    $rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
+    $rq->data->dni	= '46691651';		// Dato que debe estar acorde al contrato del ws
+    $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+
+
+    $url = 'http://ws.ehg.pe/';	
+
+    $options = array(
+            'http' => array(
+            'header'  => "Content-type: application/json\r\n",
+            'method'  => 'POST',            
+            'content' => json_encode($rq)
+        )
+    );
+
+    $context  = stream_context_create($options);
+
+    $result = file_get_contents($url, false, $context);
+
+    if ($result === FALSE) 
+    {  
+      echo 'Error de conexion';
+    }
+
+    $rpta = json_decode($result);
+
+
+    if($rpta->resp->code == '0000')
+    {
+     echo $rpta->data->apPrimer."\n";
+     echo $rpta->data->apSegundo."\n";   
+     echo $rpta->data->prenombres."\n";
+     echo $rpta->data->estadoCivil."\n";
+     echo $rpta->data->direccion."\n";
+     echo $rpta->data->ubigeo."\n" ;
+     echo 'https://ws.ehg.pe'.$rpta->data->foto."\n"; 
+     var_dump($rpta);
+    }
+    else
+    {
+     echo $rpta->resp->code.'-'.$rpta->resp->text;
+    }
+});
 //Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/vw_general', 'General@index')->name('vw_general');
@@ -206,7 +257,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_exped','CoactivaController@get_expedientes');
         Route::get('get_doc_exped','CoactivaController@get_docum_expediente');
         Route::get('coactiva_recep_doc','CoactivaController@get_doc');
-        Route::get('recib_doc_coactiva','CoactivaMasterController@resep_documentos');
+        Route::get('recib_doc_coactiva','CoactivaMasterController@resep_documentos_op');
+        Route::get('recib_doc_coactiva_rd','CoactivaMasterController@resep_documentos_rd');
         Route::get('add_documento_exped','CoactivaController@add_documento');
         Route::get('abrirdocumento/{id_doc}/{id_coa_mtr}','CoactivaController@open_document');
         Route::get('editar_resol','CoactivaController@editar_resol');
@@ -293,8 +345,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('reso_deter', 'Res_DeterminacionController');
         Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo');
         Route::get('trae_rd/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_rd'); //
+        /////// coactiva
+        Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
+        Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');
+        Route::get('update_env_rd','EnvRD_CoactivaController@fis_env_rd');
         
-    }); 
+    });  
     Route::get('$',function(){ echo 0;});//url auxiliar
 
     /*************************************** - REPORTES - *************************************** */

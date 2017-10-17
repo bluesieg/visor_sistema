@@ -263,9 +263,9 @@
                             <li id="li_gesion_exped">
                                 <a href="gestion_expedientes" title="Gestion de Expedientes"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Gestion Expediente</span></a>
                             </li>
-                            <li id="li_emision_rec">
+<!--                            <li id="li_emision_rec">
                                 <a href="emision_rec" title="Apertura de Ejecucion Coactiva"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Emision REC</span></a>
-                            </li>
+                            </li>-->
                             <li id="li_recep_doc">
                                 <a href="recepcion_doc" title="Recepcion de Documentos"><i class="fa fa-lg fa-fw fa-gavel"></i> <span class="menu-item-parent">Recepcion Doc.</span></a>
                             </li>

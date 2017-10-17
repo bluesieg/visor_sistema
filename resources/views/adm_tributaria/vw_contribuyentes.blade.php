@@ -261,7 +261,7 @@
                                 <section class="col col-4" style="padding-left:5px;">
                                     <label class="label">Distrito:</label>
                                     <label class="select">
-                                        <select id="contrib_dist" class="input-sm text-uppercase">
+                                        <select id="contrib_dist" class="input-sm text-uppercase" onchange="selec_dist(this.value);">
                                             <option value="select" selected="" disabled="">Distrito</option>                                            
                                         </select><i></i> </label>   
                                 </section>

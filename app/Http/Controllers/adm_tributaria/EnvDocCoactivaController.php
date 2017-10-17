@@ -17,13 +17,14 @@ class EnvDocCoactivaController extends Controller
         return view('adm_tributaria.vw_env_doc_coactiva');
     }
 
-    public function create_coa_master($id_contrib,$id_gen_fis){        
+    public function create_coa_master($id_contrib,$id_gen_fis,$monto){        
         $data = new coactiva_master();
         $data->id_contrib = $id_contrib;
         $data->fch_ini = date('Y-m-d');
         $data->estado = 1;
         $data->anio = date('Y');
         $data->doc_ini=2;
+        $data->monto=($monto*4);
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_gen_fis);
@@ -36,7 +37,7 @@ class EnvDocCoactivaController extends Controller
         $data->id_coa_mtr = $id_coa_mtr;
         $data->id_tip_doc = 1;        
         $data->fch_emi = $fch_emi;        
-        $data->anio = date('Y');
+        $data->anio = date('Y');        
         $data->save();
         return $data->id_doc;
     }
@@ -143,7 +144,7 @@ class EnvDocCoactivaController extends Controller
                 $val->hora_env=date('h:i A');
                 $val->save();
             }
-            $sql = $this->create_coa_master($val->id_contrib,$request['id_gen_fis']);
+            $sql = $this->create_coa_master($val->id_contrib,$request['id_gen_fis'],$val->ivpp);
             if($sql){
                 $val = $data::where("id_gen_fis", "=", $request['id_gen_fis'])->first();
                 if (count($val) >= 1) {

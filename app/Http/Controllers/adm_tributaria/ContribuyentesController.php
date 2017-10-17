@@ -133,11 +133,11 @@ class ContribuyentesController extends Controller
         $rq->data->dni	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
         $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
 
-        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+        $url = 'http://ws.ehg.pe/';		// Endpoint del WS
         $options = array(
                 'http' => array(
                 'header'  => "Content-type: application/json\r\n",
-                'method'  => 'POST',
+                'method'  => 'POST',                
                 'content' => json_encode($rq)
             )
         );
@@ -160,7 +160,7 @@ class ContribuyentesController extends Controller
             $Lista->est_civil=$rpta->data->estadoCivil;
             $Lista->dir=$rpta->data->direccion;
             $Lista->ubigeo=$rpta->data->ubigeo;
-            $Lista->foto='https://ehg.pe/delfos/'.$rpta->data->foto;
+            $Lista->foto='http://ws.ehg.pe'.$rpta->data->foto;
             return response()->json($Lista);
         }
     }

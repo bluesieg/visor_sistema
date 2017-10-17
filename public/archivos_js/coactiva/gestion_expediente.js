@@ -26,15 +26,78 @@ function dlg_select_new_doc(){
         open: function(){}       
     }).dialog('open');
 }
-function add_doc_al_exped(){
+function add_doc_al_exped(){    
     id_coa_mtr = $('#tabla_expedientes').jqGrid ('getGridParam', 'selrow');
     id_tip_doc = $("input:radio[name ='add_doc_radio']:checked").val();
-//    monto=$("#t_doc_recibidos").getCell(id_rd, 'monto');
-//    return false;
+    if(!id_tip_doc){
+        mostraralertas('Seleccione un Documento...');
+        return false;
+    }
+    if(id_tip_doc==9){
+        $("#vw_coa_acta_apersonamiento").dialog({
+            autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,        
+            title: "<div class='widget-header'><h4>.: COACTIVA :.</h4></div>",
+            buttons: [{
+                    html: "<i class='fa fa-fax'></i>&nbsp; Agregar Acta Apersonamiento",
+                    "class": "btn btn-primary",
+                    click: function () { 
+                        MensajeDialogLoadAjax('vw_coa_acta_apersonamiento','Guardando...');
+                        var rowCount =  $("#t_dina_acta_aper tr").length;
+                        if(rowCount-1==0){
+                            mostraralertas('Tabla de Cuotas esta Vacia...');                            
+                            return false;
+                        }
+                        var fechas = new Array();                        
+                        for(i=1;i<=rowCount-1;i++){
+                            fechas.push($("#td_din_fch_"+i).val());
+                        }
+                        cant=fechas.length;
+                        fechas_cuotas = fechas.join('*');                        
+                        save_doc(id_coa_mtr,id_tip_doc,fechas_cuotas);
+                        setTimeout(function(){ 
+                            MensajeDialogLoadAjaxFinish('vw_coa_acta_apersonamiento');
+                            $(this).dialog("close");
+                        }, 1000);
+                    }
+                }, {
+                    html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                    "class": "btn btn-danger",
+                    click: function () {$(this).dialog("close");}
+                }],
+            open: function(){$("#t_dina_acta_aper > tbody > tr").remove(); $("#nro_cuo_apersonamiento").val('');}       
+        }).dialog('open');
+    }else{
+        return false;
+        save_doc(id_coa_mtr,id_tip_doc);
+    }
+}
+function add_cuo_acta_aper(){
+    nro_cuo=$("#nro_cuo_apersonamiento").val();
+    monto=parseFloat($("#nro_cuo_monto").val());
+    if(nro_cuo==""){
+        mostraralertasconfoco("Ingrese el Numero de Cuotas...","#nro_cuo_apersonamiento"); 
+        return false;
+    }
+    if(isNaN(monto)){
+        mostraralertasconfoco("Ingrese Monto...","#nro_cuo_monto"); 
+        return false;
+    }
+    for(i=1;i<=nro_cuo;i++){
+        $('#t_dina_acta_aper').append(
+        "<tr>\n\
+            <td style='text-align: center'>" + i + "</td>\n\
+            <td><label class='input'><input id='td_din_fch_" + i + "' type='date' class='form-control input-xs'  maxlength='10' placeholder='dd/mm/aaaa'></label></td>\n\
+            <td><label class='input'><input id='td_din_monto_" + i + "' type='text' value='"+formato_numero(monto,2,'.',',')+"' class='form-control input-xs'  maxlength='10' disabled=''></label></td>\n\
+        </tr>");
+    }
+}
+function save_doc(id_coa_mtr,id_tip_doc,fechas_cuotas,monto){
+    fechas_cuotas=fechas_cuotas || null; 
+    monto=monto||null;
     $.ajax({
         type:'GET',
         url:'add_documento_exped',
-        data:{id_coa_mtr:id_coa_mtr,id_tip_doc:id_tip_doc},
+        data:{id_coa_mtr:id_coa_mtr,id_tip_doc:id_tip_doc,fechas_cuotas:fechas_cuotas,monto:monto},
         success:function(data){
             if(data.msg=='si'){
                 MensajeExito('COACTIVA','Documento Agregado...');
@@ -49,7 +112,7 @@ function ver_doc(id_doc,id_coa_mtr){
     window.open("abrirdocumento/"+id_doc+"/"+id_coa_mtr); 
 }
 
-function fecha_resep_notif(id_doc){
+function fecha_resep_notif(id_doc){    
     $.confirm({
         title:'COACTIVA',
         content: 'Agregar Fecha, Recepción de Notificación' +
@@ -69,6 +132,7 @@ function fecha_resep_notif(id_doc){
             close: function () {}
         }
     });
+    get_fecha_actual('dateinputnotif');
 }
 function editar_doc(id_doc){
     $("#dlg_editor").dialog({
@@ -116,6 +180,7 @@ function fn_bus_contrib_select(per){
     $("#vw_ges_exped_contrib").attr('maxlength',tam);
 
     fn_actualizar_grilla('tabla_expedientes','get_exped?id_contrib='+$("#hidden_vw_ges_exped_codigo").val());
+    $('#tabla_doc_coactiva').jqGrid('clearGridData');
     $("#dlg_bus_contr").dialog("close");    
 }
 function ver_docum_exped(id_coa_mtr){

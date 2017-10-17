@@ -15,13 +15,14 @@ class EnvRD_CoactivaController extends Controller
     function vw_env_rd_coa(){
         return view('fiscalizacion.vw_env_rd_coactiva');
     }
-    public function create_coa_master($id_contrib,$id_rd){        
+    public function create_coa_master($id_contrib,$id_rd,$monto){        
         $data = new coactiva_master();
         $data->id_contrib = $id_contrib;
         $data->fch_ini = date('Y-m-d');
         $data->estado = 1;
         $data->anio = date('Y');
-        $data->doc_ini=1;/*RD*/        
+        $data->doc_ini=1;/*RD*/ 
+        $data->monto=$monto;
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_rd);
@@ -135,7 +136,8 @@ class EnvRD_CoactivaController extends Controller
                 $val->hora_env=date('h:i A');                 
                 $val->save();
             }
-            $sql = $this->create_coa_master($id_contrib,$id_rd);
+            $monto = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_rd',$id_rd)->value('ivpp_verif'); 
+            $sql = $this->create_coa_master($id_contrib,$id_rd,$monto);
             if($sql){
                 $val = $data::where("id_rd", "=", $id_rd)->first();
                 if (count($val) >= 1) {

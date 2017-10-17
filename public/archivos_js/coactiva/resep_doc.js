@@ -24,19 +24,35 @@ function recibir_doc(){
         title: 'Coactiva',
         content: 'Recibir Documentos Seleccionados',
         buttons: {
-            Confirmar: function () {                
-                $.ajax({
-                    url:'recib_doc_coactiva',
-                    type:'GET',
-                    data:{id_gen_fis:recib_doc},
-                    success:function(data){
-                        if(data.msg=='si'){
-                            MensajeExito('COACTIVA','Documentos Recibidos.');
-                            up_resep_doc();
-                        }
-                    },
-                    error: function(){}
-                });
+            Confirmar: function () {
+                if($("#vw_recep_doc_tip_doc").val()==2){
+                    $.ajax({
+                        url:'recib_doc_coactiva',
+                        type:'GET',
+                        data:{id_gen_fis:recib_doc},
+                        success:function(data){
+                            if(data.msg=='si'){
+                                MensajeExito('COACTIVA','Documentos Recibidos.');
+                                up_resep_doc();
+                            }
+                        },
+                        error: function(){}
+                    });
+                }else if($("#vw_recep_doc_tip_doc").val()==1){
+                    $.ajax({
+                        url:'recib_doc_coactiva_rd',
+                        type:'GET',
+                        data:{id_rd:recib_doc},
+                        success:function(data){
+                            if(data.msg=='si'){
+                                MensajeExito('COACTIVA','Documentos Recibidos.');
+                                up_resep_doc();
+                            }
+                        },
+                        error: function(){}
+                    });
+                }
+                
             },
             Cancelar: function () {} 
         }

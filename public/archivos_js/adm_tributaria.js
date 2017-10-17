@@ -22,8 +22,16 @@ function open_dialog_new_edit_Contribuyente() {
     llenar_combo_prov('contrib_prov');
     llenar_combo_dist('contrib_dist');
     $("#contrib_dist").val('040104');
-    autocompletar_av_jr_call('txt_av_jr_calle_psje');
     MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
+}
+function selec_dist(val){
+    if(val=='040104'){
+        autocompletar_av_jr_call('txt_av_jr_calle_psje');
+    }else{
+//        $("#txt_av_jr_calle_psje").autocomplete("instance").term = null;
+        $('#txt_av_jr_calle_psje').autocomplete( "search", "" );
+        $("#hiddentxt_av_jr_calle_psje").val('0');
+    }
 }
 function buscar_contrib(){
     fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes?buscar='+($("#vw_contrib_buscar").val()).toUpperCase());
@@ -234,6 +242,9 @@ function new_contrib() {
         mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
         return false;
     }
+    if($("#contrib_dist").val()!='040104'){
+        $("#hiddentxt_av_jr_calle_psje").val('0');
+    }
     
     $.ajax({  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -336,7 +347,7 @@ function filtro_tipo_doc_pers(tipo) {
 }
 
 function limpiar_dlg_contrib(){
-    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#txt_av_jr_calle_psje,#contrib_nro_mun").val('');
+    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
     $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente").val('');
     $("#contrib_est_civil").val('select');
     $("#hiddentxt_av_jr_calle_psje").val('0');

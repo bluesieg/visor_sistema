@@ -33,7 +33,7 @@
             <table style="font-size:15px;">
                 <tr>
                     <td><b>Expediente N°</b></td>
-                    <td>:&nbsp;{{ $resol->nro_resol.'-'.$resol->anio_resol }}<br/></td>
+                    <td>:&nbsp;{{ $resol->nro_resol.'-'.$resol->anio_resol }} / OEC-MDCC<br/></td>
                 </tr>
                 <tr>
                     <td><b>Entidad</b></td>
@@ -49,11 +49,11 @@
                 </tr>
                 <tr>
                     <td><b>Domicilio</b></td>
-                    <td>:&nbsp;La Libertad Mariano Melgar 101, Cerro Colorado - Arequipa<br/></td>
+                    <td>:&nbsp;{{$resol->dom_fis}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>Ubicacion de Predio</b></td>
-                    <td>:&nbsp;La Libertad Mariano Melgar 101, Cerro Colorado - Arequipa<br/></td>
+                    <td>:&nbsp;{{$resol->ubi_pred}}<br/></td>
                 </tr>
             </table>
             </div>
