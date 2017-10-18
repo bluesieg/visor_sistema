@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Acta de Apresonamiento</title>
+        <title>Acta de Apersonamiento</title>
         <style>        
             @font-face {
                 font-family: SourceSansPro;
@@ -38,20 +38,21 @@
             <p>
                 Que, con fecha {{$resol->fch_larga}}, siendo las {{date('H:i A')}} horas, se apersono a la Oficina de Ejecución Coactiva, el 
                 <b>Sr. {{$resol->contribuyente}} con DNI: {{$resol->nro_doc}},</b> en calidad de representante legal de la empresa 
-                <b>CURTIEMBRE GLOBAL SAC,</b> respecto de la deuda establecida en la Resolución de Determinación N° 063-2015-GAT-MDCC/IP, 
-                por concepto de Impuesto Predial, y exigida con la Resolución de Ejecución Coactiva N° 001-2017, de la Oficina de Ejecución 
-                Coactiva, teniendo en consideración los problemas económicos que viene atravesando la empresa, va a pagar cuatro partes de 
-                S/. 3119.40(Tres mil ciento diescinueve con 40/100 Nuevos Soles). <b>Comprometiéndose a pagar de acuerdo al siguiente detalle:</b>
-                <ul>
-                    <li>1.- El 10 de mayo del 2017</li>
-                    <li>2.- El 12 de junio del 2017</li>
-                    <li>3.- El 10 de julio del 2017</li>
-                    <li>4.- El 10 de agosto del 2017</li>
+                <b>CURTIEMBRE GLOBAL SAC,</b> respecto de la deuda establecida en la {{$resol->doc_ini}} N° {{$resol->nro_rd}}-{{$resol->anio_rd}}-GAT-MDCC/IP, 
+                por concepto de Impuesto Predial, y exigida con la Resolución de Ejecución Coactiva N° {{$resol->nro_resol.'-'.$resol->anio_resol}}, de la Oficina de Ejecución 
+                Coactiva, teniendo en consideración los problemas económicos que viene atravesando la empresa, va a pagar {{count($cuotas)}} partes de 
+                S/. {{$resol->monto}} ({{$resol->monto_letra}}). <b>Comprometiéndose a pagar de acuerdo al siguiente detalle:</b>
+                <ul>                   
+                    @foreach ($cuotas as $cuotas)
+                        <li>{{$cuotas['nro']}}.- El {{$cuotas['fch_larga']}}</li>                       
+                    @endforeach
                 </ul>
             </p>
         </div>
-        <div style="margin-top: 50px;width: 30%;background: red">
-            
+        <div style="margin-top: 100px;width: 50%;">
+            <div style="margin-top: 150px;width: 100%;border-top: 1px solid black;font-size: 13px">
+                <center>{{$resol->contribuyente}}<br>DNI:&nbsp;{{$resol->nro_doc}}</center>
+            </div>
         </div>
     </body>
 </html>

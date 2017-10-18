@@ -258,10 +258,10 @@ function new_persona(){
             mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
             return false;
         }
-        if($("#pers_fnac").val()==''){
-            mostraralertasconfoco('Ingrese Fecha Nacimiento','#pers_fnac');
-            return false;
-        }
+//        if($("#pers_fnac").val()==''){
+//            mostraralertasconfoco('Ingrese Fecha Nacimiento','#pers_fnac');
+//            return false;
+//        }
     }
     
     $.ajax({  

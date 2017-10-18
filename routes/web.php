@@ -153,11 +153,12 @@ Route::group(['middleware' => 'auth'], function() {
     /*     * **************************************CONTRIBUYENTES******************************************************************** */
 //    Route::get('contribuyentes', 'adm_tributaria\Contribuyentes@vw_contribuyentes'); // VW_CONTRIUYENTES
     
-    
+    Route::post('insert_personas_user','Usuarios@insert_persona_user');
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('contribuyentes','ContribuyentesController');
         Route::get('consultar_persona','ContribuyentesController@consultar_persona');
         Route::post('insert_personas','ContribuyentesController@insert_persona');
+        
         Route::get('grid_contribuyentes', 'ContribuyentesController@grid_contrib'); // tabla grilla Contribuyentes 
         Route::get('obtiene_cotriname', 'ContribuyentesController@get_cotrib_byname'); //
         Route::get('pre_rep_contr/{sect}/{mzna}/{anio}','ContribuyentesController@reporte_contribuyentes');
@@ -183,6 +184,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_especifica','EspecificaController@get_espec');
         Route::resource('especifica_detalle', 'Esp_DetalleController');
         Route::get('get_esp_detalle', 'Esp_DetalleController@get_esp_detalle');
+        Route::resource('procedimientos', 'ProcedimientoController');
     });
     
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
@@ -262,6 +264,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('add_documento_exped','CoactivaController@add_documento');
         Route::get('abrirdocumento/{id_doc}/{id_coa_mtr}','CoactivaController@open_document');
         Route::get('editar_resol','CoactivaController@editar_resol');
+        Route::get('editar_acta_aper','CoactivaController@editar_acta_aper');
         Route::post('update_documento','CoactivaController@update_documento');
         Route::get('agreg_fch_recep_notif','CoactivaController@fch_recep_notif');
         Route::get('num_letra','CoactivaController@letra');

@@ -374,13 +374,16 @@ function get_datos_dni() {
             $("#pers_pat").val(data.ape_pat);
             $("#pers_mat").val(data.ape_mat);
             $("#pers_nombres").val(data.nombres);
-            $("#pers_foto").attr("src",data.foto);            
+            $("#pers_foto").attr("src",data.foto);
+            if ( $("#vw_usuario_foto_img").length ) {
+                $("#vw_usuario_foto_img").attr("src",data.foto);
+            }
         },
         error: function (data){            
             mostraralertas('* No se Encontró el DNI<br>* Porfavor Ingrese los Datos Manualmente...');            
         }
     });
-    setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 2000);
+    setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 3000);
 }
 function get_datos_ruc(){
     nro_doc = ($("#pers_nro_doc").val()).trim(); 

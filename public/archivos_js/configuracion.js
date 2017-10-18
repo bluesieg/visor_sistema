@@ -45,7 +45,6 @@ $(document).ready(function () {
 });
 
 function open_dialog_new_edit_Usuario() {
-
     $("#dialog_new_edit_Usuario").dialog({
         autoOpen: false, modal: true, width: 550, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: NUEVO USUARIO :.</h4></div>",
@@ -62,14 +61,97 @@ function open_dialog_new_edit_Usuario() {
                     $(this).dialog("close");
                 }
             }],
-        close: function (event, ui) {
-            limpiar_form_usuario();
-            foto_global = '';
-        }
-    }).dialog('open');
+        close: function (event, ui) { limpiar_form_usuario();foto_global = '';},
+        open: function (){limpiar_form_usuario();foto_global = '';}
+    }).dialog('open');    
 }
-function dlg_Editar_Usuario() {
-
+function fn_consultar_dni(num){
+    if(num=='' || num.length<=7){mostraralertas('* Ingrese Numero de Documento... <br>* ');return false;}
+    $.ajax({        
+        url: 'consultar_persona?nro_doc='+num,
+        type: 'GET',        
+        success: function (data) {
+            if(data){
+                $("#vw_usuario_txt_ape_nom").val(data.contrib);
+                $("#vw_usuario_foto_img").attr("src",'data:image/png;base64,'+data.pers_foto);
+                $("#vw_usuario_txt_id_pers").val(data.id_pers);
+            }else{
+                dlg_new_persona_user(num);
+            }
+        },
+        error: function (data) { MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...'); }
+    });
+}
+function dlg_new_persona_user(nro_doc){
+    $("#dialog_Personas").dialog({
+        autoOpen: false, modal: true, width: 750, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: PERSONAS :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () { new_persona_user(); }                
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () { $(this).dialog("close"); }
+            }],
+        close: function (event, ui) { limpiar_personas();},
+        open: function (){ limpiar_personas(); }
+    }).dialog('open');
+    $("#cb_tip_doc_3").val('02');
+    $("#pers_nro_doc").val(nro_doc);
+    tipo = '02';
+    if(tipo=='02'){
+        get_datos_dni();
+        $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
+        $("#pers_raz_soc").removeAttr('disabled');        
+        $("#pers_raz_soc").attr('disabled',true);
+        $("#pers_nro_doc").removeAttr('maxlength');
+        $("#pers_nro_doc").attr('maxlength',8);        
+    }
+}
+function new_persona_user(){
+    if($("#cb_tip_doc_3").val()=='02'){
+        if($("#pers_sexo").val()=='-'){
+            mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
+            return false;
+        }
+    }
+    $.ajax({  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'insert_personas_user',
+        type: 'POST',
+        data:{
+            pers_ape_pat : $("#pers_pat").val().toUpperCase() || '-',
+            pers_ape_mat : $("#pers_mat").val().toUpperCase() || '-',
+            pers_nombres : $("#pers_nombres").val().toUpperCase() || '-',
+            pers_raz_soc : $("#pers_raz_soc").val().toUpperCase() || '-',
+            pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
+            pers_nro_doc : $("#pers_nro_doc").val() || '-',
+            pers_sexo : $("#pers_sexo").val() || '-',
+            pers_fnac : $("#pers_fnac").val() || '1900-01-01',
+            pers_foto:$("#pers_foto").attr("src")
+        },
+        success: function (data) {
+            if(data){                
+                fn_consultar_dni($("#pers_nro_doc").val());
+                $("#vw_usuario_txt_dni").val($("#pers_nro_doc").val());
+                dialog_close('dialog_Personas');
+            }            
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    }); 
+}
+function btn_bus_getdatos(){    
+    get_datos_dni();    
+}
+function limpiar_personas(){
+    $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac").val('');
+    $("#pers_foto").attr("src", "img/avatars/male.png");
+}
+function dlg_Editar_Usuario(){
     $("#dialog_Editar_Usuario").dialog({
         autoOpen: false, modal: true, width: 550, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: EDITAR USUARIO :.</h4></div>",
@@ -98,10 +180,8 @@ function dlg_Editar_Usuario() {
         success: function (data) {
             $("#vw_usuario_txt_ape_nom_2").val(data.ape_nom);
             $("#vw_usuario_txt_dni_2").val(data.dni);
-            $("#vw_usuario_txt_fch_nac_2").val(data.fch_nac);
-            $("#vw_usuario_txt_usuario_2").val(data.usuario);            
-//            $("#vw_usuario_foto_img").attr('src', 'data:image/png;base64,' + data.foto);
-
+//            $("#vw_usuario_txt_fch_nac_2").val(data.fch_nac);
+            $("#vw_usuario_txt_usuario_2").val(data.usuario);
         }, error: function (data) {
             mostraralertas('* Error base de datos... <br> * Contactese con el administrador..');
 //                dialog_close('dialog_Editar_Usuario');
@@ -110,43 +190,42 @@ function dlg_Editar_Usuario() {
 }
 
 function save_nuevo_usuario() {
-
+    MensajeDialogLoadAjax('table_Usuarios','Cargando...');
     dni = $.trim($("#vw_usuario_txt_dni").val());
     usuario = $.trim($("#vw_usuario_txt_usuario").val());
 
     if (dni == '' || dni.length <= 7) {
+        MensajeDialogLoadAjaxFinish('table_Usuarios');
         mostraralertasconfoco('* Ingrese el Dni 8 digitos ...', 'vw_usuario_txt_dni');
         return false;
     }
 
     if (usuario == '' || usuario.length <= 2) {
+        MensajeDialogLoadAjaxFinish('table_Usuarios');
         mostraralertasconfoco('* Ingrese un Usuario de 3 a mas caracteres...', 'vw_usuario_txt_usuario');
         return false;
     }
     pass = ($("#vw_usuario_txt_password").val()).trim();
+    if(pass==''){
+        MensajeDialogLoadAjaxFinish('table_Usuarios');
+        mostraralertasconfoco('* Ingrese su Contraseña', 'vw_usuario_txt_password');
+        return false
+    }
     confir_pass = ($("#vw_usuario_txt_conf_pass").val()).trim();
     if (pass != confir_pass) {
         mostraralertasconfoco('* Las Contraseñas no Coinciden', 'vw_usuario_txt_password');
         return false;
-    }    
-//    var filesSelected = $("#vw_usuario_cargar_foto").val();
-//    if (filesSelected == '') {
-//        mostraralertasconfoco('* Seleccione una Foto', 'vw_usuario_cargar_foto');
-//        return false;
-//    }
+    }
     
     if ($("#form_user").submit()) {
-        dialog_close('dialog_new_edit_Usuario');
-        
+        dialog_close('dialog_new_edit_Usuario');        
     }
-    setTimeout(function(){ fn_actualizar_grilla('table_Usuarios', 'list_usuarios'); }, 2000);
+    setTimeout(function(){ fn_actualizar_grilla('table_Usuarios', 'list_usuarios'); MensajeDialogLoadAjaxFinish('table_Usuarios');}, 2000);
 }
 function update_user() {
     dni = $.trim($("#vw_usuario_txt_dni_2").val());
     usuario = $.trim($("#vw_usuario_txt_usuario_2").val());
-//    password = $.trim($("#vw_usuario_txt_password").val());
-    ape_nom = $.trim($("#vw_usuario_txt_ape_nom_2").val());    
-    fch_nac = $.trim($("#vw_usuario_txt_fch_nac_2").val());
+    ape_nom = $.trim($("#vw_usuario_txt_ape_nom_2").val());
 
     if (dni == '' || dni.length <= 7) {
         mostraralertasconfoco('* Ingrese el Dni 8 digitos ...', 'vw_usuario_txt_dni');
@@ -162,7 +241,7 @@ function update_user() {
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         type: 'POST',
         url: 'usuario_update',
-        data: {id: id_user, dni: dni, usuario: usuario.toUpperCase(), ape_nom: ape_nom.toUpperCase(), fch_nac: fch_nac},
+        data: {id: id_user, dni: dni, usuario: usuario.toUpperCase(), ape_nom: ape_nom.toUpperCase()},
         success: function (data) {
             if (data.msg == 'si') {
                 fn_actualizar_grilla('table_Usuarios', 'list_usuarios');

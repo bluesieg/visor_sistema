@@ -12,7 +12,7 @@ class CoactivaController extends Controller
 {
     use DatesTranslator;
     function letra(){        
-        $monto= '2.00';        
+        $monto= '1000.00';        
         $le = $this->num_letras($monto);
         echo $le;
     }
@@ -59,6 +59,9 @@ class CoactivaController extends Controller
         $plantilla = str_replace('{@ubi_pred@}',$resol->ubi_pred,$plantilla);
         $plantilla = str_replace('{@doc_ini@}',$resol->doc_ini,$plantilla);
         return view('coactiva.editor_resolucion_aper',compact('plantilla','id_doc'));
+    }
+    function editar_acta_aper(Request $request){
+        return view('coactiva.editor_acta_aper',compact('plantilla','id_doc'));
     }
     
     function get_expedientes(Request $request){
@@ -145,7 +148,7 @@ class CoactivaController extends Controller
             }
             if($Datos->id_tip_doc=='2'){
                 $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
-                $edit= "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='editar_doc(".$Datos->id_doc.")'><span class='btn-label'><i class='fa fa-pencil'></i></span>Editar</button>";
+                $edit= "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='editar_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-pencil'></i></span>Editar</button>";
             }
             else if($Datos->id_tip_doc=='6'){
                 $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
@@ -154,9 +157,13 @@ class CoactivaController extends Controller
                     $fch_recep= "<button class='btn btn-labeled bg-color-orange txt-color-white' title='Agregar Fecha de Recepción' type='button' onclick='fecha_resep_notif(".$Datos->id_doc.")'><span class='btn-label'><i class='fa fa-calendar'></i></span>Fecha</button>";
                 }else{$fch_recep=date('d-m-Y', strtotime($Datos->fch_recep));}                
             }
-            else if($Datos->id_tip_doc=='7' || $Datos->id_tip_doc=='9'){
+            else if($Datos->id_tip_doc=='7'){
                 $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
                 $edit= "";
+            }
+            else if($Datos->id_tip_doc=='9'){
+                $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
+                $edit= "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='editar_acta(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-pencil'></i></span>Editar</button>";
             }
             
             $Lista->rows[$Index]['id'] = $Datos->id_doc;            
@@ -425,19 +432,37 @@ class CoactivaController extends Controller
         }else if($documento[0]->id_tip_doc=='9'){//ACTA DE APERSONAMIENTO
             $doc=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
             $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
+            $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
+            $cuotas=DB::table('coactiva.vw_documentos_edit')->where('id_doc',$id_doc)->value('fch_cuo_acta');
+            $cuo = array();
+            $cuo = explode('*',$cuotas);
+            $cuotas = array();
+            for($i=0;$i<=count($cuo)-1;$i++){
+                $Lista = array();
+                $Lista['nro'] = $i+1;
+                $Lista['fch'] = $cuo[$i];
+                $Lista['fch_larga'] = mb_strtolower($this->getCreatedAtAttribute($cuo[$i])->format('l, d \d\e F \d\e\l Y'));
+                array_push($cuotas, $Lista);
+            }
+
             $resol=new \stdClass();
             foreach ($doc as $Index => $Datos){                
                 $resol->id_contrib=$Datos->id_contrib;
                 $resol->nro_resol=$nro_resol;
                 $resol->nro_exped=$Datos->nro_exped;
                 $resol->nro_doc=$Datos->nro_doc;
+                $resol->anio_resol=$Datos->anio_resol;
+                $resol->doc_ini=$Datos->doc_ini;
+                $resol->nro_rd=$nro_rd_op[0]->nro_rd;
+                $resol->anio_rd=$nro_rd_op[0]->anio;                
+                $resol->fch_cuo_acta=$Datos->fch_cuo_acta;
                 $resol->contribuyente= str_replace('-','',$Datos->contribuyente);                
-                $resol->monto= number_format($Datos->monto,2,'.',',');
-                $resol->monto_letra=$this->num_letras(number_format($Datos->monto,2,'.',','));
+                $resol->monto= number_format($Datos->monto_acta,2,'.',',');
+                $resol->monto_letra=$this->num_letras($Datos->monto_acta.'.00');
                 $resol->fch_larga=mb_strtolower($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
             }
-//            dd($resol);
-            $view = \View::make('coactiva.reportes.vw_acta_aper',compact('resol'))->render();
+//            dd($cuotas);
+            $view = \View::make('coactiva.reportes.vw_acta_aper',compact('resol','cuotas'))->render();
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
@@ -510,10 +535,6 @@ class CoactivaController extends Controller
     }
     
     function add_documento(Request $request){
-//        $id=$request['id_rd'];
-//        DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$request['id_coa_mtr'])
-//                        ->update(['estado'=>1]);
-        
         $data = new coactiva_documentos();
         $data->id_coa_mtr = $request['id_coa_mtr'];
         $data->id_tip_doc = $request['id_tip_doc'];
@@ -521,7 +542,7 @@ class CoactivaController extends Controller
         $data->anio = date('Y');
         $data->periodos = date('Y');
         $data->fch_cuo_acta = $request['fechas_cuotas'] ?? null;
-        $data->monto = $request['monto'] ?? null;        
+        $data->monto_acta = $request['monto'] ?? null;        
         $insert = $data->save();
 
         if($insert){

@@ -238,11 +238,11 @@
                                     <label class="input">
                                         <input id="nro_cuo_apersonamiento" type="text" class="input-sm">
                                     </label>                      
-                                </section
-                                <section class="col col-3" style="padding-right: 5px;">                                    
+                                </section>
+                                <section class="col col-3" style="padding-right: 5px;padding-left: 5px;">                                    
                                     <label class="label">Monto:</label>
                                     <label class="input">
-                                        <input id="nro_cuo_monto" type="text" class="input-sm">
+                                        <input id="nro_cuo_monto" onkeypress="return soloDNI(event);" type="text" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-6" style="padding-right:5px;">                                    

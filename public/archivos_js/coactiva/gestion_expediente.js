@@ -44,27 +44,31 @@ function add_doc_al_exped(){
                         MensajeDialogLoadAjax('vw_coa_acta_apersonamiento','Guardando...');
                         var rowCount =  $("#t_dina_acta_aper tr").length;
                         if(rowCount-1==0){
-                            mostraralertas('Tabla de Cuotas esta Vacia...');                            
+                            mostraralertas('Tabla de Cuotas esta Vacia...'); 
+                            MensajeDialogLoadAjaxFinish('vw_coa_acta_apersonamiento');
                             return false;
                         }
+                        
                         var fechas = new Array();                        
                         for(i=1;i<=rowCount-1;i++){
                             fechas.push($("#td_din_fch_"+i).val());
                         }
                         cant=fechas.length;
-                        fechas_cuotas = fechas.join('*');                        
-                        save_doc(id_coa_mtr,id_tip_doc,fechas_cuotas);
+                        fechas_cuotas = fechas.join('*'); 
+                        monto=$("#nro_cuo_monto").val();
+                        save_doc(id_coa_mtr,id_tip_doc,fechas_cuotas,monto);
                         setTimeout(function(){ 
                             MensajeDialogLoadAjaxFinish('vw_coa_acta_apersonamiento');
-                            $(this).dialog("close");
-                        }, 1000);
+                            dialog_close('vw_coa_acta_apersonamiento');
+                            dialog_close('dlg_select_doc');
+                        }, 1000);                        
                     }
                 }, {
                     html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                     "class": "btn btn-danger",
                     click: function () {$(this).dialog("close");}
                 }],
-            open: function(){$("#t_dina_acta_aper > tbody > tr").remove(); $("#nro_cuo_apersonamiento").val('');}       
+            open: function(){$("#t_dina_acta_aper > tbody > tr").remove(); $("#nro_cuo_apersonamiento").val(''); $("#nro_cuo_monto").val('')}       
         }).dialog('open');
     }else{
         return false;
@@ -148,9 +152,20 @@ function editar_doc(id_doc){
     $('#ck_editor_resol').attr('src','editar_resol?id_doc='+id_doc); 
     setTimeout(function(){ MensajeDialogLoadAjaxFinish('dlg_editor'); }, 1500);
 }
-//function ver_notif(id_doc){
-//    window.open("abrirdocumento/"+id_doc); 
-//}
+function editar_acta(id_doc){
+    $("#dlg_editor").dialog({
+        autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: EDITAR DOCUMENTO :.</h4></div>",
+        buttons: [{
+             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {$(this).dialog("close");}
+        }]        
+    }).dialog('open');
+    MensajeDialogLoadAjax('dlg_editor','Cargando...');    
+    $('#ck_editor_resol').attr('src','editar_acta_aper?id_doc='+id_doc); 
+    setTimeout(function(){ MensajeDialogLoadAjaxFinish('dlg_editor'); }, 1500);
+}
 function bus_contrib(){
     if($("#vw_ges_exped_contrib").val()==""){
         mostraralertasconfoco("Ingrese un Contribuyente para Buscar","#vw_ges_exped_contrib"); 

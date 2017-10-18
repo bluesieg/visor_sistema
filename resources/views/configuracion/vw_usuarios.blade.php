@@ -88,6 +88,16 @@
         $(window).on('resize.jqGrid', function () {
             $("#table_Usuarios").jqGrid('setGridWidth', $("#content").width());
         });
+        $("#vw_usuario_txt_dni").keypress(function (e) {
+            if (e.which == 13) {
+                fn_consultar_dni($("#vw_usuario_txt_dni").val());
+            }
+        });
+        $("#pers_nro_doc").keypress(function (e) {
+            if (e.which == 13) { 
+                get_datos_dni(); 
+            }
+        });
     });
 </script>
 @stop
@@ -109,52 +119,57 @@
                         </label>
                     </section>
                     <div class="row">
-                        <section class="col col-6">
-                            <label class="label">Foto:</label>
-                            <img id="vw_usuario_foto_img" src="{{asset('img/avatars/male.png')}}" name="vw_usuario_foto_img" size="1024" style="width: 233px;height: 220px;border: 1px solid #fff; outline: 1px solid #bfbfbf;margin-bottom: 14px;">
-                            <label class="label">Seleccionar Foto:</label>
-                            <label class="input"> 
-                                <input type="file" id="vw_usuario_cargar_foto" name="vw_usuario_cargar_foto" placeholder="solo jpge,jpg,png" accept="image/png, image/jpeg, image/jpg">                                
-                            </label>
+                        <section class="col col-6" style="padding-left: 50px">
+                            <img id="vw_usuario_foto_img" src="{{asset('img/avatars/male.png')}}" name="vw_usuario_foto_img" size="1024" style="width: 175px;height: 230px;border: 1px solid #fff; outline: 1px solid #bfbfbf;margin-top: 2px;margin-bottom: 5px;">
                         </section>
-                        <section class="col col-6">
-                            <label class="label">Dni:</label>
+                        <section class="col col-6" style="padding-right: 14px">
+                            <label class="label" style="margin-top:5px">Dni:</label>
                             <label class="input">  
                                 <div class="input-group">
-                                    <input id="vw_usuario_txt_dni" name="vw_usuario_txt_dni" onblur="validar_dni(this.value);" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8">                                
+                                    <input type="hidden" id="vw_usuario_txt_id_pers">
+                                    <input id="vw_usuario_txt_dni" name="vw_usuario_txt_dni" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8">                                
                                     <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
                                 </div>
-                            </label>
-                            <label class="label">Fecha Nacimiento:</label>
+                            </label>                               
+                            <label class="label" style="margin-top:5px">Usuario:</label>
                             <label class="input">
                                 <div class="input-group">
-                                    <input id="vw_usuario_txt_fch_nac" name="vw_usuario_txt_fch_nac" type="text" data-mask="99/99/9999" data-mask-placeholder="_" placeholder="dia/mes/año">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>                                
-                                </div>
-                            </label>   
-                            <label class="label">Usuario:</label>
-                            <label class="input">
-                                <div class="input-group">
-                                    <input id="vw_usuario_txt_usuario" name="vw_usuario_txt_usuario" type="text" onblur="validar_usuario(this.value);" placeholder="de 3 a mas caracteres" style="text-transform: uppercase">
+                                    <input id="vw_usuario_txt_usuario" name="vw_usuario_txt_usuario" type="text" placeholder="de 3 a mas caracteres" style="text-transform: uppercase">
                                     <span id="vw_usuario_btn_val_usuario" class="input-group-addon"><i class="fa fa-user"></i></span>
                                 </div>
                             </label>
-                            <label class="label">Password:</label>
+                            <label class="label" style="margin-top:5px">Contraseña:</label>
                             <label class="input">
                                 <div class="input-group">
                                     <input id="vw_usuario_txt_password" name="vw_usuario_txt_password" type="password" placeholder="Password">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                 </div>
                             </label>
-                            <label class="label">Confirmar Password:</label>
+                            <label class="label" style="margin-top:5px">Confirmar Contraseña:</label>
                             <label class="input">
                                 <div class="input-group">
                                     <input id="vw_usuario_txt_conf_pass" type="password" placeholder="Confirmar Password">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                 </div>
                             </label>                            
-                        </section>
+                        </section>                        
                     </div>
+<!--                    <section>
+                        <label class="label">Seleccionar Foto:</label>
+                        <label class="input"> 
+                            <input type="file" id="vw_usuario_cargar_foto" name="vw_usuario_cargar_foto" placeholder="solo jpge,jpg,png" accept="image/png, image/jpeg, image/jpg">                                
+                        </label>
+                    </section>-->
+                    <section>
+                        <label class="label">Jefe Inmediato:</label>                                   
+                        <label class="select">
+                            <select id="vw_usuario_dni_jefe" name="vw_usuario_dni_jefe" onchange="filtro_tipo_doc_pers(this.value);" class="input-sm">
+                                <option value="0">Seleccione</option>
+                            @foreach ($jef as $jef)
+                            <option value='{{$jef->dni}}' >{{trim($jef->ape_nom)}}</option>
+                            @endforeach                                          
+                            </select><i></i> </label>
+                    </section>
                 </fieldset>
             </form>
         </div>        
@@ -191,27 +206,105 @@
                                 <label class="label">Dni:</label>
                                 <label class="input">  
                                     <div class="input-group">
-                                        <input id="vw_usuario_txt_dni_2" onblur="validar_dni(this.value);" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8">                                
+                                        <input id="vw_usuario_txt_dni_2" onblur="validar_dni(this.value);" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8" disabled="">                                
                                         <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
                                     </div>
                                 </label>                                
                             </div>
-                        </section>                        
-                        <section>
-                            <div class="col col-6">
-                                <label class="label">Fecha Nacimiento:</label>
-                                <label class="input">
-                                    <div class="input-group">
-                                        <input id="vw_usuario_txt_fch_nac_2" type="text" data-mask="99/99/9999" data-mask-placeholder="_" placeholder="dia/mes/año">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>                                
-                                    </div>
-                                </label>
-                            </div>                            
-                        </section>                          
+                        </section>                
                     </div>
                 </div>
             </div>                 
         </div>        
+    </div>
+</div>
+
+<div id="dialog_Personas" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important;">
+<!--                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>-->
+                    <div class="panel-body">
+                        <fieldset class="col col-lg-9">
+                            <div class="row">
+                                <section class="col col-6" style="padding-right:5px;">
+                                    <label class="label">Tipo Documento:</label>                                   
+                                    <label class="select">
+                                        <select id="cb_tip_doc_3" name="cb_tip_doc_3" onchange="filtro_tipo_doc_pers(this.value);" class="input-sm">
+                                        @foreach ($tip_doc as $tip_doc3)
+                                        <option value='{{$tip_doc3->tip_doc}}' >{{trim($tip_doc3->tipo_documento)}}</option>
+                                        @endforeach                                          
+                                        </select><i></i> </label>                                                       
+                                </section>
+                                <section class="col col-4" style="padding-left:5px;padding-right: 5px;">
+                                    <label class="label">Nro. Documento:</label>
+                                    <label class="input">
+                                        <input id="pers_nro_doc" name="pers_nro_doc" type="text" onkeypress="return soloDNI(event);" maxlength="8" placeholder="00000000" class="input-sm">
+                                    </label>                                    
+                                </section>
+                                <section class="col col-2" style="padding-left:5px;">
+                                    <label class="label">&nbsp;</label>
+                                    <button onclick="btn_bus_getdatos();" type="button" class="btn btn-labeled btn-primary">
+                                        <span class="btn-label" style="left: 0px;">
+                                            <i class="fa fa-search"></i>
+                                        </>Buscar
+                                   </button>
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-3" style="padding-right:5px;">
+                                    <label class="label">Ape.Paterno:</label>
+                                    <label class="input">
+                                        <input id="pers_pat" name="pers_pat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                    </label>                                    
+                                </section>
+                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
+                                    <label class="label">Ape.Materno:</label>
+                                    <label class="input">
+                                        <input id="pers_mat" name="pers_mat" type="text" maxlength="50" class="input-sm text-uppercase">
+                                    </label>                                                                     
+                                </section>
+                                <section class="col col-6" style="padding-left:5px;">
+                                    <label class="label">Nombres:</label>
+                                    <label class="input">
+                                        <input id="pers_nombres" name="pers_nombres" type="text" maxlength="100" class="input-sm text-uppercase">
+                                    </label>                                                                     
+                                </section> 
+                            </div>                            
+                            <section>
+                                <label class="label">Razon Social:</label>
+                                <label class="input">
+                                    <input id="pers_raz_soc" name="pers_raz_soc" type="text" class="input-sm text-uppercase">
+                                </label>                                                 
+                            </section>
+                            <div class="row">
+                                <section class="col col-6" style="padding-right:5px;">
+                                    <label class="label">Sexo:</label>                                   
+                                    <label class="select">
+                                        <select id="pers_sexo" name="pers_sexo" class="input-sm text-uppercase">
+                                            <option value="-">Seleccionar</option>
+                                            <option value="1">Masculino</option>
+                                            <option value="0">Femenino</option>        
+                                        </select><i></i> </label>                                     
+                                </section>
+                                <section class="col col-6" style="padding-left:5px;">
+                                    <label class="label">Fecha Nac.:</label>
+                                    <label class="input">
+                                        <input id="pers_fnac" name="pers_fnac" type="text" data-mask="99/99/9999" data-mask-placeholder="-" placeholder="dia/mes/año" class="input-sm">
+                                    </label>                                                                                                          
+                                </section>                                
+                            </div>
+                        </fieldset>
+                        <fieldset class="col col-lg-3 text-align-center">
+                            <section>
+                             <img id="pers_foto" src="{{asset('img/avatars/male.png')}}" name="pers_foto" style="width: 160px;height: 220px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">   
+                            </section>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

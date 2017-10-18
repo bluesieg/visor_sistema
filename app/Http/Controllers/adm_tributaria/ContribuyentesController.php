@@ -117,6 +117,7 @@ class ContribuyentesController extends Controller
             return response()->json([
                     'contrib' => trim(str_replace('-','',$contribuyente[0]->contribuyente)),
                     'id_pers' => trim(str_replace('-','',$contribuyente[0]->id_pers)),
+                    'pers_foto'=> $contribuyente[0]->pers_foto
             ]);
         }
     }

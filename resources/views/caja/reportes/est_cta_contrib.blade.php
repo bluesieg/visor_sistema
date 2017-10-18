@@ -159,8 +159,10 @@
                         @endforeach                    
                     </tbody>
                 </table>
-                @if($convenio[0]->tipo==2 || $convenio[0]->tipo==3)
-                    <div class="contenedor" style="left: 0px;top: 362px;height: 78px;"><center><h2 style="margin-top:20px">En Fraccionamiento</h2></center></div>
+                @if(isset($convenio[0]->tipo))
+                    @if($convenio[0]->tipo==2 || $convenio[0]->tipo==3)
+                        <div class="contenedor" style="left: 0px;top: 362px;height: 78px;"><center><h2 style="margin-top:20px">En Fraccionamiento</h2></center></div>
+                    @endif
                 @endif
             </div>
         @endif               

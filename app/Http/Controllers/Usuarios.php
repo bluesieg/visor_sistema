@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Personas;
 class Usuarios extends Controller {
 
     public function vw_usuarios_show() {
-        return view('configuracion/vw_usuarios');
+        $tip_doc=DB::select('select * from adm_tri.tipo_documento');
+        $jef=DB::table('vw_usuarios')->where('jefe',1)->get();
+        return view('configuracion/vw_usuarios',compact('tip_doc','jef'));
     }
 
     public function getAllUsuarios2() {
@@ -18,6 +21,22 @@ class Usuarios extends Controller {
         return view('configuracion/vw_usuarios')->with([
                     'Usuarios' => $table]
         );
+    }
+    function insert_persona_user(Request $request){
+        $data = new Personas();
+        $data->pers_ape_pat = $request['pers_ape_pat'];
+        $data->pers_ape_mat = $request['pers_ape_mat'];
+        $data->pers_nombres = $request['pers_nombres'];
+        $data->pers_raz_soc = $request['pers_raz_soc'];
+        $data->pers_tip_doc = $request['pers_tip_doc'];
+        $data->pers_nro_doc = $request['pers_nro_doc'];
+        $data->pers_sexo = $request['pers_sexo'];
+        $data->pers_fnac = $request['pers_fnac'];
+        $image=$request['pers_foto'];
+        $img_file = file_get_contents($image);
+        $data->pers_foto = base64_encode($img_file);
+        $data->save();        
+        return $data->id_pers;
     }
 
     public function index() {
@@ -57,7 +76,7 @@ class Usuarios extends Controller {
                 trim($Datos->dni),
                 trim($Datos->ape_nom),
                 trim($Datos->usuario),                
-                trim(date('d-m-Y', strtotime($Datos->fch_nac)))
+                '12/12/2012'
             );
         }
 
@@ -68,36 +87,27 @@ class Usuarios extends Controller {
 
     public function insert_Usuario(Request $request) {
         
-        if($request->file('vw_usuario_cargar_foto')){
-            $file = $request->file('vw_usuario_cargar_foto');
-//        $size = $request->file('vw_usuario_cargar_foto')->getSize();
-//        $tmp_name=$request->file('vw_usuario_cargar_foto')->getPath();
-
-            $file2 = \File::get($file);
-        }        
-       
-//        echo $file2;
-//        echo "<img src='data:image/png;base64,".$file2."'>";
+//        if($request->file('vw_usuario_cargar_foto')){
+//            $file = $request->file('vw_usuario_cargar_foto');
+//            $file2 = \File::get($file);
+//        }
 
         $data = array();
         $data['dni'] = $request['vw_usuario_txt_dni'];
         $data['ape_nom'] = strtoupper($request['vw_usuario_txt_ape_nom']);
         $data['usuario'] = strtoupper($request['vw_usuario_txt_usuario']);
-        $data['password'] = bcrypt($request['vw_usuario_txt_password']);        
-        $data['fch_nac'] = date('d-m-Y H:i:s', strtotime($request['vw_usuario_txt_fch_nac']));
+        $data['password'] = bcrypt($request['vw_usuario_txt_password']);
+        $data['dni_jefe'] = bcrypt($request['vw_usuario_dni_jefe']);
         $data['cad_lar'] = strtoupper($request['vw_usuario_txt_ape_nom']) . ' ' . $request['vw_usuario_txt_dni'] . ' ' . strtoupper($request['vw_usuario_txt_usuario']);
         $data['contrasena']= $this->encripta_pass($request['vw_usuario_txt_password']);
-        
-        if(isset($file2)){
-            $data['foto'] = base64_encode($file2);
-        }else{
-            $data['foto'] = '';
-        }
-        
-//        echo $data['foto'];
-        $data['created_at'] = date("Y-m-d H:i:s");
-        $data['updated_at'] = date("Y-m-d H:i:s");
-//
+//        if(isset($file2)){
+//            $data['foto'] = base64_encode($file2);
+//        }else{
+//            $data['foto'] = '';
+//        }        
+
+        $data['created_at'] = date("Y-m-d H:i:s");$data['updated_at'] = date("Y-m-d H:i:s");
+
         $insert = DB::table('usuarios')->insert($data);
 
         if ($insert) {
@@ -115,8 +125,7 @@ class Usuarios extends Controller {
             $Lista->id = trim($Datos->id);
             $Lista->dni = trim($Datos->dni);
             $Lista->ape_nom = trim($Datos->ape_nom);
-            $Lista->usuario = trim($Datos->usuario);
-            $Lista->fch_nac = date('d-m-Y', strtotime($Datos->fch_nac));
+            $Lista->usuario = trim($Datos->usuario);            
 //            $Lista->foto = trim($Datos->foto);
         }
         return response()->json($Lista);
