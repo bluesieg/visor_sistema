@@ -15,6 +15,12 @@ class PredioController extends Controller
 {
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_preurb' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores = DB::select('select * from catastro.sectores where id_sec>0 order by sector');
         $manzanas = DB::select('select * from catastro.manzanas where id_mzna>0 and id_sect=(select id_sec from catastro.sectores where id_sec>0 order by sector limit 1) ');
@@ -26,7 +32,7 @@ class PredioController extends Controller
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
         $condi_pen = DB::select('select * from adm_tri.condi_pensionista order by id_con');
-        return view('adm_tributaria/vw_predio', compact('anio_tra','sectores','manzanas','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','condi_pen'));
+        return view('adm_tributaria/vw_predio', compact('anio_tra','sectores','manzanas','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','condi_pen','menu','permisos'));
     }
     public function calculos_ivpp($id)
     {

@@ -179,7 +179,11 @@ function fn_save_hoja()
             {
                 mostraralertas("No se puede Generar Hoja de Liquidación, Falta completar fiscalización de predios");
             }
-            else
+            if(r==-1)
+            {
+                MensajeAlerta("No se Puede Crear","La Carta Relacionada está Anulada...",4000);
+            }
+            if(r>0)
             {
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
                 $("#dlg_new_hoja").dialog("close");

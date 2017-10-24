@@ -153,15 +153,9 @@ function limpiar_personas(){
 }
 function dlg_Editar_Usuario(){
     $("#dialog_Editar_Usuario").dialog({
-        autoOpen: false, modal: true, width: 550, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: EDITAR USUARIO :.</h4></div>",
-        buttons: [{
-                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-success",
-                click: function () {
-                    update_user();
-                }
-            }, {
+        buttons: [ {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
                 click: function () {
@@ -177,14 +171,14 @@ function dlg_Editar_Usuario(){
     $.ajax({
         type: 'GET',
         url: 'get_datos_usuario?id=' + id_user,
-        success: function (data) {
+        success: function (data){
+            llamar_sub_modulo();
             $("#vw_usuario_txt_ape_nom_2").val(data.ape_nom);
             $("#vw_usuario_txt_dni_2").val(data.dni);
-//            $("#vw_usuario_txt_fch_nac_2").val(data.fch_nac);
             $("#vw_usuario_txt_usuario_2").val(data.usuario);
         }, error: function (data) {
             mostraralertas('* Error base de datos... <br> * Contactese con el administrador..');
-//                dialog_close('dialog_Editar_Usuario');
+            dialog_close('dialog_Editar_Usuario');
         }
     });
 }

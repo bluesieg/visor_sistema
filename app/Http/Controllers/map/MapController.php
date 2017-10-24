@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\map;
 
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -19,25 +19,12 @@ class MapController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        
-//       if (Auth::check())
-//        {
-//            return view('home');
-//        }
-//        else return view('auth/login');
-
-        //$lotes = DB::select('SELECT ST_AsGeoJSON(geometria) from catastro.lotes;');
-        //$sectores = DB::connection('mapa')->select('SELECT gid, entity, codigo, sector FROM mdcc_2017.sectores_cat order by codigo asc;');
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         $sectores = DB::select('SELECT  id_sec, sector FROM catastro.sectores order by sector asc;');
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('cartografia/cartografia_predios', compact('sectores','anio_tra'));
+        return view('cartografia/cartografia_predios', compact('sectores','anio_tra','menu'));
     }
 
     function get_manzanas(){

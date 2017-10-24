@@ -21,6 +21,11 @@ class Hoja_liquidacionController extends Controller
 
     public function create(Request $request)
     {
+        $anulado=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$request['car'])->get();
+        if($anulado[0]->flg_anu>0)
+        {
+            return -1;
+        }
         $totpre= DB::select('select count(id_puente) as total from fiscalizacion.puente_carta_predios where id_car='.$request['car']);
         $totfisca= DB::select('select count(id_fic) as total from fiscalizacion.vw_ficha_verificacion where id_car='.$request['car']);
         if($totpre[0]->total>$totfisca[0]->total)

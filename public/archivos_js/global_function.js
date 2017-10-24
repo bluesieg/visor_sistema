@@ -480,6 +480,16 @@ function MensajeAlerta(tit,cont,dura)
                     timeout : dura || 5000
             });
 }
+function sin_permiso()
+{
+    $.smallBox({
+                    title : 'No tiene Permiso de Usar este Boton',
+                    content : "<i class='fa fa-clock-o'></i> <i>Comuniquese con el Admin</i>",
+                    color : "#C46A69",
+                    iconSmall : "fa fa-check fa-2x fadeInRight animated",
+                    timeout : 5000
+            });
+}
 function ajustar(tam, num)
 {
     data = $("#" + num).val();

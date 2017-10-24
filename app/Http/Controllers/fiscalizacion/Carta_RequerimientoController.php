@@ -189,6 +189,8 @@ class Carta_RequerimientoController extends Controller
                 if($Datos->flg_anu==1)
                 {
                     $anu='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
+                    $btnhoj='Anulado';
+
                 }
                 $Lista->rows[$Index]['id'] = $Datos->id_car;            
                 $Lista->rows[$Index]['cell'] = array(

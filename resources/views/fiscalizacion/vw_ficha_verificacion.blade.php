@@ -345,7 +345,7 @@
 <div id="dlg_vista_carta" style="display: none;">
     
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-        <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+        <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
             <div class="col-xs-5" style="padding: 0px; margin-top: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
@@ -411,8 +411,6 @@
                     <div id="pager_table_predios_contri"></div>
                 </article>
             </div>
-
-          
         </div>
     </div>
 </div> 

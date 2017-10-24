@@ -9,9 +9,10 @@ use App\Models\Personas;
 class Usuarios extends Controller {
 
     public function vw_usuarios_show() {
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         $tip_doc=DB::select('select * from adm_tri.tipo_documento');
         $jef=DB::table('vw_usuarios')->where('jefe',1)->get();
-        return view('configuracion/vw_usuarios',compact('tip_doc','jef'));
+        return view('configuracion/vw_usuarios',compact('tip_doc','jef','menu'));
     }
 
     public function getAllUsuarios2() {

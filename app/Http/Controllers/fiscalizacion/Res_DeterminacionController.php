@@ -86,6 +86,7 @@ class Res_DeterminacionController extends Controller
         $val->id_usuario = Auth::user()->id;
         $val->fec_reg = date("d/m/Y");
         $val->hora_reg = date("H:i");
+        $val->id_tip_ins = 3;
         $val->save();
         return $val->id_pred_anio;
     }

@@ -369,8 +369,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('pre_rep_prin_contr','ReportesController@reporte_prin_contribuyentes');
 
     });
+    /*************************************** - PERMISOS - *************************************** */
+
+    Route::group(['namespace' => 'permisos'], function() {
+        Route::resource('modulos', 'ModulosController');
+        Route::resource('sub_modulos', 'Sub_ModulosController');
+        Route::resource('permisos', 'Permisos_Modulo_UsuarioController');
+
+    });
 });
-
-
-
-

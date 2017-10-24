@@ -50,19 +50,43 @@
             
             </div>
     <div class="col-lg-6 col-md-12 col-xs-12">
-        <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">                                        
+        <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">
+                @if( $permisos[0]->btn_new ==1 )
                     <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="clicknewgrid();">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                     </button>
+                @else
+                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="sin_permiso()">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                    </button>
+                @endif
+                @if( $permisos[0]->btn_edit ==1 )
                     <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="clickmodgrid();">
                         <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                     </button>
+                @else
+                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="sin_permiso()">
+                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                    </button>
+                @endif
+                @if( $permisos[0]->btn_del ==1 )
                     <button  type="button" class="btn btn-labeled btn-danger">
                         <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                    </button>
+                @else
+                    <button  type="button" class="btn btn-labeled btn-danger" onclick="sin_permiso()">
+                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                     </button> 
+                @endif
+                @if( $permisos[0]->btn_imp ==1 )
                     <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
+                @else
+                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white" onclick="sin_permiso()">
+                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                    </button>
+                @endif
         </ul>
     </div>
     
@@ -647,13 +671,25 @@
                     </div>
                         
                     <div class="col-xs-12 cr-body">
-                            <ul id="sparks">                                        
+                            <ul id="sparks">
+                                @if( $permisos[0]->btn_new ==1 )
                                         <button type="button" id="btnsavepre" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_confirmar_predio();">
                                             <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Guardar Predio
                                         </button>
+                                @else
+                                        <button type="button" id="btnsavepre" class="btn btn-labeled bg-color-green txt-color-white" onclick="sin_permiso();">
+                                            <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Guardar Predio
+                                        </button>
+                                @endif
+                                @if( $permisos[0]->btn_edit ==1 )
                                         <button  type="button" id="btnmodpre" class="btn btn-labeled bg-color-blue txt-color-white" onclick="dlgUpdate();">
                                             <span class="cr-btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Predio
                                         </button>
+                                @else
+                                        <button  type="button" id="btnmodpre" class="btn btn-labeled bg-color-blue txt-color-white" onclick="sin_permiso();">
+                                            <span class="cr-btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Predio
+                                        </button>
+                                @endif
                             </ul>
                     </div> 
                     <div class="col-xs-12" style="margin-top: 5px; margin-bottom: 10px">
@@ -685,24 +721,51 @@
                                             <div id="pager_table_pisos"></div>
                                         </div>
                                         <div class="col-xs-2">
-                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewpiso()" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-plus-sign"></i>
-                                                </span>
-                                                <label>Nuevo Piso</label>
-                                            </button>
-                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodpiso()" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </span>
-                                                <label>Editar Piso</label>
-                                            </button>
-                                            <button id="btn_s1_delpiso" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="pisoDelete()">
-                                                <span>
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </span>
-                                                <label>Borrar Piso</label>
-                                            </button>
+                                            @if( $permisos[0]->btn_new ==1 )
+                                                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewpiso()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                                    </span>
+                                                    <label>Nuevo Piso</label>
+                                                </button>
+                                            @else
+                                                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso();" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                                    </span>
+                                                    <label>Nuevo Piso</label>
+                                                </button>
+                                            @endif
+                                            @if( $permisos[0]->btn_edit ==1 )
+                                                <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodpiso()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-edit"></i>
+                                                    </span>
+                                                    <label>Editar Piso</label>
+                                                </button>
+                                            @else
+                                                <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-edit"></i>
+                                                    </span>
+                                                    <label>Editar Piso</label>
+                                                </button>
+                                            @endif
+                                            @if( $permisos[0]->btn_del ==1 )
+                                                <button id="btn_s1_delpiso" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="pisoDelete()">
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </span>
+                                                    <label>Borrar Piso</label>
+                                                </button>
+                                            @else
+                                                <button id="btn_s1_delpiso" class="btn bg-color-red txt-color-white cr-btn-big" onclick="sin_permiso()">
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </span>
+                                                    <label>Borrar Piso</label>
+                                                </button>
+                                            @endif
                                         </div>
                                 </div>
                                 <div id="s2" class="tab-pane fade" style="height: 300px">
@@ -711,24 +774,51 @@
                                         <div id="pager_table_instal"></div>
                                     </div>
                                     <div class="col-xs-2">
+                                        @if( $permisos[0]->btn_new ==1 )
                                             <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewinst()" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-plus-sign"></i>
                                                 </span>
                                                 <label>Nueva Inst</label>
                                             </button>
+                                        @else
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nueva Inst</label>
+                                            </button>
+                                        @endif
+                                        @if( $permisos[0]->btn_edit ==1 )
                                             <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodinst()" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-edit"></i>
                                                 </span>
                                                 <label>Editar Inst</label>
                                             </button>
+                                        @else
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Inst</label>
+                                            </button>
+                                        @endif
+                                        @if( $permisos[0]->btn_edit ==1 )
                                             <button id="btn_s2_delinst" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="instDelete()">
                                                 <span>
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </span>
                                                 <label>Borrar Inst</label>
                                             </button>
+                                        @else
+                                            <button id="btn_s2_delinst" class="btn bg-color-red txt-color-white cr-btn-big" onclick="sin_permiso()">
+                                                <span>
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </span>
+                                                <label>Borrar Inst</label>
+                                            </button>
+                                        @endif
                                         </div>
                                 </div>
                                 <div id="s3" class="tab-pane fade" style="height: 300px">
@@ -737,27 +827,53 @@
                                             <div id="pager_table_condos"></div>
                                         </div>
                                         <div class="col-xs-2">
-                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewcondo()" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-plus-sign"></i>
-                                                </span>
-                                                <label>Nuevo Cond</label>
-                                            </button>
-                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodcondo()" >
-                                                <span>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </span>
-                                                <label>Editar Cond</label>
-                                            </button>
-                                            <button id="btn_s3_delcondos" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="condoDelete()">
-                                                <span>
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </span>
-                                                <label>Borrar Cond</label>
-                                            </button>
+                                            @if( $permisos[0]->btn_new ==1 )
+                                                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewcondo()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                                    </span>
+                                                    <label>Nuevo Cond</label>
+                                                </button>
+                                            @else
+                                                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                                    </span>
+                                                    <label>Nuevo Cond</label>
+                                                </button>
+                                            @endif
+                                            @if( $permisos[0]->btn_edit ==1 )
+                                                <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodcondo()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-edit"></i>
+                                                    </span>
+                                                    <label>Editar Cond</label>
+                                                </button>
+                                            @else
+                                                <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-edit"></i>
+                                                    </span>
+                                                    <label>Editar Cond</label>
+                                                </button> 
+                                            @endif
+                                            @if( $permisos[0]->btn_del ==1 )
+                                                <button id="btn_s3_delcondos" data-token="{{ csrf_token() }}" class="btn bg-color-red txt-color-white cr-btn-big" onclick="condoDelete()">
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </span>
+                                                    <label>Borrar Cond</label>
+                                                </button>
+                                            @else
+                                                <button id="btn_s3_delcondos" class="btn bg-color-red txt-color-white cr-btn-big" onclick="sin_permiso()">
+                                                    <span>
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </span>
+                                                    <label>Borrar Cond</label>
+                                                </button>
+                                            @endif
                                         </div>
                                 </div>
-                                
                             </div>
                     </div>    
                 </div>

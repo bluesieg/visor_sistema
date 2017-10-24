@@ -85,6 +85,61 @@
                 dlg_Editar_Usuario();
             }
         });
+        jQuery("#table_modulos").jqGrid({
+            url: 'modulos',
+            datatype: 'json', mtype: 'GET',
+            height: '300px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id', 'Descripcion'],
+            rowNum: 50, sortname: 'id_mod', sortorder: 'desc', viewrecords: true, caption: 'Lista de Módulos', align: "center",
+            colModel: [
+                {name: 'id_mod', index: 'id_mod',align: 'center', width: 60},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 245}
+                
+            ],
+            pager: '#pager_table_modulos',
+            rowList: [50, 100],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_modulos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_modulos').jqGrid('getDataIDs')[0];
+                            $("#table_modulos").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){llamar_sub_modulo()},
+            ondblClickRow: function (Id){}
+        });
+        jQuery("#table_sub_modulos").jqGrid({
+            url: 'sub_modulos?identifi=0&usu=0',
+            datatype: 'json', mtype: 'GET',
+            height: '300px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id', 'Descripcion','Nuevo','Editar','Eliminar','Imprimir','Anular'],
+            rowNum: 50, sortname: 'id_mod', sortorder: 'asc', viewrecords: true, caption: 'Lista de Sub Módulos', align: "center",
+            colModel: [
+                {name: 'id_mod', index: 'id_mod',align: 'center', width: 50},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 245},
+                {name: 'new', index: 'new', align: 'center', width: 40},
+                {name: 'upd', index: 'upd', align: 'center', width: 40},
+                {name: 'del', index: 'del', align: 'center', width: 40},
+                {name: 'print', index: 'print', align: 'center', width: 40},
+                {name: 'anu', index: 'anu', align: 'center', width: 40}
+            ],
+            pager: '#pager_table_sub_modulos',
+            rowList: [50, 100],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_sub_modulos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_sub_modulos').jqGrid('getDataIDs')[0];
+                            $("#table_sub_modulos").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        
+        
+        
         $(window).on('resize.jqGrid', function () {
             $("#table_Usuarios").jqGrid('setGridWidth', $("#content").width());
         });
@@ -101,6 +156,7 @@
     });
 </script>
 @stop
+<script src="{{ asset('archivos_js/permisos/permisos.js') }}"></script>
 <div id="dialog_new_edit_Usuario" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -177,45 +233,91 @@
 </div>
 <!-- **************************                EDITAR USUARIO-          ************************************-->
 <div id="dialog_Editar_Usuario" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">                
-                <div class="panel panel-success" style="border: 0px !important;">
-                    <div class="panel-heading bg-color-success">.:: Datos del Usuario ::.</div>
-                    <div class="panel-body">
-                        <div class="col col-12" style="margin-top: 10px;">
-                            <label class="label">Nombres y Apellidos:</label>
-                            <label class="input">  
-                                <div class="input-group">
-                                    <input id="vw_usuario_txt_ape_nom_2" type="text" placeholder="Nombres y Apellidos" style="text-transform: uppercase">
-                                    <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                </div>
-                            </label>
-                        </div>
-                        <section>
-                            <div class="col col-6">
-                                <label class="label">Usuario:</label>
-                                <label class="input">
+    <div class="col-xs-4">
+        <div class="widget-body">
+            <div  class="smart-form">
+                <div class="panel-group">                
+                    <div class="panel panel-success" style="padding-bottom: 20px; ">
+                        <div class="panel-heading bg-color-success">.:: Datos del Usuario ::.</div>
+                        <div class="panel-body">
+                            <div class="col col-12" style="margin-top: 10px;">
+                                <label class="label">Nombres y Apellidos:</label>
+                                <label class="input">  
                                     <div class="input-group">
-                                        <input id="vw_usuario_txt_usuario_2" type="text" onblur="validar_usuario(this.value);" placeholder="de 3 a mas caracteres" style="text-transform: uppercase">
-                                        <span id="vw_usuario_btn_val_usuario" class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input id="vw_usuario_txt_ape_nom_2" type="text" placeholder="Nombres y Apellidos" style="text-transform: uppercase">
+                                        <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
                                     </div>
                                 </label>
                             </div>
-                            <div class="col col-6">
-                                <label class="label">Dni:</label>
-                                <label class="input">  
-                                    <div class="input-group">
-                                        <input id="vw_usuario_txt_dni_2" onblur="validar_dni(this.value);" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8" disabled="">                                
-                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-                                    </div>
-                                </label>                                
-                            </div>
-                        </section>                
+                            <section>
+                                <div class="col col-6">
+                                    <label class="label">Usuario:</label>
+                                    <label class="input">
+                                        <div class="input-group">
+                                            <input id="vw_usuario_txt_usuario_2" type="text" onblur="validar_usuario(this.value);" placeholder="de 3 a mas caracteres" style="text-transform: uppercase">
+                                            <span id="vw_usuario_btn_val_usuario" class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="col col-6">
+                                    <label class="label">Dni:</label>
+                                    <label class="input">  
+                                        <div class="input-group">
+                                            <input id="vw_usuario_txt_dni_2" onblur="validar_dni(this.value);" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8" disabled="">                                
+                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                        </div>
+                                    </label>                                
+                                </div>
+                            </section>                
+                        </div>
                     </div>
-                </div>
-            </div>                 
-        </div>        
+                </div>                 
+            </div>
+            <div class="text-right" style="padding-top: 10px;">
+                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="update_user()">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span> Grabar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3" style="padding: 0px; margin-top: 0px;">
+        <article class="col-xs-12" style=" padding-left: 0px !important">
+            <table id="table_modulos"></table>
+            <div id="pager_table_modulos"></div>
+        </article>
+        <div class="col-xs-12" style=" margin-bottom: 10px; padding: 0px;">
+            <ul class="text-left" style="margin-top: 5px !important; margin-bottom: 0px !important; padding: 0px;">                                        
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_new_mod()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span> Nuevo
+                    </button>
+                    <button type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="fn_edit_mod()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span> Editar
+                    </button>
+                    <button id="btn_delmod" data-token="{{ csrf_token() }}" type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="fn_borrar_Modulo()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span> Borrar
+                    </button>
+                    
+            </ul>
+        </div>
+    </div>
+    <div class="col-xs-5" style="padding: 0px; margin-top: 0px;">
+        <article class="col-xs-12" style=" padding-left: 0px !important">
+            <table id="table_sub_modulos"></table>
+            <div id="pager_table_sub_modulos"></div>
+        </article>
+        <div class="col-xs-12" style=" margin-bottom: 10px; padding: 0px;">
+            <ul class="text-right" style="margin-top: 5px !important; margin-bottom: 0px !important; padding: 0px;">                                        
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_new_submod()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span> Nuevo
+                    </button>
+                    <button type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="fn_edit_submod()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span> Editar
+                    </button>
+                    <button id="btn_delsubmod" data-token="{{ csrf_token() }}" type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="fn_borrar_subModulo()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span> Borrar
+                    </button>
+            </ul>
+        </div>
     </div>
 </div>
 
@@ -307,6 +409,107 @@
         </div>
     </div>
 </div>
+
+<!--+++++++++++++++++++++permisos+++++++++++++++++++++++++++++++++++++++++++++++-->
+<div id="dlg_modulos" style="display: none;">
+    <input type="hidden" id="hidden_id_mod" value="0"/>
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>LLenado de Información::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon ">Nombre del Módulo (Será Visible desde el Menú) &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_des_mod" type="text"  class="form-control" style="height: 32px; " maxlength="25"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Título Módulo(Se verá cuando pase el mouse sobre la Descrip.) &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_title_mod" type="text"  class="form-control" style="height: 32px; " maxlength="50"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">id_sistena &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_idsis_mod" type="text"  class="form-control" style="height: 32px; " maxlength="50"  >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div id="dlg_submodulos" style="display: none;">
+    <input type="hidden" id="hidden_id_submod" value="0"/>
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>LLenado de Información::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon ">Nombre del Sub Módulo (Será Visible desde el Menú) &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_des_submod" type="text"  class="form-control" style="height: 32px; " maxlength="25"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Título Sub Módulo(Se verá cuando pase el mouse sobre la Descrip.) &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_title_submod" type="text"  class="form-control" style="height: 32px; " maxlength="50"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">id_sistena del sub modulo &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_idsis_submod" type="text"  class="form-control" style="height: 32px; " maxlength="50"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">ruta sub modulo &nbsp;<i class="fa fa-cogs"></i></span>
+                        <div class=""  >
+                            <input id="dlg_ruta_submod" type="text"  class="form-control" style="height: 32px; " maxlength="50"  >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+
+
 @endsection
 
 
