@@ -93,7 +93,7 @@ class Sub_ModulosController extends Controller
         $sub_modulos=new Sub_Modulos;
         $sub_modulos->des_sub_mod=$request['des'];
         $sub_modulos->titulo=$request['tit'];
-        $sub_modulos->id_sistena=$request['sis'];
+        $sub_modulos->id_sistema=$request['sis'];
         $sub_modulos->ruta_sis=$request['ruta'];
         $sub_modulos->id_mod=$request['mod'];
         $sub_modulos->save();

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+<input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
+<input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
 <section id="widget-grid" class=""> 
 <div class='cr_content col-xs-12'>
     <div class="col-xs-12">

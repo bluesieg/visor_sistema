@@ -111,7 +111,7 @@ function fn_edit_mod()
             $("#hidden_id_mod").val(modulo);
             $("#dlg_des_mod").val(r[0].descripcion);
             $("#dlg_title_mod").val(r[0].titulo);
-            $("#dlg_idsis_mod").val(r[0].id_sistena);
+            $("#dlg_idsis_mod").val(r[0].id_sistema);
             MensajeDialogLoadAjaxFinish('dlg_modulos');
         },
         error: function(data) {
@@ -143,7 +143,7 @@ function fn_edit_submod()
             $("#hidden_id_submod").val(submodulo);
             $("#dlg_des_submod").val(r[0].des_sub_mod);
             $("#dlg_title_submod").val(r[0].titulo);
-            $("#dlg_idsis_submod").val(r[0].id_sistena);
+            $("#dlg_idsis_submod").val(r[0].id_sistema);
             $("#dlg_ruta_submod").val(r[0].ruta_sis);
             MensajeDialogLoadAjaxFinish('dlg_submodulos');
         },

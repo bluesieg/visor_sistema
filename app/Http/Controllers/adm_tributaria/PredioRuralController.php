@@ -16,6 +16,12 @@ class PredioRuralController extends Controller
 
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_preru' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
         $tipoterr = DB::select('select * from ADM_TRI.TIPO_PREDIO_RUSTICO  order by id_tip_pre_rus');
@@ -29,8 +35,7 @@ class PredioRuralController extends Controller
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
         $condi_pen = DB::select('select * from adm_tri.condi_pensionista order by id_con');
-        return view('adm_tributaria/vw_predio_ru', compact('anio_tra','condicion','tipoterr','usoterr','gpoterr','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','condi_pen'));
-   
+        return view('adm_tributaria/vw_predio_ru', compact('permisos','menu','anio_tra','condicion','tipoterr','usoterr','gpoterr','ecc','tpre','upa','fadq','pisclasi','pismat','pisecs','condi_pen'));
     }
 
     public function calculos_ivpp($id)

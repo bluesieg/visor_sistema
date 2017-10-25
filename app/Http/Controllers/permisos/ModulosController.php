@@ -52,7 +52,7 @@ class ModulosController extends Controller
         $modulos=new Modulos;
         $modulos->descripcion=$request['des'];
         $modulos->titulo=$request['tit'];
-        $modulos->id_sistena=$request['sis'];
+        $modulos->id_sistema=$request['sis'];
         $modulos->save();
         return $modulos->id_mod;
     }
