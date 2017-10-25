@@ -75,9 +75,9 @@
                     <li class="">
                         <a href="#" class="dropdown-toggle userdropdown pull-right" data-toggle="dropdown" style="margin-top: 8px;font-weight:bold;text-transform: uppercase"> 
                             @if (Auth::user()->foto)
-                                <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">                           
+                                <img src="data:image/png;base64,{{ Auth::user()->foto }}" style="width: 28px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">                           
                             @else
-                                <img src="{{asset('img/avatars/male.png')}}" style="width: 35px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">                           
+                                <img src="{{asset('img/avatars/male.png')}}" style="width: 28px; height: 35px;border: 1px solid #fff; outline: 1px solid #bfbfbf;">                           
                             @endif
                             <span style="color: black">BIENVENIDO, {{ Auth::user()->ape_nom }} </span> <i class="fa fa-angle-down" style="color: black"></i> 
                         </a>
@@ -103,9 +103,9 @@
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a>
                         @if (Auth::user()->foto)
-                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
+                            <img src="data:image/png;base64,{{ Auth::user()->foto }}" alt="me" style="width: 20px; height: 25px;" class="online"/> 
                         @else
-                            <img src="{{asset('img/avatars/male.png')}}" alt="me" style="width: 22px; height: 25px;" class="online"/> 
+                            <img src="{{asset('img/avatars/male.png')}}" alt="me" style="width: 20px; height: 25px;" class="online"/> 
                         @endif
                         
                         <span style="color: white;">

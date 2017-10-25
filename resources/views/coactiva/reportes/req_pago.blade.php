@@ -15,8 +15,6 @@
                 margin-bottom: 0px;
             }
             #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 100px; text-align: center; }
-/*            #footer { position: fixed; left: 0px; bottom: -180px; right: 0px; height: 100px; background-color: lightblue; }
-            #footer .page:after { content: counter(page, upper-roman); }*/
             .t1, .t2 { border-collapse: collapse; }
             .t1 > tbody > tr > td { border: 1px solid #D5D5D5; font-size: 13px}
             .t1 > thead > tr > th { border:1px solid #D5D5D5; background: #01A858;color: white; }
@@ -24,16 +22,20 @@
 
     </head>    
     <body>
-        <div id="header" style="padding-top:10px">            
-            <img src="img/escudo.png" style="position:absolute;margin-top: 5px;margin-left: -10px; width: 55px;height: 65px;" >
+        <div id="header" style="padding-top:10px;">            
+            <img src="img/escudo.png" style="position:absolute;margin-top: 25px;margin-left: -10px; width: 55px;height: 65px;" >
             <center>
-                <h3 style="color:#018F4B;margin-bottom:0px;font-size: 20px;">MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h3>
-                <h3 style="color:#018F4B;margin-top:0px;font-size: 20px;">Oficina de Ejecución Coactiva</h3>
+                <h3 style="color: #018F4B;margin-bottom:0px;font-size: 20px;">MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h3>
+                <p style="margin-top: 7px;font-size: 12px;"><b>Dirección:</b> Mariano Melgar N° 500, Urb. La Libertad, Cerro Colorado - Arequipa</p>
+                <p style="margin-top: 0px;font-size: 13px;"><b>OFICINA DE EJECUCIÓN COACTIVA / TELF: 54-382590 ANEXO: 733</b> </p>                
                 <div style="background:#01A858; margin-top: 0px;height: 1px"></div>           
             </center> 
         </div>
-        <div style="text-align:center; margin-top: -10px;"><b>REQUERIMIENTO DE PAGO</b></div><br>
-        <div style="margin-bottom: -15px;border-bottom: 1px solid black">
+        <div class="subcontainer" style="position: absolute;font-size: 130px;width: 550px; left: 30px; top: 330px; z-index: 100;opacity: .3;transform: rotate(-50deg);transform-origin: 50% 50%;text-align: center">
+            <b>PREVIO EMBARGO</b>
+        </div>
+        <div style="text-align:center; margin-top: 10px;"><b>REQUERIMIENTO DE PAGO</b></div>
+        <div style="margin-bottom: -15px;border-bottom: 1px solid black;margin-top: 10px;">
             <table style="font-size:13px;">
                 <tr>
                     <td><b>Obligado</b></td>
@@ -49,7 +51,7 @@
                 </tr>
                 <tr>
                     <td><b>Referencia</b></td>
-                    <td>&nbsp;&nbsp;EXPEDIENTE N° {{ $resol->nro_exped.'-'.$resol->anio_resol }}</td>
+                    <td>:&nbsp;EXPEDIENTE N° {{ $resol->nro_exped.'-'.$resol->anio_resol }}</td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>

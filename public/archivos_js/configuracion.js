@@ -61,97 +61,118 @@ function open_dialog_new_edit_Usuario() {
                     $(this).dialog("close");
                 }
             }],
-        close: function (event, ui) { limpiar_form_usuario();foto_global = '';},
-        open: function (){limpiar_form_usuario();foto_global = '';}
-    }).dialog('open');    
+        close: function (event, ui) {
+            limpiar_form_usuario();
+            foto_global = '';
+        },
+        open: function () {
+            limpiar_form_usuario();
+            foto_global = '';
+        }
+    }).dialog('open');
 }
-function fn_consultar_dni(num){
-    if(num=='' || num.length<=7){mostraralertas('* Ingrese Numero de Documento... <br>* ');return false;}
-    $.ajax({        
-        url: 'consultar_persona?nro_doc='+num,
-        type: 'GET',        
+function fn_consultar_dni(num) {
+    if (num == '' || num.length <= 7) {
+        mostraralertas('* Ingrese Numero de Documento... <br>* ');
+        return false;
+    }
+    $.ajax({
+        url: 'consultar_persona?nro_doc=' + num,
+        type: 'GET',
         success: function (data) {
-            if(data){
+            if (data) {
                 $("#vw_usuario_txt_ape_nom").val(data.contrib);
-                $("#vw_usuario_foto_img").attr("src",'data:image/png;base64,'+data.pers_foto);
+                $("#vw_usuario_foto_img").attr("src", 'data:image/png;base64,' + data.pers_foto);
                 $("#vw_usuario_txt_id_pers").val(data.id_pers);
-            }else{
+                usuario = data.nombres.substr(0, 1) + data.ape_pat;
+                $("#vw_usuario_txt_usuario").val(usuario.trim());
+            } else {
                 dlg_new_persona_user(num);
             }
         },
-        error: function (data) { MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...'); }
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
     });
 }
-function dlg_new_persona_user(nro_doc){
+function dlg_new_persona_user(nro_doc) {
     $("#dialog_Personas").dialog({
         autoOpen: false, modal: true, width: 750, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: PERSONAS :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
-                click: function () { new_persona_user(); }                
+                click: function () {
+                    new_persona_user();
+                }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
-                click: function () { $(this).dialog("close"); }
+                click: function () {
+                    $(this).dialog("close");
+                }
             }],
-        close: function (event, ui) { limpiar_personas();},
-        open: function (){ limpiar_personas(); }
+        close: function (event, ui) {
+            limpiar_personas();
+        },
+        open: function () {
+            limpiar_personas();
+        }
     }).dialog('open');
     $("#cb_tip_doc_3").val('02');
     $("#pers_nro_doc").val(nro_doc);
     tipo = '02';
-    if(tipo=='02'){
+    if (tipo == '02') {
         get_datos_dni();
         $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
-        $("#pers_raz_soc").removeAttr('disabled');        
-        $("#pers_raz_soc").attr('disabled',true);
+        $("#pers_raz_soc").removeAttr('disabled');
+        $("#pers_raz_soc").attr('disabled', true);
         $("#pers_nro_doc").removeAttr('maxlength');
-        $("#pers_nro_doc").attr('maxlength',8);        
+        $("#pers_nro_doc").attr('maxlength', 8);
     }
 }
-function new_persona_user(){
-    if($("#cb_tip_doc_3").val()=='02'){
-        if($("#pers_sexo").val()=='-'){
-            mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
+function new_persona_user() {
+    if ($("#cb_tip_doc_3").val() == '02') {
+        if ($("#pers_sexo").val() == '-') {
+            mostraralertasconfoco('Ingrese Sexo', '#pers_sexo');
             return false;
         }
     }
-    $.ajax({  
+    $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         url: 'insert_personas_user',
         type: 'POST',
-        data:{
-            pers_ape_pat : $("#pers_pat").val().toUpperCase() || '-',
-            pers_ape_mat : $("#pers_mat").val().toUpperCase() || '-',
-            pers_nombres : $("#pers_nombres").val().toUpperCase() || '-',
-            pers_raz_soc : $("#pers_raz_soc").val().toUpperCase() || '-',
-            pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
-            pers_nro_doc : $("#pers_nro_doc").val() || '-',
-            pers_sexo : $("#pers_sexo").val() || '-',
-            pers_fnac : $("#pers_fnac").val() || '1900-01-01',
-            pers_foto:$("#pers_foto").attr("src")
+        data: {
+            pers_ape_pat: $("#pers_pat").val().toUpperCase() || '-',
+            pers_ape_mat: $("#pers_mat").val().toUpperCase() || '-',
+            pers_nombres: $("#pers_nombres").val().toUpperCase() || '-',
+            pers_raz_soc: $("#pers_raz_soc").val().toUpperCase() || '-',
+            pers_tip_doc: $("#cb_tip_doc_3").val() || '-',
+            pers_nro_doc: $("#pers_nro_doc").val() || '-',
+            pers_sexo: $("#pers_sexo").val() || '-',
+            pers_fnac: $("#pers_fnac").val() || '1900-01-01',
+            pers_foto: $("#pers_foto").attr("src")
         },
         success: function (data) {
-            if(data){                
+            if (data) {
                 fn_consultar_dni($("#pers_nro_doc").val());
                 $("#vw_usuario_txt_dni").val($("#pers_nro_doc").val());
                 dialog_close('dialog_Personas');
-            }            
+            }
         },
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
         }
-    }); 
+    });
 }
-function btn_bus_getdatos(){    
-    get_datos_dni();    
+function btn_bus_getdatos() {
+    get_datos_dni();
 }
-function limpiar_personas(){
+function limpiar_personas() {
     $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac").val('');
     $("#pers_foto").attr("src", "img/avatars/male.png");
 }
-function dlg_Editar_Usuario(){
+function dlg_Editar_Usuario() {
     $("#dialog_Editar_Usuario").dialog({
         autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: EDITAR USUARIO :.</h4></div>",
@@ -171,7 +192,7 @@ function dlg_Editar_Usuario(){
     $.ajax({
         type: 'GET',
         url: 'get_datos_usuario?id=' + id_user,
-        success: function (data){
+        success: function (data) {
             llamar_sub_modulo();
             $("#vw_usuario_txt_ape_nom_2").val(data.ape_nom);
             $("#vw_usuario_txt_dni_2").val(data.dni);
@@ -184,7 +205,7 @@ function dlg_Editar_Usuario(){
 }
 
 function save_nuevo_usuario() {
-    MensajeDialogLoadAjax('table_Usuarios','Cargando...');
+    MensajeDialogLoadAjax('table_Usuarios', 'Cargando...');
     dni = $.trim($("#vw_usuario_txt_dni").val());
     usuario = $.trim($("#vw_usuario_txt_usuario").val());
 
@@ -200,7 +221,7 @@ function save_nuevo_usuario() {
         return false;
     }
     pass = ($("#vw_usuario_txt_password").val()).trim();
-    if(pass==''){
+    if (pass == '') {
         MensajeDialogLoadAjaxFinish('table_Usuarios');
         mostraralertasconfoco('* Ingrese su Contraseña', 'vw_usuario_txt_password');
         return false
@@ -210,11 +231,26 @@ function save_nuevo_usuario() {
         mostraralertasconfoco('* Las Contraseñas no Coinciden', 'vw_usuario_txt_password');
         return false;
     }
-    
-    if ($("#form_user").submit()) {
-        dialog_close('dialog_new_edit_Usuario');        
-    }
-    setTimeout(function(){ fn_actualizar_grilla('table_Usuarios', 'list_usuarios'); MensajeDialogLoadAjaxFinish('table_Usuarios');}, 2000);
+
+    var promise = validar_usuario(usuario);
+    promise.done(function (result) {
+        if (result == false) {
+            var promise_2 = validar_dni(dni);
+            promise_2.done(function (result2) {
+                if (result2 == false) {
+                    if ($("#form_user").submit()) {
+                        dialog_close('dialog_new_edit_Usuario');
+                    }
+                }
+                console.log("Bool: " + result + " Bool2:" + result2);
+                setTimeout(function () {
+                    fn_actualizar_grilla('table_Usuarios', 'list_usuarios');
+                    MensajeDialogLoadAjaxFinish('table_Usuarios');
+                }, 2000);
+            });
+        }
+    });
+
 }
 function update_user() {
     dni = $.trim($("#vw_usuario_txt_dni_2").val());
@@ -274,7 +310,7 @@ function cambiar_foto_usuario() {
     }).dialog('open');
 }
 
-function cambiar_password(){
+function cambiar_password() {
     $("#dialog_Cambiar_password").dialog({
         autoOpen: false, modal: true, width: 350, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: CONFIGURACION DE USUARIO :.</h4></div>",
@@ -282,15 +318,15 @@ function cambiar_password(){
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success",
                 click: function () {
-                    if($("#vw_usuario_cam_pass_1").val()==$("#vw_usuario_cam_pass_2").val()){
+                    if ($("#vw_usuario_cam_pass_1").val() == $("#vw_usuario_cam_pass_2").val()) {
                         $.ajax({
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             url: 'cambiar_pass_user',
                             method: "POST",
-                            data:{pass1:$("#vw_usuario_cam_pass_1").val()},
+                            data: {pass1: $("#vw_usuario_cam_pass_1").val()},
                             success: function (data) {
                                 if (data.msg == 'si') {
-                                    dialog_close('dialog_Cambiar_password');                                
+                                    dialog_close('dialog_Cambiar_password');
                                 } else {
                                     mostraralertas('* Error al cambiar la Contraseña.');
                                 }
@@ -299,14 +335,16 @@ function cambiar_password(){
                                 mostraralertas('* Error en Base de Datos.<br>* Comuniquese con el Administrador.');
                             }
                         });
-                    }else{
+                    } else {
                         mostraralertas('* Las Contraseñas no son Iguales');
                     }
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
-                click: function () { $(this).dialog("close"); }
+                click: function () {
+                    $(this).dialog("close");
+                }
             }],
         close: function (event, ui) {}
     }).dialog('open');
@@ -343,52 +381,65 @@ function update_foto() {
 
 }
 function validar_usuario(usuario) {
-    if (usuario.length >= 3) {
-        MensajeDialogLoadAjax('vw_usuario_txt_usuario', '.: validando ...');
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'usuarios_validar_user?usuario=' + usuario.toUpperCase(),
-            type: 'GET',
-            success: function (data) {
-                MensajeDialogLoadAjaxFinish('vw_usuario_txt_usuario');
-                if (data.msg == 'si') {
-                    $("#vw_usuario_txt_usuario").css({border: "1px solid #FF4040"});
-                    mostraralertasconfoco('* El Usuario ' + ($('#vw_usuario_txt_usuario').val()).toUpperCase() + ' Ya Existe...', 'vw_usuario_txt_usuario');
-                    memory_glob_usuario = $('#vw_usuario_txt_usuario').val();
-                } else if (data.msg == 'no') {
-                    $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
-                }
-            },
-            error: function (data) {
-                mostraralertas('* Error al Valida Usuario...!');
-                MensajeDialogLoadAjaxFinish('vw_usuario_txt_usuario');
+    var deferred = $.Deferred();
+    var bool = false;
+    MensajeDialogLoadAjax('vw_usuario_txt_usuario', '.: validando ...');
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'usuarios_validar_user?usuario=' + usuario.toUpperCase(),
+        type: 'GET',
+        success: function (data) {
+            MensajeDialogLoadAjaxFinish('vw_usuario_txt_usuario');
+            if (data.msg == 'si') {
+                $("#vw_usuario_txt_usuario").css({border: "1px solid #FF4040"});
+                mostraralertasconfoco('* El Usuario ' + ($('#vw_usuario_txt_usuario').val()).toUpperCase() + ' Ya Existe...', 'vw_usuario_txt_usuario');
+                memory_glob_usuario = $('#vw_usuario_txt_usuario').val();
+                bool = true;
+            } else if (data.msg == 'no') {
+                $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
             }
-        });
-    }
+        },
+        error: function (data) {
+            mostraralertas('* Error de Red... <br>* Contactese con el Administrador ');
+            MensajeDialogLoadAjaxFinish('vw_usuario_txt_usuario');
+        },
+        complete: function () {
+            deferred.resolve(trueOrFalse(bool));
+        }
+    });
+    return deferred.promise();
+}
+function trueOrFalse(bool) {
+    return bool;
 }
 function validar_dni(dni) {
-    if (dni.length == 8) {
-        MensajeDialogLoadAjax('vw_usuario_txt_dni', '.: validando ...');
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'usuarios_validar_dni?dni=' + dni,
-            type: 'GET',
-            success: function (data) {
-                MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
-                if (data.msg == 'si') {
-                    $("#vw_usuario_txt_dni").css({border: "1px solid #FF4040"});
-                    mostraralertasconfoco('* El Dni ' + $('#vw_usuario_txt_dni').val() + ' Ya Existe...', 'vw_usuario_txt_dni');
-                    memory_glob_dni = $('#vw_usuario_txt_dni').val();
-                } else if (data.msg == 'no') {
-                    $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
-                }
-            },
-            error: function (data) {
-                mostraralertas('* Error al Valida Dni...!');
-                MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
+    var deferred = $.Deferred();
+    var bool = false;
+    MensajeDialogLoadAjax('vw_usuario_txt_dni', '.: validando ...');
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'usuarios_validar_dni?dni=' + dni,
+        type: 'GET',
+        success: function (data) {
+            MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
+            if (data.msg == 'si') {
+                $("#vw_usuario_txt_dni").css({border: "1px solid #FF4040"});
+                mostraralertasconfoco('* Un Usuario con Dni ' + $('#vw_usuario_txt_dni').val() + ' Ya Existe...', 'vw_usuario_txt_dni');
+                memory_glob_dni = $('#vw_usuario_txt_dni').val();
+                bool = true;
+            } else if (data.msg == 'no') {
+                $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
             }
-        });
-    }
+        },
+        error: function (data) {
+            mostraralertas('* Error al Valida Dni...!');
+            MensajeDialogLoadAjaxFinish('vw_usuario_txt_dni');
+        },
+        complete: function () {
+            deferred.resolve(trueOrFalse(bool));
+        }
+    });
+    return deferred.promise();
 }
 
 function limpiar_form_usuario() {
@@ -399,13 +450,13 @@ function limpiar_form_usuario() {
     $("#vw_usuario_txt_fch_nac").val('');
     $("#vw_usuario_txt_usuario").val('');
     $("#vw_usuario_txt_password").val('');
-    $("#vw_usuario_txt_conf_pass").val('');    
+    $("#vw_usuario_txt_conf_pass").val('');
     $("#vw_usuario_txt_dni").css({border: "1px solid #BDBDBD"});
     $("#vw_usuario_txt_usuario").css({border: "1px solid #BDBDBD"});
 }
 
 function eliminar_usuario() {
-    id=$('#table_Usuarios').jqGrid ('getGridParam', 'selrow');
+    id = $('#table_Usuarios').jqGrid('getGridParam', 'selrow');
     $.confirm({
         title: '.:Cuidado... !',
         content: 'Los Cambios no se podran revertir...',
@@ -417,8 +468,8 @@ function eliminar_usuario() {
                     url: 'usuario_delete',
                     data: {id: id},
                     success: function (data) {
-                        fn_actualizar_grilla('table_Usuarios','list_usuarios');
-                        dialog_close('dialog_new_edit_Usuario');                        
+                        fn_actualizar_grilla('table_Usuarios', 'list_usuarios');
+                        dialog_close('dialog_new_edit_Usuario');
                     }, error: function (data) {
                         dialog_close('dialog_new_edit_Usuario');
                         MensajeAlerta('* Error.', 'Contactese con el Administrador.');
@@ -430,6 +481,4 @@ function eliminar_usuario() {
             }
         }
     });
-
-
 }

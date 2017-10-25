@@ -36,6 +36,13 @@ function selec_dist(val){
 function buscar_contrib(){
     fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes?buscar='+($("#vw_contrib_buscar").val()).toUpperCase());
 }
+function active_conyugue(tipo_contrib){
+    if(tipo_contrib=='3'){
+        $("#contrib_nro_doc_conv").attr('disabled',false);
+    }else{
+        $("#contrib_nro_doc_conv").attr('disabled',true);
+    }
+}
 global_contrib_conviv=0;
 function fn_consultar_persona(num){
     global_contrib_conviv=num;
@@ -44,7 +51,16 @@ function fn_consultar_persona(num){
     }else{
         nro_doc=$("#contrib_nro_doc_conv").val();
     }
+    
     if(nro_doc==''){mostraralertas('Ingrese Numero de Documento');return false;}
+    tip_doc=$("#cb_tip_doc_1").val();
+    if(tip_doc=='02' && nro_doc.length<='7'){
+        mostraralertas('El DNI ingresado tiene menos de 8 digitos...');return false;
+    }
+    if(tip_doc=='00' && nro_doc.length<='10'){
+        mostraralertas('El RUC ingresado tiene menos de 11 digitos...');return false;
+    }    
+    
     $.ajax({        
         url: 'consultar_persona?nro_doc='+nro_doc,
         type: 'GET',        
@@ -112,7 +128,11 @@ function modificar_contrib(){
     $("#contrib_nro_doc_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc_conv'));
     $("#vw_contrib_id_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'id_conv'));
     $("#contrib_conviviente").val($("#table_Contribuyentes").getCell(id_contrib, 'conviviente')); 
-    
+    if($("#table_Contribuyentes").getCell(id_contrib, 'tipo_persona')=='3'){
+        $("#contrib_nro_doc_conv").attr('disabled',false);
+    }else{
+        $("#contrib_nro_doc_conv").attr('disabled',true);
+    }
 }
 function update_contrib(){
     id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
@@ -278,7 +298,7 @@ function new_contrib() {
             fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
         },
         error: function (data) {
-            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+            mostraralertas('* EL CONTRIBUYENTE YA EXISTE ...<br> <p style="font-size:10px">(Si el Problema Persiste Contactese con el Administrador)</p>');
         }
     });   
 }
@@ -349,8 +369,12 @@ function filtro_tipo_doc_pers(tipo) {
 function limpiar_dlg_contrib(){
     $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
     $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente").val('');
+    $("#vw_contrib_id_conv").val('');
     $("#contrib_est_civil").val('select');
     $("#hiddentxt_av_jr_calle_psje").val('0');
+    $("#contrib_nro_doc_conv").attr('disabled',true);
+    $("#vw_contrib_sel_tip_contrib").prop("selectedIndex", 0);
+    $("#contrib_id_cond_exonerac").prop("selectedIndex", 0);
 }
 
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Personas;
+use App\Models\Usuarios_u;
 class Usuarios extends Controller {
 
     public function vw_usuarios_show() {
@@ -32,7 +33,7 @@ class Usuarios extends Controller {
         $data->pers_tip_doc = $request['pers_tip_doc'];
         $data->pers_nro_doc = $request['pers_nro_doc'];
         $data->pers_sexo = $request['pers_sexo'];
-        $data->pers_fnac = $request['pers_fnac'];
+        $data->pers_fnac = date('Y-m-d', strtotime($request['pers_fnac']));
         $image=$request['pers_foto'];
         $img_file = file_get_contents($image);
         $data->pers_foto = base64_encode($img_file);
@@ -41,8 +42,8 @@ class Usuarios extends Controller {
     }
 
     public function index() {
-        header('Content-type: application/json');
-        $totalg = DB::select('select count(id) as total from usuarios');
+        
+        $totalg = DB::select('select count(id) as total from vw_usuarios');
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -64,20 +65,23 @@ class Usuarios extends Controller {
             $start = 0;
         }
 
-        $sql = DB::table('usuarios')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('public.vw_usuarios')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        $fch_nac="";
         foreach ($sql as $Index => $Datos) {
+            if($Datos->fch_nac){
+                $fch_nac=date('d-m-Y', strtotime($Datos->fch_nac));
+            }else $fch_nac="";
             $Lista->rows[$Index]['id'] = $Datos->id;
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id),
                 trim($Datos->dni),
                 trim($Datos->ape_nom),
                 trim($Datos->usuario),                
-                '12/12/2012'
+                $fch_nac
             );
         }
 
@@ -88,34 +92,35 @@ class Usuarios extends Controller {
 
     public function insert_Usuario(Request $request) {
         
+        $data = new Usuarios_u();
+        $data->dni        = $request['vw_usuario_txt_dni'];
+        $data->ape_nom    = strtoupper($request['vw_usuario_txt_ape_nom']);
+        $data->usuario    = strtoupper($request['vw_usuario_txt_usuario']);
+        $data->password   = bcrypt($request['vw_usuario_txt_password']);
+        $data->dni_jefe   = $request['vw_usuario_dni_jefe'];
+        $data->id_pers    = $request['vw_usuario_txt_id_pers'];
+        $data->contrasena = $this->encripta_pass($request['vw_usuario_txt_password']);
+        $data->created_at = date("Y-m-d H:i:s");
+        $data->updated_at = date("Y-m-d H:i:s");
+        $insert=$data->save();
+        if ($insert) {
+            $id_pers=$request['vw_usuario_txt_id_pers'];
+            DB::select("update public.usuarios set foto=(select pers_foto from adm_tri.personas where id_pers=".$id_pers.") where id=".$data->id);
+            return response()->json(['msg' => 'si']);
+        } else {
+            return response()->json(['msg' => 'no']);
+        }
+                
 //        if($request->file('vw_usuario_cargar_foto')){
 //            $file = $request->file('vw_usuario_cargar_foto');
 //            $file2 = \File::get($file);
 //        }
-
-        $data = array();
-        $data['dni'] = $request['vw_usuario_txt_dni'];
-        $data['ape_nom'] = strtoupper($request['vw_usuario_txt_ape_nom']);
-        $data['usuario'] = strtoupper($request['vw_usuario_txt_usuario']);
-        $data['password'] = bcrypt($request['vw_usuario_txt_password']);
-        $data['dni_jefe'] = bcrypt($request['vw_usuario_dni_jefe']);
-        $data['cad_lar'] = strtoupper($request['vw_usuario_txt_ape_nom']) . ' ' . $request['vw_usuario_txt_dni'] . ' ' . strtoupper($request['vw_usuario_txt_usuario']);
-        $data['contrasena']= $this->encripta_pass($request['vw_usuario_txt_password']);
 //        if(isset($file2)){
 //            $data['foto'] = base64_encode($file2);
 //        }else{
 //            $data['foto'] = '';
 //        }        
-
-        $data['created_at'] = date("Y-m-d H:i:s");$data['updated_at'] = date("Y-m-d H:i:s");
-
-        $insert = DB::table('usuarios')->insert($data);
-
-        if ($insert) {
-            return response()->json(['msg' => 'si']);
-        } else {
-            return response()->json(['msg' => 'no']);
-        }
+        
     }
 
     function get_datos_usuario(Request $request) {
@@ -132,7 +137,7 @@ class Usuarios extends Controller {
         return response()->json($Lista);
     }
 
-    public function validar_user(Request $request) {
+    function validar_user(Request $request) {
 //        isset($Consulta[0]->id_pers)
         $usuario = DB::table('usuarios')->select('usuario')->where('usuario', $request['usuario'])->get();
         if (isset($usuario[0]->usuario)) {
@@ -142,7 +147,7 @@ class Usuarios extends Controller {
         }
     }
 
-    public function validar_dni(Request $request) {
+    function validar_dni(Request $request) {
         $doc_dni = DB::table('usuarios')->select('dni')->where('dni', $request['dni'])->get();
         if (isset($doc_dni[0]->dni)) {
             return response()->json(['msg' => 'si']);
@@ -158,10 +163,6 @@ class Usuarios extends Controller {
 
 
         $data = $request->all();
-
-        $data['cad_lar'] = strtoupper($request['ape_nom']) . ' ' . $request['dni'] . ' ' . strtoupper($request['usuario']);
-
-
 //        $data['foto'] = base64_encode($file2);
         $data['created_at'] = date("d-m-Y H:i:s");
         $data['updated_at'] = date("d-m-Y H:i:s");
@@ -223,7 +224,7 @@ class Usuarios extends Controller {
         }
     }
     
-    public function encripta_pass($c){        
+    function encripta_pass($c){        
         $tam=strlen($c)-1;
         
         $array = str_split($c);
@@ -244,7 +245,7 @@ class Usuarios extends Controller {
         return $c;
         
     }
-    public function desencripta_pass($c){
+    function desencripta_pass($c){
         $tam=strlen($c)-1;
         $array = str_split($c);
         $n_p=array();

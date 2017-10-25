@@ -30,8 +30,25 @@ class CoactivaController extends Controller
         $id_doc=$request['id_doc'];$id_coa_mtr=$request['id_coa_mtr'];
         $resolucion=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
         $fch_recep=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',1)->value('fch_recep');
+        
+        $plantilla = $this->rec_res_eje_coa_plantilla($id_doc, $id_coa_mtr);
+        return view('coactiva.editor_resolucion_aper',compact('plantilla','id_doc'));
+    }
+    
+    function rec_res_eje_coa_plantilla($id_doc,$id_coa_mtr){
+        $resolucion=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+        $fch_recep=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',1)->value('fch_recep');
+        
+        $doc_ini=DB::table('coactiva.vw_coactiva_mtr')->where('id_coa_mtr',$id_coa_mtr)->value('doc_ini');
+        if($doc_ini=='1'){
+            $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
+        }else if($doc_ini=='2'){
+            $nro_rd_op=DB::table('recaudacion.vw_genera_fisca')->select('nro_fis as nro_rd','anio')->where('id_coa_mtr',$id_coa_mtr)->get();
+        }
+        
         $resol=new \stdClass();
         foreach ($resolucion as $Index => $Datos) {
+            $resol->nro_exped=$Datos->nro_exped;
             $resol->id_doc=$Datos->id_doc;
             $resol->id_contrib=$Datos->id_contrib;
             $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
@@ -39,8 +56,10 @@ class CoactivaController extends Controller
             $resol->fch_recep=mb_strtolower($this->getCreatedAtAttribute($fch_recep)->format('l, d \d\e F \d\e\l Y'));
             $resol->anio_resol=$Datos->anio_resol;
             $resol->monto=$Datos->monto;
+            $resol->monto_letra=$this->num_letras($Datos->monto);
             $resol->periodos=$Datos->periodos;
-            $resol->nro_rd=$Datos->nro_rd;
+            $resol->nro_rd=$nro_rd_op[0]->nro_rd;
+            $resol->anio_rd=$nro_rd_op[0]->anio;
             $resol->fch_emi=$Datos->fch_emi;
             $resol->dom_fis=$Datos->dom_fis;
             $resol->ubi_pred=$Datos->ubi_pred;
@@ -54,14 +73,65 @@ class CoactivaController extends Controller
         $plantilla = str_replace('{@nro_resol@}',$resol->nro_resol,$plantilla);
         $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
         $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
+        $plantilla = str_replace('{@anio_rd@}',$resol->anio_rd,$plantilla);
         $plantilla = str_replace('{@periodos@}',$resol->periodos,$plantilla);
         $plantilla = str_replace('{@monto@}', number_format($resol->monto,2,'.',','),$plantilla);
+        $plantilla = str_replace('{@monto_letra@}',$resol->monto_letra,$plantilla);
         $plantilla = str_replace('{@ubi_pred@}',$resol->ubi_pred,$plantilla);
         $plantilla = str_replace('{@doc_ini@}',$resol->doc_ini,$plantilla);
-        return view('coactiva.editor_resolucion_aper',compact('plantilla','id_doc'));
+        $plantilla = str_replace('{@nro_exped@}',$resol->nro_exped,$plantilla);
+        $plantilla = str_replace('{@dia@}',$this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'),$plantilla);
+        return $plantilla;
     }
+    
     function editar_acta_aper(Request $request){
-        return view('coactiva.editor_acta_aper',compact('plantilla','id_doc'));
+        $id_doc=$request['id_doc'];$id_coa_mtr=$request['id_coa_mtr'];
+        $plantilla_acta= $this->rec_acta_aper_plantilla($id_doc, $id_coa_mtr);
+        return view('coactiva.editor_acta_aper',compact('plantilla_acta','id_doc'));
+    }
+    function rec_acta_aper_plantilla($id_doc,$id_coa_mtr){
+        $doc=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+        $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
+        
+        $doc_ini=DB::table('coactiva.vw_coactiva_mtr')->where('id_coa_mtr',$id_coa_mtr)->value('doc_ini');
+        if($doc_ini=='1'){
+            $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
+        }else if($doc_ini=='2'){
+            $nro_rd_op=DB::table('recaudacion.vw_genera_fisca')->select('nro_fis as nro_rd','anio')->where('id_coa_mtr',$id_coa_mtr)->get();
+        }        
+        
+        $cuotas=DB::table('coactiva.vw_documentos_edit')->where('id_doc',$id_doc)->value('fch_cuo_acta');
+        $cuotas = explode('*',$cuotas);
+        $resol=new \stdClass();
+            foreach ($doc as $Index => $Datos){                
+                $resol->id_contrib=$Datos->id_contrib;
+                $resol->nro_resol=$nro_resol;
+                $resol->nro_exped=$Datos->nro_exped;
+                $resol->nro_doc=$Datos->nro_doc;
+                $resol->anio_resol=$Datos->anio_resol;
+                $resol->doc_ini=$Datos->doc_ini;
+                $resol->nro_rd=$nro_rd_op[0]->nro_rd;
+                $resol->anio_rd=$nro_rd_op[0]->anio;                
+                $resol->fch_cuo_acta=$Datos->fch_cuo_acta;
+                $resol->contribuyente= str_replace('-','',$Datos->contribuyente);                
+                $resol->monto= number_format($Datos->monto_acta,2,'.',',');
+                $resol->monto_letra=$this->num_letras($Datos->monto_acta.'.00');
+                $resol->fch_larga=mb_strtolower($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
+            }
+        $plantilla=DB::table('coactiva.vw_documentos_edit')->where('id_doc',$id_doc)->value('texto');
+        $plantilla = str_replace('{@fecha@}',$resol->fch_larga,$plantilla);
+        $plantilla = str_replace('{@hora@}', date('H:i A'),$plantilla);
+        $plantilla = str_replace('{@contribuyente@}',$resol->contribuyente,$plantilla);
+        $plantilla = str_replace('{@dni@}',$resol->nro_doc,$plantilla);
+        $plantilla = str_replace('{@doc_ini@}',$resol->doc_ini,$plantilla);
+        $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
+        $plantilla = str_replace('{@anio_rd@}',$resol->anio_rd,$plantilla);
+        $plantilla = str_replace('{@nro_resol@}', $resol->nro_resol,$plantilla);
+        $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
+        $plantilla = str_replace('{@monto@}',$resol->monto,$plantilla);
+        $plantilla = str_replace('{@monto_letra@}',$resol->monto_letra,$plantilla);
+        $plantilla = str_replace('{@cuotas@}',count($cuotas),$plantilla);
+        return $plantilla;
     }
     
     function get_expedientes(Request $request){
@@ -150,6 +220,10 @@ class CoactivaController extends Controller
                 $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
                 $edit= "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='editar_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-pencil'></i></span>Editar</button>";
             }
+            else if($Datos->id_tip_doc=='3'){
+                $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
+                $edit= "<button class='btn btn-labeled bg-color-green txt-color-white' type='button' onclick='editar_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-pencil'></i></span>Editar</button>";
+            }
             else if($Datos->id_tip_doc=='6'){
                 $ver = "<button class='btn btn-labeled bg-color-red txt-color-white' type='button' onclick='ver_doc(".$Datos->id_doc.",".$Datos->id_coa_mtr.")'><span class='btn-label'><i class='fa fa-file-pdf-o'></i></span>Ver</button>";
                 $edit= "";
@@ -186,8 +260,7 @@ class CoactivaController extends Controller
         DB::table('coactiva.coactiva_documentos')->where('id_doc',$id_doc)->update(['fch_recep'=>$fch_recep]);
     }
 
-    public function destroy($id)
-    {}
+    public function destroy($id){}
     
     function get_doc(Request $request){
                 
@@ -361,12 +434,62 @@ class CoactivaController extends Controller
         return response()->json(['msg'=>'si']);
     }
     
+    function rec_cierre_plantilla($id_doc,$id_coa_mtr){
+        $resolucion=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
+        $fch_recep=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',1)->value('fch_recep');
+        
+        $doc_ini=DB::table('coactiva.vw_coactiva_mtr')->where('id_coa_mtr',$id_coa_mtr)->value('doc_ini');
+        if($doc_ini=='1'){
+            $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
+        }else if($doc_ini=='2'){
+            $nro_rd_op=DB::table('recaudacion.vw_genera_fisca')->select('nro_fis as nro_rd','anio')->where('id_coa_mtr',$id_coa_mtr)->get();
+        }
+        
+        $resol=new \stdClass();
+        foreach ($resolucion as $Index => $Datos) {
+            $resol->nro_exped=$Datos->nro_exped;
+            $resol->id_doc=$Datos->id_doc;
+            $resol->id_contrib=$Datos->id_contrib;
+            $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
+            $resol->nro_resol=$Datos->nro_resol;
+            $resol->fch_recep=mb_strtolower($this->getCreatedAtAttribute($fch_recep)->format('l, d \d\e F \d\e\l Y'));
+            $resol->anio_resol=$Datos->anio_resol;
+            $resol->monto=$Datos->monto;
+            $resol->periodos=$Datos->periodos;
+            $resol->nro_rd=$nro_rd_op[0]->nro_rd;
+            $resol->anio_rd=$nro_rd_op[0]->anio;
+            $resol->fch_emi=$Datos->fch_emi;
+            $resol->dom_fis=$Datos->dom_fis;
+            $resol->ubi_pred=$Datos->ubi_pred;
+            $resol->doc_ini=$Datos->doc_ini;
+            $resol->monto=$Datos->monto;
+            $resol->monto_letra=$this->num_letras($Datos->monto);
+            $resol->fch_emi_l=mb_strtolower($this->getCreatedAtAttribute($Datos->fch_emi)->format('l, d \d\e F \d\e\l Y'));            
+        }
+        $plantilla=DB::table('coactiva.vw_documentos_edit')->where('id_doc',$id_doc)->value('texto');
+        $plantilla = str_replace('{@fch_recep@}',$resol->fch_recep,$plantilla);
+        $plantilla = str_replace('{@fch_emi@}',$resol->fch_emi_l,$plantilla);
+        $plantilla = str_replace('{@contribuyente@}',$resol->contribuyente,$plantilla);
+        $plantilla = str_replace('{@nro_resol@}',$resol->nro_resol,$plantilla);
+        $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
+        $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
+        $plantilla = str_replace('{@anio_rd@}',$resol->anio_rd,$plantilla);
+        $plantilla = str_replace('{@periodos@}',$resol->periodos,$plantilla);
+        $plantilla = str_replace('{@monto@}', number_format($resol->monto,2,'.',','),$plantilla);
+        $plantilla = str_replace('{@monto_letra@}',$resol->monto_letra,$plantilla);
+        $plantilla = str_replace('{@ubi_pred@}',$resol->ubi_pred,$plantilla);
+        $plantilla = str_replace('{@doc_ini@}',$resol->doc_ini,$plantilla);
+        $plantilla = str_replace('{@nro_exped@}',$resol->nro_exped,$plantilla);
+        $plantilla = str_replace('{@dia@}',$this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'),$plantilla);
+        return $plantilla;
+    }
     function open_document($id_doc,$id_coa_mtr){
         $documento=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
         $fch_recep=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',1)->value('fch_recep');
         if($documento[0]->id_tip_doc=='2'){            
             $resol=new \stdClass();
             foreach ($documento as $Index => $Datos) {
+                $resol->nro_exped=$Datos->nro_exped;
                 $resol->id_doc=$Datos->id_doc;
                 $resol->id_contrib=$Datos->id_contrib;
                 $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
@@ -382,30 +505,51 @@ class CoactivaController extends Controller
                 $resol->ubi_pred=$Datos->ubi_pred;
                 $resol->doc_ini=$Datos->doc_ini;
             }
-            $plantilla=DB::table('coactiva.vw_documentos_edit')->where('id_doc',$id_doc)->value('texto');
-            $plantilla = str_replace('{@fch_recep@}',$resol->fch_recep,$plantilla);
-            $plantilla = str_replace('{@fch_emi@}',$resol->fch_emi_l,$plantilla);
-            $plantilla = str_replace('{@contribuyente@}',$resol->contribuyente,$plantilla);
-            $plantilla = str_replace('{@nro_resol@}',$resol->nro_resol,$plantilla);
-            $plantilla = str_replace('{@anio_resol@}',$resol->anio_resol,$plantilla);
-            $plantilla = str_replace('{@nro_rd@}',$resol->nro_rd,$plantilla);
-            $plantilla = str_replace('{@periodos@}',$resol->periodos,$plantilla);
-            $plantilla = str_replace('{@monto@}', number_format($resol->monto,2,'.',','),$plantilla);
-            $plantilla = str_replace('{@ubi_pred@}',$resol->ubi_pred,$plantilla);
-            $plantilla = str_replace('{@doc_ini@}',$resol->doc_ini,$plantilla);
-
+            $plantilla = $this->rec_res_eje_coa_plantilla($id_doc, $id_coa_mtr);
             $view = \View::make('coactiva.reportes.rec_apertura',compact('plantilla','resol'))->render();
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
-        }else if($documento[0]->id_tip_doc=='6'){
+        }
+        else if($documento[0]->id_tip_doc=='3')//CIERRE RPROCEDIMIENTO COACTIVO
+        {   
+            $resol=new \stdClass();
+            foreach ($documento as $Index => $Datos) {
+                $resol->nro_exped=$Datos->nro_exped;
+                $resol->id_doc=$Datos->id_doc;
+                $resol->id_contrib=$Datos->id_contrib;
+                $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
+                $resol->nro_resol=$Datos->nro_resol;
+                $resol->fch_recep=mb_strtolower($this->getCreatedAtAttribute($fch_recep)->format('l, d \d\e F \d\e\l Y'));
+                $resol->anio_resol=$Datos->anio_resol;
+                $resol->nro_rd=$Datos->nro_rd;
+                $resol->fch_emi=$Datos->fch_emi;
+                $resol->fch_emi_l=mb_strtolower($this->getCreatedAtAttribute($Datos->fch_emi)->format('l, d \d\e F \d\e\l Y'));
+                $resol->dom_fis=$Datos->dom_fis;
+                $resol->ubi_pred=$Datos->ubi_pred;
+                $resol->doc_ini=$Datos->doc_ini;
+            }
+            $doc_ini=DB::table('coactiva.vw_coactiva_mtr')->where('id_coa_mtr',$id_coa_mtr)->value('doc_ini');
+            if($doc_ini=='1'){
+                $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
+            }else if($doc_ini=='2'){
+                $nro_rd_op=DB::table('recaudacion.vw_genera_fisca')->select('nro_fis as nro_rd','anio')->where('id_coa_mtr',$id_coa_mtr)->get();
+            }
+            $plantilla = $this->rec_cierre_plantilla($id_doc, $id_coa_mtr);
+            $view = \View::make('coactiva.reportes.rec_cierre',compact('plantilla','resol'))->render();
+            $pdf = \App::make('dompdf.wrapper');            
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream();
+        }
+        else if($documento[0]->id_tip_doc=='6'){
             $documento=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
             $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
             $view = \View::make('coactiva.reportes.c_notificacion',compact('documento','nro_resol'))->render();
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
-        }else if($documento[0]->id_tip_doc=='7'){//REQUERIMIENTO DE PAGO
+        }
+        else if($documento[0]->id_tip_doc=='7'){//REQUERIMIENTO DE PAGO
             $doc=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
             $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
             $resol=new \stdClass();
@@ -429,10 +573,11 @@ class CoactivaController extends Controller
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
-        }else if($documento[0]->id_tip_doc=='9'){//ACTA DE APERSONAMIENTO
+        }
+        else if($documento[0]->id_tip_doc=='9'){//ACTA DE APERSONAMIENTO
             $doc=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
             $nro_resol=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',2)->value('nro_resol');
-            $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
+//            $nro_rd_op=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_coa_mtr',$id_coa_mtr)->get();
             $cuotas=DB::table('coactiva.vw_documentos_edit')->where('id_doc',$id_doc)->value('fch_cuo_acta');
             $cuo = array();
             $cuo = explode('*',$cuotas);
@@ -441,28 +586,18 @@ class CoactivaController extends Controller
                 $Lista = array();
                 $Lista['nro'] = $i+1;
                 $Lista['fch'] = $cuo[$i];
-                $Lista['fch_larga'] = mb_strtolower($this->getCreatedAtAttribute($cuo[$i])->format('l, d \d\e F \d\e\l Y'));
+                $Lista['fch_larga'] = mb_strtolower($this->getCreatedAtAttribute($cuo[$i])->format('d \d\e F \d\e\l Y'));
                 array_push($cuotas, $Lista);
             }
-
+            $plantilla_acta= $this->rec_acta_aper_plantilla($id_doc, $id_coa_mtr);
             $resol=new \stdClass();
-            foreach ($doc as $Index => $Datos){                
-                $resol->id_contrib=$Datos->id_contrib;
-                $resol->nro_resol=$nro_resol;
+            foreach ($doc as $Index => $Datos){
                 $resol->nro_exped=$Datos->nro_exped;
                 $resol->nro_doc=$Datos->nro_doc;
                 $resol->anio_resol=$Datos->anio_resol;
-                $resol->doc_ini=$Datos->doc_ini;
-                $resol->nro_rd=$nro_rd_op[0]->nro_rd;
-                $resol->anio_rd=$nro_rd_op[0]->anio;                
-                $resol->fch_cuo_acta=$Datos->fch_cuo_acta;
-                $resol->contribuyente= str_replace('-','',$Datos->contribuyente);                
-                $resol->monto= number_format($Datos->monto_acta,2,'.',',');
-                $resol->monto_letra=$this->num_letras($Datos->monto_acta.'.00');
-                $resol->fch_larga=mb_strtolower($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
+                $resol->contribuyente= str_replace('-','',$Datos->contribuyente);
             }
-//            dd($cuotas);
-            $view = \View::make('coactiva.reportes.vw_acta_aper',compact('resol','cuotas'))->render();
+            $view = \View::make('coactiva.reportes.vw_acta_aper',compact('resol','plantilla_acta','cuotas'))->render();
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
@@ -546,6 +681,12 @@ class CoactivaController extends Controller
         $insert = $data->save();
 
         if($insert){
+            if($request['id_tip_doc']=='9'){
+                DB::select("update coactiva.coactiva_documentos set texto=(select texto from coactiva.tip_doc where id_tip=9) where id_coa_mtr=".$request['id_coa_mtr']." and id_tip_doc=9");
+            }else if($request['id_tip_doc']=='3'){
+//                DB::select("update coactiva.coactiva_documentos set texto=(select texto from coactiva.tip_doc where id_tip=3) where id_coa_mtr=".$request['id_coa_mtr']." and id_tip_doc=3");
+            }
+            
             return response()->json(['msg'=>'si']);
         }
     }

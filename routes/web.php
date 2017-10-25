@@ -4,6 +4,7 @@ Route::get('/', function () {
     return view("auth/login");
 });
 
+Route::get('home', 'map\MapController@index');
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');

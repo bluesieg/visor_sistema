@@ -29,7 +29,7 @@
         <div>
             <div class="widget-body no-padding">
                 <textarea id="ckeditor_plantilla_acta" name="ckeditor">
-                    @php echo $plantilla @endphp
+                    @php echo $plantilla_acta @endphp
                 </textarea>
             </div>
         </div>

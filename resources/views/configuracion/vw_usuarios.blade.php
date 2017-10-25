@@ -76,7 +76,7 @@
                 {name: 'dni', index: 'dni', align: 'center', width: 80},
                 {name: 'ape_nom', index: 'ape_nom', width: 250},
                 {name: 'usuario', index: 'usuario', width: 130},                
-                {name: 'fch_nac', index: 'fch_nac', width: 100}
+                {name: 'fch_nac', index: 'fch_nac', align: 'center', width: 100}
             ],
             pager: '#pager_table_Usuarios',
             rowList: [13, 20],
@@ -176,13 +176,13 @@
                     </section>
                     <div class="row">
                         <section class="col col-6" style="padding-left: 50px">
-                            <img id="vw_usuario_foto_img" src="{{asset('img/avatars/male.png')}}" name="vw_usuario_foto_img" size="1024" style="width: 175px;height: 230px;border: 1px solid #fff; outline: 1px solid #bfbfbf;margin-top: 2px;margin-bottom: 5px;">
+                            <img id="vw_usuario_foto_img" src="{{asset('img/avatars/male.png')}}" name="vw_usuario_foto_img" size="1024" style="width: 175px;height: 235px;border: 1px solid #fff; outline: 1px solid #bfbfbf;margin-top: 2px;margin-bottom: 5px;">
                         </section>
                         <section class="col col-6" style="padding-right: 14px">
                             <label class="label" style="margin-top:5px">Dni:</label>
                             <label class="input">  
                                 <div class="input-group">
-                                    <input type="hidden" id="vw_usuario_txt_id_pers">
+                                    <input type="hidden" id="vw_usuario_txt_id_pers" name="vw_usuario_txt_id_pers">
                                     <input id="vw_usuario_txt_dni" name="vw_usuario_txt_dni" type="text" placeholder="00000000" onkeypress="return soloDNI(event);" maxlength="8">                                
                                     <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
                                 </div>
@@ -219,7 +219,7 @@
                     <section>
                         <label class="label">Jefe Inmediato:</label>                                   
                         <label class="select">
-                            <select id="vw_usuario_dni_jefe" name="vw_usuario_dni_jefe" onchange="filtro_tipo_doc_pers(this.value);" class="input-sm">
+                            <select id="vw_usuario_dni_jefe" name="vw_usuario_dni_jefe" class="input-sm">
                                 <option value="0">Seleccione</option>
                             @foreach ($jef as $jef)
                             <option value='{{$jef->dni}}' >{{trim($jef->ape_nom)}}</option>

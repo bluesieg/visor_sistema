@@ -7,11 +7,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contribuyentes;
 use App\Models\Personas;
+use Illuminate\Support\Facades\Auth;
 
 class ContribuyentesController extends Controller
 {
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_contribuyentes' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $dpto = DB::table('maysa.dpto')->get();
         $condicion=DB::select('select * from adm_tri.exoneracion');
         $tip_doc=DB::select('select * from adm_tri.tipo_documento');
@@ -20,7 +27,7 @@ class ContribuyentesController extends Controller
         $sectores = DB::select('select * from catastro.sectores order by id_sec');
         $hab_urb = DB::select('select id_hab_urb,nomb_hab_urba from catastro.hab_urb');
         $manzanas = DB::select('select * from catastro.manzanas where id_sect=(select id_sec from catastro.sectores order by id_sec limit 1) ');
-        return view('adm_tributaria.vw_contribuyentes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas','anio_tra','hab_urb'));
+        return view('adm_tributaria.vw_contribuyentes', compact('tip_contrib','tip_doc','condicion','dpto','sectores','manzanas','anio_tra','hab_urb','menu','permisos'));
     }
 
     public function create(Request $request)
@@ -117,7 +124,9 @@ class ContribuyentesController extends Controller
             return response()->json([
                     'contrib' => trim(str_replace('-','',$contribuyente[0]->contribuyente)),
                     'id_pers' => trim(str_replace('-','',$contribuyente[0]->id_pers)),
-                    'pers_foto'=> $contribuyente[0]->pers_foto
+                    'pers_foto'=> $contribuyente[0]->pers_foto,
+                    'ape_pat'=> $contribuyente[0]->pers_ape_pat,
+                    'nombres'=> $contribuyente[0]->pers_nombres,
             ]);
         }
     }

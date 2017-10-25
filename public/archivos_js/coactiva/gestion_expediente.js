@@ -71,7 +71,6 @@ function add_doc_al_exped(){
             open: function(){$("#t_dina_acta_aper > tbody > tr").remove(); $("#nro_cuo_apersonamiento").val(''); $("#nro_cuo_monto").val('')}       
         }).dialog('open');
     }else{
-        return false;
         save_doc(id_coa_mtr,id_tip_doc);
     }
 }
@@ -138,7 +137,7 @@ function fecha_resep_notif(id_doc){
     });
     get_fecha_actual('dateinputnotif');
 }
-function editar_doc(id_doc){
+function editar_doc(id_doc,id_coa_mtr){
     $("#dlg_editor").dialog({
         autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.: EDITAR RESOLUCION :.</h4></div>",
@@ -149,7 +148,7 @@ function editar_doc(id_doc){
         }]        
     }).dialog('open');
     MensajeDialogLoadAjax('dlg_editor','Cargando...');    
-    $('#ck_editor_resol').attr('src','editar_resol?id_doc='+id_doc); 
+    $('#ck_editor_resol').attr('src','editar_resol?id_doc='+id_doc+'&id_coa_mtr='+id_coa_mtr); 
     setTimeout(function(){ MensajeDialogLoadAjaxFinish('dlg_editor'); }, 1500);
 }
 function editar_acta(id_doc){
@@ -162,8 +161,9 @@ function editar_acta(id_doc){
             click: function () {$(this).dialog("close");}
         }]        
     }).dialog('open');
-    MensajeDialogLoadAjax('dlg_editor','Cargando...');    
-    $('#ck_editor_resol').attr('src','editar_acta_aper?id_doc='+id_doc); 
+    MensajeDialogLoadAjax('dlg_editor','Cargando...'); 
+    id_coa_mtr = $('#tabla_expedientes').jqGrid ('getGridParam', 'selrow');
+    $('#ck_editor_resol').attr('src','editar_acta_aper?id_doc='+id_doc+'&id_coa_mtr='+id_coa_mtr); 
     setTimeout(function(){ MensajeDialogLoadAjaxFinish('dlg_editor'); }, 1500);
 }
 function bus_contrib(){

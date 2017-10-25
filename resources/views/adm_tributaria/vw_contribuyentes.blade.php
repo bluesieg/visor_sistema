@@ -166,7 +166,7 @@
                                 <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Nro. Documento:</label>
                                     <label class="input">
-                                        <input id="txt_nro_doc" type="text" onkeypress="return soloDNI(event);" maxlength="8" placeholder="00000000" class="input-sm">
+                                        <input id="txt_nro_doc" type="text" onkeypress="return soloDNI(event);" minlength="8" maxlength="8" placeholder="00000000" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left:5px;padding-right:5px;margin-top: 16px"> 
@@ -179,7 +179,7 @@
                                 <section class="col col-3" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Tipo de Contribuyente:</label>
                                     <label class="select">
-                                        <select id="vw_contrib_sel_tip_contrib" class="input-sm">
+                                        <select onchange="active_conyugue(this.value);" id="vw_contrib_sel_tip_contrib" class="input-sm">
                                             @foreach ($tip_contrib as $tip_contrib1)
                                             <option value='{{$tip_contrib1->id_tip_contrib}}' >{{trim($tip_contrib1->tipo_contrib)}}</option>
                                             @endforeach                                            
@@ -325,7 +325,7 @@
                                 <section class="col col-3" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Nro.Documento:</label>
                                     <label class="input">
-                                        <input id="contrib_nro_doc_conv" type="text" placeholder="00000000" maxlength="8" class="input-sm">
+                                        <input id="contrib_nro_doc_conv" type="text" placeholder="00000000" maxlength="8" class="input-sm" disabled="">
                                     </label>
                                 </section>
                                 <section class="col col-6" style="padding-left:5px;">
