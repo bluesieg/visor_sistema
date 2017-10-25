@@ -119,7 +119,7 @@
               <td style="width: 15.16%; text-align: center">{{$sql->provinc}}</td>
               <td class="nro">9</td>
               <th style="width: 15.16%">DISTRITO</th>
-              <td colspan="2" style="text-align: center">{{$sql->distrit}}</td>
+              <td colspan="2" style="text-align: center">{{substr ($sql->distrit,0,20)}}</td>
           </tr>
           <tr>
               <td class="nro">10</td>

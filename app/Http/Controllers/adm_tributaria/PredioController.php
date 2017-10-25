@@ -315,8 +315,14 @@ class PredioController extends Controller
     }
     public function imprimir_formatos()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_impform' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('adm_tributaria/imp_formatos', compact('anio_tra'));
+        return view('adm_tributaria/imp_formatos', compact('anio_tra','menu','permisos'));
     }
 
     public function reporte($tip,$id,$an,$contri) 

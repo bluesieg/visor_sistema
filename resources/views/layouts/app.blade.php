@@ -126,11 +126,11 @@
                             @endif
                             @php $vari=$per->id_mod; @endphp
                              <li class="">
-                                <a href="#" title="{{$per->tit_menu}}"><i class="fa fa-lg fa-fw fa-cog fa-gears"></i> <span class="menu-item-parent">{{$per->descripcion}}</span></a>
+                                <a href="#" title="{{$per->tit_menu}}"><i class="fa fa-lg fa-fw fa-cog fa-arrow-right"></i> <span class="menu-item-parent">{{$per->descripcion}}</span></a>
                                 <ul id="{{$per->id_sis_menu}}">
                         @endif
                         <li id="{{$per->id_sistema}}">
-                            <a href="{{$per->ruta_sis}}" title="{{$per->titulo}}"><i class="fa fa-money"></i>{{$per->des_sub_mod}}</a>
+                            <a href="{{$per->ruta_sis}}" title="{{$per->titulo}}"><i class="fa fa-caret-right"></i>{{$per->des_sub_mod}}</a>
                         </li>
                     @endforeach
                     

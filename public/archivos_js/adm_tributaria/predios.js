@@ -520,6 +520,11 @@ function fn_confirmar_predio()
     }
     function pisoUpdate()
     {
+        if($("#per_edit").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
         if($("#rpiso_inp_nro").val()==""){mostraralertasconfoco("Ingresar Nro Piso","#rpiso_inp_nro"); return false}
         if($("#rpiso_inp_fech").val()==""){mostraralertasconfoco("Ingresar Año de Construccion del Piso","#rpiso_inp_fech"); return false}
         if($("#rpiso_inp_fech").val()<1800){mostraralertasconfoco("Ingresar Año de Construccion Valido de 4 cifras","#rpiso_inp_fech"); return false}
@@ -551,6 +556,11 @@ function fn_confirmar_predio()
     }
     function pisoDelete()
     {
+        if($("#per_del").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
         if($('#dlg_idpre').val()==0)
         {
             mostraralertas("Primero Guardar Predio...");
@@ -679,6 +689,11 @@ function fn_confirmar_predio()
     }
     function condoUpdate()
     {
+        if($("#per_edit").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
         if($("#rcondo_inp_dni").val()==""){mostraralertasconfoco("Ingresar Nro DNI o RUC","#rcondo_inp_dni"); return false}
         if($("#rcondo_inp_rsoc_hidden").val()=="0"){mostraralertasconfoco("Ingresar Nro DNI o RUC y confirmar con tecla enter","#rcondo_inp_dni"); return false}
         if($("#rcondo_inp_dir").val()==""){mostraralertasconfoco("Ingresar Dirección","#rcondo_inp_dir"); return false}
@@ -705,6 +720,11 @@ function fn_confirmar_predio()
     }
     function condoDelete()
     {
+        if($("#per_del").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
         if($('#dlg_idpre').val()==0)
         {
             mostraralertas("Primero Guardar Predio...");
@@ -876,6 +896,11 @@ function fn_confirmar_predio()
     }
     function instUpdate()
     {
+        if($("#per_edit").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
         if($("#hidden_rinst_inp_des").val()==0){mostraralertasconfoco("seleccionar Instalación","#rinst_inp_des"); return false}
         if($("#rinst_inp_anio").val()==""){mostraralertasconfoco("Ingresar Año de Construcción","#rinst_inp_anio"); return false}
         if($("#rinst_inp_largo").val()==""){mostraralertasconfoco("Ingresar largo","#rinst_inp_largo"); return false}
@@ -906,6 +931,11 @@ function fn_confirmar_predio()
     }
     function instDelete()
     {
+        if($("#per_del").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
         if($('#dlg_idpre').val()==0)
         {
             mostraralertas("Primero Guardar Predio...");
@@ -1023,4 +1053,14 @@ function fn_confirmar_predio()
                 }
              }
      });
+}
+function imppu()
+{
+    Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+    if(Id==null)
+    {
+        mostraralertasconfoco("seleccione Predio","")
+        return false;
+    }
+    window.open('pre_rep/PU/'+Id+'/0/0');
 }

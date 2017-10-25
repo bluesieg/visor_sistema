@@ -101,12 +101,12 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;" >
         <thead>
           <tr>
-              <th style="width: 30%">HABILITACION URBANA</th>
+              <th style="width: 43%">HABILITACION URBANA</th>
               <th style="width: 30%">CALLE / AV. /PSJE</th>
-              <th style="width: 10%">N° MUN.</th>
-              <th style="width: 10%">INTER</th>
-              <th style="width: 10%">MZNA</th>
-              <th style="width: 10%">LOTE</th>
+              <th style="width: 7%">N° MUN.</th>
+              <th style="width: 6%">INTER</th>
+              <th style="width: 7%">MZNA</th>
+              <th style="width: 7%">LOTE</th>
           </tr>
           
         </thead>
@@ -118,6 +118,11 @@
               <td>{{$sql->nro_int}}</td>
               <td>{{$sql->mzna_dist}}</td>
               <td>{{$sql->lote_dist}}</td>
+          </tr>
+          <tr>
+              <td colspan="6">
+                  Referencia:
+              </td>
           </tr>
           
         </tbody>

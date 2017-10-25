@@ -81,7 +81,7 @@
                     </button> 
                 @endif
                 @if( $permisos[0]->btn_imp ==1 )
-                    <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white" onclick="imppu()">
                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                     </button>
                 @else

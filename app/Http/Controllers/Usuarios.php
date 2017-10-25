@@ -10,10 +10,15 @@ use App\Models\Usuarios_u;
 class Usuarios extends Controller {
 
     public function vw_usuarios_show() {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_usuarios' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $tip_doc=DB::select('select * from adm_tri.tipo_documento');
         $jef=DB::table('vw_usuarios')->where('jefe',1)->get();
-        return view('configuracion/vw_usuarios',compact('tip_doc','jef','menu'));
+        return view('configuracion/vw_usuarios',compact('tip_doc','jef','menu','permisos'));
     }
 
     public function getAllUsuarios2() {
