@@ -10,7 +10,7 @@ class Fraccionamiento extends Controller
    
     public function index()
     {
-        return view('configuracion/vw_fraccionamiento');
+//        return view('configuracion/vw_fraccionamiento');
     }
 
     public function create()

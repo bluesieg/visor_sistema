@@ -7,15 +7,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Convenio;
 use App\Traits\DatesTranslator;
+use Illuminate\Support\Facades\Auth;
 
 class ConvenioController extends Controller
 {
     use DatesTranslator;
     public function index(){
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_fraccionamiento' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $cfracc=DB::table('fraccionamiento.vw_config_fracc')->get();
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $tip_f= DB::select('select * from fraccionamiento.tipo_fracc');
-        return view('fraccionamiento/vw_conve_fracc',compact('anio','cfracc','tip_f'));
+        return view('fraccionamiento/vw_conve_fracc',compact('anio','cfracc','tip_f','menu','permisos'));
     }
 
     public function create(Request $request)

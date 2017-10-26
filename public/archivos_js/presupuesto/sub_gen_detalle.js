@@ -92,7 +92,7 @@ function up_subgen_detalle(){
         }
     });
 }
-function del_subgen(){
+function del_subgen_detalle(){
     id_sub_gen=$('#table_SubGenerica').jqGrid ('getGridParam', 'selrow');
     id_sub_gen_det = $('#table_SubGen_Detalle').jqGrid ('getGridParam', 'selrow');
     $.ajax({

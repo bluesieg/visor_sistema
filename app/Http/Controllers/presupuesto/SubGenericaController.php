@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\presupuesto\SubGenerica;
+use Illuminate\Support\Facades\Auth;
 
 class SubGenericaController extends Controller
 {
     public function index(){
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_pres_subgen' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('presupuesto/vw_subgenerica',compact('anio'));
+        return view('presupuesto/vw_subgenerica',compact('anio','menu','permisos'));
     }
 
     public function create(Request $request){

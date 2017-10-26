@@ -46,16 +46,34 @@
                                         @foreach ($anio as $anio)
                                         <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                         @endforeach
-                                    </select><i></i>                                    
-                                    <button onclick="dlg_esp_detalle();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                    </button>
-                                    <button onclick="up_dlg_esp_detalle();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                    </button>
-                                    <button onclick="del_esp_detalle();" type="button" class="btn btn-labeled btn-danger">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                    </button>
+                                    </select><i></i>
+                                    @if( $permisos[0]->btn_new ==1 )
+                                        <button onclick="dlg_esp_detalle();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                        </button>
+                                    @endif
+                                    @if( $permisos[0]->btn_edit ==1 )
+                                        <button onclick="up_dlg_esp_detalle();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                        </button>
+                                    @endif
+                                    @if( $permisos[0]->btn_del ==1 )
+                                        <button onclick="del_esp_detalle();" type="button" class="btn btn-labeled btn-danger">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled btn-danger">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                        </button>
+                                    @endif
                                 </div>                        
                             </div>
                         </div>
@@ -221,7 +239,12 @@ $(document).ready(function () {
                     $("#table_Esp_Detalle").setSelection(firstid);
                 }
             },            
-            ondblClickRow: function (Id) {up_dlg_esp_detalle();}
+            ondblClickRow: function (Id) {
+                perms = {!! json_encode($permisos[0]->btn_edit) !!};
+                if(perms==1){
+                    up_dlg_esp_detalle();
+                }else sin_permiso();
+            }
         });
         MensajeDialogLoadAjaxFinish('content');
     }, 2500);

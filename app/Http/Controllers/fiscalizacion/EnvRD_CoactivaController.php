@@ -23,6 +23,7 @@ class EnvRD_CoactivaController extends Controller
         $data->anio = date('Y');
         $data->doc_ini=1;/*RD*/ 
         $data->monto=$monto;
+        $data->materia=1;
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_rd);

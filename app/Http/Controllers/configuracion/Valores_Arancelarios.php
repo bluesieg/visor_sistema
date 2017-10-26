@@ -5,12 +5,19 @@ namespace App\Http\Controllers\configuracion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Valores_Arancelarios extends Controller {
 
     public function vw_val_arancel() {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_val_ara' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $sector = DB::select('select * from catastro.vw_sector order by 2');
-        return view('configuracion/vw_valores_arancelarios', compact('sector'));
+        return view('configuracion/vw_valores_arancelarios', compact('sector','menu','permisos'));
     }
 
     function grid_valores_arancelarios(Request $request) {

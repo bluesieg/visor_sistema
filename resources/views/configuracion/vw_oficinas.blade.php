@@ -10,13 +10,20 @@
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
-                            <button onclick="open_dialog_new_edit_Oficinas('NUEVO');" id="btn_vw_oficinas_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            <button 
+                                @if($permisos[0]->btn_new==1) onclick="open_dialog_new_edit_Oficinas('NUEVO');" @else onclick="sin_permiso();" @endif
+                                 
+                                id="btn_vw_oficinas_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button> 
-                            <button id="btn_vw_oficinas_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button 
+                                @if($permisos[0]->btn_edit==1) onclick="open_dialog_new_edit_Oficinas('EDITAR')" @else onclick="sin_permiso();" @endif
+                                id="btn_vw_oficinas_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Editar
                             </button>
-                            <button id="btn_vw_oficinas_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                            <button 
+                                @if($permisos[0]->btn_edit==1) onclick="config_eliminar_oficina()" @else onclick="sin_permiso();" @endif
+                                id="btn_vw_oficinas_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 
                         </div>
@@ -30,8 +37,6 @@
         </article>
     </div>
 </section>
-
-
 <div id="dialog_open_list_oficinas" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -73,10 +78,7 @@
             ],
             pager: '#pager_table_vw_oficinas',
             rowList: [15, 25],
-            onSelectRow: function (Id) {
-                $('#btn_vw_oficinas_Editar').attr('onClick', 'open_dialog_new_edit_Oficinas("' + 'EDITAR' + '",' + Id + ')');
-                $('#btn_vw_oficinas_Eliminar').attr('onClick', 'config_eliminar_oficina('+Id+')');
-            },
+            onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
                 $('#btn_vw_oficinas_Editar').click();
             }

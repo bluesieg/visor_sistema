@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <td><b>Materia</b></td>
-                    <td>:&nbsp;TRIBUTARIA<br/></td>
+                    <td>:&nbsp;{{$resol->desc_mat}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>Domicilio</b></td>

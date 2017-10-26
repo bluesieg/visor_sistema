@@ -43,7 +43,8 @@ function limpiar_uit(){
     $("#txt_ot_ins").val('');
 }
 function open_dialog_nuevo_uit(tipe, Id)
-{    
+{   
+    Id=$('#table_vw_uit').jqGrid ('getGridParam', 'selrow');
     $("#dialog_open_list_uit").dialog({
         autoOpen: false, modal: true, height: 370, width: 480, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp.: " + tipe + " UIT :.</h4></div>",
@@ -92,7 +93,7 @@ function open_dialog_nuevo_uit(tipe, Id)
 
 
 function open_dialog_new_edit_Oficinas(tipe, id) {
-
+    id=$('#table_vw_oficinas').jqGrid ('getGridParam', 'selrow');
     $("#dialog_open_list_oficinas").dialog({
         autoOpen: false, modal: true, height: 250, width: 440, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4><i class='fa fa-home'></i>&nbsp.: " + tipe + " OFICINA :.</h4></div>",
@@ -271,7 +272,8 @@ function modificar_oficina(tipo, Id) {
     }
 }
 
-function config_eliminar_oficina(id) {
+function config_eliminar_oficina() {
+    id=$('#table_vw_oficinas').jqGrid ('getGridParam', 'selrow');
     $.confirm({
         type: 'red',
         title: '.:Cuidado... !',
@@ -300,6 +302,7 @@ function config_eliminar_oficina(id) {
 }
 
 function open_dialog_quitar_uit(Id) {
+    Id=$('#table_vw_uit').jqGrid ('getGridParam', 'selrow');
     $.confirm({
         type: 'red',
         title: '.:Cuidado... !',

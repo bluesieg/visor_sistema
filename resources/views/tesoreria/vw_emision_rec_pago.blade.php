@@ -25,19 +25,32 @@
                             <button onclick="" style="display: none;" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="fa fa-search"></i></span>Buscar
                             </button>
-                            <button onclick="dialog_emi_rec_pag_arbitrios();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Arbitrios
-                            </button>
-                            <button onclick="dialog_emi_rec_pag_imp_predial();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            @if( $permisos[0]->btn_edit ==1 )
+                                <button onclick="dialog_emi_rec_pag_arbitrios();" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Arbitrios
+                                </button>
+                            @else
+                                <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Arbitrios
+                                </button>
+                            @endif
+                            
+                            <button 
+                                @if($permisos[0]->btn_edit==1) onclick="dialog_emi_rec_pag_imp_predial();" @else onclick="sin_permiso();" @endif
+                                type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Impuesto Predial
                             </button>
-                            <button onclick="dialog_emi_rec_pag_fracc();" id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            
+                            <button @if($permisos[0]->btn_edit==1) onclick="dialog_emi_rec_pag_fracc();" @else onclick="sin_permiso();" @endif
+                                    type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Fraccionamiento
                             </button>
-                            <button onclick="dialog_emi_rec_pag_varios();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                            <button @if($permisos[0]->btn_edit==1) onclick="dialog_emi_rec_pag_varios();" @else onclick="sin_permiso();" @endif
+                                    type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-tasks"></i></span>Varios
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Eliminar" onclick="" type="button" class="btn btn-labeled btn-danger">
+                            <button @if($permisos[0]->btn_anu==1) onclick="" @else onclick="sin_permiso();" @endif
+                                type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Anular
                             </button>
                         </div>

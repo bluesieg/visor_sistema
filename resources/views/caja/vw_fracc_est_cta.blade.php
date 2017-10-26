@@ -34,7 +34,9 @@
                                     </div>
                                 </section>
                                 <section class="col-lg-2 text-align-left" style="padding-left: 5px;">
-                                    <button onclick="print_estcta_fracc();" type="button" id="btn_vw_productos_eliminar" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                    <button 
+                                        @if($permisos[0]->btn_imp==1) onclick="print_estcta_fracc();" @else onclick="sin_permiso();" @endif                                        
+                                        type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                                     </button>
                                 </section>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Traits\DatesTranslator;
 use App\Models\coactiva\coactiva_documentos;
+use Illuminate\Support\Facades\Auth;
 
 class CoactivaController extends Controller
 {
@@ -17,10 +18,22 @@ class CoactivaController extends Controller
         echo $le;
     }
     public function gest_exped(){
-        return view('coactiva.vw_ges_exped');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_gesion_exped' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('coactiva.vw_ges_exped',compact('menu','permisos'));
     }   
     public function recep_doc() {
-        return view('coactiva.vw_recep_doc');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_recep_doc' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('coactiva.vw_recep_doc',compact('menu','permisos'));
     }
     function emision_apertura_resolucion(){
         $plantilla=DB::table('coactiva.plantillas')->where('id_plant',1)->value('contenido');
@@ -504,6 +517,7 @@ class CoactivaController extends Controller
                 $resol->dom_fis=$Datos->dom_fis;
                 $resol->ubi_pred=$Datos->ubi_pred;
                 $resol->doc_ini=$Datos->doc_ini;
+                $resol->desc_mat=$Datos->desc_mat;
             }
             $plantilla = $this->rec_res_eje_coa_plantilla($id_doc, $id_coa_mtr);
             $view = \View::make('coactiva.reportes.rec_apertura',compact('plantilla','resol'))->render();
@@ -528,6 +542,7 @@ class CoactivaController extends Controller
                 $resol->dom_fis=$Datos->dom_fis;
                 $resol->ubi_pred=$Datos->ubi_pred;
                 $resol->doc_ini=$Datos->doc_ini;
+                $resol->desc_mat=$Datos->desc_mat;
             }
             $doc_ini=DB::table('coactiva.vw_coactiva_mtr')->where('id_coa_mtr',$id_coa_mtr)->value('doc_ini');
             if($doc_ini=='1'){
@@ -684,7 +699,7 @@ class CoactivaController extends Controller
             if($request['id_tip_doc']=='9'){
                 DB::select("update coactiva.coactiva_documentos set texto=(select texto from coactiva.tip_doc where id_tip=9) where id_coa_mtr=".$request['id_coa_mtr']." and id_tip_doc=9");
             }else if($request['id_tip_doc']=='3'){
-//                DB::select("update coactiva.coactiva_documentos set texto=(select texto from coactiva.tip_doc where id_tip=3) where id_coa_mtr=".$request['id_coa_mtr']." and id_tip_doc=3");
+                DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$data->id_coa_mtr)->update(['estado' => 0]);
             }
             
             return response()->json(['msg'=>'si']);

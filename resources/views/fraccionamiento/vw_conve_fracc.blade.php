@@ -24,15 +24,17 @@
                             </select><i></i>                                
                         </div>  
                         <div class="text-right">
-                            <button onclick="dialog_conve_fracc();" id="btn_vw_conve_fracc_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                            <button
+                                @if($permisos[0]->btn_new==1) onclick="dialog_conve_fracc();" @else onclick="sin_permiso();" @endif
+                                id="btn_vw_conve_fracc_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo Convenio de Fracc.
                             </button>
-                            <button id="btn_vw_conve_fracc_Editar" onclick="" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+<!--                            <button id="btn_vw_conve_fracc_Editar" onclick="" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Editar
                             </button>                            
                             <button id="btn_vw_conve_fracc_Anular" onclick="" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Anular
-                            </button>
+                            </button>-->
                         </div>
                     </div>
                 </div> 

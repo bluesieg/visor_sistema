@@ -36,6 +36,11 @@ function fn_bus_contrib_list_fracc(per){
 }
 
 function print_estcta_fracc(){
+    rows = $("#table_Convenios_estcta").getRowData().length;
+    if(rows==0){
+        mostraralertas('* No hay Convenios Para Mostrar...<br>* Ingrese Un Contribuyente...');
+        return false;
+    }
     id_contrib = $("#hiddenvw_fracc_est_cta_cod").val();
     id_conv=$('#table_Convenios_estcta').jqGrid ('getGridParam', 'selrow');
     window.open('imp_est_cta_fracc/'+id_contrib+'/'+id_conv);

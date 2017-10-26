@@ -40,13 +40,20 @@
                             <button onclick="buscar_val_arancel();" style="display: none;" id="btn_vw_valores_arancelarios_Buscar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="fa fa-search"></i></span>Buscar
                             </button>
-                            <button onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            
+                            <button 
+                                @if($permisos[0]->btn_new==1) onclick="open_dialog_new_edit_Val_Arancel('NUEVO');" @else onclick="sin_permiso();" @endif                                
+                                id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Editar" onclick="open_dialog_new_edit_Val_Arancel('EDITAR');" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button 
+                                @if($permisos[0]->btn_edit==1) onclick="open_dialog_new_edit_Val_Arancel('EDITAR');" @else onclick="sin_permiso();" @endif
+                                id="btn_vw_valores_arancelarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
-                            <button id="btn_vw_valores_arancelarios_Eliminar" onclick="eliminar_val_arancel();" type="button" class="btn btn-labeled btn-danger">
+                            <button
+                                @if($permisos[0]->btn_del==1) onclick="eliminar_val_arancel();" @else onclick="sin_permiso();" @endif
+                                type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 
                             <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
@@ -108,7 +115,7 @@
             rowList: [13, 20],
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
-                open_dialog_new_edit_Val_Arancel('EDITAR',Id);
+                $("#btn_vw_valores_arancelarios_Editar").click();
             },
             gridComplete: function () {
                 var idarray = jQuery('#table_Val_Arancel').jqGrid('getDataIDs');

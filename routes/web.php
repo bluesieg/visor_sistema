@@ -27,58 +27,6 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
     Route::post('oficinas_insert_new', 'configuracion\Oficinas_Uit@oficinas_insert_new');
     Route::post('oficinas_delete', 'configuracion\Oficinas_Uit@oficinas_delete');
 });
-Route::get('dni',function (){
-    $rq		= new \stdClass();
-    $rq->data	= new \stdClass();
-    $rq->auth	= new \stdClass();
-
-    $rq->auth->dni	= '80673320';		// DNI del usuario
-    $rq->auth->pas	= 'Pr0gr4m4';           // Contrasenia
-    $rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
-
-    $rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
-    $rq->data->dni	= '46691651';		// Dato que debe estar acorde al contrato del ws
-    $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
-
-
-    $url = 'http://ws.ehg.pe/';	
-
-    $options = array(
-            'http' => array(
-            'header'  => "Content-type: application/json\r\n",
-            'method'  => 'POST',            
-            'content' => json_encode($rq)
-        )
-    );
-
-    $context  = stream_context_create($options);
-
-    $result = file_get_contents($url, false, $context);
-
-    if ($result === FALSE) 
-    {  
-      echo 'Error de conexion';
-    }
-
-    $rpta = json_decode($result);
-
-
-    if($rpta->resp->code == '0000')
-    {
-     echo $rpta->data->apPrimer."\n";
-     echo $rpta->data->apSegundo."\n";   
-     echo $rpta->data->prenombres."\n";
-     echo $rpta->data->estadoCivil."\n";
-     echo $rpta->data->direccion."\n";
-     echo $rpta->data->ubigeo."\n" ;
-     echo 'https://ws.ehg.pe'.$rpta->data->foto."\n"; 
-     var_dump($rpta);
-    }
-    else
-    {
-     echo $rpta->resp->code.'-'.$rpta->resp->text;
-    }
-});
 //Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/vw_general', 'General@index')->name('vw_general');
@@ -186,6 +134,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('especifica_detalle', 'Esp_DetalleController');
         Route::get('get_esp_detalle', 'Esp_DetalleController@get_esp_detalle');
         Route::resource('procedimientos', 'ProcedimientoController');
+        Route::get('get_procedimientos','ProcedimientoController@get_procedimientos');
     });
     
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
@@ -197,7 +146,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('obtener_pred_ctb/{id}', 'adm_tributaria\Contribuyentes@get_predios_contrib'); //
     /*     * ******************************************VALORES ARANCELARIOS******************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {
-        Route::get('val_arancel', 'Valores_Arancelarios@vw_val_arancel')->name('val_aran'); // VW_ARANCELES
+        Route::get('val_aran', 'Valores_Arancelarios@vw_val_arancel'); // VW_ARANCELES
         Route::get('grid_val_arancel', 'Valores_Arancelarios@grid_valores_arancelarios'); // tabla grilla Valores Arancelarios
         Route::get('get_anio_val_arancel', 'Valores_Arancelarios@get_anio'); //llena combo AÑO vw_val_arancel
         Route::get('get_sector_val_arancel', 'Valores_Arancelarios@get_sector'); //llena combo SECTOR vw_val_arancel

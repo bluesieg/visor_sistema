@@ -86,7 +86,8 @@ class Usuarios extends Controller {
                 trim($Datos->dni),
                 trim($Datos->ape_nom),
                 trim($Datos->usuario),                
-                $fch_nac
+                $fch_nac,
+                trim($Datos->jefe),
             );
         }
 
@@ -136,7 +137,8 @@ class Usuarios extends Controller {
             $Lista->id = trim($Datos->id);
             $Lista->dni = trim($Datos->dni);
             $Lista->ape_nom = trim($Datos->ape_nom);
-            $Lista->usuario = trim($Datos->usuario);            
+            $Lista->usuario = trim($Datos->usuario);
+            $Lista->jefe = trim($Datos->jefe);
 //            $Lista->foto = trim($Datos->foto);
         }
         return response()->json($Lista);

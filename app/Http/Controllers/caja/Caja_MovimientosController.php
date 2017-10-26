@@ -13,11 +13,17 @@ use App\Models\Caja_apert_cierr;
 class Caja_MovimientosController extends Controller {
 
     public function index() {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_menu_caja_movimientos' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $est_recibos = DB::select('select * from tesoreria.estados_recibos');
         $tipo_pago = DB::select('select * from tesoreria.tipo_pago');
         $cajas = DB::select('select * from tesoreria.cajas order by id_caj');  
 //        dd($cajas);
-        return view('caja/vw_caja_Movimient', compact('est_recibos', 'tipo_pago', 'cajas'));
+        return view('caja/vw_caja_Movimient', compact('est_recibos', 'tipo_pago', 'cajas','menu','permisos'));
     }
 
     public function create() {

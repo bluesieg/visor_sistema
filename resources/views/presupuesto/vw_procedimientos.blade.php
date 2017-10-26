@@ -10,13 +10,13 @@
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-6 text-left">
                                 <label>Filtro Año:</label>
-                                <select id="vw_gen_anio"  class="input-sm">
+                                <select id="vw_procedim_anio"  class="input-sm">
                                     @foreach ($anio as $anio)
                                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                     @endforeach
                                 </select><i></i>
                             </div>
-                            <button onclick="" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            <button onclick="dlg_procedimiento();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button>
                             <button onclick="" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
@@ -34,8 +34,8 @@
                     <div class="col-xs-12">                        
                         <div class="row">
                             <section id="content_2" class="col-lg-12">
-                                <table id="table_Generica"></table>
-                                <div id="p_table_Generica"></div>
+                                <table id="table_Procedimiento"></table>
+                                <div id="p_table_Procedimiento"></div>
                             </section>                            
                         </div>                                                
                     </div>
@@ -50,37 +50,36 @@
 $(document).ready(function () {
     $("#menu_presupuesto").show();
     $("#li_pres_proced").addClass('cr-active');
-    jQuery("#table_Generica").jqGrid({
-        url: 'get_generica?anio='+$("#vw_gen_anio").val(),
+    jQuery("#table_Procedimiento").jqGrid({
+        url: 'get_procedimientos?anio='+$("#vw_procedim_anio").val(),
         datatype: 'json', mtype: 'GET',
         height: 'auto', autowidth: true,
         toolbarfilter: true,
-        colNames: ['Codigo', 'Descripción - Genérica'],
-        rowNum: 15, sortname: 'id_gener', sortorder: 'asc', viewrecords: true, caption: 'Generica', align: "center",
+        colNames: ['Codigo', 'Descripción - Procedimiento'],
+        rowNum: 15, sortname: 'id_proced', sortorder: 'asc', viewrecords: true, caption: 'Procedimientos', align: "center",
         colModel: [            
-            {name: 'cod_generica', index: 'cod_generica', align: 'center', width: 50},
-            {name: 'descr_gen', index: 'descr_gen', align: 'left', width: 300}            
+            {name: 'cod_proc', index: 'cod_proc', align: 'center', width: 50},
+            {name: 'desc_proc', index: 'desc_proc', align: 'left', width: 300}            
         ],
-        pager: '#p_table_Generica',
+        pager: '#p_table_Procedimiento',
         rowList: [15, 20],
         gridComplete: function () {
-            var idarray = jQuery('#table_Generica').jqGrid('getDataIDs');
+            var idarray = jQuery('#table_Procedimiento').jqGrid('getDataIDs');
             if (idarray.length > 0) {
-                var firstid = jQuery('#table_Generica').jqGrid('getDataIDs')[0];
-                $("#table_Generica").setSelection(firstid);
+                var firstid = jQuery('#table_Procedimiento').jqGrid('getDataIDs')[0];
+                $("#table_Procedimiento").setSelection(firstid);
             }
         },
-        onSelectRow: function (Id) {},
-        ondblClickRow: function (Id) {up_dlg_generica();}
+        ondblClickRow: function (Id) {}
     });
     $(window).on('resize.jqGrid', function () {
-        $("#table_Generica").jqGrid('setGridWidth', $("#content_2").width());
+        $("#table_Procedimiento").jqGrid('setGridWidth', $("#content_2").width());
     });
 });
 </script>
 @stop
-<script src="{{ asset('archivos_js/presupuesto/generica.js') }}"></script>
-<div id="dlg_gen" style="display: none;">
+<script src="{{ asset('archivos_js/presupuesto/procedimientos.js') }}"></script>
+<div id="dlg_proced" style="display: none;">
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
@@ -88,21 +87,27 @@ $(document).ready(function () {
                     <div class="panel-body cr-body">
                         <fieldset>
                             <section>
-                                <label class="label">Tipo. Transacción:</label>
-                                <select id="gen_tip_trans" class="form-control input-sm">                                        
-                                    
-                                </select><i></i>                        
+                                <label class="label">Específica Detalle:</label>
+                                <label class="input">
+                                    <input id="proced_esp_det" type="text" placeholder="Específica Detalle" class="input-sm text-uppercase">
+                                </label>                        
+                            </section>
+                            <section>
+                                <label class="label">Oficina:</label>
+                                <label class="input">
+                                    <input id="proced_ofi" type="text" placeholder="Escriba el nombre de de la oficina" class="input-sm text-uppercase">
+                                </label>                        
                             </section>
                             <section>
                                 <label class="label">Código:</label>
                                 <label class="input">
-                                    <input id="gen_cod" onkeypress="return soloDNI(event);" type="text" placeholder="0" class="input-sm" style="width:80px;">
+                                    <input id="proced_cod" onkeypress="return soloDNI(event);" type="text" placeholder="0" class="input-sm" style="width:80px;">
                                 </label>                        
                             </section>
                             <section>
                                 <label class="label">Descripción:</label>
                                 <label class="input">
-                                    <input id="gen_desc" type="text" placeholder="Descripción" class="input-sm text-uppercase">
+                                    <input id="proced_desc" type="text" placeholder="Descripción" class="input-sm text-uppercase">
                                 </label>                      
                             </section>
                         </fieldset>

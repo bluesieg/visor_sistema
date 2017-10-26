@@ -6,18 +6,31 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Traits\DatesTranslator;
+use Illuminate\Support\Facades\Auth;
 
 class Caja_Est_CuentasController extends Controller
 {
     use DatesTranslator;
 
-    public function index(){     
+    public function index(){
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_vent_est_cta' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('caja/vw_caja_est_cuentas',compact('anio'));
+        return view('caja/vw_caja_est_cuentas',compact('anio','menu','permisos'));
     }
     function vw_fracc_est_cta(){
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_vent_est_cta_fracc' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('caja/vw_fracc_est_cta',compact('anio'));
+        return view('caja/vw_fracc_est_cta',compact('anio','menu','permisos'));
     }
     function conv_fracc_estcta(Request $request){
         $id_contrib=$request['id_contrib'];      

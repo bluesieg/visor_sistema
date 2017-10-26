@@ -94,9 +94,10 @@ function imp_pago_rec(id_recibo){
     
     $('#print_recibo_pagado').attr('src','imp_pago_rec?id_rec='+id_recibo);    
 }
-function reimprimir_recib(){
+function reimprimir_recib(){    
     id_recibo = $('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');
     if(id_recibo==null){
+        mostraralertas('* No hay Movimientos...');
         return false;
     }
     $("#vw_caja_mov_confirm_pago_reporte").dialog({
@@ -204,6 +205,12 @@ function verif_apertura_caja(){
     });
 }
 function reporte_diario_caja(){
+    
+    rows = $("#tabla_Caja_Movimientos").getRowData().length;
+    if(rows==0){
+        mostraralertas('* No hay Movimientos...');
+        return false;
+    }
     window.open('reporte_diario_caja/'+$("#vw_caja_id_cajero").val());
 }
 

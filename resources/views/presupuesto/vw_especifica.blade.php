@@ -46,16 +46,34 @@
                                         @foreach ($anio as $anio)
                                         <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                         @endforeach
-                                    </select><i></i>                                    
-                                    <button onclick="dlg_especifica();" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                    </button>
-                                    <button onclick="up_dlg_especifica();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                    </button>
-                                    <button onclick="del_especifica();" id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                    </button>
+                                    </select><i></i>
+                                    @if( $permisos[0]->btn_new ==1 )
+                                        <button onclick="dlg_especifica();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                        </button>
+                                    @endif
+                                    @if( $permisos[0]->btn_edit ==1 )
+                                        <button onclick="up_dlg_especifica();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                        </button>
+                                    @endif
+                                    @if( $permisos[0]->btn_del ==1 )
+                                        <button onclick="del_especifica();" type="button" class="btn btn-labeled btn-danger">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled btn-danger">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                        </button>
+                                    @endif
                                 </div>                        
                             </div>
                         </div>
@@ -187,7 +205,12 @@ $(document).ready(function () {
                 }
             },
             onSelectRow: function (Id) {},
-            ondblClickRow: function (Id) {up_dlg_especifica();}
+            ondblClickRow: function (Id) {
+                perms = {!! json_encode($permisos[0]->btn_edit) !!};
+                if(perms==1){
+                    up_dlg_especifica();
+                }else sin_permiso();
+            }
         });
         MensajeDialogLoadAjaxFinish('content');
     }, 1500);

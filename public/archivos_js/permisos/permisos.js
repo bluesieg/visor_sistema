@@ -1,8 +1,12 @@
 
 function llamar_sub_modulo()
 {
+    
     modulo= $('#table_modulos').jqGrid('getGridParam', 'selrow');
     id_user = $('#table_Usuarios').jqGrid('getGridParam', 'selrow');
+    if(id_user==null){
+        return false;
+    }
     jQuery("#table_sub_modulos").jqGrid('setGridParam', {url: 'sub_modulos?identifi='+modulo+'&usu='+id_user}).trigger('reloadGrid');
             
 }

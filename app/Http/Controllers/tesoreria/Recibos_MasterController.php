@@ -14,9 +14,15 @@ class Recibos_MasterController extends Controller
 {    
     public function index(Request $request)
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_tesoreria_emi_rec_pag' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $tip_doc = DB::table('adm_tri.tipo_documento')->get();
         $anio = DB::table('adm_tri.vw_uit')->select('anio')->orderBy('anio','desc')->get();
-        return view('tesoreria/vw_emision_rec_pago',compact('tip_doc','anio'));        
+        return view('tesoreria/vw_emision_rec_pago',compact('tip_doc','anio','menu','permisos'));        
     }
     
     public function create(Request $request)

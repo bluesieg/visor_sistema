@@ -49,13 +49,19 @@
                                     </div>
                                 </section>
                                 <section class="col-lg-7 text-align-right" style="padding-left: 5px;">                                    
-                                    <button onclick="apertura();" id="vw_caja_mov_btn_apert" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
+                                    <button 
+                                        @if($permisos[0]->btn_new==1) onclick="apertura();"  @else onclick="sin_permiso();" @endif
+                                        id="vw_caja_mov_btn_apert" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Aperturar Caja
                                     </button>
-                                    <button onclick="cierre();" id="vw_caja_mov_btn_cierre" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
+                                    <button 
+                                        @if($permisos[0]->btn_new==1) onclick="cierre();" @else onclick="sin_permiso();" @endif 
+                                        id="vw_caja_mov_btn_cierre" type="button" class="btn btn-labeled bg-color-orange txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-folder-close"></i></span>Cerrar Caja
                                     </button>
-                                    <button onclick="dialog_caja_mov_realizar_pago();" id="" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                    <button 
+                                        @if($permisos[0]->btn_new==1) onclick="dialog_caja_mov_realizar_pago();" @else onclick="sin_permiso();" @endif
+                                        type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Pago de Recibos
                                     </button>
                                     <div class="btn-group">
@@ -63,19 +69,16 @@
                                         <a class="btn dropdown-toggle bg-color-magenta txt-color-white" data-toggle="dropdown" href="javascript:void(0);"><span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a onclick="reporte_diario_caja();" href="javascript:void(0);">Reporte Diario Caja</a>
+                                                <a @if($permisos[0]->btn_imp==1) onclick="reporte_diario_caja();" @else onclick="sin_permiso();" @endif>Reporte Diario Caja</a>
                                             </li>
                                             <li>
                                                 <a href="javascript:void(0);">Consolidado</a>
                                             </li>
                                             <li>
-                                                <a onclick="reimprimir_recib();">Re-Imprimir Recibo</a>
+                                                <a @if($permisos[0]->btn_imp==1) onclick="reimprimir_recib();" @else onclick="sin_permiso();" @endif>Re-Imprimir Recibo</a>
                                             </li>                                            
                                         </ul>
                                     </div>
-<!--                                    <button onclick="reimprimir_recib();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                                    </button>-->
                                 </section>
                             </div>
                         </div>

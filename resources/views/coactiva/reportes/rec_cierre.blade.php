@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <td><b>Materia</b></td>
-                    <td>:&nbsp;TRIBUTARIA<br/></td>
+                    <td>:&nbsp;{{$resol->desc_mat}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>Domicilio</b></td>
@@ -57,7 +57,7 @@
                 </tr>
             </table>
         </div>
-        <div style="text-align:center;margin-top: 40px;"><b>RESOLUCION DE EJECUCIÓN COACTIVA N° {{$resol->nro_resol.'-'.$resol->anio_resol}}/OEC-MDCC</b></div>
+        <div style="text-align:center;margin-top: 20px;"><b>RESOLUCION DE EJECUCIÓN COACTIVA N° {{$resol->nro_resol.'-'.$resol->anio_resol}}/OEC-MDCC</b></div>
         
         @php echo $plantilla @endphp
         

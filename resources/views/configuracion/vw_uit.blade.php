@@ -11,13 +11,20 @@
                 <div class="row">
                     <div class="col-xs-12">                        
                         <div class="text-right">
-                            <button onclick="open_dialog_nuevo_uit('NUEVO', false);" id="btn_vw_uit_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            <button 
+                                @if($permisos[0]->btn_new==1) onclick="open_dialog_nuevo_uit('NUEVO', false);" @else onclick="sin_permiso();" @endif
+                                
+                                id="btn_vw_uit_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button>                        
-                            <button id="btn_vw_uit_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button 
+                                @if($permisos[0]->btn_edit==1) onclick="open_dialog_nuevo_uit('EDITAR', false);" @else onclick="sin_permiso();" @endif 
+                                id="btn_vw_uit_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Editar
                             </button>
-                            <button id ="btn_vw_uit_Eliminar" type="button" class="btn btn-labeled btn-danger">
+                            <button 
+                                @if($permisos[0]->btn_del==1) onclick="open_dialog_quitar_uit();" @else onclick="sin_permiso();" @endif
+                                id ="btn_vw_uit_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button>
                         </div>
@@ -136,8 +143,8 @@
             pager: '#pager_table_vw_uit',
             rowList: [15, 25],
             onSelectRow: function (Id) {
-                $('#btn_vw_uit_Editar').attr('onClick', 'open_dialog_nuevo_uit("' + 'EDITAR' + '",' + Id + ')');
-                $('#btn_vw_uit_Eliminar').attr('onClick', 'open_dialog_quitar_uit(' + Id + ')');
+//                $('#btn_vw_uit_Editar').attr('onClick', 'open_dialog_nuevo_uit("' + 'EDITAR' + '",' + Id + ')');
+//                $('#btn_vw_uit_Eliminar').attr('onClick', 'open_dialog_quitar_uit(' + Id + ')');
             },
             ondblClickRow: function (Id) {
                 $("#btn_vw_uit_Editar").click();

@@ -39,6 +39,12 @@ function selanio_est_cta(){
 }
 
 function print_est_cta(){
+    rows = $("#tabla_est_Cuenta").getRowData().length;
+    if(rows==0){
+        mostraralertas('* Ingrese Un Contribuyente con Predios Declarados...');
+        return false;
+    }
+    
     id_contrib = $("#vw_caja_est_cta_id_contrib").val();
     window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
 }

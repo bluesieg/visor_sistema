@@ -197,6 +197,12 @@ function dlg_Editar_Usuario() {
             $("#vw_usuario_txt_ape_nom_2").val(data.ape_nom);
             $("#vw_usuario_txt_dni_2").val(data.dni);
             $("#vw_usuario_txt_usuario_2").val(data.usuario);
+            $("#vw_usuario_chk_jefe").val(data.jefe);
+            if(data.jefe=='1'){
+                $("#vw_usuario_chk_jefe").attr('checked',true);
+            }else if(data.jefe=='0'){
+                $("#vw_usuario_chk_jefe").attr('checked',false);
+            }
         }, error: function (data) {
             mostraralertas('* Error base de datos... <br> * Contactese con el administrador..');
             dialog_close('dialog_Editar_Usuario');
@@ -252,7 +258,15 @@ function save_nuevo_usuario() {
     });
 
 }
+function on_jefe(){
+    if($("#vw_usuario_chk_jefe").is(':checked')){
+        $("#vw_usuario_chk_jefe").val('1');
+    } else {
+        $("#vw_usuario_chk_jefe").val('0');
+    }
+}
 function update_user() {
+    jefe = $("#vw_usuario_chk_jefe").val();
     dni = $.trim($("#vw_usuario_txt_dni_2").val());
     usuario = $.trim($("#vw_usuario_txt_usuario_2").val());
     ape_nom = $.trim($("#vw_usuario_txt_ape_nom_2").val());
@@ -271,7 +285,7 @@ function update_user() {
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         type: 'POST',
         url: 'usuario_update',
-        data: {id: id_user, dni: dni, usuario: usuario.toUpperCase(), ape_nom: ape_nom.toUpperCase()},
+        data: {id: id_user, dni: dni, usuario: usuario.toUpperCase(), ape_nom: ape_nom.toUpperCase(),jefe:jefe},
         success: function (data) {
             if (data.msg == 'si') {
                 fn_actualizar_grilla('table_Usuarios', 'list_usuarios');

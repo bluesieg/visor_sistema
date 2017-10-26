@@ -69,14 +69,15 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id', 'DNI', ' Nombres', 'Usuario', 'Fecha Nac.'],
+            colNames: ['id', 'DNI', ' Nombres', 'Usuario', 'Fecha Nac.','jefe'],
             rowNum: 13, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE USUARIOS REGISTRADOS', align: "center",
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'dni', index: 'dni', align: 'center', width: 80},
                 {name: 'ape_nom', index: 'ape_nom', width: 250},
                 {name: 'usuario', index: 'usuario', width: 130},                
-                {name: 'fch_nac', index: 'fch_nac', align: 'center', width: 100}
+                {name: 'fch_nac', index: 'fch_nac', align: 'center', width: 100},
+                {name: 'jefe', index: 'jefe', hidden: true}
             ],
             pager: '#pager_table_Usuarios',
             rowList: [13, 20],
@@ -217,7 +218,7 @@
                         </label>
                     </section>-->
                     <section>
-                        <label class="label">Jefe Inmediato:</label>                                   
+                        <label class="label">Supervisor / Jefe Inmediato:</label>                                   
                         <label class="select">
                             <select id="vw_usuario_dni_jefe" name="vw_usuario_dni_jefe" class="input-sm">
                                 <option value="0">Seleccione</option>
@@ -268,7 +269,12 @@
                                         </div>
                                     </label>                                
                                 </div>
-                            </section>                
+                            </section>
+                            <div class="col col-12" style="margin-top: 10px;">
+                                <label class="toggle state-error">
+                                    <input type="checkbox" onchange="on_jefe()" id="vw_usuario_chk_jefe">
+                                    <i data-swchon-text="SI" data-swchoff-text="NO"></i>Asignar como Supervisor/Jefe:</label>
+                            </div>
                         </div>
                     </div>
                 </div>                 

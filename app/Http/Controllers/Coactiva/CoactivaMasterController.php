@@ -19,6 +19,7 @@ class CoactivaMasterController extends Controller
         $data->fch_ini = date('Y-m-d');
         $data->estado = 1;
         $data->anio = date('Y');
+        $data->materia=1;
         $data->save();
         return $data->id_coa_mtr;
     }

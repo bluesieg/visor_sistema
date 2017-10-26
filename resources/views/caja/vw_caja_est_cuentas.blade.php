@@ -60,9 +60,15 @@
                                     </div>
                                 </section>
                                 <section class="col-lg-3 text-align-left" style="padding-left: 5px;">
-                                    <button onclick="print_est_cta();" type="button" id="btn_vw_productos_eliminar" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                                    </button>
+                                    @if( $permisos[0]->btn_imp ==1 )
+                                        <button onclick="print_est_cta();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                        </button>
+                                    @endif
                                 </section>
                             </div>
                         </div>

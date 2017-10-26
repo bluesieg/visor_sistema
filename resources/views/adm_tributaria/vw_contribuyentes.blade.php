@@ -19,18 +19,33 @@
                                     </span>
                                 </div>                                            
                             </section>
-                            <button onclick="open_dialog_new_edit_Contribuyente('NUEVO');" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                            </button>
-                            <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                            </button>
-<!--                            <button onclick="dlg_new_persona(46981875);" id="btn_vw_contribuyentes_Eliminar" type="button" class="btn btn-labeled btn-danger">
-                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Persona
-                            </button>-->
-                            <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
-                            </button>
+                            @if( $permisos[0]->btn_new ==1 )
+                                <button onclick="open_dialog_new_edit_Contribuyente('NUEVO');" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                </button>
+                            @else
+                                <button onclick="sin_permiso();" id="btn_vw_contribuyentes_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                </button>
+                            @endif
+                            @if( $permisos[0]->btn_edit ==1 )
+                                <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                </button>
+                            @else
+                                <button onclick="sin_permiso();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                </button>
+                            @endif
+                            @if( $permisos[0]->btn_imp ==1 )
+                                <button onclick="dlg_new_reporte();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                </button>
+                            @else
+                                <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
+                                </button>
+                            @endif
                         </div>                        
                     </div>
                 </div> 
@@ -98,7 +113,10 @@
             rowList: [20, 30, 50],
             onSelectRow: function (Id) { },
             ondblClickRow: function (Id) {
-                modificar_contrib();
+                perms = {!! json_encode($permisos[0]->btn_edit) !!};
+                if(perms==1){
+                    modificar_contrib();
+                }else sin_permiso();
             },
             gridComplete: function () {
                 var rows = $("#table_Contribuyentes").getDataIDs();

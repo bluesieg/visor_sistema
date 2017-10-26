@@ -9,12 +9,19 @@ use App\Traits\DatesTranslator;
 use App\Models\coactiva\coactiva_master;
 use App\Models\coactiva\coactiva_documentos;
 use App\Models\orden_pago_master;
+use Illuminate\Support\Facades\Auth;
 
 class EnvDocCoactivaController extends Controller
 {
     use DatesTranslator;
     public function index(){
-        return view('adm_tributaria.vw_env_doc_coactiva');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_env_doc_a_coac' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('adm_tributaria.vw_env_doc_coactiva',compact('menu','permisos'));
     }
 
     public function create_coa_master($id_contrib,$id_gen_fis,$monto){        
@@ -24,10 +31,12 @@ class EnvDocCoactivaController extends Controller
         $data->estado = 1;
         $data->anio = date('Y');
         $data->doc_ini=2;
-        $data->monto=($monto*4);
+        $data->monto=$monto;
+        $data->materia=1;
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_gen_fis);
+            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103],['ano_cta',date('Y')]])->update(['id_coa_mtr'=>$data->id_coa_mtr]);
             return $data->id_coa_mtr;
         }
     }

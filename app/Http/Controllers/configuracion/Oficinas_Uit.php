@@ -5,15 +5,28 @@ namespace App\Http\Controllers\configuracion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Oficinas_Uit extends Controller {
 
     public function get_alluit() {
-        return view('configuracion/vw_uit');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_uit' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('configuracion/vw_uit',compact('menu','permisos'));
     }
 
     public function get_alloficinas() {
-        return view('configuracion/vw_oficinas');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_oficinas' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('configuracion/vw_oficinas',compact('menu','permisos'));
     }
 
     public function index() {
