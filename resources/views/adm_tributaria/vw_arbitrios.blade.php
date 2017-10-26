@@ -64,10 +64,16 @@
             <div id="pager_table_predios"></div>
         </article>
         <div class="col-xs-12" style="padding: 0px; margin-top: 5px;">
-            <ul style="padding: 0px;">                                        
-                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="new_arb();">
-                            <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Crear Arbítrio
-                        </button>
+            <ul style="padding: 0px;">   
+                @if( $permisos[0]->btn_new ==1 )
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="new_arb();">
+                        <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Crear Arbítrio
+                    </button>
+                @else
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="sin_permiso();">
+                        <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Crear Arbítrio
+                    </button>
+                @endif
             </ul>
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:0px; padding: 0px !important">

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+<input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
+<input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
+<input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -651,18 +654,37 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
+                            @if( $permisos[0]->btn_new ==1 )
                             <button id="btnsaveficha" class="btn bg-color-green txt-color-white cr-btn-big" onclick="dlgsave();" style="margin-left: 10px; width: 97%" >
                                 <span style="left:-40px !important">
                                     <i class="glyphicon glyphicon-plus-sign"></i>
                                 </span>
                                 <label>Guardar Ficha de Verificación</label>
                             </button>
+                            @else
+                            <button id="btnsaveficha" class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso();" style="margin-left: 10px; width: 97%" >
+                                <span style="left:-40px !important">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                </span>
+                                <label>Guardar Ficha de Verificación</label>
+                            </button>
+                            @endif
+                            @if( $permisos[0]->btn_edit ==1 )
                             <button id="btnmodficha" class="btn bg-color-blue txt-color-white cr-btn-big" onclick="dlgupdate();" style="margin-left: 10px; width: 97%" >
                                 <span style="left:-40px !important">
                                     <i class="glyphicon glyphicon-plus-sign"></i>
                                 </span>
                                 <label>Modificar Ficha de Verificación</label>
                             </button>
+                            @else
+                                <button id="btnmodficha" class="btn bg-color-blue txt-color-white cr-btn-big" onclick="sin_permiso()" style="margin-left: 10px; width: 97%" >
+                                    <span style="left:-40px !important">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                    </span>
+                                    <label>Modificar Ficha de Verificación</label>
+                                </button>
+                            @endif
+                            
                         </div> 
                     </div>
                     
@@ -688,18 +710,37 @@
                                             <div id="pager_table_pisos"></div>
                                         </div>
                                         <div class="col-xs-2">
+                                            @if( $permisos[0]->btn_new ==1 )
                                             <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewpiso()" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-plus-sign"></i>
                                                 </span>
                                                 <label>Nuevo Piso</label>
                                             </button>
+                                            @else
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nuevo Piso</label>
+                                            </button>
+                                            @endif
+                                            @if( $permisos[0]->btn_edit ==1 )
                                             <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodpiso()" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-edit"></i>
                                                 </span>
                                                 <label>Editar Piso</label>
                                             </button>
+                                            @else
+                                            <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Piso</label>
+                                            </button>
+                                            @endif
+                                            
                                             
                                         </div>
                                 </div>
@@ -709,18 +750,36 @@
                                         <div id="pager_table_instal"></div>
                                     </div>
                                     <div class="col-xs-2">
+                                        @if( $permisos[0]->btn_new ==1 )
                                             <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="clicknewinst()" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-plus-sign"></i>
                                                 </span>
                                                 <label>Nueva Inst</label>
                                             </button>
+                                        @else
+                                            <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                                </span>
+                                                <label>Nueva Inst</label>
+                                            </button>
+                                        @endif
+                                        @if( $permisos[0]->btn_edit ==1 )
                                             <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="clickmodinst()" >
                                                 <span>
                                                     <i class="glyphicon glyphicon-edit"></i>
                                                 </span>
                                                 <label>Editar Inst</label>
                                             </button>
+                                        @else
+                                        <button class="btn bg-color-blue txt-color-white cr-btn-big" onclick="sin_permiso()" >
+                                                <span>
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </span>
+                                                <label>Editar Inst</label>
+                                            </button>
+                                        @endif
                                             
                                         </div>
                                 </div>

@@ -9,14 +9,21 @@ use App\Models\fiscalizacion\Carta_Requerimiento;
 use App\Traits\DatesTranslator;
 use App\Models\fiscalizacion\Puente_Carta_Predios;
 use App\Models\fiscalizacion\Fisca_Enviados;
+use Illuminate\Support\Facades\Auth;
 class Carta_RequerimientoController extends Controller
 {
     use DatesTranslator;
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_fisca_carta' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $fiscalizadores = DB::select('select * from fiscalizacion.vw_fiscalizadores where flg_act=1');
-        return view('fiscalizacion/vw_carta_requerimiento',compact('anio_tra','fiscalizadores'));
+        return view('fiscalizacion/vw_carta_requerimiento',compact('anio_tra','fiscalizadores','menu','permisos'));
     }
 
     public function create(Request $request)

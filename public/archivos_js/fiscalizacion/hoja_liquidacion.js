@@ -203,5 +203,10 @@ function fn_save_hoja()
 }
 function verhoja(id)
 {
+    if($("#per_imp").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
     window.open('hoja_liq_rep/'+id);
 }

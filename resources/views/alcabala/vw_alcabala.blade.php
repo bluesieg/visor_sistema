@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -132,12 +133,21 @@
                     <div id="pager_table_alcab"></div>
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
-                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new();" >
-                    <span  >
-                        <i class="glyphicon glyphicon-plus"></i>
-                    </span>
-                </button>
+                @if( $permisos[0]->btn_new ==1 )
+                    <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new();" >
+                        <span  >
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </span>
+                    </button>
                     <label><b>Nuevo</b></label>
+                @else
+                    <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="sin_permiso();" >
+                        <span  >
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </span>
+                    </button>
+                    <label><b>Nuevo</b></label>
+                @endif
             </div>
             </div>
         </div>

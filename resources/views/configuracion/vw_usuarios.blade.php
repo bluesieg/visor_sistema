@@ -114,7 +114,7 @@
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id', 'Descripcion','Nuevo','Editar','Eliminar','Imprimir','Anular'],
+            colNames: ['id', 'Descripcion','Grabar','Editar','Eliminar','Imprimir','Anular'],
             rowNum: 50, sortname: 'id_mod', sortorder: 'asc', viewrecords: true, caption: 'Lista de Sub Módulos', align: "center",
             colModel: [
                 {name: 'id_mod', index: 'id_mod',align: 'center', width: 50},

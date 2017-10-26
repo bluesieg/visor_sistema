@@ -12,11 +12,18 @@ use App\Models\alcabala\Tipo_Contrato;
 use App\Models\alcabala\Doc_Transf;
 use App\Models\alcabala\Transferencias_Inafectas;
 use App\Traits\DatesTranslator;
+use Illuminate\Support\Facades\Auth;
 class AlcabalaController extends Controller
 {
     use DatesTranslator;
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_alcabala' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $contrato = DB::select('select * from alcabala.tipo_contrato order by id_tip_cto');
         $transferencia = DB::select('select * from alcabala.doc_transf order by id_doc_transf');
@@ -24,7 +31,7 @@ class AlcabalaController extends Controller
         $UIT =DB::table('adm_tri.uit')->where('anio',date("Y"))->get()->first();
         $deduc =DB::table('alcabala.deducciones')->where('flg_act',1)->get()->first();
         $tasa =DB::table('alcabala.tasas')->where('flg_act',1    )->get()->first();
-        return view('alcabala/vw_alcabala', compact('anio_tra','contrato','transferencia','UIT','deduc','tasa','inafecto'));
+        return view('alcabala/vw_alcabala', compact('anio_tra','contrato','transferencia','UIT','deduc','tasa','inafecto','menu','permisos'));
     }
 
     public function create(Request $request)
@@ -92,11 +99,23 @@ class AlcabalaController extends Controller
     }
     public function mantenimiento()
     {
-        return view('alcabala/vw_mantenimiento');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_alcala_conf' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('alcabala/vw_mantenimiento',compact('menu','permisos'));
     }
     public function manten_docs()
     {
-        return view('alcabala/vw_manten_doc');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_alca_manten_doc' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('alcabala/vw_manten_doc',compact('menu','permisos'));
     }
     
     public function get_alcabala($an,$id,$tip,$num,$ini,$fin,Request $request)

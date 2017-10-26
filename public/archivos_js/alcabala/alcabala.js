@@ -367,5 +367,10 @@ function fn_save_alcab()
 }
 function veralcab(r)
 {
+    if($("#per_imp").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
     window.open('alcab_rep/'+r);
 }

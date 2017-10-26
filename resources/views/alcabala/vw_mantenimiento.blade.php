@@ -18,12 +18,22 @@
                     <div id="pager_table_deduccion"></div>
             </article>
             <div class="col-xs-2">
+                @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="fn_new(1);" >
                     <span style="left: -28px;" >
                         <i class="glyphicon glyphicon-plus-sign"></i>
                     </span>
                     <label>Nuevo</label>
                 </button>
+                @else
+                <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso();" >
+                    <span style="left: -28px;" >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                    </span>
+                    <label>Nuevo</label>
+                </button>
+                @endif
+                
             </div>
             
             
@@ -42,12 +52,21 @@
                     <div id="pager_table_tasas"></div>
             </article>
             <div class="col-xs-2">
+                 @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="fn_new(2)" >
                     <span style="left: -28px;" >
                         <i class="glyphicon glyphicon-plus-sign"></i>
                     </span>
                     <label>Nuevo</label>
                 </button>
+                 @else
+                 <button class="btn bg-color-green txt-color-white cr-btn-big" onclick="sin_permiso();" >
+                    <span style="left: -28px;" >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                    </span>
+                    <label>Nuevo</label>
+                </button>
+                 @endif
             </div>
         </div>
     </div>

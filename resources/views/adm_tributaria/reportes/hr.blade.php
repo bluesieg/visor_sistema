@@ -166,10 +166,11 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
         <thead>
             <tr >
-              <th style="width: 10%;">N° Anexo</th>
-              <th style="width: 10%">Tip Pred</th>
-              <th style="width: 60%">DIRECCION DEL PREDIO</th>
-              <th style="width: 20%">VALOR AFECTO</th>
+              <th style="width: 8%;">N° Anexo</th>
+              <th style="width: 8%">Tip Pred</th>
+              <th style="width: 57%">DIRECCION DEL PREDIO</th>
+              <th style="width: 12%">% Titularidad</th>
+              <th style="width: 15%">VALOR AFECTO</th>
           </tr>
         </thead>
         <tbody>
@@ -178,7 +179,8 @@
               <td>{{ $loop->iteration }}</td>
               <td>{{$pre->tp}}</td>
               <td>{{$pre->cod_cat." - ".$pre->nom_via}}</td>
-              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon,3,".",",")}}</td>
+              <td style="text-align: center">{{$pre->nro_condominios}}</td>
+              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon_afecto,3,".",",")}}</td>
             </tr>
             @endforeach
         </tbody>
@@ -191,7 +193,7 @@
                   <td style="width: 50%; border:0px;" rowspan="3"></td>
                   <td class="nro">18</td>
                   <th style="width: 22.5%">BASE IMPONIBLE</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon'),3,".",",") }}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon_afecto'),3,".",",") }}</td>
               </tr>
               <tr>
                   <td class="nro">19</td>

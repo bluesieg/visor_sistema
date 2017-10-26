@@ -7,16 +7,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\orden_pago_master;
 use App\Traits\DatesTranslator;
+use Illuminate\Support\Facades\Auth;
 
 class OrdenPagoController extends Controller
 {
     use DatesTranslator;
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_reca_op' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores = DB::select('select * from catastro.sectores where id_sec>0 order by sector');
         $manzanas = DB::select('select * from catastro.manzanas where id_mzna>0 and  id_sect=(select id_sec from catastro.sectores where id_sec>0 order by sector limit 1) ');
-        return view('recaudacion/vw_orden_pago',compact('anio_tra','sectores','manzanas'));
+        return view('recaudacion/vw_orden_pago',compact('anio_tra','sectores','manzanas','menu','permisos'));
     }
     public function create(Request $request)
     {
@@ -52,57 +59,28 @@ class OrdenPagoController extends Controller
         return $fisca->id_gen_fis;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

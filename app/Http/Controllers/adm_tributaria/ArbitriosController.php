@@ -8,16 +8,24 @@ use Illuminate\Support\Facades\DB;
 use App\models\Arbitrios;
 use App\Models\Cta_Arbitrios;
 use App\Models\Pgo_Arbitrios;
+use Illuminate\Support\Facades\Auth;
 class ArbitriosController extends Controller
 {
+    
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_arbmun' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $barrido = $this->barrido_by_an(date("Y"));
         $seren = $this->serenazgo_by_an(date("Y"));
         $parjar = $this->paques_by_an(date("Y"));
         $upa = DB::select('select * from adm_tri.uso_predio_arbitrios order by id_uso_arb ');
-        return view('adm_tributaria/vw_arbitrios', compact('anio_tra','barrido','seren','parjar','upa'));
+        return view('adm_tributaria/vw_arbitrios', compact('anio_tra','barrido','seren','parjar','upa','permisos','menu'));
     }
     
     public function barrido_by_an($an)

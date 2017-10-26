@@ -121,7 +121,7 @@
           </tr>
           <tr>
               <td colspan="6">
-                  Referencia:
+                  REFERENCIA:{{$sql->referencia}}
               </td>
           </tr>
           

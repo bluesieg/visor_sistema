@@ -113,6 +113,11 @@ function traer_carta($id)
 
 function vercarta(id)
 {
+    if($("#per_imp").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
     window.open('car_req_rep/'+id);
 }
 function validacond()
@@ -557,6 +562,11 @@ function pisoSave()
 }
 function pisoUpdate()
 {
+    if($("#per_edit").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
         if($("#rpiso_inp_nro_fis").val()==""){mostraralertasconfoco("Ingresar Nro Piso","#rpiso_inp_nro"); return false}
         if($("#rpiso_inp_fech_fis").val()==""){mostraralertasconfoco("Ingresar Año de Construccion del Piso","#rpiso_inp_fech"); return false}
         if($("#rpiso_inp_fech_fis").val()<1800){mostraralertasconfoco("Ingresar Año de Construccion Valido de 4 cifras","#rpiso_inp_fech"); return false}
@@ -874,7 +884,12 @@ function instSave()
     });
 }
 function instUpdate()
-{
+{ 
+    if($("#per_edit").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
     if($("#hidden_rinst_inp_des_fis").val()==0){mostraralertasconfoco("seleccionar Instalación","#rinst_inp_des_fis"); return false}
     if($("#rinst_inp_anio_fis").val()==""){mostraralertasconfoco("Ingresar Año de Construcción","#rinst_inp_anio_fis"); return false}
     if($("#rinst_inp_largo_fis").val()==""){mostraralertasconfoco("Ingresar largo","#rinst_inp_largo_fis"); return false}

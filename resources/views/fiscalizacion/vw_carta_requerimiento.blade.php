@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+<input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
+<input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -122,12 +124,21 @@
                     <div id="pager_table_cartas"></div>
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
+            @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new_carta(0);" >
                     <span  >
                         <i class="glyphicon glyphicon-plus"></i>
                     </span>
                 </button>
                     <label><b>Nuevo</b></label>
+            @else
+                <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="sin_permiso();" >
+                    <span  >
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </span>
+                </button>
+                    <label><b>Nuevo</b></label>
+            @endif
             </div>
             </div>
     </div>
@@ -424,12 +435,24 @@
                 <button id="btn_save" type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="fn_confirmar_carta()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Guardar y Generar
                 </button>
+                @if( $permisos[0]->btn_edit ==1 )
                 <button id="btn_anular" type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="fn_anular_carta()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Anular Carta
                 </button>
+                @else
+                <button id="btn_anular" type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="sin_permiso()">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Anular Carta
+                </button>
+                @endif
+                @if( $permisos[0]->btn_edit ==1 )
                 <button id="btn_mod" type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="fn_confirmar_carta()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar y Grabar
                 </button>
+                @else
+                    <button id="btn_mod" type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="sin_permiso()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar y Grabar
+                    </button>
+                @endif
             </ul>
         </div>
     </div>

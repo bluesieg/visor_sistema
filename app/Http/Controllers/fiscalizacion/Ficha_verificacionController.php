@@ -7,12 +7,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\fiscalizacion\Ficha_Verificacion;
 use App\Traits\DatesTranslator;
+use Illuminate\Support\Facades\Auth;
 
 class Ficha_verificacionController extends Controller
 {
     use DatesTranslator;
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_ficha_ver' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $condicion = DB::select('select * from adm_tri.cond_prop order by id_cond ');
         $ecc = DB::select('select * from adm_tri.ecc order by id_ecc ');
@@ -21,7 +28,7 @@ class Ficha_verificacionController extends Controller
         $pisclasi = DB::select('select * from adm_tri.clas_predio where id_cla_pre>0 order by id_cla_pre');
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
-        return view('fiscalizacion/vw_ficha_verificacion',compact('anio_tra','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs'));
+        return view('fiscalizacion/vw_ficha_verificacion',compact('anio_tra','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','menu','permisos'));
     }
 
     public function create(Request $request)

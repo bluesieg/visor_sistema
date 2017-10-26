@@ -443,5 +443,10 @@ function fn_mod_carta()
 }
 function vercarta(id)
 {
+    if($("#per_imp").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
     window.open('car_req_rep/'+id);
 }

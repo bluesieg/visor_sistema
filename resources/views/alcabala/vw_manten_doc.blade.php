@@ -14,12 +14,21 @@
                 </div>
             </section>
             <div class="col-xs-12 text-align-right" style="padding: 0px;">
+                @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white " onclick="fn_new(1);" >
                     <span >
                         <i class="glyphicon glyphicon-plus-sign"></i>
                     </span>
                     <label>Nuevo</label>
                 </button>
+                @else
+                <button class="btn bg-color-green txt-color-white " onclick="sin_permiso();" >
+                    <span >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                    </span>
+                    <label>Nuevo</label>
+                </button>
+                @endif
             </div>
             <article class="col-xs-12" style=" padding: 0px !important; margin-top: 5px;">
                     <table id="table_nat_cotra"></table>
@@ -39,12 +48,21 @@
                 </div>
             </section>
             <div class="col-xs-12 text-align-right" style="padding: 0px;">
+                @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white " onclick="fn_new(2);" >
                     <span >
                         <i class="glyphicon glyphicon-plus-sign"></i>
                     </span>
                     <label>Nuevo</label>
                 </button>
+                @else
+                <button class="btn bg-color-green txt-color-white " onclick="sin_permiso();" >
+                    <span >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                    </span>
+                    <label>Nuevo</label>
+                </button>
+                @endif
             </div>
             <article class="col-xs-12" style=" padding: 0px !important; margin-top: 5px;">
                     <table id="table_doc_trans"></table>
@@ -61,12 +79,21 @@
                 </div>
             </section>
             <div class="col-xs-12 text-align-right" style="padding: 0px;">
+                @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white " onclick="fn_new(3);" >
                     <span >
                         <i class="glyphicon glyphicon-plus-sign"></i>
                     </span>
                     <label>Nuevo</label>
                 </button>
+                @else
+                <button class="btn bg-color-green txt-color-white " onclick="sin_permiso();" >
+                    <span >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                    </span>
+                    <label>Nuevo</label>
+                </button>
+                @endif
             </div>
             <article class="col-xs-12" style=" padding: 0px !important; margin-top: 5px;">
                     <table id="table_trans_ina"></table>

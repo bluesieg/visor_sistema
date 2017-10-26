@@ -18,8 +18,14 @@ class Res_DeterminacionController extends Controller
     use DatesTranslator;
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_reso_deter' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('fiscalizacion/vw_res_deter',compact('anio_tra'));
+        return view('fiscalizacion/vw_res_deter',compact('anio_tra','menu','permisos'));
     }
 
     public function create(Request $request)

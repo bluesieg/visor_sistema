@@ -101,8 +101,12 @@ function fn_sel_hoja()
 
 function valida_rd(id)
 {
+   if($("#per_new").val()==0)
+   {
+        sin_permiso();
+        return false;
+   }
    
-
     $.SmartMessageBox({
             title : "Confirmación Final!",
             content : "Está por generar la Resolución de Determinación para este Contribuyente, Seguro que deseea Grabar la información?, esta no podra ser modificada...",
@@ -147,5 +151,10 @@ function fn_save_rd(id)
 }
 function verrd(id)
 {
+    if($("#per_imp").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
     window.open('rd_rep/'+id);
 }
