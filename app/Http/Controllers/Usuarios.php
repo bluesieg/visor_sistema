@@ -46,9 +46,10 @@ class Usuarios extends Controller {
         return $data->id_pers;
     }
 
-    public function index() {
+    public function index(Request $request) {
         
-        $totalg = DB::select('select count(id) as total from vw_usuarios');
+        $user = $request['user'];
+        $totalg = DB::select("select count(id) as total from vw_usuarios where ape_nom like '%".strtoupper($user)."%'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -70,7 +71,7 @@ class Usuarios extends Controller {
             $start = 0;
         }
 
-        $sql = DB::table('public.vw_usuarios')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('public.vw_usuarios')->where('ape_nom','like','%'.strtoupper($user).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;

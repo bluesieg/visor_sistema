@@ -28,8 +28,7 @@ function selec_dist(val){
     if(val=='040104'){
         autocompletar_av_jr_call('txt_av_jr_calle_psje');
     }else{
-//        $("#txt_av_jr_calle_psje").autocomplete("instance").term = null;
-        $('#txt_av_jr_calle_psje').autocomplete( "search", "" );
+        $("#txt_av_jr_calle_psje").autocomplete({source: []});
         $("#hiddentxt_av_jr_calle_psje").val('0');
     }
 }

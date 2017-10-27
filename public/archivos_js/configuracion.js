@@ -43,6 +43,10 @@ $(document).ready(function () {
         }
     }
 });
+function buscar_user(){
+    user = $("#vw_user_txt_buscar").val();
+    fn_actualizar_grilla('table_Usuarios','list_usuarios?user='+user);
+}
 
 function open_dialog_new_edit_Usuario() {
     $("#dialog_new_edit_Usuario").dialog({

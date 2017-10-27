@@ -26,11 +26,11 @@
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-5">
                                 <div class="input-group">
                                     <div class="icon-addon addon-md">
-                                        <input type="text" class="form-control" placeholder="Buscar">
+                                        <input id="vw_user_txt_buscar" type="text" class="form-control" placeholder="Buscar">
                                         <label title="" rel="tooltip" class="glyphicon glyphicon-search" for="Buscar" data-original-title="Buscar"></label>
                                     </div>
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary">Buscar</button>
+                                        <button onclick="buscar_user();" type="button" class="btn btn-primary">Buscar</button>
                                     </span>
                                 </div>
                             </div>
