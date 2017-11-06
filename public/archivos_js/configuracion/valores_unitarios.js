@@ -1,6 +1,7 @@
 
 
 function open_dialog_new_edit_Val_Unitarios(tipo, id_val) {
+    id_val=$('#table_Val_Unitarios').jqGrid('getGridParam', 'selrow');
     $("#dialog_new_edit_Val_Unitarios").dialog({
         autoOpen: false, modal: true, height: 220, width: 300, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: " + tipo + " VALOR UNITARIO :.</h4></div>",
@@ -13,13 +14,9 @@ function open_dialog_new_edit_Val_Unitarios(tipo, id_val) {
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
-                click: function () {
-                    $(this).dialog("close");
-                }
+                click: function () { $(this).dialog("close"); }
             }],
-        close: function (event, ui) {
-
-        }
+        close: function (event, ui) {}
     }).dialog('open');
 
     if (tipo == 'EDITAR') {

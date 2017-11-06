@@ -32,6 +32,71 @@ Route::group(['middleware' => 'auth'], function() {//YOHAN MODULOS
 //Route::get('/vw_general', 'General@index')->name('vw_general');
 //
 Route::get('fracc', 'General@fraccionamiento');
+Route::get('dni',function(){
+    $rq		= new \stdClass();
+$rq->data	= new \stdClass();
+$rq->auth	= new \stdClass();
+
+
+$rq->auth->dni	= '80673320';		// DNI del usuario
+$rq->auth->pas	= 'Pr0gr4m4';	// Contrasenia
+$rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
+
+
+$rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
+$rq->data->dni	= '40524155';		// Dato que debe estar acorde al contrato del ws
+$rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+
+
+$url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+$options = array(
+    	'http' => array(
+        'header'  => "Content-type: application/json\r\n",
+        'method'  => 'POST',
+        'content' => json_encode($rq)
+    )
+);
+
+$context  = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
+
+if ($result === FALSE) 
+{  
+  echo 'Error de conexion';
+}
+
+$rpta = json_decode($result);
+
+
+if($rpta->resp->code == '0000')
+{
+    $Lista=new \stdClass();
+    $Lista->ape_pat=$rpta->data->apPrimer;
+    $Lista->ape_mat=$rpta->data->apSegundo;
+    $Lista->nombres=$rpta->data->prenombres;
+    $Lista->est_civil=$rpta->data->estadoCivil;
+    $Lista->dir=$rpta->data->direccion;
+    $Lista->ubigeo=$rpta->data->ubigeo;
+//            $Lista->foto='http://ws.ehg.pe'.$rpta->data->foto;
+    $Lista->foto='https://ehg.pe/delfos/'.$rpta->data->foto;
+    return response()->json($Lista);
+//    echo $rpta->data->apPrimer."\n";
+//    echo $rpta->data->apSegundo."\n";   
+//    echo $rpta->data->prenombres."\n";
+//    echo $rpta->data->estadoCivil."\n";
+//    echo $rpta->data->direccion."\n";
+//    echo $rpta->data->ubigeo."\n" ;
+//    echo 'https://ws.ehg.pe'.$rpta->data->foto."\n"; 
+//    echo $rpta->data->cache."\n";
+
+ var_dump($rpta);
+}
+else
+{
+ echo $rpta->resp->code.'-'.$rpta->resp->text;
+}
+
+});
 
 Route::group(['middleware' => 'auth'], function() {
     /******************** ********    CONFIGURACION CATASTRAL   ****************************/
@@ -135,6 +200,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_esp_detalle', 'Esp_DetalleController@get_esp_detalle');
         Route::resource('procedimientos', 'ProcedimientoController');
         Route::get('get_procedimientos','ProcedimientoController@get_procedimientos');
+        Route::get('autocompletar_oficinas','ProcedimientoController@autocompletar_oficinas');
+        Route::get('auto_esp_detalle','ProcedimientoController@autocompletar_esp_detalle');
+        Route::resource('tributos', 'TributosController');
+        Route::get('get_tributos','TributosController@get_tributos');
     });
     
     Route::get('llenar_form_contribuyentes', 'adm_tributaria\Contribuyentes@llenar_form_contribuyentes'); //llena form contribuyentes
@@ -157,7 +226,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
     /*     * ****************************************   VALORES UNITARIOS    ************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {
-        Route::get('val_unit', 'Valores_Unitarios@show_vw_val_unit')->name('valores_unitarios'); // VW_VALORES_UNITARIOS
+        Route::get('valores_unitarios', 'Valores_Unitarios@show_vw_val_unit'); // VW_VALORES_UNITARIOS
         Route::get('grid_val_unitarios', 'Valores_Unitarios@grid_val_unitarios'); // tabla grilla VALORES UNITARIOS
         Route::get('create_magic_grid_val_unit', 'Valores_Unitarios@magic_grid_valores_unit'); // EXECUTE FUNCTION POSTGRES... VALORES UNITARIOS
         Route::post('update_valor_unitario', 'Valores_Unitarios@update_valor_unitario');

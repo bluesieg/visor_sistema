@@ -154,6 +154,11 @@
                 get_datos_dni(); 
             }
         });
+        $("#vw_user_txt_buscar").keypress(function (e) {
+            if (e.which == 13) {
+                buscar_user();
+            }
+        });
     });
 </script>
 @stop

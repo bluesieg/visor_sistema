@@ -27,6 +27,8 @@ class EnvRD_CoactivaController extends Controller
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_rd);
+            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103],['ano_cta',date('Y')]])
+                    ->update([['id_coa_mtr'=>$data->id_coa_mtr],['trim1_estado'=>2],['trim2_estado'=>2],['trim3_estado'=>2],['trim4_estado'=>2]]);
             return $data->id_coa_mtr;
         }
     }

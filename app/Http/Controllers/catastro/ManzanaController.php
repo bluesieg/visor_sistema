@@ -6,17 +6,24 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Predios;
+use Illuminate\Support\Facades\Auth;
 
 class ManzanaController extends Controller
 {
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='conf_cat_mzna' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $sectores = DB::select('select * from catastro.sectores order by sector asc');
         $sectores_vacios = DB::select('select * from catastro.sectores WHERE id_sec not in(select distinct id_sect from catastro.manzanas);');
         $id_sector = $sectores[0]->id_sec;
         $manzanas = DB::select('select * from catastro.vw_manzanas where id_sec = ' . $id_sector . ' order by sector asc');
 
-        return view('catastro/vw_catastro_manzanas', compact('sectores','manzanas','sectores_vacios'));
+        return view('catastro/vw_catastro_manzanas', compact('sectores','manzanas','sectores_vacios','menu','permisos'));
     }
 
     public function getManzanaPorSector(Request $request){

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\presupuesto\Procedimientos;
 
 class ProcedimientoController extends Controller
 {
@@ -20,11 +21,63 @@ class ProcedimientoController extends Controller
         return view('presupuesto.vw_procedimientos',compact('anio','menu','permisos'));
     }
 
-    public function create(){}
+    public function create(Request $request){
+        $cod = DB::select('select f_cod_proced as total from presupuesto.f_cod_proced()');
+        
+        $data = new Procedimientos();
+        $data->cod_proced = ($cod[0]->total+1);
+        $data->descrip_procedim = $request['descrip_procedim'];
+        $data->id_ofic = $request['id_ofic'];
+        $data->anio = date('Y');
+        $data->id_espec_det = $request['id_espec_det'];        
+        $data->save();
+        return $data->id_proced;
+    }
 
-    public function edit($id){}
+    public function edit(Request $request,$id){
+        $data = new Procedimientos();        
+        $val = $data::where("id_proced", "=", $id)->first();
+        if (count($val) >= 1) {
+            $val->descrip_procedim=$request['descrip_procedim'];            
+            $val->id_ofic=$request['id_ofic'];            
+            $val->anio = date('Y');
+            $val->id_espec_det = $request['id_espec_det'];
+            $val->save();  
+            return $val->id_proced;
+        }
+    }
 
-    public function destroy($id){}
+    public function destroy(Request $request,$id){
+        $data=new Procedimientos();
+        $val=  $data::where("id_proced","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+    }
+    
+    function autocompletar_oficinas() {
+        $Consulta = DB::table('adm_tri.mg_oficinas')->get();
+        $todo = array();
+        foreach ($Consulta as $Datos) {
+            $Lista = new \stdClass();
+            $Lista->value = $Datos->id_ofi;
+            $Lista->label = trim($Datos->nombre);
+            array_push($todo, $Lista);
+        }
+        return response()->json($todo);
+    }
+    function autocompletar_esp_detalle(){
+        $Consulta = DB::table('presupuesto.vw_especif_detalle')->get();
+        $todo = array();
+        foreach ($Consulta as $Datos) {
+            $Lista = new \stdClass();
+            $Lista->value = $Datos->id_espec_det;
+            $Lista->label = trim($Datos->desc_espec_detalle);
+            array_push($todo, $Lista);
+        }
+        return response()->json($todo);
+    }
     
     function get_procedimientos(Request $request){
         $anio =  $request['anio'];
@@ -61,7 +114,11 @@ class ProcedimientoController extends Controller
             $Lista->rows[$Index]['id'] = $Datos->id_proced;
             $Lista->rows[$Index]['cell'] = array(
                 str_pad(trim($Datos->cod_proced), 3, "0", STR_PAD_LEFT),
-                trim($Datos->descrip_procedim)               
+                trim($Datos->descrip_procedim),
+                trim($Datos->id_espec_det),
+                trim($Datos->desc_espec_detalle),
+                trim($Datos->id_ofic),
+                trim($Datos->nombre)
             );
         }        
         return response()->json($Lista);

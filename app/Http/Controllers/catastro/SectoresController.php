@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Predios;
+use Illuminate\Support\Facades\Auth;
 
 class SectoresController extends Controller
 {
     public function index()
     {
-        return view('catastro/vw_catastro_sectores');
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='conf_cat_sect' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('catastro/vw_catastro_sectores',compact('menu','permisos'));
     }
 
     public function show($id)

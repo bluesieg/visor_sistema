@@ -4,30 +4,30 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
-                <h1 class="txt-color-green"><b>Procedimientos...</b></h1>
+                <h1 class="txt-color-green"><b>Tributos...</b></h1>
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-6 text-left">
                                 <label>Filtro Año:</label>
-                                <select id="vw_procedim_anio"  class="input-sm">
+                                <select id="vw_trib_anio"  class="input-sm">
                                     @foreach ($anio as $anio)
                                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                     @endforeach
                                 </select><i></i>
                             </div>
                             <button 
-                                @if($permisos[0]->btn_new==1) onclick="dlg_procedimiento();"  @else onclick="sin_permiso();" @endif
+                                @if($permisos[0]->btn_new==1) onclick="dlg_tributos();"  @else onclick="sin_permiso();" @endif
                                  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                             </button>
                             <button 
-                                @if($permisos[0]->btn_edit==1) onclick="up_dlg_procedimiento();"  @else onclick="sin_permiso();" @endif
+                                @if($permisos[0]->btn_edit==1) onclick="up_dlg_tributos();"  @else onclick="sin_permiso();" @endif
                                  type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>
                             <button 
-                                @if($permisos[0]->btn_del==1) onclick="del_procedimiento();"  @else onclick="sin_permiso();" @endif
+                                @if($permisos[0]->btn_del==1) onclick="del_tributo();"  @else onclick="sin_permiso();" @endif
                                  type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button>
@@ -42,6 +42,10 @@
                             <section id="content_2" class="col-lg-12">
                                 <table id="table_Procedimiento"></table>
                                 <div id="p_table_Procedimiento"></div>
+                            </section>
+                            <section id="content_2" class="col-lg-12" style="margin-top: 5px">
+                                <table id="table_Tributos"></table>
+                                <div id="p_table_Tributos"></div>
                             </section>                            
                         </div>                                                
                     </div>
@@ -55,11 +59,12 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $("#menu_presupuesto").show();
-    $("#li_pres_proced").addClass('cr-active');
+    $("#li_pres_trib").addClass('cr-active');
+    MensajeDialogLoadAjax('content','Cargando');
     jQuery("#table_Procedimiento").jqGrid({
-        url: 'get_procedimientos?anio='+$("#vw_procedim_anio").val(),
+        url: 'get_procedimientos?anio='+$("#vw_trib_anio").val(),
         datatype: 'json', mtype: 'GET',
-        height: 'auto', autowidth: true,
+        height: 125, autowidth: true,
         toolbarfilter: true,
         colNames: ['Codigo', 'Descripción - Procedimiento','id_esp_det','desc','id_ofi','nombre'],
         rowNum: 15, sortname: 'id_proced', sortorder: 'asc', viewrecords: true, caption: 'Procedimientos', align: "center",
@@ -80,21 +85,50 @@ $(document).ready(function () {
                 $("#table_Procedimiento").setSelection(firstid);
             }
         },
-        ondblClickRow: function (Id) {
-            perms = {!! json_encode($permisos[0]->btn_edit) !!};
-            if(perms==1){
-                up_dlg_procedimiento();
-            }else sin_permiso();
-        }
+        onSelectRow: function (Id) {fn_actualizar_grilla('table_Tributos','get_tributos?anio='+$("#vw_trib_anio").val()+'&id_proced='+Id);}
     });
+    
+    setTimeout(function(){ 
+        id_proced = $('#table_Procedimiento').jqGrid ('getGridParam', 'selrow');
+        jQuery("#table_Tributos").jqGrid({
+            url: 'get_tributos?anio='+$("#vw_trib_anio").val()+'&id_proced='+id_proced,
+            datatype: 'json', mtype: 'GET',
+            height: 150, autowidth: true,
+            toolbarfilter: true,
+            colNames: ['Codigo', 'Descripción - Tributo','Soles S/.'],
+            rowNum: 15, sortname: 'id_tributo', sortorder: 'asc', viewrecords: true, caption: 'Tributos', align: "center",
+            colModel: [            
+                {name: 'cod_tributo', index: 'cod_tributo', align: 'center', width: 50},
+                {name: 'descrip_tributo', index: 'descrip_tributo', align: 'left', width: 300},
+                {name: 'soles', index: 'soles', align: 'right', width: 40}
+            ],
+            pager: '#p_table_Tributos',
+            rowList: [15, 20],
+            gridComplete: function () {
+                var idarray = jQuery('#table_Tributos').jqGrid('getDataIDs');
+                if (idarray.length > 0) {
+                    var firstid = jQuery('#table_Tributos').jqGrid('getDataIDs')[0];
+                    $("#table_Tributos").setSelection(firstid);
+                }
+            },
+            ondblClickRow: function (Id) {            
+                perms = {!! json_encode($permisos[0]->btn_edit) !!};
+                if(perms==1){
+                    up_dlg_tributos();
+                }else sin_permiso();
+            }
+        });
+        MensajeDialogLoadAjaxFinish('content');
+    }, 500);
     $(window).on('resize.jqGrid', function () {
         $("#table_Procedimiento").jqGrid('setGridWidth', $("#content_2").width());
+        $("#table_Tributos").jqGrid('setGridWidth', $("#content_2").width());
     });
 });
 </script>
 @stop
-<script src="{{ asset('archivos_js/presupuesto/procedimientos.js') }}"></script>
-<div id="dlg_proced" style="display: none;">
+<script src="{{ asset('archivos_js/presupuesto/tributos.js') }}"></script>
+<div id="dlg_tributo" style="display: none;">
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">                
@@ -102,30 +136,15 @@ $(document).ready(function () {
                     <div class="panel-body cr-body">
                         <fieldset>
                             <section>
-                                <label class="label">Específica Detalle:</label>
-                                <label class="input">
-                                    <input type="hidden" id="hiddenproced_esp_det">
-                                    <input id="proced_esp_det" type="text" placeholder="Específica Detalle" class="input-sm text-uppercase">
-                                </label>                        
-                            </section>
-                            <section>
-                                <label class="label">Oficina:</label>
-                                <label class="input">
-                                    <input type="hidden" id="hiddenproced_ofi">
-                                    <input id="proced_ofi" type="text" placeholder="Escriba el nombre de de la oficina" class="input-sm text-uppercase">
-                                </label>                        
-                            </section>
-<!--                            <section>
-                                <label class="label">Código:</label>
-                                <label class="input">
-                                    <input id="proced_cod" onkeypress="return soloDNI(event);" type="text" placeholder="0" class="input-sm" style="width:80px;">
-                                </label>                        
-                            </section>-->
-                            <section>
                                 <label class="label">Descripción:</label>
-                                <label class="input textarea">
-                                    <!--<input id="proced_desc" type="textarea" placeholder="Descripción" class="input-sm text-uppercase">-->
-                                    <textarea rows="2" id="proced_desc" laceholder="Descripción" class="input-sm text-uppercase"></textarea>
+                                <label class="input textarea">                                    
+                                    <textarea rows="2" id="trib_des" placeholder="Descripción" class="input-sm text-uppercase"></textarea>
+                                </label>                      
+                            </section>
+                            <section class="col-2">
+                                <label class="label">Monto S/.:</label>
+                                <label class="input textarea">                                    
+                                    <input type="text" id="trib_monto" class="input-sm" placeholder="0.00" onkeypress="return soloNumeroTab(event);">
                                 </label>                      
                             </section>
                         </fieldset>

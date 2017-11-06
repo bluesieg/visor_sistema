@@ -142,7 +142,7 @@
             datatype: 'json', mtype: 'GET',
             height: '120px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV'],
+            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa'],
             rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_tribu', index: 'id_tribu', hidden: true},
@@ -152,7 +152,9 @@
                 {name: 'abo1_cta', index: 'abo1_cta', align: 'right', width: 70},
                 {name: 'abo2_cta', index: 'abo2_cta', align: 'right', width: 70},
                 {name: 'abo3_cta', index: 'abo3_cta', align: 'right', width: 70},
-                {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 70}
+                {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 70},
+                {name: 'conv', index: 'conv', hidden: true},
+                {name: 'coa', index: 'coa', hidden: true}
             ],
             pager: '#pager_table_cta_cte2',
             rowList: [5, 10],
@@ -161,9 +163,17 @@
                 var idarray = jQuery('#table_cta_cte2').jqGrid('getDataIDs');
 
                 for (var i = 0; i < idarray.length; i++) {
+                    var conv = $("#table_cta_cte2").getCell(idarray[i], 'conv');
+                    
+                    if(conv!='' && idarray[i] == 103){
+                        $("#table_cta_cte2").closest(".ui-jqgrid").block({
+                            message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Esta Cuenta esta en Fraccionamiento...</div>",
+                            theme: true,
+                            themedCSS:{ width: "40%", left: "30%", border: "3px solid #a00" }
+                        });
+                    }
                     for (var a = 1; a <= 4; a++) {
                         var val = $("#table_cta_cte2").getCell(idarray[i], 'abo' + a + '_cta');
-
                         if (val == '0.000' && idarray[i] == 103) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
                                     "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")'>", {'text-align': 'center'});

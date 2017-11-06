@@ -6,18 +6,25 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Predios;
+use Illuminate\Support\Facades\Auth;
 
 class ArancelesRusticosController extends Controller
 {
     public function index()
     {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='conf_aran_rust' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
         $anios = DB::select('SELECT anio FROM adm_tri.uit order by anio desc');
         //$anio = $anios[0]->anio;
         $grupo_tierras =  DB::select('SELECT id_gpo, gpo_descrip FROM adm_tri.gpo_tierras');
         $grupo_cat_rust =  DB::select('SELECT id_cat, categoria FROM adm_tri.gpo_categorias_rustico');
         //$vw_aran_pred_rust = DB::select('select * from catastro.vw_arancel_pred_rust where anio = '. $anio );
 
-        return view('catastro/vw_catastro_aranceles_rusticos', compact('anios','grupo_tierras','grupo_cat_rust'));
+        return view('catastro/vw_catastro_aranceles_rusticos', compact('anios','grupo_tierras','grupo_cat_rust','menu','permisos'));
     }
 
     public function getArancelRustPorAnio(Request $request){

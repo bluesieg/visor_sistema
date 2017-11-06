@@ -5,11 +5,18 @@ namespace App\Http\Controllers\configuracion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Valores_Unitarios extends Controller {
 
-    public function show_vw_val_unit() {
-        return view('configuracion/vw_valores_unitarios');
+    public function show_vw_val_unit(){
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_val_unit' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('configuracion/vw_valores_unitarios',compact('menu','permisos'));
     }
 
     function grid_val_unitarios(Request $request) {

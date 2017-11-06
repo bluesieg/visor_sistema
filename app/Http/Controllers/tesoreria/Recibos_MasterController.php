@@ -123,9 +123,8 @@ class Recibos_MasterController extends Controller
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-        $cont=0;
-        foreach ($sql as $Index => $Datos) {
-            $cont++;
+        
+        foreach ($sql as $Index => $Datos) {            
             $Lista->rows[$Index]['id'] = $Datos->id_tribu;
             $Lista->rows[$Index]['cell'] = array(
                 $Datos->id_contrib,
@@ -135,7 +134,9 @@ class Recibos_MasterController extends Controller
                 trim($Datos->abo1_cta),                
                 trim($Datos->abo2_cta),
                 trim($Datos->abo3_cta),
-                trim($Datos->abo4_cta)               
+                trim($Datos->abo4_cta),
+                $Datos->id_conv_mtr,
+                $Datos->id_coa_mtr                
             );
         }        
         return response()->json($Lista);

@@ -5,14 +5,13 @@ namespace App\Http\Controllers\presupuesto;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\presupuesto\Generica;
 use Illuminate\Support\Facades\Auth;
+use App\Models\presupuesto\Tributos;
 
-class GenericaController extends Controller
+class TributosController extends Controller
 {
-
     public function index(){
-        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_pres_gen' and id_usu=".Auth::user()->id);
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_pres_trib' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         if(count($permisos)==0)
         {
@@ -20,49 +19,42 @@ class GenericaController extends Controller
         }
         $tip_trans= DB::table('presupuesto.tip_transaccion')->get();
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('presupuesto/vw_generica',compact('tip_trans','anio','menu','permisos'));
+        return view('presupuesto/vw_tributos',compact('tip_trans','anio','menu','permisos'));
     }
 
     public function create(Request $request){
-        $data = new Generica();
-        $data->descr_gen = $request['gen_desc'];
-        $data->anio = date('Y');
-        $data->id_tip_trans = 1;
-        $data->cod_generica = $request['gen_cod'];        
+        $data = new Tributos();
+        $data->id_procedimiento = $request['id_proced'];
+        $data->descrip_tributo = $request['desc'];
+        $data->soles = $request['monto'];
         $data->save();
-        return $data->id_gener;
-
+        return $data->id_tributo;
     }
 
-    public function store(Request $request){}
-
-    public function show($id){}
-
     public function edit(Request $request,$id){
-        $data = new Generica();        
-        $val = $data::where("id_gener", "=", $id)->first();
+        $data = new Tributos();        
+        $val = $data::where("id_tributo", "=", $id)->first();
         if (count($val) >= 1) {
-            $val->descr_gen=$request['gen_desc'];            
-            $val->anio=date('Y');            
-            $val->id_tip_trans=1;
-            $val->cod_generica = $request['gen_cod'];
+            $val->descrip_tributo=$request['desc'];            
+            $val->soles=$request['monto'];
             $val->save();  
-            return $val->id_gener;
+            return $val->id_tributo;
         }
     }
 
     public function destroy(Request $request,$id){
-        $data=new Generica;
-        $val=  $data::where("id_gener","=",$request['id'] )->first();
+        $data=new Tributos();
+        $val=  $data::where("id_tributo","=",$request['id'] )->first();
         if(count($val)>=1)
         {
             $val->delete();
         }
     }
     
-    function get_generica(Request $request){
+    function get_tributos(Request $request){
         $anio =  $request['anio'];
-        $totalg = DB::select("select count(id_gener) as total from presupuesto.vw_generica where anio=".$anio);
+        $id_proced =  $request['id_proced'];
+        $totalg = DB::select("select count(id_tributo) as total from presupuesto.vw_proced_tributo_x_anio where id_procedimiento=".$id_proced." and anio=".$anio);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -84,19 +76,19 @@ class GenericaController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('presupuesto.vw_generica')->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('presupuesto.vw_proced_tributo_x_anio')->where('id_procedimiento',$id_proced)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
-        $Lista->records = $count;
-        
+        $Lista->records = $count;        
         
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->id_gener;
+            $Lista->rows[$Index]['id'] = $Datos->id_tributo;
             $Lista->rows[$Index]['cell'] = array(
-                str_pad(trim($Datos->cod_generica), 3, "0", STR_PAD_LEFT),
-                trim($Datos->descr_gen)               
+                str_pad(trim($Datos->cod_tributo), 3, "0", STR_PAD_LEFT),
+                trim($Datos->descrip_tributo),
+                trim($Datos->soles)                
             );
         }        
         return response()->json($Lista);

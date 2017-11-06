@@ -13,11 +13,14 @@
                                 <select id="vw_val_unitarios_cb_anio" onchange="refresh_grilla_val_unit(this.value);" class="input-sm">
                                     <option value="select" selected="" disabled="">Año.</option>
                                 </select><i></i>                                
-                            </div>                            
-                            <button onclick="crear_grid_por_anio();" id="btn_vw_valores_arancelarios_Nuevo" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                            </div>
+                            
+                            <button @if($permisos[0]->btn_new==1) onclick="crear_grid_por_anio();" @else onclick="sin_permiso();" @endif
+                                 type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
                                 <span class="btn-label"><i class="fa fa-list-alt"></i></span>Crear
                             </button>
-                            <button id="btn_vw_valores_unitarios_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                            <button @if($permisos[0]->btn_edit==1) onclick="open_dialog_new_edit_Val_Unitarios('EDITAR')" @else onclick="sin_permiso();" @endif
+                                type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                             </button>                           
                             <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
@@ -57,7 +60,7 @@
             pager: '#pager_table_Val_Unitarios',
             rowList: [13, 20],
             onSelectRow: function (Id) {
-                $('#btn_vw_valores_unitarios_Editar').attr('onClick', 'open_dialog_new_edit_Val_Unitarios("' + 'EDITAR' + '","' + Id + '")');
+//                $('#btn_vw_valores_unitarios_Editar').attr('onClick', 'open_dialog_new_edit_Val_Unitarios("' + 'EDITAR' + '","' + Id + '")');
 //                $('#btn_vw_valores_arancelarios_Eliminar').attr('onClick', 'eliminar_val_arancel(' + Id + ')');
             },
             ondblClickRow: function (Id) {

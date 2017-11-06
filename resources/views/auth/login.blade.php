@@ -20,7 +20,7 @@
                 <div class="carousel-inner">
                         <!-- Slide 1 -->
                         <div class="item active">
-                                <img src="img/fondos/fondo1.jpg" alt="">
+                                <img src="img/fondos/c_1.jpg" alt="">
                                 <div class="carousel-caption caption-right">
                                     <h3><b>Trabajando por tí</b></h3>
                                         <p>
@@ -32,7 +32,7 @@
                         </div>
                         <!-- Slide 2 -->
                         <div class="item">
-                                <img src="img/fondos/fondo2.jpg" alt="">
+                                <img src="img/fondos/c_2.jpg" alt="">
                                 <div class="carousel-caption caption-left">
                                     <h3><b>Trabajando por tu seguridad</b></h3>
                                         <p>
