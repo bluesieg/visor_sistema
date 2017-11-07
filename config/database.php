@@ -79,6 +79,18 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'digitalizacion' => [
+            'driver' => 'pgsql',
+            'host' => env('DIGITALIZACION_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DIGITALIZACION_DATABASE', 'forge'),
+            'username' => env('DIGITALIZACION_USERNAME', 'forge'),
+            'password' => env('DIGITALIZACION_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
         
         'mapa' => [
             'driver' => 'pgsql',

@@ -149,7 +149,7 @@
         </tbody>
 
       </table>
-      <div style="height: 520px">
+      <div style="height: 510px">
         <div class="lado3" >
             INFORMACIÓN DE PISOS:    
         </div>

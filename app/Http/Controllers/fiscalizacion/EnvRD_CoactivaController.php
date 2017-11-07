@@ -9,11 +9,19 @@ use App\Traits\DatesTranslator;
 use App\Models\coactiva\coactiva_master;
 use App\Models\coactiva\coactiva_documentos;
 use App\Models\fiscalizacion\Resolucion_Determinacion;
+use Illuminate\Support\Facades\Auth;
 
 class EnvRD_CoactivaController extends Controller
 {
-    function vw_env_rd_coa(){
-        return view('fiscalizacion.vw_env_rd_coactiva');
+    function vw_env_rd_coa()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_env_rd_a_coac' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('fiscalizacion.vw_env_rd_coactiva',compact('menu','permisos'));
     }
     public function create_coa_master($id_contrib,$id_rd,$monto){        
         $data = new coactiva_master();

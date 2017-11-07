@@ -385,7 +385,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('pre_rep_contr_otro/{sect}/{mzna}/{anio}','ReportesController@reporte_contribuyentes_otro');
         Route::get('pre_rep_contr_hab_urb/{cod_hab_urb}/{anio}','ReportesController@reporte_contribuyentes_hab_urb');
         Route::get('pre_rep_contr_pred_hu/{cod_hab_urb}/{anio}','ReportesController@reporte_contribuyentes_pred_hu');
-        Route::get('pre_rep_prin_contr','ReportesController@reporte_prin_contribuyentes');
+        Route::get('pre_rep_prin_contr/{anio}/{min}/{max}/{num_reg}','ReportesController@reporte_prin_contribuyentes');
+        Route::get('pre_rep_condic/{anio}/{sec}/{tip}','ReportesController@reporte_por_condicion');
+        Route::get('pre_rep_num_pred_uso/{anio}/{sec}/{tip}','ReportesController@reporte_num_pred_uso');
 
     });
     /*************************************** - PERMISOS - *************************************** */
@@ -394,6 +396,17 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('modulos', 'ModulosController');
         Route::resource('sub_modulos', 'Sub_ModulosController');
         Route::resource('permisos', 'Permisos_Modulo_UsuarioController');
+    });
+    /*************************************** - Archivo - *************************************** */
 
+    Route::group(['namespace' => 'archivo'], function() {
+        Route::resource('archi_contribuyentes', 'Arch_ContribuyenteController');
+        Route::get('list_arch_contrib', 'Arch_ContribuyenteController@grid_contrib');
+        Route::resource('archi_expe', 'DigitalizacionController');
+        Route::get('list_arch_expe', 'DigitalizacionController@grid_expe');
+        Route::post('callpdf', 'DigitalizacionController@get_pdf');
+        Route::post('create_exp', 'DigitalizacionController@create');
+        Route::get('ver_file/{id}', 'DigitalizacionController@verfile'); //
+        Route::get('grid_contrib_arch', 'DigitalizacionController@get_cotrib_byname'); //
     });
 });

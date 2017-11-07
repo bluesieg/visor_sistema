@@ -141,6 +141,10 @@ class ArbitriosController extends Controller
         if($request['new']=="1")
         {
             $arbitriovw=DB::table('adm_tri.vw_area_construida')->where('id_pred_anio',$id)->get();
+            if(count($arbitriovw)==0)
+            {
+                $arbitriovw=0;
+            }
         }
         else
         {

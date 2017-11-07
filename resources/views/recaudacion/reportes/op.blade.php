@@ -97,7 +97,7 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste1,2)}}</td>
@@ -112,7 +112,7 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre2,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor2,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste2,2)}}</td>
@@ -128,7 +128,7 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre3,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor3,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste3,2)}}</td>
@@ -144,7 +144,7 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste4,2)}}</td>
@@ -154,7 +154,7 @@
           @endif
           <tr>
               <td colspan="6">Total Insoluto</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp*$sql->trimestre,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format(($sql->ivpp/4)*$sql->trimestre,2)}}</td>
               <td colspan="4" style="text-align: right; padding-right: 2px; ">Total</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1+$sql->sub_total2+$sql->sub_total3+$sql->sub_total4,2)}}</td>
           </tr>

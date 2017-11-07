@@ -190,7 +190,14 @@ function new_arb()
             $("#inp_hidd_arb").val(0);
             $("#btnupdatearb").hide();
             $("#btnsavearb").show();
-            $("#inp_ressol_area").val(r[0].area_const);
+            if(r==0)
+            {
+                $("#inp_ressol_area").val(0);
+            }
+            else
+            {
+                $("#inp_ressol_area").val(r[0].area_const);
+            }
             $("#sel_mes_ini, #sel_pis_uso").prop( "disabled", false );
             MensajeDialogLoadAjaxFinish('dlg_new_arbi');
         },
@@ -397,10 +404,13 @@ function getpisos(valor)
         {
             total=0;
             $("#sel_pis_uso").append($('<option>',{value:0,text: "Todos",costo:0}));
-            for (var i=0; i < r['rows'].length; i++)
+            if(r['rows'])
             {
-                total=parseFloat(total)+parseFloat(r['rows'][i].cell[13]);
-                $("#sel_pis_uso").append($('<option>',{value:r['rows'][i].cell[0],text: r['rows'][i].cell[1], costo:r['rows'][i].cell[13]}));
+                for (var i=0; i < r['rows'].length; i++)
+                {
+                    total=parseFloat(total)+parseFloat(r['rows'][i].cell[13]);
+                    $("#sel_pis_uso").append($('<option>',{value:r['rows'][i].cell[0],text: r['rows'][i].cell[1], costo:r['rows'][i].cell[13]}));
+                }
             }
             $("#sel_pis_uso").find('option[value="0"]').attr('costo',total);
             MensajeDialogLoadAjaxFinish('sel_pis_uso');

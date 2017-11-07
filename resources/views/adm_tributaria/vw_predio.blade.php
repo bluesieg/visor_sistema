@@ -403,10 +403,10 @@
                         </div>
                         </div>
                         <div class="col-xs-2">
-                            <div class="panel panel-success cr-panel-sep" style="height: 161px">
+                            <div class="panel panel-success cr-panel-sep" style="height: 161px;overflow-y: scroll;">
                                 <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
                                 <div class="panel-body cr-body">
-                                    <div id="dlg_img_view" style="padding-top: 10px" onclick="viewlong()"></div>
+                                    <div id="dlg_img_view" style="padding: 5px; " onclick="viewlong()"></div>
                                 </div>
                             </div>
                         </div>
@@ -650,7 +650,7 @@
                                         </label>
                                     </div>
                                     <div class='col-lg-3'>
-                                        <label class="label">Area Terr.:</label>
+                                        <label class="label">Area Terreno:</label>
                                         <label class="input">
                                             <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right" placeholder="0.00">
                                         </label>
