@@ -408,5 +408,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('create_exp', 'DigitalizacionController@create');
         Route::get('ver_file/{id}', 'DigitalizacionController@verfile'); //
         Route::get('grid_contrib_arch', 'DigitalizacionController@get_cotrib_byname'); //
+        Route::get('validar_expe_arch', 'Arch_ContribuyenteController@validar'); //
     });
 });

@@ -135,7 +135,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon"  style="width: 165px" >Tipo Documento &nbsp;<i class="fa fa-file"></i></span>
                         <div class="icon-addon addon-md">
-                            <select id='seltipdoc' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                            <select id='seltipdoc' class="form-control col-lg-8" style="height: 32px;">
                             @foreach ($tip_doc as $docs)
                             <option value='{{$docs->id_tip}}' >{{$docs->documento}}</option>
                             @endforeach

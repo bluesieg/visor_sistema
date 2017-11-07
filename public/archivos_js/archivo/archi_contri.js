@@ -30,11 +30,9 @@ function limpiar_arch_contrib()
     
 }
 
-
 function savecontrib()
 {
-
-    if($("#dlg_contrib").val()==0||$("#dlg_contrib").val()=="")
+       if($("#dlg_contrib").val()==0||$("#dlg_contrib").val()=="")
     {
         mostraralertasconfoco("Ingresar Nombre Contribuyente","#dlg_contrib");
         return false;
@@ -46,6 +44,58 @@ function savecontrib()
         return false;
     }
     
+    if($("#dlg_num_exp").val()==0||$("#dlg_num_exp").val()=="")
+    {
+        mostraralertasconfoco("Ingresar Expediente","#dlg_num_exp");
+        return false;
+    }
+    MensajeDialogLoadAjax('dlg_new_contri', '.:: Guardando ...');
+    $.ajax({url: 'validar_expe_arch',
+    type: 'GET',
+    data:{exp:$('#dlg_num_exp').val()},
+    success: function(r) 
+    {
+        MensajeDialogLoadAjaxFinish('dlg_new_contri');
+        if(r==0)
+        {
+            texto="Está por Generar Este Contribuyente, Esta seguro que desea continuar?"
+        }
+        else
+        {
+            texto="El Expediente, ya fue registrado por el/los Contribuyente/s "+r+"<br>Desea Continuar?"
+        }
+        $.SmartMessageBox({
+            title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Confirmación Final!",
+            content : texto,
+            buttons : '[Cancelar][Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+
+                    savecontribafter();
+            }
+            if (ButtonPressed === "Cancelar") {
+                    $.smallBox({
+                            title : "No se Guardo",
+                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                            color : "#C46A69",
+                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                            timeout : 3000
+                    });
+            }
+
+    });
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+        console.log('error');
+        console.log(data);
+    }
+    });    
+    
+}
+function savecontribafter()
+{
     MensajeDialogLoadAjax('dlg_new_contri', '.:: CARGANDO ...');
         $.ajax({url: 'archi_contribuyentes/create',
         type: 'GET',
@@ -69,7 +119,6 @@ function savecontrib()
 
 function busqueda(tip)
 {
-    
     $("#table_Contribuyentes").jqGrid("clearGridData", true);
     if(tip==1)
     {
@@ -90,5 +139,3 @@ function busqueda(tip)
         jQuery("#table_Contribuyentes").jqGrid('setGridParam', {url: 'list_arch_contrib?name='+$("#vw_contrib_buscar").val()}).trigger('reloadGrid');
     }
 }
-
-

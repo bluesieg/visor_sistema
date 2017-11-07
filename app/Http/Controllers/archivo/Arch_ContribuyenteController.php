@@ -38,24 +38,7 @@ class Arch_ContribuyenteController extends Controller
         return $contri->id_contrib;
         
     }
-    public function validar(Request $request)
-    {
-        $count = DB::table('adm_tri.vw_predi_urba')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->count();
-        if($count==0)
-        {
-            return $count;
-        }
-        else
-        {
-            $poseedores=DB::table('adm_tri.vw_predi_urba')->select('contribuyente')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->get();
-            $lista="";
-            foreach ($poseedores as $contri)
-            {
-                $lista=$lista."<br>".$contri->contribuyente;
-            }
-            return $lista;
-        }
-    }
+  
 
     public function store(Request $request)
     {
@@ -152,4 +135,23 @@ class Arch_ContribuyenteController extends Controller
         }
         return response()->json($Lista);
     }
+    public function validar(Request $request)
+    {
+        $count = DB::connection('digitalizacion')->table('vw_contribuyentes')->where('nro_expediente',$request['exp'])->count();
+        if($count==0)
+        {
+            return $count;
+        }
+        else
+        {
+            $poseedores=DB::connection('digitalizacion')->table('vw_contribuyentes')->select('contribuyente')->where('nro_expediente',$request['exp'])->get();
+            $lista="";
+            foreach ($poseedores as $contri)
+            {
+                $lista=$lista."<br>".$contri->contribuyente;
+            }
+            return $lista;
+        }
+    }
 }
+
