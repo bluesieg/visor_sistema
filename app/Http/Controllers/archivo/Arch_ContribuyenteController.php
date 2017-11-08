@@ -21,7 +21,8 @@ class Arch_ContribuyenteController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $tip_doc = DB::connection('digitalizacion')->select("select * from tipdoc_contrib");
-        return view('archivo/vw_archi_contribuyente', compact('menu','permisos','tip_doc'));
+        $dpto = DB::table('maysa.dpto')->get();
+        return view('archivo/vw_archi_contribuyente', compact('menu','permisos','tip_doc','dpto'));
     }
 
     public function create(Request $request)
@@ -29,11 +30,15 @@ class Arch_ContribuyenteController extends Controller
         $contri=new Arch_Contribuyente;
         $contri->tip_documento=$request['tip'];
         $contri->nro_documento=$request['num'];
-        $contri->nombres=strtoupper ($request['contri']);
+        $contri->nombres=strtoupper (trim($request['ape'])." ".trim($request['nom']));
         $contri->domicilio=strtoupper ($request['dom']);
         $contri->observaciones=strtoupper ($request['obs']);
         $contri->nro_expediente=strtoupper ($request['exp']);
         $contri->fch_nac=$request['fec'];
+        $contri->dpto=$request['dep'];
+        $contri->id_prov=$request['prov'];
+        $contri->id_dist=$request['dis'];
+        $contri->id_usu = Auth::user()->id;
         $contri->save();
         return $contri->id_contrib;
         

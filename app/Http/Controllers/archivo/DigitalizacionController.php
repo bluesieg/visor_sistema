@@ -39,7 +39,7 @@ class DigitalizacionController extends Controller
             $dig->anio=$request['dlg_anio'];
             $dig->fecha=$request['dlg_fec'];
             $dig->observacion=$request['dlg_obs_exp'];
-            $dig->direccion=$request['dlg_direcc'];
+            $dig->direccion=strtoupper($request['dlg_direcc_hiddn']);
             $dig->id_usuario = Auth::user()->id;
             $dig->save();
             $tipo_schema = DB::connection('digitalizacion')->select("select * from tip_doc where id_tip=".$request['seltipdoc']);
@@ -172,7 +172,7 @@ class DigitalizacionController extends Controller
         else
         {
         header('Content-type: application/json');
-        $totalg = DB::connection('digitalizacion')->select("select count(id_contrib) as total from vw_contribuyentes where contribuyente like '%".$request['dat']."%'");
+        $totalg = DB::connection('digitalizacion')->select("select count(id_contrib) as total from vw_contribuyentes where contribuyente like '%".strtoupper($request['dat'])."%'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -213,5 +213,24 @@ class DigitalizacionController extends Controller
         }
         return response()->json($Lista);
         }
+    }
+    public function validar(Request $request)
+    {
+        $direcs = explode("; ", $request['dir']);
+        $lista="";
+        foreach($direcs as $dirs)
+        {
+            $count = DB::connection('digitalizacion')->table('vw_digital')->where('direccion','like',"'%".strtoupper($dirs)."%'")->where('id_contribuyente','<>',$request['contri']);
+            if(count($count)>0)
+            {   
+                $lista=$lista."La Direccion -".$dirs."- ya fue registrada en los siguientes Contribuyentes:<br>";
+                $poseedores = DB::connection('digitalizacion')->select("select * from vw_digital where direccion like '%".strtoupper($dirs)."%' and id_contribuyente <> ".$request['contri']);
+                foreach($poseedores as $contri)
+                {
+                    $lista=$lista."---".$contri->nombres."<br>";
+                }
+            }
+        }
+        return $lista;
     }
 }

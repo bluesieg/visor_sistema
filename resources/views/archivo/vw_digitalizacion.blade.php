@@ -280,11 +280,19 @@
                     </div>
                 </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
-                <div class="col-xs-12" style="padding: 0px; ">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>
-                        <div>
-                            <input id="dlg_direcc" name="dlg_direcc" type="text"  class="form-control" style="height: 32px; width: 100%">
+                <div id="div_direcc">
+                    <div class="col-xs-12" style="padding: 0px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>
+                            <div>
+                                <input id="dlg_direcc_hiddn" name="dlg_direcc_hiddn" type="hidden" >
+                                <input id="dlg_direcc" name="dlg_direcc" type="text"  class="form-control" style="height: 32px; width: 94%">
+                            </div>
+                            <span style="display: inline-block">
+                                <button class="btn btn-success" type="button" onclick="new_dir()" style="height: 32px;width: 32px">
+                                    +
+                                </button>
+                            </span>
                         </div>
                     </div>
                 </div>

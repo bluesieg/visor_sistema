@@ -61,7 +61,7 @@ function limpiar_new()
 {
     $('#ifrafile').attr('src', '');
     $("#seltipdoc").val(1);
-    $("#dlg_anio,#dlg_fec,#dlg_direcc,#dlg_documento_file,#dlg_obs_exp").val("");
+    $("#dlg_anio,#dlg_fec,#dlg_documento_file").val("");
     
 }
 function limpiar_arch_expe()
@@ -72,10 +72,9 @@ function limpiar_arch_expe()
     
 }
 
-
 function saveexpe()
 {
-
+    
     if($("#seltipdoc").val()==0||$("#seltipdoc").val()=="")
     {
         mostraralertasconfoco("seleccione tipo de Documento","#seltipdoc");
@@ -92,7 +91,62 @@ function saveexpe()
         mostraralertasconfoco("Ingresar Fecha","#dlg_fec");
         return false;
     }
+    dir="";
+    $("#div_direcc input:text").each(function() {
+        if($(this).val()!="")
+        {
+            dir=dir+$(this).val()+"; ";
+        }
+    });
+   $("#dlg_direcc_hiddn").val(dir);
+    MensajeDialogLoadAjax('dlg_new_expe', '.:: Verificando Direcciones ...');
+    $.ajax({url: 'validar_dir',
+    type: 'GET',
+    data:{dir:dir,contri:$("#id_contrib_hidden").val()},
+    success: function(r) 
+    {
+        MensajeDialogLoadAjaxFinish('dlg_new_expe');
+        if(r=="")
+        {
+            texto="Está por Generar Este Documento, Esta seguro que desea continuar?"
+        }
+        else
+        {
+            texto=r+"<br>Desea Continuar?"
+        }
+        $.SmartMessageBox({
+            title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Confirmación Final!",
+            content : texto,
+            buttons : '[Cancelar][Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+
+                    grabarfinal();
+            }
+            if (ButtonPressed === "Cancelar") {
+                    $.smallBox({
+                            title : "No se Guardo",
+                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                            color : "#C46A69",
+                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                            timeout : 3000
+                    });
+            }
+
+    });
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_new_expe');
+        console.log('error');
+        console.log(data);
+    }
+    }); 
     
+    
+}
+function grabarfinal()
+{
     MensajeDialogLoadAjax('dlg_new_expe', '.:: CARGANDO ...');
     var form= new FormData($("#FormularioFiles")[0]);
         $.ajax({
@@ -112,7 +166,7 @@ function saveexpe()
             else
             {
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-                busqueda(1);
+                busqueda(2);
                 $("#dlg_new_expe").dialog("close");
             }
             MensajeDialogLoadAjaxFinish('dlg_new_expe');
@@ -200,5 +254,27 @@ function verfile(id)
         return false;
     }
     window.open('ver_file/'+id);
+}
+function new_dir()
+{
+    
+    $("#div_direcc").append('<div><div class="col-xs-12" style="margin-top: 10px;"></div>\n\
+                    <div class="col-xs-12" style="padding: 0px; ">\n\
+                        <div class="input-group input-group-md" style="width: 100%">\n\
+                            <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>\n\
+                            <div>\n\
+                                <input type="text"  class="form-control" style="height: 32px; width: 94%">\n\
+                            </div>\n\
+                             <span style="display: inline-block">\n\
+                                <button class="btn btn-danger" type="button" onclick="del_dir(this)" style="height: 32px;width: 32px">\n\
+                                    X\n\
+                                </button>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div></div>');
+}
+function del_dir(e)
+{
+    e.parentElement.parentElement.parentElement.parentElement.remove();
 }
 

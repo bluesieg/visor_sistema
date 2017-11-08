@@ -3,7 +3,7 @@ function fn_new_archi_contrib()
 {
    limpiar_arch_contrib();
     $("#dlg_new_contri").dialog({
-        autoOpen: false, modal: true, width: 800, 
+        autoOpen: false, modal: true, width: 900, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Nuevo Contribuyente</h4></div>",
@@ -25,16 +25,19 @@ function fn_new_archi_contrib()
 }
 function limpiar_arch_contrib()
 {
+    $("#contrib_dpto").val("04");
+    llenar_combo_prov('contrib_prov', "04");
+    llenar_combo_dist('contrib_dist', $("#contrib_prov").val());
     $("#seltipdoc").val(0);
-    $("#dlg_nro_doc,#dlg_contrib,#dlg_domicilio,#dlg_obs,#dlg_num_exp").val("");
+    $("#dlg_nro_doc,#dlg_contrib_apes,#dlg_contrib_nom,#dlg_domicilio,#dlg_obs,#dlg_num_exp").val("");
     
 }
 
 function savecontrib()
 {
-       if($("#dlg_contrib").val()==0||$("#dlg_contrib").val()=="")
+       if($("#dlg_contrib_apes").val()==0||$("#dlg_contrib_apes").val()==""||$("#dlg_contrib_nom").val()==0||$("#dlg_contrib_nom").val()=="")
     {
-        mostraralertasconfoco("Ingresar Nombre Contribuyente","#dlg_contrib");
+        mostraralertasconfoco("Ingresar Nombre Contribuyente","#dlg_contrib_apes");
         return false;
     }
     
@@ -47,6 +50,11 @@ function savecontrib()
     if($("#dlg_num_exp").val()==0||$("#dlg_num_exp").val()=="")
     {
         mostraralertasconfoco("Ingresar Expediente","#dlg_num_exp");
+        return false;
+    }
+    if($("#contrib_dist").val()==null||$("#contrib_dist").val()=="select")
+    {
+        mostraralertasconfoco("Seleccione Distrito","#dis");
         return false;
     }
     MensajeDialogLoadAjax('dlg_new_contri', '.:: Guardando ...');
@@ -99,8 +107,9 @@ function savecontribafter()
     MensajeDialogLoadAjax('dlg_new_contri', '.:: CARGANDO ...');
         $.ajax({url: 'archi_contribuyentes/create',
         type: 'GET',
-        data:{tip:$("#seltipdoc").val(),num:$("#dlg_nro_doc").val(),contri:$("#dlg_contrib").val(),
-        dom:$("#dlg_domicilio").val(),obs:$("#dlg_obs").val(),exp:$("#dlg_num_exp").val(),fec:$("#dlg_fec_nac").val()},
+        data:{tip:$("#seltipdoc").val(),num:$("#dlg_nro_doc").val(),ape:$("#dlg_contrib_apes").val(),nom:$("#dlg_contrib_nom").val(),
+        dom:$("#dlg_domicilio").val(),obs:$("#dlg_obs").val(),exp:$("#dlg_num_exp").val(),fec:$("#dlg_fec_nac").val(),
+        dep:$("#contrib_dpto").val(),prov:$("#contrib_prov").val(),dis:$("#contrib_dist").val()},
         success: function(r) 
         {
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);

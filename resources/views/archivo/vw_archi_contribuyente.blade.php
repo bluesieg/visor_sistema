@@ -127,7 +127,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                                <h2>LLenado de Información::..</h2>
+                                <h2>LLenado de Información de Contribuyente::..</h2>
                         </header>
                     </div>
                 </section>
@@ -153,11 +153,19 @@
                     </div>
                 </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
-                <div class="col-xs-12" style="padding: 0px; ">
+                <div class="col-xs-6" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 165px">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
+                        <span class="input-group-addon" style="width: 165px">Apellidos &nbsp;<i class="fa fa-male"></i></span>
                         <div>
-                            <input id="dlg_contrib" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="200">
+                            <input id="dlg_contrib_apes" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Nombres &nbsp;<i class="fa fa-male"></i></span>
+                        <div>
+                            <input id="dlg_contrib_nom" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="200">
                         </div>
                     </div>
                 </div>
@@ -167,6 +175,51 @@
                         <span class="input-group-addon" style="width: 165px">Fecha Nac. &nbsp;<i class="fa fa-calendar"></i></span>
                         <div>
                             <input id="dlg_fec_nac" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-home"></i> </span>
+                                <h2>Información de Domicilio Fiscál:..</h2>
+                        </header>
+                    </div>
+                </section>
+                
+                
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-4" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Departamento &nbsp;<i class="fa fa-globe"></i></span>
+                        <div>
+                            <select id="contrib_dpto" class="input-sm text-uppercase" onchange="llenar_combo_prov('contrib_prov', this.value);" style="width: 100%">
+                                @foreach ($dpto as $dpto)
+                                <option value='{{$dpto->cod}}' >{{trim($dpto->dpto)}}</option>
+                                @endforeach                                           
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Provincia &nbsp;<i class="fa fa-globe"></i></span>
+                        <div>
+                            <select id="contrib_prov" class="input-sm text-uppercase" onchange="llenar_combo_dist('contrib_dist', this.value);" style="width: 100%">
+                                <option value="select" selected="" disabled="">Provincia</option>                                            
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Distrito &nbsp;<i class="fa fa-globe"></i></span>
+                        <div>
+                            <select id="contrib_dist" class="input-sm text-uppercase" onchange="selec_dist(this.value);" style="width: 100%">
+                                <option value="select" selected="" disabled="">Distrito</option>                                            
+                            </select>
                         </div>
                     </div>
                 </div>
