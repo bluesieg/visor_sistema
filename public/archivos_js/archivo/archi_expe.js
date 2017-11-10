@@ -80,7 +80,6 @@ function fn_mod_archi_expe()
             $("#dlg_anio").val(r[0].anio);
             $("#dlg_fec").val(r[0].fecha);
             $("#dlg_obs_exp").val(r[0].observacion);
-            
             var lista = r[0].direccion.split(';');
             $("#dlg_direcc").val(lista[0]);
             $("#div_direcc").html("");
@@ -99,9 +98,10 @@ function fn_mod_archi_expe()
                             </span>\n\
                         </div>\n\
                     </div></div>');
-                $('#ifrafile').attr('src','ver_file/'+r[0].id); 
-                $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_new_expe');}).show();
+                
             };
+            $('#ifrafile').attr('src','ver_file/'+r[0].id); 
+            $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_new_expe');}).show();
             MensajeDialogLoadAjaxFinish('dlg_new_expe');
         },
         error: function(data) {
@@ -275,7 +275,6 @@ function modfinal()
                 $("#dlg_new_expe").dialog("close");
         },
         error: function(data) {
-            alert(data);
             mostraralertas("hubo un error, Comunicar al Administrador");
             MensajeDialogLoadAjaxFinish('dlg_new_expe');
             console.log('error');
@@ -320,7 +319,7 @@ function busqueda(tip)
                 $("#id_contrib_hidden").val(r[0].id_contrib);
                 $("#dlg_num_exp").val(r[0].nro_expediente);
                 $("#dlg_nro_doc").val(r[0].nro_documento);
-                $("#dlg_contrib").val(r[0].contribuyente);
+                $("#dlg_contrib").val(r[0].nombres);
                 $("#dlg_domicilio").val(r[0].domicilio);
                 jQuery("#table_doc").jqGrid('setGridParam', {url: 'list_arch_expe?contrib='+r[0].id_contrib}).trigger('reloadGrid');
             }

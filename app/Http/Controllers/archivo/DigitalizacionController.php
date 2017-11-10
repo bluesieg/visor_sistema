@@ -82,7 +82,7 @@ class DigitalizacionController extends Controller
             $val->direccion=strtoupper($request['dlg_direcc_hiddn']);
             $val->save();
         }
-        return "edit".$request['id_arch'];
+        return $val->id;
     }
 
     public function update(Request $request, $id)
@@ -161,7 +161,7 @@ class DigitalizacionController extends Controller
     }
     public function verfile($id)
     {
-        $sql = DB::connection('digitalizacion')->table('vw_digital')->where('id',$id)->get();
+        $sql = DB::connection('digitalizacion')->select('select * from vw_digital where id='.$id);
         if(count($sql)>=1)
         {
             $pdf = DB::connection('digitalizacion')->table(trim($sql[0]->schem).".".trim($sql[0]->abrev).$sql[0]->anio)->where('id',$id)->get();
