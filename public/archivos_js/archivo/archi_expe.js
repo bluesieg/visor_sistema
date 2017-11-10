@@ -46,7 +46,13 @@ function fn_new_archi_expe()
                 id:"btnsave",
                 html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar Documento',
                 "class": "btn btn-labeled bg-color-green txt-color-white",
-                click: function () {saveexpe();}
+                click: function () {saveexpe(1);}
+            },
+            {
+                id:"btnmod",
+                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar Documento',
+                "class": "btn btn-labeled bg-color-blue txt-color-white",
+                click: function () {saveexpe(2);}
             },
 
             {
@@ -55,14 +61,62 @@ function fn_new_archi_expe()
                 click: function () {$(this).dialog("close");}
             }]
         }).dialog('open');
- 
+        $("#btnsave").show();
+        $("#btnmod").hide();
+}
+function fn_mod_archi_expe()
+{
+    fn_new_archi_expe();
+    $("#btnsave").hide();
+    $("#btnmod").show();
+    MensajeDialogLoadAjax('dlg_new_expe', '.:: CARGANDO ...');
+    Id=$('#table_doc').jqGrid ('getGridParam', 'selrow');
+    $.ajax({url: 'archi_expe/'+Id,
+        type: 'GET',
+        success: function(r) 
+        {
+            $("#id_arch").val(r[0].id);
+            $("#seltipdoc").val(r[0].id_tip_doc);
+            $("#dlg_anio").val(r[0].anio);
+            $("#dlg_fec").val(r[0].fecha);
+            $("#dlg_obs_exp").val(r[0].observacion);
+            
+            var lista = r[0].direccion.split(';');
+            $("#dlg_direcc").val(lista[0]);
+            $("#div_direcc").html("");
+            for(i=1;i<lista.length-1;i++) {
+                $("#div_direcc").append('<div><div class="col-xs-12" style="margin-top: 10px;"></div>\n\
+                    <div class="col-xs-12" style="padding: 0px; ">\n\
+                        <div class="input-group input-group-md" style="width: 100%">\n\
+                            <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>\n\
+                            <div>\n\
+                                <input type="text"  class="form-control" style="height: 32px; width: 94%" value="'+lista[i]+'">\n\
+                            </div>\n\
+                             <span style="display: inline-block">\n\
+                                <button class="btn btn-danger" type="button" onclick="del_dir(this)" style="height: 32px;width: 32px">\n\
+                                    X\n\
+                                </button>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div></div>');
+                $('#ifrafile').attr('src','ver_file/'+r[0].id); 
+                $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_new_expe');}).show();
+            };
+            MensajeDialogLoadAjaxFinish('dlg_new_expe');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_new_expe');
+        }
+        });
 }
 function limpiar_new()
 {
     $('#ifrafile').attr('src', '');
-    $("#seltipdoc").val(1);
+    $("#seltipdoc").val(0);
     $("#dlg_anio,#dlg_fec,#dlg_documento_file").val("");
-    
 }
 function limpiar_arch_expe()
 {
@@ -72,10 +126,14 @@ function limpiar_arch_expe()
     
 }
 
-function saveexpe()
+function saveexpe(tip)
 {
-    
-    if($("#seltipdoc").val()==0||$("#seltipdoc").val()=="")
+    if(tip==2&&$("#per_edit").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
+    if($("#seltipdoc").val()==0||$("#seltipdoc").val()==null)
     {
         mostraralertasconfoco("seleccione tipo de Documento","#seltipdoc");
         return false;
@@ -91,7 +149,17 @@ function saveexpe()
         mostraralertasconfoco("Ingresar Fecha","#dlg_fec");
         return false;
     }
-    dir="";
+    if($("#dlg_direcc").val()=="")
+    {
+        mostraralertasconfoco("Ingresar Direccion","#dlg_direcc");
+        return false;
+    }
+    if($("#dlg_fec").val()=="")
+    {
+        mostraralertasconfoco("Ingresar Fecha","#dlg_fec");
+        return false;
+    }
+    dir=$("#dlg_direcc").val();
     $("#div_direcc input:text").each(function() {
         if($(this).val()!="")
         {
@@ -120,8 +188,14 @@ function saveexpe()
             buttons : '[Cancelar][Aceptar]'
     }, function(ButtonPressed) {
             if (ButtonPressed === "Aceptar") {
-
-                    grabarfinal();
+                    if(tip==1)
+                    {
+                        grabarfinal();
+                    }
+                    else
+                    {
+                        modfinal();
+                    }
             }
             if (ButtonPressed === "Cancelar") {
                     $.smallBox({
@@ -173,6 +247,35 @@ function grabarfinal()
             
         },
         error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_new_expe');
+            console.log('error');
+            console.log(data);
+        }
+        });
+}
+function modfinal()
+{
+    //alert($("#dlg_documento_file").val());
+    MensajeDialogLoadAjax('dlg_new_expe', '.:: CARGANDO ...');
+    var form= new FormData($("#FormularioFiles")[0]);
+        $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'modifica_exp',
+        type: 'POST',  
+        dataType: 'json',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function(r) 
+        {
+                MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+                busqueda(2);
+                MensajeDialogLoadAjaxFinish('dlg_new_expe');
+                $("#dlg_new_expe").dialog("close");
+        },
+        error: function(data) {
+            alert(data);
             mostraralertas("hubo un error, Comunicar al Administrador");
             MensajeDialogLoadAjaxFinish('dlg_new_expe');
             console.log('error');
@@ -236,8 +339,6 @@ function busqueda(tip)
             MensajeDialogLoadAjaxFinish('widget-grid');
         }
         });
-    
-    
 }
 
 function llamarsubmit()

@@ -67,11 +67,29 @@ class Arch_ContribuyenteController extends Controller
             }
             
         }
+        $contrivw[0]->fch_nac=trim($this->getCreatedAtAttribute($contrivw[0]->fch_nac)->format('d/m/Y'));
         return $contrivw;
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
+        $contri=new Arch_Contribuyente;
+        $val=  $contri::where("id_contrib","=",$id )->first();
+        if(count($val)>=1)
+        {
+            $val->tip_documento=$request['tip'];
+            $val->nro_documento=$request['num'];
+            $val->nombres=strtoupper (trim($request['ape'])." ".trim($request['nom']));
+            $val->domicilio=strtoupper ($request['dom']);
+            $val->observaciones=strtoupper ($request['obs']);
+            $val->nro_expediente=strtoupper ($request['exp']);
+            $val->fch_nac=$request['fec'];
+            $val->dpto=$request['dep'];
+            $val->id_prov=$request['prov'];
+            $val->id_dist=$request['dis'];
+            $val->save();
+        }
+        return "edit".$id;
     }
 
     public function update(Request $request, $id)
@@ -131,11 +149,10 @@ class Arch_ContribuyenteController extends Controller
                 trim($Datos->tip_documento),
                 trim($Datos->documento),
                 trim($Datos->nro_documento),
-                trim($Datos->contribuyente),
+                trim($Datos->nombres),
                 trim($this->getCreatedAtAttribute($Datos->fch_nac)->format('d/m/Y')),
                 trim($Datos->domicilio),
                 trim($Datos->nro_expediente)            
-               
             );
         }
         return response()->json($Lista);
@@ -149,11 +166,11 @@ class Arch_ContribuyenteController extends Controller
         }
         else
         {
-            $poseedores=DB::connection('digitalizacion')->table('vw_contribuyentes')->select('contribuyente')->where('nro_expediente',$request['exp'])->get();
+            $poseedores=DB::connection('digitalizacion')->table('vw_contribuyentes')->select('nombres')->where('nro_expediente',$request['exp'])->get();
             $lista="";
             foreach ($poseedores as $contri)
             {
-                $lista=$lista."<br>".$contri->contribuyente;
+                $lista=$lista."<br>".$contri->nombres;
             }
             return $lista;
         }

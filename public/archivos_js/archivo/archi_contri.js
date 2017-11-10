@@ -1,7 +1,21 @@
-
-function fn_new_archi_contrib()
+function verificatipodoc()
 {
-   limpiar_arch_contrib();
+    if($("#seltipdoc").val()==2)
+    {
+        $("#show_razon").show();
+        $("#show_nombres").hide();
+        $("#dlg_contrib_apes, #dlg_contrib_nom").val("");
+    }
+    else
+    {
+        $("#show_razon").hide();
+        $("#show_nombres").show();
+        $("#dlg_contrib_razon").val("");
+    }
+}
+function fn_crear_dlg()
+{
+    
     $("#dlg_new_contri").dialog({
         autoOpen: false, modal: true, width: 900, 
         show:{ effect: "explode", duration: 500},
@@ -12,7 +26,13 @@ function fn_new_archi_contrib()
                 id:"btnsave",
                 html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar Contribuyente',
                 "class": "btn btn-labeled bg-color-green txt-color-white",
-                click: function () {savecontrib();}
+                click: function () {savecontrib(1);}
+            },
+            {
+                id:"btnmod",
+                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Modificar Contribuyente',
+                "class": "btn btn-labeled bg-color-blue txt-color-white",
+                click: function () {savecontrib(2);}
             },
 
             {
@@ -21,24 +41,94 @@ function fn_new_archi_contrib()
                 click: function () {$(this).dialog("close");}
             }]
         }).dialog('open');
- 
+        $("#btnsave").show();
+        $("#btnmod").hide();
 }
-function limpiar_arch_contrib()
+function fn_new_archi_contrib()
 {
-    $("#contrib_dpto").val("04");
-    llenar_combo_prov('contrib_prov', "04");
-    llenar_combo_dist('contrib_dist', $("#contrib_prov").val());
-    $("#seltipdoc").val(0);
-    $("#dlg_nro_doc,#dlg_contrib_apes,#dlg_contrib_nom,#dlg_domicilio,#dlg_obs,#dlg_num_exp").val("");
+    verificatipodoc();
+   fn_crear_dlg();
+   limpiar_arch_contrib(0,0,0);
+    
+}
+function fn_mod_archi_contrib()
+{
+    fn_crear_dlg();
+    $("#btnsave").hide();
+    $("#btnmod").show();
+    Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+    MensajeDialogLoadAjax('dlg_new_contri', '.:: CARGANDO ...');
+        $.ajax({url: 'archi_contribuyentes/'+Id,
+        type: 'GET',
+        success: function(r) 
+        {
+            limpiar_arch_contrib(r[0].dpto,r[0].id_prov,r[0].id_dist);
+            $("#dlg_contrib_id").val(r[0].id_contrib);
+            $("#seltipdoc").val(r[0].tip_documento);
+            $("#dlg_nro_doc").val(r[0].nro_documento);
+            $("#dlg_contrib_apes,#dlg_contrib_razon").val(r[0].nombres);
+            $("#dlg_fec_nac").val(r[0].fch_nac);
+            $("#dlg_domicilio").val(r[0].domicilio);
+            $("#dlg_obs").val(r[0].observaciones);
+            $("#dlg_num_exp").val(r[0].nro_expediente);
+            verificatipodoc();
+            MensajeDialogLoadAjaxFinish('dlg_new_contri');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_new_contri');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    
+}
+function limpiar_arch_contrib(dep,prov,dis)
+{
+    if(dep==0)
+    {
+        $("#contrib_dpto").val("04");
+        llenar_combo_prov('contrib_prov', "04");
+        llenar_combo_dist('contrib_dist', $("#contrib_prov").val());
+    }
+    else
+    {
+        $("#contrib_dpto").val(dep);
+        llenar_combo_prov('contrib_prov', dep);
+        $("#contrib_prov").val(prov);
+        setTimeout(function(){
+        $("#contrib_dist").val(dis);       
+        }, 1500);
+        
+    }
+    
+    $("#seltipdoc,#dlg_contrib_id").val(0);
+    $("#dlg_nro_doc,#dlg_contrib_apes,#dlg_contrib_nom,#dlg_domicilio,#dlg_obs,#dlg_num_exp,#dlg_contrib_razon").val("");
     
 }
 
-function savecontrib()
+function savecontrib(tip)
 {
-       if($("#dlg_contrib_apes").val()==0||$("#dlg_contrib_apes").val()==""||$("#dlg_contrib_nom").val()==0||$("#dlg_contrib_nom").val()=="")
+    if(tip==2&&$("#per_edit").val()==0)
     {
-        mostraralertasconfoco("Ingresar Nombre Contribuyente","#dlg_contrib_apes");
+        sin_permiso();
         return false;
+    }
+    if($("#seltipdoc").val()==2)
+    {
+        if($("#dlg_contrib_razon").val()==0||$("#dlg_contrib_razon").val()=="")
+        {
+            mostraralertasconfoco("Ingresar Razón Social","#dlg_contrib_razon");
+            return false;
+        }
+    }
+    else
+    {
+        if($("#dlg_contrib_apes").val()==0||$("#dlg_contrib_apes").val()==""||$("#dlg_contrib_nom").val()==0||$("#dlg_contrib_nom").val()=="")
+        {
+            mostraralertasconfoco("Ingresar Nombre Contribuyente","#dlg_contrib_apes");
+            return false;
+        }
     }
     
     if($("#dlg_domicilio").val()==0||$("#dlg_domicilio").val()=="")
@@ -78,8 +168,14 @@ function savecontrib()
             buttons : '[Cancelar][Aceptar]'
     }, function(ButtonPressed) {
             if (ButtonPressed === "Aceptar") {
-
-                    savecontribafter();
+                    if(tip==1)
+                    {
+                        savecontribafter();
+                    }
+                    else
+                    {
+                        modcontribafter();
+                    }
             }
             if (ButtonPressed === "Cancelar") {
                     $.smallBox({
@@ -95,7 +191,7 @@ function savecontrib()
     },
     error: function(data) {
         mostraralertas("hubo un error, Comunicar al Administrador");
-        MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+        MensajeDialogLoadAjaxFinish('dlg_new_contri');
         console.log('error');
         console.log(data);
     }
@@ -107,12 +203,35 @@ function savecontribafter()
     MensajeDialogLoadAjax('dlg_new_contri', '.:: CARGANDO ...');
         $.ajax({url: 'archi_contribuyentes/create',
         type: 'GET',
-        data:{tip:$("#seltipdoc").val(),num:$("#dlg_nro_doc").val(),ape:$("#dlg_contrib_apes").val(),nom:$("#dlg_contrib_nom").val(),
+        data:{tip:$("#seltipdoc").val(),num:$("#dlg_nro_doc").val(),ape:$("#dlg_contrib_apes").val()+$("#dlg_contrib_razon").val(),nom:$("#dlg_contrib_nom").val(),
         dom:$("#dlg_domicilio").val(),obs:$("#dlg_obs").val(),exp:$("#dlg_num_exp").val(),fec:$("#dlg_fec_nac").val(),
         dep:$("#contrib_dpto").val(),prov:$("#contrib_prov").val(),dis:$("#contrib_dist").val()},
         success: function(r) 
         {
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            busqueda(1);
+            MensajeDialogLoadAjaxFinish('dlg_new_contri');
+            $("#dlg_new_contri").dialog("close");
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_new_contri');
+            console.log('error');
+            console.log(data);
+        }
+        });
+}
+function modcontribafter()
+{
+    MensajeDialogLoadAjax('dlg_new_contri', '.:: CARGANDO ...');
+        $.ajax({url: 'archi_contribuyentes/'+$("#dlg_contrib_id").val()+'/edit',
+        type: 'GET',
+        data:{tip:$("#seltipdoc").val(),num:$("#dlg_nro_doc").val(),ape:$("#dlg_contrib_apes").val()+$("#dlg_contrib_razon").val(),nom:$("#dlg_contrib_nom").val(),
+        dom:$("#dlg_domicilio").val(),obs:$("#dlg_obs").val(),exp:$("#dlg_num_exp").val(),fec:$("#dlg_fec_nac").val(),
+        dep:$("#contrib_dpto").val(),prov:$("#contrib_prov").val(),dis:$("#contrib_dist").val()},
+        success: function(r) 
+        {
+            MensajeExito("Modificó Correctamente","Su Registro Fue Cambiado con Éxito...",4000);
             busqueda(1);
             MensajeDialogLoadAjaxFinish('dlg_new_contri');
             $("#dlg_new_contri").dialog("close");

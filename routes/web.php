@@ -406,6 +406,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('list_arch_expe', 'DigitalizacionController@grid_expe');
         Route::post('callpdf', 'DigitalizacionController@get_pdf');
         Route::post('create_exp', 'DigitalizacionController@create');
+        Route::post('modifica_exp', 'DigitalizacionController@edit');
         Route::get('ver_file/{id}', 'DigitalizacionController@verfile'); //
         Route::get('grid_contrib_arch', 'DigitalizacionController@get_cotrib_byname'); //
         Route::get('validar_expe_arch', 'Arch_ContribuyenteController@validar'); //

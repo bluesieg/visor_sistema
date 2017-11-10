@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
+<input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
 <section id="widget-grid" class="">  
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -137,6 +138,7 @@
             rowList: [20, 30, 50],
             onSelectRow: function (Id) { },
             ondblClickRow: function (Id) {
+                fn_mod_archi_expe();
             },
             gridComplete: function () {
                 var rows = $("#table_doc").getDataIDs();
@@ -161,7 +163,7 @@
             height: '300px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_contrib','DNI/RUC','contribuyente','Dom Fiscal','Expediente'],
-            rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
+            rowNum: 20, sortname: 'nombres', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
@@ -237,6 +239,7 @@
                 </section>
     <form id="FormularioFiles" name="FormularioFiles" method="post" enctype="multipart/form-data" action="callpdf"  target="ifrafile">
         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
+            <input type="hidden" id="id_arch" name="id_arch" value="0"/>
         <input id="id_contrib_hidden" name="id_contrib_hidden" type="hidden" value="0"/>
         <div class="col-xs-8" style="padding: 0px;">
                     <div class="input-group input-group-md" style="width: 100%">
@@ -280,21 +283,22 @@
                     </div>
                 </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
-                <div id="div_direcc">
-                    <div class="col-xs-12" style="padding: 0px; ">
-                        <div class="input-group input-group-md" style="width: 100%">
-                            <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>
-                            <div>
-                                <input id="dlg_direcc_hiddn" name="dlg_direcc_hiddn" type="hidden" >
-                                <input id="dlg_direcc" name="dlg_direcc" type="text"  class="form-control" style="height: 32px; width: 94%">
-                            </div>
-                            <span style="display: inline-block">
-                                <button class="btn btn-success" type="button" onclick="new_dir()" style="height: 32px;width: 32px">
-                                    +
-                                </button>
-                            </span>
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>
+                        <div>
+                            <input id="dlg_direcc_hiddn" name="dlg_direcc_hiddn" type="hidden" >
+                            <input id="dlg_direcc" name="dlg_direcc" type="text"  class="form-control" style="height: 32px; width: 94%">
                         </div>
+                        <span style="display: inline-block">
+                            <button class="btn btn-success" type="button" onclick="new_dir()" style="height: 32px;width: 32px">
+                                +
+                            </button>
+                        </span>
                     </div>
+                </div>
+                <div id="div_direcc">
+                    
                 </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
                 <div class="col-xs-12" style="padding: 0px; ">

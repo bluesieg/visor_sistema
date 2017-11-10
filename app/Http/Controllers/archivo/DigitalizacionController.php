@@ -55,9 +55,6 @@ class DigitalizacionController extends Controller
         {
             return 0;
         }
-
-        
-        
     }
 
     public function store(Request $request)
@@ -67,11 +64,25 @@ class DigitalizacionController extends Controller
  
     public function show($id)
     {
+        $archi= DB::connection('digitalizacion')->table('vw_digital')->where('id',$id)->get();
+        $archi[0]->fecha=trim($this->getCreatedAtAttribute($archi[0]->fecha)->format('d/m/Y'));
+        return $archi;
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $dig=new digitalizacion;
+        $val=  $dig::where("id","=",$request['id_arch'] )->first();
+        if(count($val)>=1)
+        {
+            $val->id_tip_doc=$request['seltipdoc'];
+            //$val->anio=$request['dlg_anio'];
+            $val->fecha=$request['dlg_fec'];
+            $val->observacion=$request['dlg_obs_exp'];
+            $val->direccion=strtoupper($request['dlg_direcc_hiddn']);
+            $val->save();
+        }
+        return "edit".$request['id_arch'];
     }
 
     public function update(Request $request, $id)
@@ -172,7 +183,7 @@ class DigitalizacionController extends Controller
         else
         {
         header('Content-type: application/json');
-        $totalg = DB::connection('digitalizacion')->select("select count(id_contrib) as total from vw_contribuyentes where contribuyente like '%".strtoupper($request['dat'])."%'");
+        $totalg = DB::connection('digitalizacion')->select("select count(id_contrib) as total from vw_contribuyentes where nombres like '%".strtoupper($request['dat'])."%'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -194,7 +205,7 @@ class DigitalizacionController extends Controller
             $start = 0;
         }
 
-        $sql = DB::connection('digitalizacion')->table('vw_contribuyentes')->where('contribuyente','like', '%'.strtoupper($request['dat']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::connection('digitalizacion')->table('vw_contribuyentes')->where('nombres','like', '%'.strtoupper($request['dat']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -206,7 +217,7 @@ class DigitalizacionController extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_contrib),
                 trim($Datos->nro_documento),
-                trim(str_replace("-", "",$Datos->contribuyente)),
+                trim(str_replace("-", "",$Datos->nombres)),
                 trim($Datos->domicilio),
                 trim($Datos->nro_expediente),
             );
@@ -220,11 +231,11 @@ class DigitalizacionController extends Controller
         $lista="";
         foreach($direcs as $dirs)
         {
-            $count = DB::connection('digitalizacion')->table('vw_digital')->where('direccion','like',"'%".strtoupper($dirs)."%'")->where('id_contribuyente','<>',$request['contri']);
+            $count = DB::connection('digitalizacion')->select("select * from vw_digital where direccion like '%".strtoupper($dirs)."%' and id_contribuyente <> ".$request['contri']);
             if(count($count)>0)
             {   
                 $lista=$lista."La Direccion -".$dirs."- ya fue registrada en los siguientes Contribuyentes:<br>";
-                $poseedores = DB::connection('digitalizacion')->select("select * from vw_digital where direccion like '%".strtoupper($dirs)."%' and id_contribuyente <> ".$request['contri']);
+                $poseedores = DB::connection('digitalizacion')->select("select nombres from vw_digital where direccion like '%".strtoupper($dirs)."%' and id_contribuyente <> ".$request['contri']." group by nombres");
                 foreach($poseedores as $contri)
                 {
                     $lista=$lista."---".$contri->nombres."<br>";

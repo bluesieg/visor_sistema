@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <section id="widget-grid" class="">    
+    <input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
@@ -29,7 +30,7 @@
                                 </button>
                             @endif
                             @if( $permisos[0]->btn_edit ==1 )
-                                <button onclick="modificar_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <button onclick="fn_mod_archi_contrib();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                 </button>
                             @else
@@ -93,6 +94,7 @@
             rowList: [20, 30, 50],
             onSelectRow: function (Id) { },
             ondblClickRow: function (Id) {
+                fn_mod_archi_contrib();
             },
             gridComplete: function () {
                 var rows = $("#table_Contribuyentes").getDataIDs();
@@ -120,6 +122,7 @@
 @stop
 <script src="{{ asset('archivos_js/archivo/archi_contri.js') }}"></script>
 <div id="dlg_new_contri" style="display: none;">
+    <input type="hidden" id="dlg_contrib_id" value="0" />
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
@@ -135,7 +138,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon"  style="width: 165px" >Tipo Documento &nbsp;<i class="fa fa-file"></i></span>
                         <div class="icon-addon addon-md">
-                            <select id='seltipdoc' class="form-control col-lg-8" style="height: 32px;">
+                            <select id='seltipdoc' class="form-control col-lg-8" style="height: 32px;" onchange="verificatipodoc()">
                             @foreach ($tip_doc as $docs)
                             <option value='{{$docs->id_tip}}' >{{$docs->documento}}</option>
                             @endforeach
@@ -153,6 +156,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div id="show_nombres">
                 <div class="col-xs-6" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Apellidos &nbsp;<i class="fa fa-male"></i></span>
@@ -166,6 +170,17 @@
                         <span class="input-group-addon" style="width: 165px">Nombres &nbsp;<i class="fa fa-male"></i></span>
                         <div>
                             <input id="dlg_contrib_nom" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div id="show_razon">
+                    <div class="col-xs-12" style="padding: 0px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Razon Social &nbsp;<i class="fa fa-hospital-o"></i></span>
+                            <div>
+                                <input id="dlg_contrib_razon" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="200">
+                            </div>
                         </div>
                     </div>
                 </div>
