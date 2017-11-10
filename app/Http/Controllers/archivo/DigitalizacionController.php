@@ -75,8 +75,18 @@ class DigitalizacionController extends Controller
         $val=  $dig::where("id","=",$request['id_arch'] )->first();
         if(count($val)>=1)
         {
-            $val->id_tip_doc=$request['seltipdoc'];
-            //$val->anio=$request['dlg_anio'];
+            if($val->id_tip_doc!=$request['seltipdoc']||$val->anio!=$request['dlg_anio'])
+            {
+                $sql = DB::connection('digitalizacion')->select('select * from vw_digital where id='.$val->id);
+                $pdf = DB::connection('digitalizacion')->table(trim($sql[0]->schem).".".trim($sql[0]->abrev).$sql[0]->anio)->where('id',$val->id)->get();
+                $tipo_schema = DB::connection('digitalizacion')->select("select * from tip_doc where id_tip=".$request['seltipdoc']);
+                DB::connection('digitalizacion')->table(trim($tipo_schema[0]->schem).".".trim($tipo_schema[0]->abrev).$request['dlg_anio'])->insert([
+                    ['doc_b64' => $pdf[0]->doc_b64, 'id' => $val->id,'id_usuario'=>Auth::user()->id]
+                ]);
+                DB::connection('digitalizacion')->table(trim($sql[0]->schem).".".trim($sql[0]->abrev).$sql[0]->anio)->where('id',$val->id)->delete();
+                $val->id_tip_doc=$request['seltipdoc'];
+                $val->anio=$request['dlg_anio'];
+            }
             $val->fecha=$request['dlg_fec'];
             $val->observacion=$request['dlg_obs_exp'];
             $val->direccion=strtoupper($request['dlg_direcc_hiddn']);
