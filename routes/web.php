@@ -430,9 +430,24 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtener_usuarios', 'ReportesController@get_usuarios'); 
         
         //*NUEVOS
-         Route::get('reporte_reporte_contribuyentes_predios_zonas/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
+         Route::get('reporte_contribuyentes_predios_zonas/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
+         
+         
+          Route::get('reporte_supervisores','ReportesController@index_supervisores');
+    });
+    
+    Route::group(['namespace' => 'catastro_gonzalo'], function() {
+       
+        //CONFIGURACION CATASTRO_GONZALO CALLES - VIAS
+        Route::resource('conf_vias_calles', 'ViasController');
+        Route::post('insertar_nueva_via_calle', 'ViasController@insertar_nueva_vc');
+        Route::get('listar_vias','ViasController@getVias');
+        Route::post('modificar_via_calle', 'ViasController@modificar_vc');
+        Route::post('eliminar_via_calle', 'ViasController@eliminar_vc');
 
     });
+    
+    
     
     Route::group(['namespace' => 'catastro_gonzalo'], function() {
        

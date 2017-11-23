@@ -43,27 +43,26 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
             <thead>
             <tr >
-                <th style="text-align: center;">NOMBRE</th>
-                <th style="text-align: center;">DNI</th>
-                <th style="text-align: center;">USUARIO</th>
-                <th style="width: 7%">SECTOR</th>
-                <th style="width: 5%;">MZ</th>
-                <th style="width: 5%;">LOTE</th>
-                <th style="width: 8%;">CODIGO VIA</th>
+                 <th style="width: 5%; text-align: center;">Nº</th>
+                <th style="width: 25%; text-align: center;">NOMBRE</th>
+                <th style="width: 10%; text-align: center;">DNI</th>
+                <th style="width: 10%; text-align: center;">SECTOR</th>
+                <th style="width: 10%; text-align: center;">MZ</th>
+                <th style="width: 10%; text-align: center;">LOTE</th>
+                <th style="width: 30%; text-align: center;">CONTRIBUYENTE</th>
             </tr>
             </thead>
             <tbody>
 
             @foreach ($sql as $cont)
                 <tr>
+                    <td style="text-align: center;">{{ $num++ }}</td>
                     <td style="text-align: center;">{{ $cont->nom_usu }}</td>
                     <td style="text-align: center;">{{$cont->dni_usu}}</td>
-                    <td style="text-align: center;">{{ $cont->usuario }}</td>
                     <td style="text-align: center;">{{ $cont->sec }}</td>
                     <td style="text-align: center;">{{ $cont->mzna }}</td>
                     <td style="text-align: center;">{{ $cont->lote }}</td>
-                    <td style="text-align: center;">{{ $cont->id_via }}</td>
-                    
+                    <td style="text-align: center;">{{ $cont->contribuyente }}</td>        
                 </tr>
             @endforeach
             </tbody>

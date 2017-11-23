@@ -344,5 +344,5 @@ function dlg_reporte_contribuyentes_predios(tipo)
 
 function abrir_reporte_contribuyente_predio()
 {
-    window.open('reporte_reporte_contribuyentes_predios_zonas/'+$('#select_sup_anio_rcp').val()+'/'+$('#select_sector_rcp').val()+'');
+    window.open('reporte_contribuyentes_predios_zonas/'+$('#select_sup_anio_rcp').val()+'/'+$('#select_sector_rcp').val()+'');
 }

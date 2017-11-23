@@ -41,14 +41,15 @@
     <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
 
         <br>
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.0em;">
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
             <thead>
             <tr >
                 <th style="width: 5%;">N°</th>
                 <th style="width: 10%">DNI/RUC</th>
-                <th style="width: 30%;">CONTRIBUYENTE</th>
-                <th style="width: 15%;">TIPO PERSONA</th>
-                <th style="width: 40%">DOMICILIO</th>
+                <th style="width: 25%;">NOMBRE</th>
+                <th style="width: 10%;">TIPO PERSONA</th>
+                <th style="width: 25%">DOMICILIO</th>
+              
             </tr>
             </thead>
             <tbody>
@@ -56,10 +57,10 @@
             @foreach ($sql as $cont)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{$cont->nro_doc}}</td>
-                    <td style="text-align: left;">{{ $cont->contribuyente }}</td>
-                    <td style="text-align: left;">{{$cont->persona}}</td>
-                    <td style="text-align: left;">{{$cont->dom_fis}}</td>
+                    <td style="text-align: left;">{{ $cont->nro_doc_contri }}</td>
+                    <td style="text-align: left;">{{$cont->contribuyente}}</td>
+                     <td style="text-align: left;">{{$cont->ref_dom_fis}}</td>
+                    <td style="text-align: left;">{{$cont->nom_via}}</td>
                 </tr>
             @endforeach
             </tbody>

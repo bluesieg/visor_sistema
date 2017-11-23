@@ -24,6 +24,21 @@ class ReportesController extends Controller
         $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion');
         return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','condicion'));
     }
+    public function index_supervisores()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_rep_sup' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        //$condicion = DB::table('adm_tri.exoneracion')->get();
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
+        $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion');
+        return view('reportes_gonzalo/vw_reportes_supervisor', compact('menu','permisos','anio_tra','sectores','condicion'));
+    }
 
     public function create()
     {
@@ -107,11 +122,11 @@ class ReportesController extends Controller
     public function reportes($anio,$sector,$manzana)
     {
         
-        $sql=DB::table('adm_tri.vw_predi_usu')->where('anio',$anio)->where('id_sec',$sector)->where('id_mzna',$manzana)->orderBy('id_usu')->get();
+        $sql=DB::table('adm_tri.vw_predi_usu')->where('anio',$anio)->where('id_sec',$sector)->where('id_mzna',$manzana)->orderBy('lote')->get();
 
         if(count($sql)>0)
         {
-            $view =  \View::make('reportes_gonzalo.reportes.predios_prueba', compact('sql','anio'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.predios_prueba', compact('sql','anio','sector','manzana'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Predios por Usuario".".pdf");

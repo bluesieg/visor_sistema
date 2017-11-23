@@ -33,7 +33,7 @@
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte de Cantidad de Contribuyentes y Predios por Zonas</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
-            AÑO: {{ $anio }}
+            AÑO: {{ $anio }} - SECTOR {{ $sector }} - MANZANA {{ $manzana }}
     </div>
    
     <input type="hidden" value=" {{$num= 1}}">
@@ -44,26 +44,24 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
             <thead>
             <tr >
-                <th style="text-align: center;">NOMBRE</th>
-                <th style="text-align: center;">DNI</th>
-                <th style="text-align: center;">USUARIO</th>
-                <th style="width: 7%">SECTOR</th>
-                <th style="width: 5%;">MZ</th>
-                <th style="width: 5%;">LOTE</th>
-                <th style="width: 5%;">AÑO</th>
-                <th style="width: 8%;">CODIGO VIA</th>
+                <th style="width: 5%;">N°</th>
+                <th style="width: 10%; text-align: center;">LOTE</th>
+                <th style="width: 40%; text-align: center;">NOMBRE</th>
+                <th style="width: 10%; text-align: center;">DNI</th>
+                <th style="width: 10%; text-align: center;">USUARIO</th>
+                <th style="width: 10%; text-align: center;">AÑO</th>
+                <th style="width: 15%; text-align: center;">CODIGO VIA</th>
             </tr>
             </thead>
             <tbody>
 
             @foreach ($sql as $cont)
                 <tr>
+                    <td style="text-align: center;">{{ $num++ }}</td>
+                    <td style="text-align: center;">{{ $cont->lote }}</td>
                     <td style="text-align: center;">{{ $cont->nom_usu }}</td>
                     <td style="text-align: center;">{{$cont->dni_usu}}</td>
                     <td style="text-align: center;">{{ $cont->usuario }}</td>
-                    <td style="text-align: center;">{{ $cont->sec }}</td>
-                    <td style="text-align: center;">{{ $cont->mzna }}</td>
-                    <td style="text-align: center;">{{ $cont->lote }}</td>
                     <td style="text-align: center;">{{ $cont->anio }}</td>
                     <td style="text-align: center;">{{ $cont->id_via }}</td>
                     
