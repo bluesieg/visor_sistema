@@ -346,3 +346,56 @@ function abrir_reporte_contribuyente_predio()
 {
     window.open('reporte_contribuyentes_predios_zonas/'+$('#select_sup_anio_rcp').val()+'/'+$('#select_sector_rcp').val()+'');
 }
+
+
+/********************************REPORTE_EMISION_PREDIAL_POR_USO************************************************************/
+
+function crear_dialogo_reporte_emision_predial()
+{
+    $("#dialog_emision_predial").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Uso :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_emision_predial(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+}
+
+function cargar_manzana_emision_predial(input)
+{
+    $("#"+input).html('');
+    MensajeDialogLoadAjax(input, '.:: CARGANDO ...');
+    $.ajax({url: 'selmzna?sec='+$("#select_sec_ep").val(),
+        type: 'GET',
+        success: function(r)
+        {
+            $(r).each(function(i, v){ 
+                $("#"+input).append('<option value="' + v.id_mzna + '">' + v.codi_mzna + '</option>');
+            })
+            MensajeDialogLoadAjaxFinish(input);
+        },
+        error: function(data) {
+            console.log('error');
+            console.log(data);
+        }
+    });
+}
+
+function dlg_reporte_emision_predial_uso(tipo)
+{
+    if (tipo===0) {
+        crear_dialogo_reporte_emision_predial();
+        cargar_manzana_emision_predial('select_mz_ep');
+    } 
+}
+
+function abrir_reporte_emision_predial()
+{
+    window.open('reporte_emision_predial/'+$('#select_anio_ep').val()+'/'+$('#select_sec_ep').val()+'/'+$('#select_mz_ep').val()+'');
+}

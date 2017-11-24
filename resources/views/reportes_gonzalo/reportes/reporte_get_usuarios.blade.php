@@ -46,10 +46,12 @@
                  <th style="width: 5%; text-align: center;">Nº</th>
                 <th style="width: 25%; text-align: center;">NOMBRE</th>
                 <th style="width: 10%; text-align: center;">DNI</th>
-                <th style="width: 10%; text-align: center;">SECTOR</th>
-                <th style="width: 10%; text-align: center;">MZ</th>
-                <th style="width: 10%; text-align: center;">LOTE</th>
+                <th style="width: 5%; text-align: center;">SECTOR</th>
+                <th style="width: 5%; text-align: center;">MZ</th>
+                <th style="width: 5%; text-align: center;">LOTE</th>
                 <th style="width: 30%; text-align: center;">CONTRIBUYENTE</th>
+                <th style="width: 10%; text-align: center;">FECHA REGISTRO</th>
+                <th style="width: 5%; text-align: center;">HORA REGISTRO</th>
             </tr>
             </thead>
             <tbody>
@@ -62,7 +64,9 @@
                     <td style="text-align: center;">{{ $cont->sec }}</td>
                     <td style="text-align: center;">{{ $cont->mzna }}</td>
                     <td style="text-align: center;">{{ $cont->lote }}</td>
-                    <td style="text-align: center;">{{ $cont->contribuyente }}</td>        
+                    <td style="text-align: center;">{{ $cont->contribuyente }}</td>
+                    <td style="text-align: center;">{{ $cont->fec_reg }}</td>
+                    <td style="text-align: center;">{{ $cont->hora_reg }}</td> 
                 </tr>
             @endforeach
             </tbody>

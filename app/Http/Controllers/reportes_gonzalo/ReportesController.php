@@ -22,7 +22,8 @@ class ReportesController extends Controller
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
         $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion');
-        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','condicion'));
+        $usos_predio_arb = DB::table('adm_tri.uso_predio_arbitrios')->orderBy('id_uso_arb', 'asc')->get();
+        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','condicion','usos_predio_arb'));
     }
     public function index_supervisores()
     {
@@ -261,7 +262,7 @@ class ReportesController extends Controller
     
     public function reporte_usuarios($id)
     {
-        $sql=DB::table('adm_tri.vw_predi_usu')->where('id_usu',$id)->orderBy('id_usu')->get();
+        $sql=DB::table('adm_tri.vw_predi_usu')->where('id_usu',$id)->orderBy('fec_reg','asc')->get();
 
         if(count($sql)>0)
         {
@@ -279,14 +280,36 @@ class ReportesController extends Controller
     public function reporte_contribuyentes_predios_zonas($anio,$sector)
     {
         
-        $sql=DB::table('reportes.vw_02_contri_predios')->where('anio',$anio)->where('id_sec',$sector)->orderBy('id_contrib')->get();
-
+        $sql=DB::table('adm_tri.vw_predi_urba')->where('anio',$anio)->where('id_sec',$sector)->orderBy('id_contrib')->get();
+        
+        $nro_sectores = DB::select("select count(distinct id_contrib) as total from adm_tri.vw_predi_urba where id_sec = '$sector' ");
+       
+        $total = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where id_sec = '$sector' ");
+       
         if(count($sql)>0)
         {
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_predios_zonas', compact('sql','anio','sector'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_predios_zonas', compact('sql','anio','sector','nro_sectores','total'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream("Reporte Contribuyentes y Predios por Zonas".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+    }
+    
+    public function reporte_emision_predial($anio,$sector,$manzana)
+    {
+        
+        $sql = DB::table('reportes.')->where('ano_cta',$anio)->where('ivpp','>',$min)->where('ivpp','<',$max)->limit($num_reg)->orderBy('ivpp', 'desc')->get();
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Listado de Contribuyentes".".pdf");
         }
         else
         {

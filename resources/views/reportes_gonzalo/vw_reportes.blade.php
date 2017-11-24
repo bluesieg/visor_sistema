@@ -49,47 +49,7 @@
                         </tbody>
                     </table>
                     
-                    <table class="table table-striped table-forum">
-                        <thead>
-                        <tr>
-                            <th colspan="2" style="width: 100%;">REPORTE DE SUPERVISORES</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <!-- TR -->
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
-                                <h4><a href="#" onclick="dlg_supervisor_reportes(0);" id="titulo_r1">
-                                        Predios Ingresados Por Usuario
-                                    </a>
-                                    <small>Descripción reporte 1</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
-                                <h4><a href="#" onclick="dlg_busqueda_usuarios(0);" id="titulo_r1">
-                                        Avance por Usuario
-                                    </a>
-                                    <small>Descripción reporte 1</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        <!-- end TR -->
-
-
-                   
-
-                        </tbody>
-                    </table>
+                 
                     
                     <table class="table table-striped table-forum">
                         <thead>
@@ -111,17 +71,7 @@
                             </td>
           
                          
-                        </tr>
-                        <!-- end TR -->
-
-
-                   
-
-                       
-                   
-                    
-                    
-                       
+                        </tr>  
 
                         <!-- TR -->
                         <tr>
@@ -145,6 +95,32 @@
                                         REPORTE 4: Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 4</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reporte_emision_predial_uso(0);" id="titulo_r1">
+                                        REPORTE 5: Reporte Emision Predial por Uso.
+                                    </a>
+                                    <small>Descripción reporte 5</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reporte_base_imponible(0);" id="titulo_r1">
+                                        REPORTE 6: Reporte del Monto de la Base Imponible Afecto y Exonerado.
+                                    </a>
+                                    <small>Descripción reporte 6</small>
                                 </h4>
                             </td>
           
@@ -572,6 +548,45 @@ $("#dlg_usuario").keypress(function (e) {
                             </select><i></i> </label>
                     </section>
    
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_emision_predial" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row">
+                    <section class="col col-4" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='select_anio_ep' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_ep)
+                                    <option value='{{$anio_ep->anio}}' >{{$anio_ep->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">SECTOR:</label>
+                        <label class="select">
+                            <select id='select_sec_ep' class="form-control col-lg-8" onchange="cargar_manzana_emision_predial('select_mz_ep');">
+                                @foreach ($sectores as $sector_ep)
+                                    <option value='{{$sector_ep->id_sec}}' >{{$sector_ep->sector}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">MANZANA:</label>
+                        <label class="select">
+                            <select id='select_mz_ep' class="form-control col-lg-8" >
+                               
+                            </select><i></i> </label>
+                    </section>
+                   
                 </div>
                 <!-- end widget div -->
             </div>

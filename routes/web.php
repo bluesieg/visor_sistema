@@ -421,19 +421,20 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_supervisores/{anio}/{sector}/{manzana}', 'ReportesController@reportes'); 
         Route::get('listado_datos_contribuyentes/{anio}/{sector}', 'ReportesController@listado_contribuyentes'); 
         Route::get('listado_contribuyentes_predios/{anio}/{sector}','ReportesController@listado_contribuyentes_predios');
-        
         Route::get('reporte_contribuyentes_exonerados/{anio}/{sector}/{tipo}','ReportesController@reporte_contribuyentes_exonerados');
-        
         Route::get('reporte_cantidad_contribuyentes/{anio}/{sector}','ReportesController@reporte_cantidad_contribuyentes');
+        
         //TRAER USUARIOS
         Route::get('reporte_usuarios/{id}', 'ReportesController@reporte_usuarios');
         Route::get('obtener_usuarios', 'ReportesController@get_usuarios'); 
         
         //*NUEVOS
-         Route::get('reporte_contribuyentes_predios_zonas/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
+        Route::get('reporte_contribuyentes_predios_zonas/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
+        Route::get('reporte_emision_predial/{anio}/{sector}/{manzana}','ReportesController@reporte_emision_predial');
          
-         
-          Route::get('reporte_supervisores','ReportesController@index_supervisores');
+        //REPORTE SUPERVISORES
+        Route::get('reporte_supervisores','ReportesController@index_supervisores');
+          
     });
     
     Route::group(['namespace' => 'catastro_gonzalo'], function() {
@@ -447,16 +448,4 @@ Route::group(['middleware' => 'auth'], function() {
 
     });
     
-    
-    
-    Route::group(['namespace' => 'catastro_gonzalo'], function() {
-       
-        //CONFIGURACION CATASTRO_GONZALO CALLES - VIAS
-        Route::resource('conf_vias_calles', 'ViasController');
-        Route::post('insertar_nueva_via_calle', 'ViasController@insertar_nueva_vc');
-        Route::get('listar_vias','ViasController@getVias');
-        Route::post('modificar_via_calle', 'ViasController@modificar_vc');
-        Route::post('eliminar_via_calle', 'ViasController@eliminar_vc');
-
-    });
 });
