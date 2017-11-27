@@ -2,6 +2,7 @@
 @section('content')
 <input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
 <input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
+<input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
 <section id="widget-grid" class="">  
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -75,12 +76,21 @@
                                 </button>
                             @endif
                             @if( $permisos[0]->btn_edit ==1 )
-                                <button id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <button onclick="fn_mod_archi_expe()" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                 </button>
                             @else
-                                <button onclick="sin_permiso();" id="btn_vw_contribuyentes_Editar" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <button onclick="sin_permiso();"  type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                </button>
+                            @endif
+                            @if( $permisos[0]->btn_del ==1 )
+                            <button onclick="fn_del_archi_expe()" type="button" class="btn btn-labeled bg-color-red txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Eliminar
+                                </button>
+                            @else
+                                <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-red txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Eliminar
                                 </button>
                             @endif
                             @if( $permisos[0]->btn_imp ==1 )

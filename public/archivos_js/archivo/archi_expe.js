@@ -112,6 +112,59 @@ function fn_mod_archi_expe()
         }
         });
 }
+function fn_del_archi_expe()
+{
+    if($("#per_del").val()==0)
+    {
+        sin_permiso();
+        return false;
+    }
+    if($("#id_contrib_hidden").val()==0)
+    {
+        mostraralertasconfoco("Seleccione Contribuyente","#dlg_nro_doc");
+        return false;
+    }
+    $.SmartMessageBox({
+            title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Confirmación Final!",
+            content : "ESTÁ POR ELIMINAR EL DOCUMENTO, ESTÁ SEGURO?...<br>Al eliminar ya no podrá recuperar la información",
+            buttons : '[Cancelar][Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+                        borrarfinal();
+            }
+            if (ButtonPressed === "Cancelar") {
+                    $.smallBox({
+                            title : "No se Elimino",
+                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                            color : "#C46A69",
+                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                            timeout : 3000
+                    });
+            }
+
+    });
+}
+function borrarfinal()
+{
+    Id=$('#table_doc').jqGrid ('getGridParam', 'selrow');
+    MensajeDialogLoadAjax('content_2', '.:: Eliminando ...');
+    $.ajax({
+        url: 'archi_expe/destroy',
+        type: 'post',
+        data: {_method: 'delete', _token:$("#_token").data('token'),id:Id},
+        success: function(r) 
+        {
+            jQuery("#table_doc").jqGrid('setGridParam', {url: 'list_arch_expe?contrib='+$("#id_contrib_hidden").val()}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('content_2');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('content_2');
+            console.log('error');
+            console.log(data);
+        }
+    });
+}
 function limpiar_new()
 {
     $('#ifrafile').attr('src', '');
@@ -144,22 +197,18 @@ function saveexpe(tip)
         mostraralertasconfoco("Ingresar Año correctamente","#dlg_anio");
         return false;
     }
-    if($("#dlg_fec").val()=="")
-    {
-        mostraralertasconfoco("Ingresar Fecha","#dlg_fec");
-        return false;
-    }
+//    if($("#dlg_fec").val()=="")
+//    {
+//        mostraralertasconfoco("Ingresar Fecha","#dlg_fec");
+//        return false;
+//    }
     if($("#dlg_direcc").val()=="")
     {
         mostraralertasconfoco("Ingresar Direccion","#dlg_direcc");
         return false;
     }
-    if($("#dlg_fec").val()=="")
-    {
-        mostraralertasconfoco("Ingresar Fecha","#dlg_fec");
-        return false;
-    }
-    dir=$("#dlg_direcc").val();
+    
+    dir=$("#dlg_direcc").val()+";";
     $("#div_direcc input:text").each(function() {
         if($(this).val()!="")
         {

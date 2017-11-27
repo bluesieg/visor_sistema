@@ -328,3 +328,13 @@ textarea:disabled{
 .table thead tr th{
     padding: 1px 2px;
 }    
+.carpeta
+{
+    cursor: pointer;
+}
+.carpeta :hover
+{
+    background-color: #ecebeb;
+    color: #666;
+}
+

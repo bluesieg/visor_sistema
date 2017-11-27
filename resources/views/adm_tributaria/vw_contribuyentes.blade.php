@@ -8,9 +8,9 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="text-right">
-                            <section class="col-lg-5" style="padding-left:2px;">
+                            <section class="col-lg-7" style="padding-left:2px;">
                                 <div class="input-group">
-                                    <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
+                                    <span class="input-group-addon">Buscar Contribuyente o Nro Documento<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
                                     <input type="text" id="vw_contrib_buscar" class="form-control text-uppercase">
                                     <span class="input-group-btn">
                                         <button class="btn btn-success" type="button" onclick="buscar_contrib();" title="BUSCAR">
@@ -76,18 +76,19 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['Codigo', ' Tip. Doc', 'N°. Documento', 'Contribuyente o Razon Social', 'Cod. Via', 'Calle / Via', 'Fono. Fijo', 'Celular',
+            colNames: ['Codigo','Tipo Persona', ' Tip. Doc', 'N°. Documento', 'Contribuyente o Razon Social', 'Cod. Via', 'Calle / Via', 'Fono. Fijo', 'Celular',
                 'tipo_persona','id_cond_exonerac','est_civil','email','id_dpto','id_prov','id_dist','id_via','nro_mun','dpto','manz','lote',
-                'dom_fis','tip_doc_conv','nro_doc_conv','conviviente','id_pers','id_conv','tip_doc'],
+                'dom_fis','tip_doc_conv','nro_doc_conv','con_pat','con_mat','con_nombres','id_pers','id_conv','tip_doc'],
             rowNum: 20, sortname: 'id_contrib', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE CONTRIBUYENTES REGISTRADOS', align: "center",
             colModel: [                
                 {name: 'id_persona', index: 'id_persona', align: 'left', width: 80},
+                {name: 'persona', index: 'persona', align: 'left', width: 100},
                 {name: 'tip_doc_desc', index: 'tip_doc_desc', align: 'center', width: 60},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 90},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
-                {name: 'cod_via', index: 'cod_via', align: 'center', width: 60},
+                {name: 'cod_via', index: 'cod_via', hidden:true},
                 {name: 'nom_via', index: 'nom_via', width: 130},
-                {name: 'tlfno_fijo', index: 'tlfno_fijo', width: 80},
+                {name: 'tlfno_fijo', index: 'tlfno_fijo', hidden:true},
                 {name: 'tlfono_celular', index: 'tlfono_celular', width: 80},
                 {name: 'tipo_persona', index: 'tipo_persona', hidden:true},
                 {name: 'id_cond_exonerac', index: 'id_cond_exonerac', hidden:true},
@@ -104,7 +105,9 @@
                 {name: 'ref_dom_fis', index: 'tlfono_celular', hidden:true},
                 {name: 'tip_doc_conv', index: 'tlfono_celular', hidden:true},
                 {name: 'nro_doc_conv', index: 'tlfono_celular', hidden:true},
-                {name: 'conviviente', index: 'tlfono_celular', hidden:true},
+                {name: 'conv_pat', index: 'conv_pat', hidden:true},
+                {name: 'conv_mat', index: 'conv_mat', hidden:true},
+                {name: 'conv_nombres', index: 'conv_nombres', hidden:true},
                 {name: 'id_pers', index: 'tlfono_celular', hidden:true},
                 {name: 'id_conv', index: 'tlfono_celular', hidden:true},
                 {name: 'tip_doc', index: 'tip_doc', hidden:true}
@@ -184,7 +187,7 @@
                                 <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Nro. Documento:</label>
                                     <label class="input">
-                                        <input id="txt_nro_doc" type="text" onkeypress="return soloDNI(event);" minlength="8" maxlength="8" placeholder="00000000" class="input-sm">
+                                        <input id="txt_nro_doc" type="text" onkeypress="return soloDNI(event);" onkeyup="limpiarcontri();" minlength="8" maxlength="8" placeholder="00000000" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left:5px;padding-right:5px;margin-top: 16px"> 
@@ -333,24 +336,37 @@
                             <div class="row">
                                 <section class="col col-3" style="padding-right:5px;">
                                     <label class="label">Tipo Documento:</label>
-                                    <label class="select">
                                         <select id="cb_tip_doc_2" class="input-sm" disabled="">
                                             @foreach ($tip_doc as $tip_doc2)
                                             <option value='{{$tip_doc2->tip_doc}}' >{{trim($tip_doc2->tipo_documento)}}</option>
                                             @endforeach                                           
-                                        </select><i></i></label>                        
+                                        </select>
                                 </section>                                
-                                <section class="col col-3" style="padding-left:5px;padding-right:5px;">
+                                <section class="col col-2" style="padding-left:5px;padding-right:5px;">
                                     <label class="label">Nro.Documento:</label>
                                     <label class="input">
                                         <input id="contrib_nro_doc_conv" type="text" placeholder="00000000" maxlength="8" class="input-sm" disabled="">
                                     </label>
                                 </section>
-                                <section class="col col-6" style="padding-left:5px;">
-                                    <label class="label">Apellidos y Nombres del Conyugue:</label>
+                                <section class="col col-2" style="padding-left:5px;">
+                                    <label class="label">Ape. Paterno:</label>
                                     <label class="input">
                                         <input type="hidden" id="vw_contrib_id_conv">
-                                        <input id="contrib_conviviente" type="text" class="input-sm" disabled="">
+                                        <input id="contrib_conviviente_pat" type="text" class="input-sm" disabled="">
+                                    </label>
+                                </section>
+                                <section class="col col-2" style="padding-left:5px;">
+                                    <label class="label">Ape. Materno:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="vw_contrib_id_conv">
+                                        <input id="contrib_conviviente_mat" type="text" class="input-sm" disabled="">
+                                    </label>
+                                </section>
+                                <section class="col col-3" style="padding-left:5px;">
+                                    <label class="label">Nombres:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="vw_contrib_id_conv">
+                                        <input id="contrib_conviviente_nom" type="text" class="input-sm" disabled="">
                                     </label>
                                 </section>
                             </div>    

@@ -121,7 +121,7 @@ class Sub_ModulosController extends Controller
         {
             $val->des_sub_mod=$request['des'];
             $val->titulo=$request['tit'];
-            $val->id_sistena=$request['sis'];
+            $val->id_sistema=$request['sis'];
             $val->ruta_sis=$request['ruta'];
             $val->save();
         }

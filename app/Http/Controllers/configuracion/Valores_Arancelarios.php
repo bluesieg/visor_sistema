@@ -125,6 +125,7 @@ class Valores_Arancelarios extends Controller {
         $data = $request->all();
         $cod_arancel = $request['anio'] . $request['sec'] . $request['mzna'] . $request['cod_via'];
         $data['cod_arancel'] = $cod_arancel;
+        $data['id_usu'] = Auth::user()->id;
 
         $insert = DB::table('catastro.arancel')->insert($data);
 

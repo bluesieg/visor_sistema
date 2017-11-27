@@ -72,8 +72,8 @@
                     </button>
                 @endif
                 @if( $permisos[0]->btn_del ==1 )
-                    <button  type="button" class="btn btn-labeled btn-danger">
-                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                <button  type="button" class="btn btn-labeled btn-danger" onclick="fn_confirmar_borrar_predio();">
+                        <span class="btn-label"><i class="glyphicon glyphicon-trash" ></i></span>Eliminar
                     </button>
                 @else
                     <button  type="button" class="btn btn-labeled btn-danger" onclick="sin_permiso()">
@@ -323,7 +323,7 @@
                         <div class="col-xs-10">
                         <div class="panel-group">                
                             <div class="panel panel-success">
-                                <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.</div>
+                                <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.<span id="tipeado"></span></div>
                                 <div class="panel-body cr-body" style="padding-top: 15px;">
                                     <div class="col-xs-2"></div>
                                     

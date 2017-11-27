@@ -41,7 +41,6 @@ class Arch_ContribuyenteController extends Controller
         $contri->id_usu = Auth::user()->id;
         $contri->save();
         return $contri->id_contrib;
-        
     }
   
 
@@ -117,8 +116,8 @@ class Arch_ContribuyenteController extends Controller
         }
         else
         {
-            $totalg = DB::connection('digitalizacion')->select("select count(id_contrib) as total from vw_contribuyentes where contribuyente like '%".strtoupper($request['name'])."%'");
-            $sql = DB::connection('digitalizacion')->table('vw_contribuyentes')->where('contribuyente','like', '%'.strtoupper($request['name']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $totalg = DB::connection('digitalizacion')->select("select count(id_contrib) as total from vw_contribuyentes where nombres like '%".strtoupper($request['name'])."%'");
+            $sql = DB::connection('digitalizacion')->table('vw_contribuyentes')->where('nombres','like', '%'.strtoupper($request['name']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
        
         }
         

@@ -54,7 +54,6 @@ class ReportesController extends Controller
         $flag = 1;
         if($mzna == '0')
         {
-
             $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('id_sec',$sec)->where('ano_cta',$anio)->get();
             $view =  \View::make('adm_tributaria.reportes.reporte_contribuyentes', compact('sql','anio','sec','mzna','flag'))->render();
         }
@@ -102,18 +101,16 @@ class ReportesController extends Controller
     function reporte_contribuyentes_otro($sec,$mzna,$anio){
 
         if($mzna == '0'){
+       
             $sql=DB::table('reportes.vw_02_contri_predios')->where('id_sec',$sec)->where('anio',$anio)->orderBy('id_contrib')->orderBy('nro_doc_conyugue')->get();
-            //$sql=DB::table('adm_tri.vw_contrib_predios_c')->where('id_sec',$sec)->where('ano_cta',$anio)->get();
-            $view =  \View::make('adm_tributaria.reportes.123_123', compact('sql','anio','sec','mzna'))->render();
         }
         else{
             $sql=DB::table('reportes.vw_02_contri_predios')->where('id_sec',$sec)->where('id_mzna',$mzna)->where('anio',$anio)->orderBy('id_contrib')->orderBy('nro_doc_conyugue')->get();
-            $view =  \View::make('adm_tributaria.reportes.123_123', compact('sql','anio','sec','mzna'))->render();
         }
-
-        if(count($sql)>0)
+        
+        if(count($sql)>=1)
         {
-            //$view =  \View::make('adm_tributaria.reportes.123_123',compact('sql'))->render();
+            $view =  \View::make('adm_tributaria.reportes.123_123', compact('sql','anio','sec','mzna'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream("PRUEBA".".pdf");

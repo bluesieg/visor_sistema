@@ -183,14 +183,8 @@ class PredioController extends Controller
     }
     public function destroy(Request $request)
     {
-        $predio=new Predios;
-        $val=  $predio::where("id_pred","=",$request['id'] )->first();
-        if(count($val)>=1)
-        {
-            $val->delete();
-        }
-        DB::select("select adm_tri.actualiza_base_predio(".$request['id'].")");
-        return "destroy ".$request['id'];
+        $id_pred=DB::select("select id_pred,anio from adm_tri.predios_anio where id_pred_anio=".$request['id']);
+        $return=DB::select("select adm_tri.fn_elimina_predio(".$id_pred[0]->id_pred.")");
     }
     public function ListManz(Request $request)
     {

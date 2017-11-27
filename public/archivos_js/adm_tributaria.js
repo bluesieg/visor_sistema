@@ -37,9 +37,9 @@ function buscar_contrib(){
 }
 function active_conyugue(tipo_contrib){
     if(tipo_contrib=='3'){
-        $("#contrib_nro_doc_conv").attr('disabled',false);
+        $("#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").attr('disabled',false);
     }else{
-        $("#contrib_nro_doc_conv").attr('disabled',true);
+        $("#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").attr('disabled',true);
     }
 }
 global_contrib_conviv=0;
@@ -69,7 +69,9 @@ function fn_consultar_persona(num){
                     $("#vw_contrib_contribuyente").val(data.contrib);
                     $("#vw_contrib_id_pers").val(data.id_pers);
                 }else{
-                    $("#contrib_conviviente").val(data.contrib);
+                    $("#contrib_conviviente_pat").val(data.ape_pat);
+                    $("#contrib_conviviente_mat").val(data.ape_mat);
+                    $("#contrib_conviviente_nom").val(data.nombres);
                     $("#vw_contrib_id_conv").val(data.id_pers);
                 }                
             }else{
@@ -126,7 +128,9 @@ function modificar_contrib(){
     $("#cb_tip_doc_2").val('02');
     $("#contrib_nro_doc_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'nro_doc_conv'));
     $("#vw_contrib_id_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'id_conv'));
-    $("#contrib_conviviente").val($("#table_Contribuyentes").getCell(id_contrib, 'conviviente')); 
+    $("#contrib_conviviente_pat").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_pat')); 
+    $("#contrib_conviviente_mat").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_mat')); 
+    $("#contrib_conviviente_nom").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_nombres')); 
     if($("#table_Contribuyentes").getCell(id_contrib, 'tipo_persona')=='3'){
         $("#contrib_nro_doc_conv").attr('disabled',false);
     }else{
@@ -288,6 +292,10 @@ function new_contrib() {
             id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
+            nro_conv:$("#contrib_nro_doc_conv").val(),
+            pat_conv:$("#contrib_conviviente_pat").val(),
+            mat_conv:$("#contrib_conviviente_mat").val(),
+            nom_conv:$("#contrib_conviviente_nom").val(),
             ref_dom_fis:($("#contrib_dom_fiscal").val()).toUpperCase() || '-',
             nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-'
         },
@@ -367,11 +375,11 @@ function filtro_tipo_doc_pers(tipo) {
 
 function limpiar_dlg_contrib(){
     $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
-    $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente").val('');
+    $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").val('');
     $("#vw_contrib_id_conv").val('');
     $("#contrib_est_civil").val('select');
     $("#hiddentxt_av_jr_calle_psje").val('0');
-    $("#contrib_nro_doc_conv").attr('disabled',true);
+    $("#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").attr('disabled',true);
     $("#vw_contrib_sel_tip_contrib").prop("selectedIndex", 0);
     $("#contrib_id_cond_exonerac").prop("selectedIndex", 0);
 }
@@ -521,3 +529,10 @@ function current_tab(id_report){
 //        }
 //    });    
 //}
+
+
+function limpiarcontri()
+{
+    $("#vw_contrib_contribuyente").val("");
+    $("#vw_contrib_id_pers").val('');
+}

@@ -121,6 +121,7 @@ function callpredtab()
         $("#dlg_mzna").val($("#selmnza option:selected").text());
         $('#dlg_dni,#dlg_contri').val("");
         $("#dlg_inp_areter,#dlg_inp_arecomter").val("");
+        $("#tipeado").text("");
         $('#dlg_inp_nvia_des,#dlg_inp_nvia,#dlg_inp_n,#dlg_inp_mz,#dlg_inp_lt,#dlg_inp_zn').val("");
         $('#dlg_inp_secc,#dlg_inp_piso,#dlg_inp_dpto,#dlg_inp_tdastand,#dlg_inp_refe, #dlg_inp_fech').val("");
         $("#s5_sel_condi,#s5_inp_basleg,#s5_inp_exp,#s5_inp_reso,#s5_inp_fechres,#s5_inp_anini,#s5_inp_anfin").val("");
@@ -199,13 +200,15 @@ function callpredtab()
     }
     function clickmodgrid()
     {
-        limpiarpred(2);
-       $("#dlg_reg_dj").dialog('open');
-       MensajeDialogLoadAjax('dlg_reg_dj', '.:: Cargando ...');
-       Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+       limpiarpred(2);
        
-       $("#dlg_idpre").val(Id);
-       $.ajax({url: 'predios_urbanos/'+Id,
+       Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+       if(Id)
+       {
+        $("#dlg_reg_dj").dialog('open');
+        MensajeDialogLoadAjax('dlg_reg_dj', '.:: Cargando ...');
+        $("#dlg_idpre").val(Id);
+        $.ajax({url: 'predios_urbanos/'+Id,
         type: 'GET',
         success: function(r) 
         {
@@ -247,6 +250,7 @@ function callpredtab()
                 $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,3,".",","));
                 $("#dlg_inp_areter").val(r[0].are_terr);
                 $("#dlg_inp_arecomter").val(r[0].are_com_terr);
+                $("#tipeado").text(" PREDIO TIPEADO POR : "+r[0].ape_nom);
                 MensajeDialogLoadAjaxFinish('dlg_reg_dj');
                 jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
                 jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/'+Id}).trigger('reloadGrid');
@@ -259,16 +263,20 @@ function callpredtab()
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
         }
         }); 
-        
-        
+       }
+       else
+       {
+           mostraralertasconfoco("No Hay Predio Seleccionado","#selsec");
+       }
 
     }
+    
     
     
 function fn_confirmar_predio()
 {
     if(parseInt($('#dlg_lot').val())<1||$('#dlg_lot').val()==""){mostraralertasconfoco('Ingresar un número de lote...',"#dlg_lot");return false}
-    if($('#dlg_inp_aranc').val()==""||$('#dlg_inp_aranc').val()==0){mostraralertasconfoco('No existe Arancel, comunicar al administrador...',"#dlg_inp_aranc");return false}
+    if($('#dlg_inp_aranc').val()==""){mostraralertasconfoco('No existe Arancel, comunicar al administrador...',"#dlg_inp_aranc");return false}
     if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
     if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia");return false}
     if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
@@ -388,6 +396,66 @@ function fn_confirmar_predio()
         });
        
     }
+function fn_confirmar_borrar_predio()
+{
+    Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+    if(Id)
+    {
+        $.SmartMessageBox({
+            title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Confirmación Final!",
+            content : 'Esta Por ELiminar El Predio.<br>Si Elimina EL predio no se Podra Recuperar la información, Esta Seguro?',
+            buttons : '[Cancelar][Aceptar]'
+        }, function(ButtonPressed) {
+                if (ButtonPressed === "Aceptar") {
+
+                        dlgDelete();
+                }
+                if (ButtonPressed === "Cancelar") {
+                        $.smallBox({
+                                title : "No se Eliminó",
+                                content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                                color : "#C46A69",
+                                iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                                timeout : 3000
+                        });
+                }
+
+        });
+    }
+    else
+    {
+        mostraralertasconfoco("No Hay Predio Seleccionado","#selsec");
+    }
+}
+    function dlgDelete()
+    {
+        if($("#per_del").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
+        Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+        MensajeDialogLoadAjax('table_predios', '.:: Eliminando ...');
+        $.ajax({
+            url: 'predios_urbanos/destroy',
+            type: 'post',
+            data: {_method: 'delete', _token:$("#btn_s1_delpiso").data('token'),id:Id},
+            success: function(r) 
+            {
+                jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
+                MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
+                MensajeDialogLoadAjaxFinish('table_predios');
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_predios');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
+    
+    
     function creardlgpiso()
     {
      $("#dlg_reg_piso").dialog({

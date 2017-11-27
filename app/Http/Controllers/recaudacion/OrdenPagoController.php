@@ -141,15 +141,28 @@ class OrdenPagoController extends Controller
 
 
             foreach ($sql as $Index => $Datos) {
+                if($Datos->fec_notifica==null)
+                {
+                    $Datos->fec_notifica='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
+                    $envio="";
+                }
+                else
+                {
+                    $Datos->fec_notifica=trim($this->getCreatedAtAttribute($Datos->fec_notifica)->format('d/m/Y'));
+                    $envio=$Datos->fec_notifica;
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_gen_fis;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_gen_fis),
                     trim($Datos->nro_fis),
-                    trim($Datos->fec_reg),
+                    trim($this->getCreatedAtAttribute($Datos->fec_reg)->format('d/m/Y')),
                     trim($Datos->anio),
                     trim($Datos->nro_doc),
                     trim($Datos->contribuyente),
                     '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="verop('.trim($Datos->id_gen_fis).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver OP</button>',
+                    trim($Datos->fec_notifica),
+                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="ing_fec_noti('.trim($Datos->id_gen_fis).','."'".trim($Datos->nro_fis)."' , '".$envio."'".')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ing Fecha Notificación</button>',
+
                 );
             }
             return response()->json($Lista);
@@ -274,5 +287,78 @@ class OrdenPagoController extends Controller
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("OP.pdf");
         }
+    }
+    ////////////////////////Fecha de Notificacion OP
+     public function notifica_op_index()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_noti_op' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        $sectores = DB::select('select * from catastro.sectores where id_sec>0 order by sector');
+        $manzanas = DB::select('select * from catastro.manzanas where id_mzna>0 and  id_sect=(select id_sec from catastro.sectores where id_sec>0 order by sector limit 1) ');
+        return view('recaudacion/vw_notifica_op',compact('anio_tra','sectores','manzanas','menu','permisos'));
+    }
+    public function edit_op_fec(Request $request)
+    {
+        $op=new orden_pago_master;
+        $val=  $op::where("id_gen_fis","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->fec_notifica=$request['fec'];
+            $val->save();
+        }
+        return $request['id'];
+    }
+    //////////////////////////////Reportes OP///////////////////////////////////
+    public function index_reportes_op()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_rep_op' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('recaudacion/vw_reportes_op', compact('menu','permisos','anio_tra'));
+    }
+    public function ver_reporte_op($an,$tip) 
+    {
+        if($tip=='1')
+        {
+            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio',$an)->where('fec_notifica',"<>",null)->get();
+            if(count($sql)>=1)
+            {
+                //$sql->fec_notifica=$this->getCreatedAtAttribute($sql->fec_notifica)->format('l d, F Y ');
+                $view =  \View::make('recaudacion.reportes.rep_op_notificada', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("OP.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+        }
+        if($tip=='3')
+        {
+            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio',$an)->where('fec_notifica',null)->get();
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('recaudacion.reportes.rep_op_sin_notificar', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("OP.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+        }
+        
     }
 }

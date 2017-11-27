@@ -31,7 +31,15 @@ class ContribuyentesController extends Controller
     }
 
     public function create(Request $request)
-    {            
+    {     
+        if($request['id_conv']==0&&$request['contrib_nro_doc_conv']==""&&$request['tipo_persona']==3)
+        {
+            $id_conv=$this->create_persona($request);
+        }
+        else
+        {
+            $id_conv=$request['id_conv'];
+        }
         $data = new Contribuyentes();
         $data->tipo_persona=$request['tipo_persona'];
         $data->tlfno_fijo=$request['tlfno_fijo']; 
@@ -48,16 +56,28 @@ class ContribuyentesController extends Controller
         $data->id_cond_exonerac=$request['id_cond_exonerac']; 
         $data->id_via=$request['id_via'];        
         $data->id_pers=$request['id_pers']; 
-        $data->id_conv=$request['id_conv'];
+        $data->id_conv=$id_conv;
         $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
         $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
         $data->id_persona=$id_persona;
         $data->activo=1;
         $data->fch_inscripcion=date('Y-m-d');
         $data->nom_via_2=$request['nom_via_2'];
+        $data->id_usu=Auth::user()->id;
         $data->save();        
         return $data->id_contrib;
       
+    }
+    function create_persona(Request $request){
+        $data = new Personas();
+        $data->pers_ape_pat = $request['pat_conv'];
+        $data->pers_ape_mat = $request['mat_conv'];
+        $data->pers_nombres = $request['nom_conv'];
+        $data->pers_tip_doc = "02";
+        $data->pers_nro_doc = "";
+        $data->revisar = 1;
+        $data->save();        
+        return $data->id_pers;
     }
 
     public function edit(Request $request, $id)
@@ -111,8 +131,9 @@ class ContribuyentesController extends Controller
         $data->pers_sexo = $request['pers_sexo'];
         $data->pers_fnac = $request['pers_fnac'];
         $image=$request['pers_foto'];
-        $img_file = file_get_contents($image);
-        $data->pers_foto = base64_encode($img_file);
+        //$img_file = file_get_contents($image);
+        //$data->pers_foto = base64_encode($img_file);
+        $data->pers_foto = $image;
         $data->save();        
         return $data->id_pers;
     }
@@ -126,6 +147,7 @@ class ContribuyentesController extends Controller
                     'id_pers' => trim(str_replace('-','',$contribuyente[0]->id_pers)),
                     'pers_foto'=> $contribuyente[0]->pers_foto,
                     'ape_pat'=> $contribuyente[0]->pers_ape_pat,
+                    'ape_mat'=> $contribuyente[0]->pers_ape_mat,
                     'nombres'=> $contribuyente[0]->pers_nombres,
             ]);
         }
@@ -143,8 +165,8 @@ class ContribuyentesController extends Controller
         $rq->data->dni	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
         $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
 
-        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
-//        $url = 'http://ws.ehg.pe/';
+//        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+        $url = 'http://ws.ehg.pe/';
         $options = array(
                 'http' => array(
                 'header'  => "Content-type: application/json\r\n",
@@ -220,7 +242,7 @@ class ContribuyentesController extends Controller
     function grid_contrib(Request $request){
         $buscar=$request['buscar'];
         if(isset($request['buscar'])){
-            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_contribuyentes where contribuyente like '%".$buscar."'");
+            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_contribuyentes where contribuyente||' '||nro_doc like '%".$buscar."%'");
         }else{
             $totalg = DB::select('select count(id_contrib) as total from adm_tri.vw_contribuyentes');
         }
@@ -246,7 +268,7 @@ class ContribuyentesController extends Controller
             $start = 0;
         }
         if(isset($request['buscar'])){
-            $sql = DB::table('adm_tri.vw_contribuyentes')->where('contribuyente', 'like', '%'.$buscar.'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $sql = DB::select("select * from adm_tri.vw_contribuyentes where contribuyente||' '||nro_doc like '%".$buscar."%' order by $sidx $sord limit $limit offset $start");
         }else{
             $sql = DB::table('adm_tri.vw_contribuyentes')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }
@@ -261,6 +283,7 @@ class ContribuyentesController extends Controller
             $Lista->rows[$Index]['id'] = $Datos->id_contrib;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_persona),
+                trim($Datos->persona),
                 trim($Datos->tip_doc_desc),
                 trim($Datos->nro_doc),
                 trim(str_replace("-", "",$Datos->contribuyente)), 
@@ -283,7 +306,9 @@ class ContribuyentesController extends Controller
                 trim($Datos->ref_dom_fis),                                
                 trim($Datos->tip_doc_conv),
                 trim($Datos->nro_doc_conv),
-                trim($Datos->conviviente),
+                trim($Datos->conv_pat),
+                trim($Datos->conv_mat),
+                trim($Datos->conv_nombres),
                 $Datos->id_pers,
                 $Datos->id_conv,
                 $Datos->tip_doc

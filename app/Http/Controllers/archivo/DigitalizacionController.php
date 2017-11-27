@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use App\Models\archivo\digitalizacion;
+use App\Models\archivo\auditoria_digitalizacion;
 
 class DigitalizacionController extends Controller
 {
@@ -38,9 +39,10 @@ class DigitalizacionController extends Controller
             $dig->id_tip_doc=$request['seltipdoc'];
             $dig->anio=$request['dlg_anio'];
             $dig->fecha=$request['dlg_fec'];
-            $dig->observacion=$request['dlg_obs_exp'];
+            $dig->observacion=strtoupper($request['dlg_obs_exp']);
             $dig->direccion=strtoupper($request['dlg_direcc_hiddn']);
             $dig->id_usuario = Auth::user()->id;
+            $dig->fec_reg = date("d/m/Y");
             $dig->save();
             $tipo_schema = DB::connection('digitalizacion')->select("select * from tip_doc where id_tip=".$request['seltipdoc']);
             if(count($tipo_schema)>=1)
@@ -71,22 +73,46 @@ class DigitalizacionController extends Controller
 
     public function edit(Request $request)
     {
+        
         $dig=new digitalizacion;
         $val=  $dig::where("id","=",$request['id_arch'] )->first();
         if(count($val)>=1)
         {
+            $this->crea_auditoria($val,$request);
+            $tipo_schema = DB::connection('digitalizacion')->select("select * from tip_doc where id_tip=".$request['seltipdoc']);
+            $file = $request->file('dlg_documento_file');
             if($val->id_tip_doc!=$request['seltipdoc']||$val->anio!=$request['dlg_anio'])
             {
                 $sql = DB::connection('digitalizacion')->select('select * from vw_digital where id='.$val->id);
-                $pdf = DB::connection('digitalizacion')->table(trim($sql[0]->schem).".".trim($sql[0]->abrev).$sql[0]->anio)->where('id',$val->id)->get();
-                $tipo_schema = DB::connection('digitalizacion')->select("select * from tip_doc where id_tip=".$request['seltipdoc']);
-                DB::connection('digitalizacion')->table(trim($tipo_schema[0]->schem).".".trim($tipo_schema[0]->abrev).$request['dlg_anio'])->insert([
-                    ['doc_b64' => $pdf[0]->doc_b64, 'id' => $val->id,'id_usuario'=>Auth::user()->id]
-                ]);
+                if($file)
+                {
+                    $file2 = \File::get($file);
+                    DB::connection('digitalizacion')->table(trim($tipo_schema[0]->schem).".".trim($tipo_schema[0]->abrev).$request['dlg_anio'])->insert([
+                        ['doc_b64' => base64_encode($file2), 'id' => $val->id,'id_usuario'=>Auth::user()->id]
+                    ]);
+                }
+                else
+                {
+                    $pdf = DB::connection('digitalizacion')->table(trim($sql[0]->schem).".".trim($sql[0]->abrev).$sql[0]->anio)->where('id',$val->id)->get();
+                    DB::connection('digitalizacion')->table(trim($tipo_schema[0]->schem).".".trim($tipo_schema[0]->abrev).$request['dlg_anio'])->insert([
+                        ['doc_b64' => $pdf[0]->doc_b64, 'id' => $val->id,'id_usuario'=>Auth::user()->id]
+                    ]);
+                }
                 DB::connection('digitalizacion')->table(trim($sql[0]->schem).".".trim($sql[0]->abrev).$sql[0]->anio)->where('id',$val->id)->delete();
                 $val->id_tip_doc=$request['seltipdoc'];
                 $val->anio=$request['dlg_anio'];
             }
+            else
+            {
+                if($file)
+                {
+                    $file2 = \File::get($file);
+                    DB::connection('digitalizacion')->table(trim($tipo_schema[0]->schem).".".trim($tipo_schema[0]->abrev).$request['dlg_anio'])
+                    ->where('id', $val->id)
+                    ->update(['doc_b64' => base64_encode($file2)]);
+                }
+            }
+            $val->id_tip_doc=$request['seltipdoc'];
             $val->fecha=$request['dlg_fec'];
             $val->observacion=$request['dlg_obs_exp'];
             $val->direccion=strtoupper($request['dlg_direcc_hiddn']);
@@ -94,16 +120,46 @@ class DigitalizacionController extends Controller
         }
         return $val->id;
     }
-
+    
+    public function crea_auditoria($val,Request $request)
+    {
+        $file = $request->file('dlg_documento_file');
+        $obs="";
+        if($file)
+        {
+            $obs="Cambio Archivo pdf";
+        }
+        $aud=new auditoria_digitalizacion;
+        $aud->id_contribuyente=$val->id_contribuyente;
+        $aud->id_tip_doc=$val->id_tip_doc;
+        $aud->anio=$val->anio;
+        $aud->fecha=$val->fecha;
+        $aud->observacion=$val->observacion;
+        $aud->id=$val->id;
+        $aud->direccion=$val->direccion;
+        $aud->id_usuario_mod = Auth::user()->id;
+        $aud->fec_mod = date("d/m/Y");
+        $aud->sql_mod = $obs." update digitalizacion set id_tip_doc=".$request['seltipdoc'].", fecha=".$request['dlg_fec'].", observacion=".$request['dlg_obs_exp'].", direccion=".strtoupper($request['dlg_direcc_hiddn']);
+        $aud->save();
+    }
     public function update(Request $request, $id)
     {
         //
     }
 
-    public function destroy($id)
-    {
-        //
+    public function destroy(Request $request)
+    {   
+        $dig=new digitalizacion;
+        $val=  $dig::where("id","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $tipo_schema = DB::connection('digitalizacion')->select("select * from tip_doc where id_tip=".$val->id_tip_doc);
+            DB::connection('digitalizacion')->table(trim($tipo_schema[0]->schem).".".trim($tipo_schema[0]->abrev).$val->anio)->where('id',$val->id)->delete();
+            $val->delete();
+        }
+        return "destroy ".$request['id'];
     }
+    
      function grid_expe(Request $request){
          if($request['contrib']==0)
          {
@@ -142,12 +198,20 @@ class DigitalizacionController extends Controller
             $Lista->records = $count;
 
             foreach ($sql as $Index => $Datos) {
+                if($Datos->fecha=="")
+                {
+                    $Datos->fecha="SIN FECHA";
+                }
+                else
+                {
+                    $Datos->fecha=$this->getCreatedAtAttribute($Datos->fecha)->format('d/m/Y');
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id),
                     trim($Datos->anio),
                     trim($Datos->documento),
-                    trim($this->getCreatedAtAttribute($Datos->fecha)->format('d/m/Y')),
+                    trim($Datos->fecha),
                     trim($Datos->observacion),
                     '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile('.trim($Datos->id).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                 );

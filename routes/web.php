@@ -324,6 +324,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('fis_rep/{tip}/{id}/{sec}/{man}','OrdenPagoController@reporte');
         Route::get('obtiene_op/{dat}/{sec}/{manz}/{an}/{ini}/{fin}', 'OrdenPagoController@getOP'); //
         Route::get('obtiene_con_sec', 'OrdenPagoController@getcontrbsec'); //
+        Route::get('notifica_op', 'OrdenPagoController@notifica_op_index'); //
+        Route::get('mod_noti_op', 'OrdenPagoController@edit_op_fec'); //
+        Route::get('reportes_op', 'OrdenPagoController@index_reportes_op'); //
+        Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@index_reportes_op'); 
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');

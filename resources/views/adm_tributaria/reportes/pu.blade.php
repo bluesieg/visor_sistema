@@ -175,7 +175,7 @@
         <tbody>
           @foreach ($sql_pis as $pis)
           <tr>
-              <td>{{$pis->num_pis}}</td>
+              <td>{{$pis->cod_piso}}</td>
               <td>{{$pis->clas}}</td>
               <td>{{$pis->mep}}</td>
               <td>{{$pis->esc}}</td>
