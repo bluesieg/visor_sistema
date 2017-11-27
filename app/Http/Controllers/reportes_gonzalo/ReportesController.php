@@ -21,7 +21,7 @@ class ReportesController extends Controller
         //$condicion = DB::table('adm_tri.exoneracion')->get();
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
-        $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion');
+        $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion order by id_exo asc');
         $usos_predio_arb = DB::table('adm_tri.uso_predio_arbitrios')->orderBy('id_uso_arb', 'asc')->get();
         return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','condicion','usos_predio_arb'));
     }
@@ -299,14 +299,40 @@ class ReportesController extends Controller
         }
     }
     
-    public function reporte_emision_predial($anio,$sector,$manzana)
+    public function reporte_emision_predial($anio,$sector,$uso)
     {
         
-        $sql = DB::table('reportes.')->where('ano_cta',$anio)->where('ivpp','>',$min)->where('ivpp','<',$max)->limit($num_reg)->orderBy('ivpp', 'desc')->get();
+        $sql = DB::table('reportes.vw_predios_tipo_uso_arb')->where('anio',$anio)->where('id_sec',$sector)->where('id_uso_arb',$uso)->get();
+        
+        $nombre_uso = DB::select("select uso_arbitrio from reportes.vw_predios_tipo_uso_arb where id_uso_arb = '$uso' ");
+        
+        $total = DB::select("select count(uso_arbitrio) as usos from reportes.vw_predios_tipo_uso_arb where id_uso_arb = '$uso' and id_sec='$sector'");
         
         if(count($sql)>0)
         {
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql','anio','sector','nombre_uso','total'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Listado de Contribuyentes".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+    }
+    
+    public function reporte_cant_cont_ded_mont_bas_imp($anio,$sector,$condicion)
+    {
+        
+        $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_sec',$sector)->where('id_cond_exonerac',$condicion)->get();
+        
+        $nombre_condicion = DB::select("select desc_exon from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' ");
+        
+        $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_sec = '$sector'");
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_cant_cont_ded_mont_bas_imp', compact('sql','anio','sector','nombre_condicion','total'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Listado de Contribuyentes".".pdf");

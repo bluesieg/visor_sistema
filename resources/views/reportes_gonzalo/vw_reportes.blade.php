@@ -117,8 +117,8 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reporte_base_imponible(0);" id="titulo_r1">
-                                        REPORTE 6: Reporte del Monto de la Base Imponible Afecto y Exonerado.
+                                <h4><a href="#" onclick="dlg_reporte_cant_cont_ded_mont_bas_imp(0);" id="titulo_r1">
+                                        REPORTE 6: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
                                     </a>
                                     <small>Descripción reporte 6</small>
                                 </h4>
@@ -361,18 +361,18 @@ $("#dlg_usuario").keypress(function (e) {
                     <section class="col col-6" style="padding-right:5px;">
                         <label class="label">AÑO:</label>
                         <label class="select">
-                            <select id='select_sup_anio' class="form-control col-lg-8">
-                                @foreach ($anio_tra as $anio_7)
-                                    <option value='{{$anio_7->anio}}' >{{$anio_7->anio}}</option>
+                            <select id='select_sup_anio_dc' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_dc)
+                                    <option value='{{$anio_dc->anio}}' >{{$anio_dc->anio}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>
                     <section class="col col-6" style="padding-left:5px;padding-right:5px;">
                         <label class="label">SECTOR:</label>
                         <label class="select">
-                            <select id='select_sector' class="form-control col-lg-8" onchange="cargar_manzana_contribuyente('select_manzana');">
-                                @foreach ($sectores as $sector_7)
-                                    <option value='{{$sector_7->id_sec}}' >{{$sector_7->sector}}</option>
+                            <select id='select_sector_dc' class="form-control col-lg-8">
+                                @foreach ($sectores as $sector_dc)
+                                    <option value='{{$sector_dc->id_sec}}' >{{$sector_dc->sector}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>
@@ -393,18 +393,18 @@ $("#dlg_usuario").keypress(function (e) {
                     <section class="col col-6" style="padding-right:5px;">
                         <label class="label">AÑO:</label>
                         <label class="select">
-                            <select id='select_sup_anio' class="form-control col-lg-8">
-                                @foreach ($anio_tra as $anio_7)
-                                    <option value='{{$anio_7->anio}}' >{{$anio_7->anio}}</option>
+                            <select id='select_sup_anio_dcp' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_dcp)
+                                    <option value='{{$anio_dcp->anio}}' >{{$anio_dcp->anio}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>
                     <section class="col col-6" style="padding-left:5px;padding-right:5px;">
                         <label class="label">SECTOR:</label>
                         <label class="select">
-                            <select id='select_sect' class="form-control col-lg-8" onchange="cargar_manzana_contribuyente_predio('select_mzna');">
-                                @foreach ($sectores as $sector_7)
-                                    <option value='{{$sector_7->id_sec}}' >{{$sector_7->sector}}</option>
+                            <select id='select_sect_dcp' class="form-control col-lg-8">
+                                @foreach ($sectores as $sector_dcp)
+                                    <option value='{{$sector_dcp->id_sec}}' >{{$sector_dcp->sector}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>
@@ -573,17 +573,60 @@ $("#dlg_usuario").keypress(function (e) {
                     <section class="col col-4" style="padding-left:5px;padding-right:5px;">
                         <label class="label">SECTOR:</label>
                         <label class="select">
-                            <select id='select_sec_ep' class="form-control col-lg-8" onchange="cargar_manzana_emision_predial('select_mz_ep');">
+                            <select id='select_sec_ep' class="form-control col-lg-8">
                                 @foreach ($sectores as $sector_ep)
                                     <option value='{{$sector_ep->id_sec}}' >{{$sector_ep->sector}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>
                     <section class="col col-4" style="padding-left:5px;padding-right:5px;">
-                        <label class="label">MANZANA:</label>
+                        <label class="label">USO:</label>
+                        <label class="select"> 
+                            <select id='select_uso_ep' class="form-control col-lg-8" >
+                                @foreach ($usos_predio_arb as $usos_ep)
+                                    <option value='{{$usos_ep->id_uso_arb}}' >{{$usos_ep->uso_arbitrio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                   
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_cant_cont_ded_mont_bas_imp" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row">
+                    <section class="col col-4" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
                         <label class="select">
-                            <select id='select_mz_ep' class="form-control col-lg-8" >
-                               
+                            <select id='select_anio_ccdmbi' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_ccdmbi)
+                                    <option value='{{$anio_ccdmbi->anio}}' >{{$anio_ccdmbi->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">SECTOR:</label>
+                        <label class="select">
+                            <select id='select_sec_ccdmbi' class="form-control col-lg-8">
+                                @foreach ($sectores as $sector_ccdmbi)
+                                    <option value='{{$sector_ccdmbi->id_sec}}' >{{$sector_ccdmbi->sector}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">CONDICION:</label>
+                        <label class="select"> 
+                            <select id='select_condicion_ccdmbi' class="form-control col-lg-8" >
+                                @foreach ($condicion as $condicion_ccdmbi)
+                                    <option value='{{$condicion_ccdmbi->id_exo}}' >{{$condicion_ccdmbi->desc_exon}}</option>
+                                @endforeach
                             </select><i></i> </label>
                     </section>
                    

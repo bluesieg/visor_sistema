@@ -33,7 +33,24 @@
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE EMISION PREDIAL POR USO</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
-            AÑO: {{ $anio }} - Sector: {{$sector}}
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%; text-align: center;">AÑO</th>
+                        <th style="width: 5%; text-align: center;">SECTOR</th>
+                        <th style="width: 5%; text-align: center;">TIPO DE USO</th>
+                        <th style="width: 5%; text-align: center;">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                            <td style="text-align: center;">{{ $anio }}</td>
+                            <td style="text-align: center;">{{ $sector }}</td>
+                            <td style="text-align: center;">{{ $nombre_uso[0]->uso_arbitrio }}</td>
+                            <td style="text-align: center;">{{ $total[0]->usos }}</td>
+                    </tr>
+                </tbody>
+            </table>
     </div>
     
     <input type="hidden" value=" {{$num= 1}}">
@@ -44,11 +61,10 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.0em;">
             <thead>
             <tr >
-                <th style="width: 5%;">N°</th>
-                <th style="width: 10%">DNI/RUC</th>
-                <th style="width: 30%;">CONTRIBUYENTE</th>
-                <th style="width: 15%;">TIPO PERSONA</th>
-                <th style="width: 40%">DOMICILIO</th>
+                <th style="width: 5%; text-align: center;">N°</th>
+                <th style="width: 10%; text-align: center;">DNI/RUC</th>
+                <th style="width: 30%; text-align: center;">CONTRIBUYENTE</th>
+                <th style="width: 55%; text-align: center;">DOMICILIO</th>
             </tr>
             </thead>
             <tbody>
@@ -56,10 +72,9 @@
             @foreach ($sql as $cont)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{$cont->nro_doc}}</td>
-                    <td style="text-align: left;">{{ $cont->contribuyente }}</td>
-                    <td style="text-align: left;">{{$cont->persona}}</td>
-                    <td style="text-align: left;">{{$cont->dom_fis}}</td>
+                    <td style="text-align: center;">{{$cont->pers_nro_doc}}</td>
+                    <td style="text-align: center;">{{ $cont->contribuyente }}</td>
+                    <td style="text-align: center;">{{$cont->dir_pred}} - {{$cont->referencia}}</td>
                 </tr>
             @endforeach
             </tbody>

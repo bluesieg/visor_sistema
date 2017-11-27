@@ -430,7 +430,8 @@ Route::group(['middleware' => 'auth'], function() {
         
         //*NUEVOS
         Route::get('reporte_contribuyentes_predios_zonas/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
-        Route::get('reporte_emision_predial/{anio}/{sector}/{manzana}','ReportesController@reporte_emision_predial');
+        Route::get('reporte_emision_predial/{anio}/{sector}/{uso}','ReportesController@reporte_emision_predial');
+        Route::get('reporte_cant_cont_ded_mont_bas_imp/{anio}/{sector}/{condicion}','ReportesController@reporte_cant_cont_ded_mont_bas_imp');
          
         //REPORTE SUPERVISORES
         Route::get('reporte_supervisores','ReportesController@index_supervisores');

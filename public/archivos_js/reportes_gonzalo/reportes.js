@@ -108,33 +108,13 @@ function dlg_listado_datos_contribuyentes(tipo)
 {
     if (tipo===0) {
         crear_dialogo_listado_datos_contribuyentes();
-        cargar_manzana_contribuyente('select_manzana');
     } 
 }
 
-function cargar_manzana_contribuyente(input)
-{
-    $("#"+input).html('');
-    MensajeDialogLoadAjax(input, '.:: CARGANDO ...');
-    $.ajax({url: 'selmzna?sec='+$("#select_sector").val(),
-        type: 'GET',
-        success: function(r)
-        {
-            $(r).each(function(i, v){ 
-                $("#"+input).append('<option value="' + v.id_mzna + '">' + v.codi_mzna + '</option>');
-            })
-            MensajeDialogLoadAjaxFinish(input);
-        },
-        error: function(data) {
-            console.log('error');
-            console.log(data);
-        }
-    });
-}
 
 function abrir_reporte_listado_contribuyente()
 {
-    window.open('listado_datos_contribuyentes/'+$('#select_sup_anio').val()+'/'+$('#select_sector').val());
+    window.open('listado_datos_contribuyentes/'+$('#select_sup_anio_dc').val()+'/'+$('#select_sector_dc').val());
 }
 
 /********************************REPORTE_LISTADO_DATOS_CONTRIBUYENTES_PREDIOS**************************************************/
@@ -160,33 +140,13 @@ function dlg_listado_datos_contribuyentes_predios(tipo)
 {
     if (tipo===0) {
         crear_dialogo_listado_datos_contribuyentes_predios();
-        cargar_manzana_contribuyente_predio('select_mzna');
     } 
 }
 
-function cargar_manzana_contribuyente_predio(input)
-{
-    $("#"+input).html('');
-    MensajeDialogLoadAjax(input, '.:: CARGANDO ...');
-    $.ajax({url: 'selmzna?sec='+$("#select_sect").val(),
-        type: 'GET',
-        success: function(r)
-        {
-            $(r).each(function(i, v){ 
-                $("#"+input).append('<option value="' + v.id_mzna + '">' + v.codi_mzna + '</option>');
-            })
-            MensajeDialogLoadAjaxFinish(input);
-        },
-        error: function(data) {
-            console.log('error');
-            console.log(data);
-        }
-    });
-}
 
 function abrir_reporte_listado_contribuyente_predio()
 {
-    window.open('listado_contribuyentes_predios/'+$('#select_sup_anio').val()+'/'+$('#select_sect').val()+'');
+    window.open('listado_contribuyentes_predios/'+$('#select_sup_anio_dcp').val()+'/'+$('#select_sect_dcp').val()+'');
 }
 
 /********************************REPORTE_CANTIDAD_CONTRIBUYENTES_EXONERADOS**************************************************/
@@ -367,35 +327,47 @@ function crear_dialogo_reporte_emision_predial()
     }).dialog('open');
 }
 
-function cargar_manzana_emision_predial(input)
-{
-    $("#"+input).html('');
-    MensajeDialogLoadAjax(input, '.:: CARGANDO ...');
-    $.ajax({url: 'selmzna?sec='+$("#select_sec_ep").val(),
-        type: 'GET',
-        success: function(r)
-        {
-            $(r).each(function(i, v){ 
-                $("#"+input).append('<option value="' + v.id_mzna + '">' + v.codi_mzna + '</option>');
-            })
-            MensajeDialogLoadAjaxFinish(input);
-        },
-        error: function(data) {
-            console.log('error');
-            console.log(data);
-        }
-    });
-}
 
 function dlg_reporte_emision_predial_uso(tipo)
 {
     if (tipo===0) {
         crear_dialogo_reporte_emision_predial();
-        cargar_manzana_emision_predial('select_mz_ep');
     } 
 }
 
 function abrir_reporte_emision_predial()
 {
-    window.open('reporte_emision_predial/'+$('#select_anio_ep').val()+'/'+$('#select_sec_ep').val()+'/'+$('#select_mz_ep').val()+'');
+    window.open('reporte_emision_predial/'+$('#select_anio_ep').val()+'/'+$('#select_sec_ep').val()+'/'+$('#select_uso_ep').val()+'');
+}
+
+/********************************REPORTE_CANTIDAD_CONTRIBUYENTES_POR_CONDICION Y MONTO DE LA BASE IMPONIBLE************************************************************/
+
+function crear_dialogo_cant_cont_ded_mont_bas_imp()
+{
+    $("#dialog_cant_cont_ded_mont_bas_imp").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Uso :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_cant_cont_ded_mont_bas_imp(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+}
+
+
+function dlg_reporte_cant_cont_ded_mont_bas_imp(tipo)
+{
+    if (tipo===0) {
+        crear_dialogo_cant_cont_ded_mont_bas_imp();
+    } 
+}
+
+function abrir_reporte_cant_cont_ded_mont_bas_imp()
+{
+    window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
 }
