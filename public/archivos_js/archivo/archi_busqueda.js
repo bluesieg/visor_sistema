@@ -136,5 +136,74 @@ function lista_anio(an)
     jQuery("#table_doc").jqGrid('setGridParam', {url: 'busque_arch_expe?contrib='+$("#id_contrib_hidden").val()+'&tip_doc=0&an='+an+'&fin=0'}).trigger('reloadGrid');
 }
 
-
-
+function limpiar_new()
+{
+    $('#ifrafile').attr('src', '');
+    $("#seltipdoc").val(0);
+    $("#dlg_anio,#dlg_fec,#dlg_documento_file").val("");
+}
+function fn_new_archi_expe()
+{
+    if($("#id_contrib_hidden").val()==0)
+    {
+        mostraralertasconfoco("Seleccione Contribuyente","#dlg_nro_doc");
+        return false;
+    }
+   limpiar_new();
+    $("#dlg_new_expe").dialog({
+        autoOpen: false, modal: true, width: 1300, 
+        show:{ effect: "explode", duration: 500},
+        hide:{ effect: "explode", duration: 800}, resizable: false,
+        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Nuevo Documento</h4></div>",
+        buttons: [
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
+        }).dialog('open');
+}
+function fn_mod_archi_expe()
+{
+    fn_new_archi_expe();
+    MensajeDialogLoadAjax('dlg_new_expe', '.:: CARGANDO ...');
+    Id=$('#table_doc_pri').jqGrid ('getGridParam', 'selrow');
+    $.ajax({url: 'archi_expe/'+Id,
+        type: 'GET',
+        success: function(r) 
+        {
+            $("#id_arch").val(r[0].id);
+            $("#seltipdoc").val(r[0].id_tip_doc);
+            $("#dlg_anio").val(r[0].anio);
+            $("#dlg_fec").val(r[0].fecha);
+            $("#dlg_obs_exp").val(r[0].observacion);
+            var lista = r[0].direccion.split(';');
+            $("#dlg_direcc").val(lista[0]);
+            $("#div_direcc").html("");
+            for(i=1;i<lista.length-1;i++) {
+                $("#div_direcc").append('<div><div class="col-xs-12" style="margin-top: 10px;"></div>\n\
+                    <div class="col-xs-12" style="padding: 0px; ">\n\
+                        <div class="input-group input-group-md" style="width: 100%">\n\
+                            <span class="input-group-addon" style="width: 165px">Dirección &nbsp;<i class="fa fa-map"></i></span>\n\
+                            <div>\n\
+                                <input type="text"  class="form-control" style="height: 32px; width: 94%" value="'+lista[i]+'">\n\
+                            </div>\n\
+                             <span style="display: inline-block">\n\
+                                <button class="btn btn-danger" type="button" onclick="del_dir(this)" style="height: 32px;width: 32px">\n\
+                                    X\n\
+                                </button>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div></div>');
+                
+            };
+            MensajeDialogLoadAjaxFinish('dlg_new_expe');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_new_expe');
+        }
+        });
+}

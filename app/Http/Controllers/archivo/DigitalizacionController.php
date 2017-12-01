@@ -114,7 +114,7 @@ class DigitalizacionController extends Controller
             }
             $val->id_tip_doc=$request['seltipdoc'];
             $val->fecha=$request['dlg_fec'];
-            $val->observacion=$request['dlg_obs_exp'];
+            $val->observacion=strtoupper($request['dlg_obs_exp']);
             $val->direccion=strtoupper($request['dlg_direcc_hiddn']);
             $val->save();
         }
@@ -317,5 +317,155 @@ class DigitalizacionController extends Controller
             }
         }
         return $lista;
+    }
+    /////////// reportes///////////
+    public function index_reportes_arch()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_rep_arch' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('archivo/vw_reportes_archivo', compact('menu','permisos','anio_tra'));
+    }
+    public function ver_reporte_arc($contrib,$tip)
+    {
+        if($tip=='1')
+        {
+            return $this->rep_por_contri($contrib);
+        }
+        if($tip=='2')
+        {
+            return $this->rep_fallecidos();
+        }
+        if($tip=='3')
+        {
+            return $this->rep_sin_documentos();
+        }
+        if($tip=='4')
+        {
+            return $this->rep_por_direccion($contrib);
+        }
+        if($tip=='5')
+        {
+            return $this->rep_inafectos();
+        }
+    }
+    public function rep_por_contri($contrib)
+    {
+        $sql = DB::connection('digitalizacion')->table('vw_digital')->where('id_contribuyente',$contrib)->orderBy('anio', 'desc')->get();
+            if(count($sql)>=1)
+            {
+                for($i=0;$i<count($sql);$i++) 
+                {
+                    if($sql[$i]->fecha=="")
+                    {
+                        $sql[$i]->fecha="SIN FECHA";
+                    }
+                    else
+                    {
+                        $sql[$i]->fecha=$this->getCreatedAtAttribute($sql[$i]->fecha)->format('d/m/Y');
+                    }
+                }
+                $view =  \View::make('archivo.reportes.rep_por_contribuyente', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("por_contribuyente.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+    public function rep_fallecidos()
+    {
+        $sql = DB::connection('digitalizacion')->select("select t1.* from (select id_contribuyente,nro_documento,nombres,domicilio,nro_expediente,documento, id, anio,observacion from vw_digital tbl
+            where EXISTS(select id_contribuyente,Max(anio) As anio from vw_digital Group by id_contribuyente HAVING id_contribuyente = tbl.id_contribuyente And Max(anio) = tbl.anio)
+            order by id_contribuyente) t1
+            where t1.observacion like '%DEFUNCION%'");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_fallecidos', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("fallecidos.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+    public function rep_sin_documentos()
+    {
+        $sql = DB::connection('digitalizacion')->select("select t1.* from (select id_contribuyente,nro_documento,nombres,domicilio,nro_expediente,documento, id, anio,observacion from vw_digital tbl
+        where EXISTS(select id_contribuyente,Max(anio) As anio from vw_digital Group by id_contribuyente HAVING id_contribuyente = tbl.id_contribuyente And Max(anio) = tbl.anio)
+        order by id_contribuyente) t1
+        where t1.anio < 2010 ORDER BY nombres");
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('archivo.reportes.rep_sin_documentos', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("sin_documentos.pdf");
+        }
+        else
+        {
+            return "No Hay Datos";
+        }
+    }
+    public function rep_por_direccion($dir)
+    {
+        $consulta="";$iniciador=0;
+        $direcs = explode(" ", strtoupper($dir));
+        foreach($direcs as $dirs)
+        {
+            if($iniciador==1)
+            {
+                $consulta.=" AND ";
+            }
+            if($dirs!="")
+            {
+                $consulta.="t1.direccion like '%$dirs%'";
+            }
+            if($iniciador==0)
+            {
+                $iniciador=1;
+            }
+        }
+        $sql = DB::connection('digitalizacion')->select("select t1.* from (select id_contribuyente,nro_documento,nombres,domicilio,nro_expediente,documento, id, anio,direccion from vw_digital tbl
+        where EXISTS(select id_contribuyente,Max(anio) As anio from vw_digital Group by id_contribuyente HAVING id_contribuyente = tbl.id_contribuyente And Max(anio) = tbl.anio)
+        order by id_contribuyente) t1
+        where $consulta ORDER BY anio desc");
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('archivo.reportes.rep_por_direccion', compact('sql','dir'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("por_direccion.pdf");
+        }
+        else
+        {
+            return "No Hay Datos";
+        }
+    }
+    public function rep_inafectos()
+    {
+        $sql = DB::connection('digitalizacion')->select("select t1.* from (select id_contribuyente,nro_documento,nombres,domicilio,nro_expediente,documento, id, anio,observacion,direccion from vw_digital tbl
+            where EXISTS(select id_contribuyente,Max(anio) As anio from vw_digital Group by id_contribuyente HAVING id_contribuyente = tbl.id_contribuyente And Max(anio) = tbl.anio)
+            order by id_contribuyente) t1
+            where t1.observacion like '%INAFECT%'");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_inafectos', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("inafectos.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
     }
 }

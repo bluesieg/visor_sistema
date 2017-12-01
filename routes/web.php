@@ -327,7 +327,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('notifica_op', 'OrdenPagoController@notifica_op_index'); //
         Route::get('mod_noti_op', 'OrdenPagoController@edit_op_fec'); //
         Route::get('reportes_op', 'OrdenPagoController@index_reportes_op'); //
-        Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@index_reportes_op'); 
+        Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@ver_reporte_op'); 
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');
@@ -345,7 +345,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_doc_trans', 'AlcabalaController@get_transfe'); //
         Route::get('grid_trans_ina', 'AlcabalaController@get_inafecto'); //
         Route::get('alcab_rep/{id}','AlcabalaController@reporte');
-        
     });  
     Route::group(['namespace' => 'fiscalizacion'], function() {//modulo de fiscalizacion
         /////carta de requerimiendo
@@ -378,9 +377,7 @@ Route::group(['middleware' => 'auth'], function() {
         
     });  
     Route::get('$',function(){ echo 0;});//url auxiliar
-
     /*************************************** - REPORTES - *************************************** */
-
     Route::group(['namespace' => 'reportes'], function() {
         Route::resource('reportes', 'ReportesController');
                     /******************** CONTRITUYENTES  ********************/
@@ -395,14 +392,12 @@ Route::group(['middleware' => 'auth'], function() {
 
     });
     /*************************************** - PERMISOS - *************************************** */
-
     Route::group(['namespace' => 'permisos'], function() {
         Route::resource('modulos', 'ModulosController');
         Route::resource('sub_modulos', 'Sub_ModulosController');
         Route::resource('permisos', 'Permisos_Modulo_UsuarioController');
     });
     /*************************************** - Archivo - *************************************** */
-
     Route::group(['namespace' => 'archivo'], function() {
         Route::resource('archi_contribuyentes', 'Arch_ContribuyenteController');
         Route::get('list_arch_contrib', 'Arch_ContribuyenteController@grid_contrib');
@@ -415,11 +410,15 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_contrib_arch', 'DigitalizacionController@get_cotrib_byname'); //
         Route::get('validar_expe_arch', 'Arch_ContribuyenteController@validar'); //
         Route::get('validar_dir', 'DigitalizacionController@validar'); //
+        Route::resource('arch_busqueda', 'BusquedasController'); //
+        Route::get('busque_contrib_arch', 'BusquedasController@get_cotrib_byname'); //
+        Route::get('busque_archivo', 'BusquedasController@get_cotrib'); //
+        Route::get('busque_arch_expe', 'BusquedasController@grid_expe_busqueda'); //
+        Route::get('rep_archivo', 'DigitalizacionController@index_reportes_arch'); //
+        Route::get('ver_rep_arch/{contri}/{tipo}', 'DigitalizacionController@ver_reporte_arc'); 
     });
-
-
      /*************************************** - GONZALO - *************************************** */
-     Route::group(['namespace' => 'reportes_gonzalo'], function() {
+    Route::group(['namespace' => 'reportes_gonzalo'], function() {
         Route::resource('reportes_gonza', 'ReportesController');
         Route::get('reporte_contribuyentes/{anio}/{min}/{max}/{num_reg}','ReportesController@reportes_contribuyentes');
         Route::get('reporte_supervisores/{anio}/{sector}/{manzana}', 'ReportesController@reportes'); 
@@ -441,7 +440,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_supervisores','ReportesController@index_supervisores');
           
     });
-    
     Route::group(['namespace' => 'catastro_gonzalo'], function() {
        
         //CONFIGURACION CATASTRO_GONZALO CALLES - VIAS
@@ -452,5 +450,4 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('eliminar_via_calle', 'ViasController@eliminar_vc');
 
     });
-    
 });

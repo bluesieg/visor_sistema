@@ -19,7 +19,8 @@ class BusquedasController extends Controller
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
-        return view('archivo/vw_busquedas', compact('menu','permisos'));
+        $tip_doc = DB::connection('digitalizacion')->select("select * from tip_doc");
+        return view('archivo/vw_busquedas', compact('menu','permisos','tip_doc'));
     }
 
     public function create()

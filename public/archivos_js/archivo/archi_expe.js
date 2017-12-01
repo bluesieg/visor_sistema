@@ -363,7 +363,7 @@ function busqueda(tip)
         success: function(r) 
         {
             limpiar_arch_expe();
-            if(r.length>0)
+            if(r!=0)
             {
                 $("#id_contrib_hidden").val(r[0].id_contrib);
                 $("#dlg_num_exp").val(r[0].nro_expediente);

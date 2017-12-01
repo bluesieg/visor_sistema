@@ -344,6 +344,22 @@ class OrdenPagoController extends Controller
                 return "No Hay Datos";
             }
         }
+        if($tip=='2')
+        {
+            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio',$an)->where('fec_notifica',"<>",null)->get();
+            if(count($sql)>=1)
+            {
+                //$sql->fec_notifica=$this->getCreatedAtAttribute($sql->fec_notifica)->format('l d, F Y ');
+                $view =  \View::make('recaudacion.reportes.rep_op_notificada', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("OP.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+        }
         if($tip=='3')
         {
             $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio',$an)->where('fec_notifica',null)->get();

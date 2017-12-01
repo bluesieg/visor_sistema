@@ -167,6 +167,7 @@ return [
          */
         Jenssegers\Date\DateServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -230,6 +231,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Carbon' => 'Carbon\Carbon',
         'Date' => Jenssegers\Date\Date::class,
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 
     ],
 

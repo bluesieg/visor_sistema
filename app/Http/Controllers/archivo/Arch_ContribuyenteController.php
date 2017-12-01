@@ -66,8 +66,16 @@ class Arch_ContribuyenteController extends Controller
             }
             
         }
-        $contrivw[0]->fch_nac=trim($this->getCreatedAtAttribute($contrivw[0]->fch_nac)->format('d/m/Y'));
-        return $contrivw;
+        if(count($contrivw)>=1)
+        {
+            $contrivw[0]->fch_nac=trim($this->getCreatedAtAttribute($contrivw[0]->fch_nac)->format('d/m/Y'));
+            return $contrivw;
+        }
+        else
+        {
+            return 0;
+        }
+        
     }
 
     public function edit($id, Request $request)

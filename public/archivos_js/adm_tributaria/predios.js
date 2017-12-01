@@ -295,7 +295,7 @@ function fn_confirmar_predio()
         }
         else
         {
-            texto="El Predio, ya fue registrado por el/los Contribuyente/s "+r+"<br>Desea Continuar?"
+            texto="El Predio, ya fue registrado por el/los Contribuyente/s <div style='height=200px;overflow-y: scroll;height: 150px !important;'>"+r+"</div><br>Desea Continuar?"
         }
         $.SmartMessageBox({
             title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Confirmación Final!",
