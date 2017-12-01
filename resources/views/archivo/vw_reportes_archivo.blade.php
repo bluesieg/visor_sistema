@@ -74,6 +74,129 @@
                                 </h4>
                             </td>
                         </tr>
+                        
+                         <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-dollar fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(6);" >
+                                        Contribuyentes con Compra y Venta
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan una Compra o Venta en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-gift fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(7);" >
+                                        Contribuyentes con Donaciones
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan Donaciones en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-refresh fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(8);" >
+                                        Contribuyentes con Transferencias
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan Transferencias en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-share fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(9);" >
+                                        Contribuyentes con Sucesión Intestada
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan  Sucesión Intestada en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-text-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(10);" >
+                                        Contribuyentes con Sucesión Testamentaria
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan  Sucesión Testamentaria en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-child fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(11);" >
+                                        Contribuyentes con Anticipo de Legítima
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan Anticipo de Legítima en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-users fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(12);" >
+                                        Contribuyentes con Subdivisión
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan Subdivisión en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-user fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(13);" >
+                                        Contribuyentes con Independización
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan Independización en su Declaración de Inscripción </small>
+                                </h4>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(14);" >
+                                        Documentos: Declaración de descargo
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que tengan Declaración de descargo </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(15);" >
+                                        Rectificatoria Unificación
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que realizaron una rectificación por Unificación </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(16);" >
+                                        Rectificatoria Subdivisión
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que realizaron una rectificación por Subdivisión </small>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_ar_reportes(17);" >
+                                        Rectificatoria Aumento de valor
+                                    </a>
+                                    <small>Descripción reporte: Muestra todos los contribuyentes que realizaron una rectificación por Aumento de valor </small>
+                                </h4>
+                            </td>
+                        </tr>
                         <!-- end TR -->
                         </tbody>
                     </table>

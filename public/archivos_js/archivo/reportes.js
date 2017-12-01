@@ -121,7 +121,7 @@ function dlg_ar_reportes(tipo)
         $("#ver_rep1").show();
         $("#h4_dlg").text(".: Documentos por Contribuyente :.");
     } 
-    if(tipo==2||tipo==3||tipo==5)
+    if(tipo==2||tipo==3||tipo>=5)
     {
         abrir_reporte(tipo);
     }

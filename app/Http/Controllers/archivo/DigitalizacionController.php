@@ -352,6 +352,58 @@ class DigitalizacionController extends Controller
         {
             return $this->rep_inafectos();
         }
+        if($tip=='6')
+        {
+            return $this->rep_compraventa();
+        }
+         if($tip=='7')
+        {
+            return $this->rep_donaciones();
+        }
+         if($tip=='8')
+        {
+            return $this->rep_transferencias();
+        }
+         if($tip=='9')
+        {
+            return $this->rep_sucesionintestada();
+        }
+         if($tip=='10')
+        {
+            return $this->rep_sucesiontestamentaria();
+        }
+         if($tip=='10')
+        {
+            return $this->rep_anticipodelegitima();
+        }
+         if($tip=='11')
+        {
+            return $this->rep_anticipodelegitima();
+        }
+          if($tip=='12')
+        {
+            return $this->rep_subdivision();
+        }
+          if($tip=='13')
+        {
+            return $this->rep_independizacion();
+        }
+          if($tip=='14')
+        {
+            return $this->rep_declaraciondedescargo();
+        }
+          if($tip=='15')
+        {
+            return $this->rep_recunificacion();
+        }
+          if($tip=='16')
+        {
+            return $this->rep_recsubdivision();
+        }
+          if($tip=='17')
+        {
+            return $this->rep_recaumentovalor();
+        }
     }
     public function rep_por_contri($contrib)
     {
@@ -462,6 +514,239 @@ class DigitalizacionController extends Controller
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4','landscape');
                 return $pdf->stream("inafectos.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+    public function rep_compraventa()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+             FROM vw_digital
+             WHERE observacion like '%VENTA%' and observacion like '%COMPRA%' and id_tip_doc=1
+             ORDER BY nombres asc,anio desc
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_compraventa', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("compraventa.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_donaciones()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%DONACI%' and id_tip_doc=1
+                ORDER BY nombres asc,anio desc
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_donaciones', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("donaciones.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_transferencias()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%TRANSFEREN%' and id_tip_doc=1
+                ORDER BY nombres asc,anio desc
+                
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_transferencias', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("transferencias.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_sucesionintestada()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%INTESTADA%' and id_tip_doc=1
+                ORDER BY nombres asc,anio desc
+                
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_sucesionintestada', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("sucesionintestada.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_sucesiontestamentaria()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%TESTAMENTA%' and id_tip_doc=1
+               ORDER BY nombres asc,anio desc
+                
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_sucesiontestamentaria', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("sucesiontestamentaria.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_anticipodelegitima()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%ANTICIPO%'  and id_tip_doc=1
+                ORDER BY nombres asc,anio desc
+                
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_anticipodelegitima', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("anticipodelegitima.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_subdivision()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%SUBDIVI%'  and id_tip_doc=1
+                ORDER BY nombres asc,anio desc
+                
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_subdivision', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("subdivision.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_independizacion()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE observacion like '%INDEPENDIZA%'  and id_tip_doc=1
+                ORDER BY nombres asc,anio desc
+                
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_independizacion', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("independizacion.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_declaraciondedescargo()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+                FROM vw_digital
+                WHERE  id_tip_doc=7 ORDER BY nombres asc,anio desc
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_declaraciondedescargo', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("declaraciondedescargo.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+     public function rep_recunificacion()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+             FROM vw_digital
+             WHERE id_tip_doc = 3 and observacion like '%UNIFICA%' 
+             ORDER BY anio desc, nombres asc
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_recunificacion', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("recunificacion.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+      public function rep_recsubdivision()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+             FROM vw_digital
+             WHERE id_tip_doc = 3 and observacion like '%SUBDIV%' 
+             ORDER BY anio desc, nombres asc
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_recsubdivision', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("recsubdivision.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+      public function rep_recaumentovalor()
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT *
+             FROM vw_digital
+             WHERE id_tip_doc = 4 
+             ORDER BY anio desc, nombres asc
+            ");
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('archivo.reportes.rep_recaumentovalor', compact('sql'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("recaumentovalor.pdf");
             }
             else
             {

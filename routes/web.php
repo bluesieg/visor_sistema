@@ -450,4 +450,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('eliminar_via_calle', 'ViasController@eliminar_vc');
 
     });
+     Route::group(['namespace' => 'andrea'], function() {
+       
+        //CONFIGURACION CATASTRO_GONZALO CALLES - VIAS
+        Route::resource('sistemaandrea', 'andreacontroller');
+       
+
+});
 });
