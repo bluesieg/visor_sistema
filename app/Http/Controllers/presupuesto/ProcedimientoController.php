@@ -22,10 +22,9 @@ class ProcedimientoController extends Controller
     }
 
     public function create(Request $request){
-        $cod = DB::select('select f_cod_proced as total from presupuesto.f_cod_proced()');
+       
         
         $data = new Procedimientos();
-        $data->cod_proced = ($cod[0]->total+1);
         $data->descrip_procedim = $request['descrip_procedim'];
         $data->id_ofic = $request['id_ofic'];
         $data->anio = date('Y');

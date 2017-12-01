@@ -451,4 +451,20 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('eliminar_via_calle', 'ViasController@eliminar_vc');
 
     });
+    
+    Route::group(['namespace' => 'tributos_gonzalo'], function() {
+       
+        //CONFIGURACION TRIBUTOS_GONZALO TRIBUTOS
+        Route::resource('tributos', 'TributosController');
+        Route::post('insertar_nuevo_tributo', 'TributosController@insertar_nuevo_tributo');
+        Route::get('listar_tributos','TributosController@getTributos');
+        Route::post('modificar_tributo', 'TributosController@modificar_tributo');
+        Route::post('eliminar_tributo', 'TributosController@eliminar_tributo');
+        Route::get('autocomplete_oficinas','TributosController@autocompletar_oficinas');
+        Route::get('autocomplete_procedimientos','TributosController@autocompletar_procedimientos');
+        
+        //Route::get('listar_anio','TributosController@getAnio');
+        //Route::get('listar_oficina','TributosController@getOficina');
+
+});
 });

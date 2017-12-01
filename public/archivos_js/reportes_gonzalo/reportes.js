@@ -117,6 +117,7 @@ function abrir_reporte_listado_contribuyente()
     window.open('listado_datos_contribuyentes/'+$('#select_sup_anio_dc').val()+'/'+$('#select_sector_dc').val());
 }
 
+
 /********************************REPORTE_LISTADO_DATOS_CONTRIBUYENTES_PREDIOS**************************************************/
 
 function crear_dialogo_listado_datos_contribuyentes_predios()
@@ -271,7 +272,7 @@ function fn_bus_contrib_list_rus(per)
 
 function abrir_reporte_usuarios()
 {
-    window.open('reporte_usuarios/'+$('#dlg_id').val()+'');
+    window.open('reporte_usuarios/'+$('#dlg_id').val()+'?ini='+$('#fdesde').val()+'&fin='+$('#fhasta').val()+'');
 }
 
 

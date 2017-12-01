@@ -367,16 +367,17 @@ $("#dlg_usuario").keypress(function (e) {
                                 @endforeach
                             </select><i></i> </label>
                     </section>
+                    
                     <section class="col col-6" style="padding-left:5px;padding-right:5px;">
                         <label class="label">SECTOR:</label>
                         <label class="select">
                             <select id='select_sector_dc' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($sectores as $sector_dc)
                                     <option value='{{$sector_dc->id_sec}}' >{{$sector_dc->sector}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>
-   
                 </div>
                 <!-- end widget div -->
             </div>

@@ -55,7 +55,7 @@
                 <td style="text-align: center;">{{$sql[0]->id_persona}}</td>
                 <td style="text-align: center;">{{$sql[0]->nro_doc_contri}}</td>
                 <td style="border-right:0px; text-align: center;">{{$sql[0]->contribuyente}}</td>
-                <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
+                <td colspan="3" style="text-align: center;"></td>
 
             </tr>
 
@@ -67,7 +67,7 @@
                 <td style="text-align: center;">{{$sql[0]->are_terr}}</td>
                 <td style="text-align: center;">{{$sql[0]->area_const}}</td>
             </tr>
-
+            
             @for ($i = 1; $i < count($sql); $i++)
                 @if($sql[$i]->id_contrib == $sql[$i-1]->id_contrib)
                     <tr>
@@ -84,7 +84,7 @@
                         <td style="text-align: center;">{{$sql[$i]->id_persona}}</td>
                         <td style="text-align: center;">{{$sql[$i]->nro_doc_contri}}</td>
                         <td style="border-right:0px; text-align: center;">{{$sql[$i]->contribuyente}}</td>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
+                        <td colspan="3" style="text-align: center;"></td>
    
                     </tr>
 

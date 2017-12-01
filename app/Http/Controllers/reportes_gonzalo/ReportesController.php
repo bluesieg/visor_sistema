@@ -138,9 +138,29 @@ class ReportesController extends Controller
     
     public function listado_contribuyentes($anio,$sector){
         
-        $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_sec',$sector)->get();
-        
+        if ($anio != 0 && $sector == 0) {
+    
+                $personas = DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->get();
+                
+                \Excel::create('Lista Datos de Contribuyente', function($excel) {
 
+                $excel->sheet('Contribuyentes', function($sheet) {
+
+                    
+
+                    $data= json_decode( json_encode($personas), true);
+
+                    $sheet->fromArray($data);
+
+                });
+            })->export('xls');
+        }
+        else{
+        
+            $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_sec',$sector)->get();
+        
+        }
+        
         if(count($sql)>0)
         {
             $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes', compact('sql','anio','sector'))->render();
@@ -260,13 +280,17 @@ class ReportesController extends Controller
         }
     }
     
-    public function reporte_usuarios($id)
+    public function reporte_usuarios($id,Request $request)
     {
-        $sql=DB::table('adm_tri.vw_predi_usu')->where('id_usu',$id)->orderBy('fec_reg','asc')->get();
-
+        $fechainicio = $request['ini'];
+        $fechafin = $request['fin'];
+        $sql=DB::table('adm_tri.vw_predi_usu')->where('id_usu',$id)->whereBetween('fec_reg', [$fechainicio, $fechafin])->orderBy('fec_reg','asc')->get();
+        
+        $total = DB::select("select count(id_usu) as usuario from adm_tri.vw_predi_usu where id_usu = '$id' and fec_reg BETWEEN '$fechainicio' AND '$fechafin' group by nom_usu");
+        
         if(count($sql)>0)
         {
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_get_usuarios', compact('sql'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_get_usuarios', compact('sql','total','fechainicio','fechafin'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream("PRUEBA".".pdf");

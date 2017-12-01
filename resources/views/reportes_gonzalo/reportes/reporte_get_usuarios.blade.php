@@ -32,7 +32,23 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte de Predios Ingresados Por Usuario</b></div></center>
-    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
+    <div class="subasunto" style="text-align: center; padding-left: 30px; margin-top: 20px;">
+        <table>
+            <thead>
+                <tr> 
+                    <th colspan="1" style="text-align: center; width: 10%;">FECHA INICIO</th>
+                    <th colspan="1" style="text-align: center; width: 10%;">FECHA FIN</th>
+                    <th colspan="1" style="text-align: center; width: 10%;">TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="1" style="text-align: center;">{{ $fechainicio }}</td>
+                    <td colspan="1" style="text-align: center;">{{ $fechafin }}</td>
+                    <td colspan="1" style="text-align: center;">{{ $total[0]->usuario }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
    
     <input type="hidden" value=" {{$num= 1}}">
@@ -44,8 +60,8 @@
             <thead>
             <tr >
                  <th style="width: 5%; text-align: center;">Nº</th>
-                <th style="width: 25%; text-align: center;">NOMBRE</th>
-                <th style="width: 10%; text-align: center;">DNI</th>
+                <th style="width: 28%; text-align: center;">NOMBRE</th>
+                <th style="width: 7%; text-align: center;">DNI</th>
                 <th style="width: 5%; text-align: center;">SECTOR</th>
                 <th style="width: 5%; text-align: center;">MZ</th>
                 <th style="width: 5%; text-align: center;">LOTE</th>

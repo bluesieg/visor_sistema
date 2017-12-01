@@ -364,12 +364,17 @@ $("#dlg_usuario").keypress(function (e) {
                                 <div class="panel-body cr-body">
                                     
                                     <div class="col-xs-9" style="padding-left:50px;">
-                                        <label class="label">Usuarios:</label>
+                                        <label class="label">USUARIO:</label>
                                         <label class="input">
                                             <input id="dlg_id" type="hidden">
                                             <input id="dlg_usuario" type="text"  class="input-sm" autofocus="">
                                         </label>
+                                        <label class="label">DESDE:</label>
+                                        <input placeholder="dd/mm/aaaa" id="fdesde" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
+                                        <label class="label">HASTA:</label>   
+                                        <input placeholder="dd/mm/aaaa" id="fhasta" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">
                                     </div>
+                                    
                       
                                 </div>
                             </div>
