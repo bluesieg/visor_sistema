@@ -130,6 +130,7 @@ function dlg_ar_reportes(tipo)
         alert("llego");
         crear_dialogo_dir();
     }
+    
 }
 
 function crear_dialogo_dir()
