@@ -642,7 +642,7 @@ class DigitalizacionController extends Controller
     {
         $sql = DB::connection('digitalizacion')->select("SELECT *
                 FROM vw_digital
-                WHERE observacion like '%SUBDIVI%'  and id_tip_doc=1
+                WHERE observacion like '%SUB%' and observacion like '%DIVI%'  and id_tip_doc=1
                 ORDER BY nombres asc,anio desc
                 
             ");
@@ -719,7 +719,7 @@ class DigitalizacionController extends Controller
     {
         $sql = DB::connection('digitalizacion')->select("SELECT *
              FROM vw_digital
-             WHERE id_tip_doc = 3 and observacion like '%SUBDIV%' 
+             WHERE id_tip_doc = 3 and observacion like '%SUB%' and observacion like '%DIV%' 
              ORDER BY anio desc, nombres asc
             ");
             if(count($sql)>=1)

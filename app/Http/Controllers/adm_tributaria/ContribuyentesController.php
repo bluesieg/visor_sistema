@@ -446,6 +446,45 @@ class ContribuyentesController extends Controller
 
 
     }
+    public function validar_del_contrib(Request $request)
+    {
+        $count = DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$request['id'])->count();
+        if($count==0)
+        {
+            return $count;
+        }
+        else
+        {
+            $poseedores=DB::table('adm_tri.vw_predi_urba')->select('cod_cat')->where('id_contrib',$request['id'])->get();
+            $lista="";
+            foreach ($poseedores as $contri)
+            {
+                $lista=$lista."<br>".$contri->cod_cat;
+            }
+            return $lista;
+        }
+    }
+    public function destroy(Request $request)
+    {   
+        $contri=new Contribuyentes;
+        $val=  $contri::where("id_contrib","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $persona=$val->id_pers;
+            $val->delete();
+            $count = DB::table('adm_tri.vw_contribuyentes')->where('id_pers',$persona)->count();
+            if($count==0)
+            {
+                $per=new Personas;
+                $valper=  $per::where("id_pers","=",$persona)->first();
+                if(count($valper)>=1)
+                {
+                    $valper->delete();
+                }
+            }
+            
+        }
+        return "destroy ".$request['id'];
+    }
 
 }
-/* ?? 'https://visualsociology.org/wp-content/plugins/userpro/img/default_avatar_male.jpg'*/

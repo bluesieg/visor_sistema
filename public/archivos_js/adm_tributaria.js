@@ -81,9 +81,8 @@ function fn_consultar_persona(num){
         error: function (data) { MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...'); }
     });
 }
-
-function modificar_contrib(){    
-    id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+function crea_dlg_contrib()
+{
     $("#dialog_new_edit_Contribuyentes").dialog({
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: CONTRIBUYENTE :.</h4></div>",
@@ -99,6 +98,11 @@ function modificar_contrib(){
         close: function (event, ui) { limpiar_dlg_contrib(); },
         open: function(){ limpiar_dlg_contrib(); MensajeDialogLoadAjax('dialog_new_edit_Contribuyentes','Cargando');}
     }).dialog('open');
+}
+
+function modificar_contrib(){    
+    id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+    crea_dlg_contrib();
     llenar_combo_prov('contrib_prov',$("#table_Contribuyentes").getCell(id_contrib, 'id_dpto'));
     llenar_combo_dist('contrib_dist',$("#table_Contribuyentes").getCell(id_contrib, 'id_prov'));    
     
@@ -137,6 +141,90 @@ function modificar_contrib(){
         $("#contrib_nro_doc_conv").attr('disabled',true);
     }
 }
+
+function eliminar_contrib()
+{
+    Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+    if(Id)
+    {
+    MensajeDialogLoadAjax('content_2', '.:: Guardando ...');
+    $.ajax({url: 'validar_del_contrib',
+    type: 'GET',
+    data:{id:Id},
+    success: function(r) 
+    {
+        MensajeDialogLoadAjaxFinish('content_2');
+        if(r==0)
+        {
+            $.SmartMessageBox({
+            title : "<i class='glyphicon glyphicon-alert' style='color: yellow; margin-right: 20px; font-size: 1.5em;'></i> Confirmación Final!",
+            content : 'Esta Por Eliminar Contribuyente, Desea Continuar?',
+            buttons : '[Cancelar][Aceptar]'
+            }, function(ButtonPressed) {
+                    if (ButtonPressed === "Aceptar") {
+
+                            dlg_delete_contrib();
+                    }
+                    if (ButtonPressed === "Cancelar") {
+                            $.smallBox({
+                                    title : "No se Guardo",
+                                    content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                                    color : "#C46A69",
+                                    iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                                    timeout : 3000
+                            });
+                    }
+
+            });
+        }
+        else
+        {
+            mostraralertasconfoco("No se Puede Eliminar COntribuyente, tiene los siguientes Predios<br><div style='height=200px;overflow-y: scroll;height: 100px !important;'>"+r+"</div>Elimine los predios para continuar","#content_2")
+        }
+        
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+        console.log('error');
+        console.log(data);
+    }
+    }); 
+    }
+    else
+    {
+        mostraralertasconfoco("No Hay Predio Seleccionado","#selsec");
+    }
+    
+}
+
+    function dlg_delete_contrib()
+    {
+        if($("#per_del").val()==0)
+        {
+            sin_permiso();
+            return false;
+        }
+        Id=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
+        MensajeDialogLoadAjax('content_2', '.:: Eliminando ...');
+        $.ajax({
+            url: 'contribuyentes/destroy',
+            type: 'post',
+            data: {_method: 'delete', _token:$("#btn_vw_contribuyentes_eliminar").data('token'),id:Id},
+            success: function(r) 
+            {
+                fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+                MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
+                MensajeDialogLoadAjaxFinish('content_2');
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_predios');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
 function update_contrib(){
     id_contrib=$('#table_Contribuyentes').jqGrid ('getGridParam', 'selrow');
     $.ajax({

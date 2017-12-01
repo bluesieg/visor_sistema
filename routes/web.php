@@ -171,6 +171,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::resource('contribuyentes','ContribuyentesController');
         Route::get('consultar_persona','ContribuyentesController@consultar_persona');
+        Route::get('validar_del_contrib','ContribuyentesController@validar_del_contrib');
         Route::post('insert_personas','ContribuyentesController@insert_persona');
         
         Route::get('grid_contribuyentes', 'ContribuyentesController@grid_contrib'); // tabla grilla Contribuyentes 
@@ -450,11 +451,4 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('eliminar_via_calle', 'ViasController@eliminar_vc');
 
     });
-     Route::group(['namespace' => 'andrea'], function() {
-       
-        //CONFIGURACION CATASTRO_GONZALO CALLES - VIAS
-        Route::resource('sistemaandrea', 'andreacontroller');
-       
-
-});
 });
