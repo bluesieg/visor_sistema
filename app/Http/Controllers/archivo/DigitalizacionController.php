@@ -775,7 +775,9 @@ class DigitalizacionController extends Controller
                 left join contribuyente b on a.id_contribuyente=b.id_contrib 
                 WHERE id_usuario=$id and a.fec_reg between '".$request['ini']."' and '".$request['fin']."'
                 " ); 
-                $view =  \View::make('archivo.reportes.rep_avanceusu', compact('sql','sqlusu','sqldocu'))->render();
+                $ini=$this->getCreatedAtAttribute($request['ini'])->format('d/m/Y');
+                $fin=$this->getCreatedAtAttribute($request['fin'])->format('d/m/Y');
+                $view =  \View::make('archivo.reportes.rep_avanceusu', compact('sql','sqlusu','sqldocu','ini','fin'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4');
                 return $pdf->stream("rep_avanceusu.pdf");

@@ -32,6 +32,7 @@
         <center><div Class="asunto" style="margin-top: 0px;"><b>AVANCE POR USUARIO
                 </b></div></center>
         <input type="hidden" value=" {{$num=1}}">
+        DESDE {{$ini}} HASTA {{$fin}}
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px; margin-top: 10px" >
         <thead>
           <tr>

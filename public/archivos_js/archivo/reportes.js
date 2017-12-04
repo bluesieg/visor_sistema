@@ -118,6 +118,7 @@ function abrir_reporte(tipo)
         }
        envio=$('#sel_usu').val();
        window.open('ver_rep_arch/'+envio+'/'+tipo+'?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin").val());
+       return false;
     }
     
     window.open('ver_rep_arch/'+envio+'/'+tipo);
