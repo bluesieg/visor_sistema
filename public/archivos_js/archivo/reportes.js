@@ -109,6 +109,17 @@ function abrir_reporte(tipo)
         }
         envio=$('#dlg_bus_dir').val();
     }
+    if(tipo==18)
+    {
+         if($("#fec_ini").val()==""||$("#fec_fin").val()=="")
+        {
+            mostraralertasconfoco("Ingresar fechas correctamente","#fecini");
+            return false;
+        }
+       envio=$('#sel_usu').val();
+       window.open('ver_rep_arch/'+envio+'/'+tipo+'?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin").val());
+    }
+    
     window.open('ver_rep_arch/'+envio+'/'+tipo);
     
 }
@@ -121,14 +132,17 @@ function dlg_ar_reportes(tipo)
         $("#ver_rep1").show();
         $("#h4_dlg").text(".: Documentos por Contribuyente :.");
     } 
-    if(tipo==2||tipo==3||tipo>=5)
+    if(tipo==2||tipo==3||tipo>=5&&tipo<18)
     {
         abrir_reporte(tipo);
     }
     if(tipo==4)
     {
-        alert("llego");
         crear_dialogo_dir();
+    }
+    if(tipo==18)
+    {
+        crear_dialogo_usu();
     }
     
 }
@@ -142,6 +156,22 @@ function crear_dialogo_dir()
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
             click: function () { abrir_reporte(4); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+}
+function crear_dialogo_usu()
+{
+    $("#dialog_por_usu").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:Busqueda por Usuario:</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte(18); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",

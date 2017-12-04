@@ -330,7 +330,7 @@ class DigitalizacionController extends Controller
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         return view('archivo/vw_reportes_archivo', compact('menu','permisos','anio_tra'));
     }
-    public function ver_reporte_arc($contrib,$tip)
+    public function ver_reporte_arc($contrib,$tip,Request $request)
     {
         if($tip=='1')
         {
@@ -403,6 +403,10 @@ class DigitalizacionController extends Controller
           if($tip=='17')
         {
             return $this->rep_recaumentovalor();
+        }
+          if($tip=='18')
+        {
+            return $this->rep_avanceusu($contrib,$request);
         }
     }
     public function rep_por_contri($contrib)
@@ -642,7 +646,7 @@ class DigitalizacionController extends Controller
     {
         $sql = DB::connection('digitalizacion')->select("SELECT *
                 FROM vw_digital
-                WHERE observacion like '%SUB%' and observacion like '%DIVI%'  and id_tip_doc=1
+                WHERE observacion like '%SUBDIVI%'  and id_tip_doc=1
                 ORDER BY nombres asc,anio desc
                 
             ");
@@ -719,7 +723,7 @@ class DigitalizacionController extends Controller
     {
         $sql = DB::connection('digitalizacion')->select("SELECT *
              FROM vw_digital
-             WHERE id_tip_doc = 3 and observacion like '%SUB%' and observacion like '%DIV%' 
+             WHERE id_tip_doc = 3 and observacion like '%SUBDIV%' 
              ORDER BY anio desc, nombres asc
             ");
             if(count($sql)>=1)
@@ -747,6 +751,34 @@ class DigitalizacionController extends Controller
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4','landscape');
                 return $pdf->stream("recaumentovalor.pdf");
+            }
+            else
+            {
+                return "No Hay Datos";
+            }
+    }
+      public function rep_avanceusu($id, Request $request)
+    {
+        $sql = DB::connection('digitalizacion')->select("SELECT b.nro_expediente, 
+                b.nombres, b.fec_reg
+                from digitalizacion a
+                left join contribuyente b on a.id_contribuyente=b.id_contrib 
+                WHERE id_usuario=$id and a.fec_reg between '".$request['ini']."' and '".$request['fin']."'
+                group by b.nro_expediente,b.nombres,b.fec_reg
+            ");
+            if(count($sql)>=1)
+            {
+                $sqlusu = DB::select("SELECT * from public.usuarios WHERE id=$id"); 
+                $sqldocu = DB::connection('digitalizacion')->select("SELECT b.nro_expediente, 
+                b.nombres, b.fec_reg
+                from digitalizacion a
+                left join contribuyente b on a.id_contribuyente=b.id_contrib 
+                WHERE id_usuario=$id and a.fec_reg between '".$request['ini']."' and '".$request['fin']."'
+                " ); 
+                $view =  \View::make('archivo.reportes.rep_avanceusu', compact('sql','sqlusu','sqldocu'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("rep_avanceusu.pdf");
             }
             else
             {
