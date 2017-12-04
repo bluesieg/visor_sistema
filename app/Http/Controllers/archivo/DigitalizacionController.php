@@ -760,10 +760,10 @@ class DigitalizacionController extends Controller
       public function rep_avanceusu($id, Request $request)
     {
         $sql = DB::connection('digitalizacion')->select("SELECT b.nro_expediente, 
-                b.nombres, b.fec_reg
+                b.nombres, to_char(b.fec_reg,'DD/MM/YYYY') as fec_reg
                 from digitalizacion a
                 left join contribuyente b on a.id_contribuyente=b.id_contrib 
-                WHERE id_usuario=$id and a.fec_reg between '".$request['ini']."' and '".$request['fin']."'
+                WHERE id_usuario=$id and b.fec_reg between '".$request['ini']."' and '".$request['fin']."'
                 group by b.nro_expediente,b.nombres,b.fec_reg
             ");
             if(count($sql)>=1)
@@ -775,8 +775,8 @@ class DigitalizacionController extends Controller
                 left join contribuyente b on a.id_contribuyente=b.id_contrib 
                 WHERE id_usuario=$id and a.fec_reg between '".$request['ini']."' and '".$request['fin']."'
                 " ); 
-                $ini=$this->getCreatedAtAttribute($request['ini'])->format('d/m/Y');
-                $fin=$this->getCreatedAtAttribute($request['fin'])->format('d/m/Y');
+                $ini=$request['ini'];
+                $fin=$request['fin'];
                 $view =  \View::make('archivo.reportes.rep_avanceusu', compact('sql','sqlusu','sqldocu','ini','fin'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4');

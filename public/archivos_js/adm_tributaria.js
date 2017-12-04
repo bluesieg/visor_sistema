@@ -136,9 +136,9 @@ function modificar_contrib(){
     $("#contrib_conviviente_mat").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_mat')); 
     $("#contrib_conviviente_nom").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_nombres')); 
     if($("#table_Contribuyentes").getCell(id_contrib, 'tipo_persona')=='3'){
-        $("#contrib_nro_doc_conv").attr('disabled',false);
+        $("#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").attr('disabled',false);
     }else{
-        $("#contrib_nro_doc_conv").attr('disabled',true);
+        $("#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").attr('disabled',true);
     }
 }
 
@@ -250,7 +250,10 @@ function update_contrib(){
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
             id_conv:$("#vw_contrib_id_conv").val() || '0',
             ref_dom_fis:$("#contrib_dom_fiscal").val() || '-',
-            nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-'
+            nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-',
+            conpat:$("#contrib_conviviente_pat").val(),
+            conmat:$("#contrib_conviviente_mat").val(),
+            connom:$("#contrib_conviviente_nom").val(),
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
