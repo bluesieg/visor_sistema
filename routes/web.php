@@ -418,6 +418,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('rep_archivo', 'DigitalizacionController@index_reportes_arch'); //
         Route::get('ver_rep_arch/{contri}/{tipo}', 'DigitalizacionController@ver_reporte_arc'); 
     });
+    Route::group(['namespace' => 'mapa'], function() {
+        Route::resource('mapa_cris', 'MapaController');
+        Route::get('mapa_cris_getlimites', 'MapaController@get_limites');
+    });
+    
      /*************************************** - GONZALO - *************************************** */
     Route::group(['namespace' => 'reportes_gonzalo'], function() {
         Route::resource('reportes_gonza', 'ReportesController');

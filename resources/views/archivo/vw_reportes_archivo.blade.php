@@ -198,7 +198,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-users fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_ar_reportes(18);" >
                                         Avance por Usuario

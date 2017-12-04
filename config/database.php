@@ -104,6 +104,18 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'mapa_cris' => [
+            'driver' => 'pgsql',
+            'host' => env('MAPA_CRIS_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('MAPA_CRIS_DATABASE', 'forge'),
+            'username' => env('MAPA_CRIS_USERNAME', 'forge'),
+            'password' => env('MAPA_CRIS_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
         
         'sqlsrv' => [
             'driver' => 'sqlsrv',
