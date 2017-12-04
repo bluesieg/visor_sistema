@@ -51,7 +51,7 @@ class TributosController extends Controller
      */
     public function show($id)
     {
-       $tributos = DB::table('presupuesto.sub_proced_tributos')->where('id_tributo',$id)->get();
+       $tributos = DB::table('presupuesto.vw_tributos_vladi_1')->where('id_tributo',$id)->get();
        return $tributos;
     }
 
@@ -163,7 +163,7 @@ class TributosController extends Controller
             $Lista->rows[$Index]['id'] = $Datos->id_tributo;
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_tributo),
-                trim($Datos->tributo),
+                trim($Datos->descrip_procedim),
                 trim($Datos->descrip_tributo),
                 trim($Datos->soles),
             );

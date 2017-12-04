@@ -43,6 +43,11 @@ function nuevo_tributo()
 
 function actualizar_tributo()
 {
+    if ($("#hiddenproced_ofi").val()==0) {
+        mostraralertasconfoco("Seleccione Oficina ","#proced_ofi");
+        return false;
+    }
+    $("#dlg_ofi").val($("#proced_ofi").val());
     limpiar_dl_tributo(1);
     $("#dlg_nuevo_tributo").dialog({
         autoOpen: false, modal: true, width: 1100, show: {effect: "fade", duration: 300}, resizable: false,
@@ -62,6 +67,7 @@ function actualizar_tributo()
         }],
     });
     $("#dlg_nuevo_tributo").dialog('open');
+    autocompletar_procedimientos('nombre_procedimiento');
 
 
     MensajeDialogLoadAjax('dlg_nuevo_tributo', '.:: Cargando ...');
@@ -72,7 +78,8 @@ function actualizar_tributo()
         success: function(r)
         {
             $("#id_tributo").val(r[0].id_tributo);
-            $("#select_tipo_procedimiento").val(r[0].id_procedimiento);
+            $("#hidden_nombre_procedimiento").val(r[0].id_procedimiento);
+            $("#nombre_procedimiento").val(r[0].descrip_procedim);
             $("#nombre_tributo").val(r[0].descrip_tributo);
             $("#valor_tributo").val(r[0].soles);
             MensajeDialogLoadAjaxFinish('dlg_nuevo_tributo');
@@ -95,6 +102,10 @@ function guardar_editar_tributo(tipo) {
     valor_tributo = $("#valor_tributo").val();
 
    // alert(id_sect);
+   if (valor_tipo_procedimiento == '') {
+        mostraralertasconfoco('* El campo Tipo de Procedimiento es obligatorio...', 'valor_tipo_procedimiento');
+        return false;
+    }
     if (nombre_tributo == '') {
         mostraralertasconfoco('* El campo Nombre de Tributo es obligatorio...', 'nombre_tributo');
         return false;
@@ -103,10 +114,7 @@ function guardar_editar_tributo(tipo) {
         mostraralertasconfoco('* El campo Valor de Tributo es obligatorio...', 'valor_tributo');
         return false;
     }
-    if (valor_tipo_procedimiento == '') {
-        mostraralertasconfoco('* El campo Tipo de Procedimiento es obligatorio...', 'valor_tipo_procedimiento');
-        return false;
-    }
+    
 
     if (tipo == 1) {
         $.ajax({
@@ -172,6 +180,10 @@ function guardar_editar_tributo(tipo) {
 }
 
 function eliminar_tributo() {
+    if ($("#hiddenproced_ofi").val()==0) {
+        mostraralertasconfoco("Seleccione Oficina ","#proced_ofi");
+        return false;
+    }
     id = $("#current_id").val();
 
     $.confirm({

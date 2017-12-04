@@ -471,5 +471,14 @@ Route::group(['middleware' => 'auth'], function() {
         //Route::get('listar_anio','TributosController@getAnio');
         //Route::get('listar_oficina','TributosController@getOficina');
 
-});
+    });
+    
+    Route::group(['namespace' => 'mapa_gonzalo'], function() {
+       
+        //CONFIGURACION MAPA
+        Route::get('mapa', 'MapaController@index');
+        Route::get('getdatos', 'MapaController@get_datos');
+     
+
+    });
 });

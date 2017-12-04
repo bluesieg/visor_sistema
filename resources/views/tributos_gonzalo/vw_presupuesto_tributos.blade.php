@@ -38,15 +38,35 @@
 
                             <div class="col-xs-4">
                                 <div class="text-right">
-                                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_tributo();">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                    </button>
-                                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_tributo();">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                    </button>
-                                    <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_tributo();">
-                                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                    </button>
+                                    
+                                    @if( $permisos[0]->btn_new ==1 )
+                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_tributo();">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="sin_permiso();">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                        </button>
+                                    @endif
+                                    @if( $permisos[0]->btn_edit ==1 )
+                                        <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_tributo();">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                        </button>
+                                    @else
+                                        <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="sin_permiso();">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                        </button>
+                                    @endif
+                                    @if( $permisos[0]->btn_del ==1 )
+                                        <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_tributo();">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                        </button>
+                                    @else
+                                        <button  type="button" class="btn btn-labeled btn-danger" onclick="sin_permiso();">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                        </button>
+                                    @endif
+                                    
                                 </div>
                             </div>
                                
@@ -110,7 +130,7 @@
             rowNum: 20,sortname: 'id_tributo', viewrecords: true, caption: 'TRIBUTOS', align: "center",
             colModel: [
                 {name: 'id_tributo', index: 'id_tributo', align: 'center',width:(pageWidth*(10/100))},
-                {name: 'tributo', index: 'tributo', align: 'center', width:(pageWidth*(70/100))}, 
+                {name: 'descrip_procedim', index: 'descrip_procedim', align: 'center', width:(pageWidth*(70/100))}, 
                 {name: 'descrip_tributo', index: 'descrip_tributo', align: 'center', width:(pageWidth*(70/100))},
                 {name: 'soles', index: 'soles', align: 'center', width:(pageWidth*(10/100))},
 
@@ -150,6 +170,7 @@
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
@@ -159,7 +180,6 @@
                     </div>
                 </section>
             
-               
                 <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px; ">
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Oficina &nbsp;<i class="fa fa-hashtag"></i></span>
@@ -175,7 +195,7 @@
                         <span class="input-group-addon" style="width: 165px">Procedimiento &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input type="hidden" id="hidden_nombre_procedimiento" value="0">
-                            <input id="nombre_procedimiento" type="text"  class="form-control" style="height: 32px;" maxlength="20">
+                            <input id="nombre_procedimiento" type="text"  placeholder="Escriba el tipo de Procedimiento" class="form-control text-uppercase" style="height: 32px;">
                         </div>
                     </div>
                 </div>
@@ -184,7 +204,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Tributo &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="nombre_tributo" type="text"  class="form-control" style="height: 32px;" maxlength="20">
+                            <input id="nombre_tributo" type="text"  class="form-control text-uppercase" style="height: 32px;" onkeyup="javascript:this.value=this.value.toUpperCase();"  maxlength="200">
                         </div>
                     </div>
                 </div>
@@ -193,20 +213,10 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Valor &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="valor_tributo" type="text"  class="form-control" style="height: 32px;" maxlength="20">
+                            <input id="valor_tributo" type="text"  class="form-control" style="height: 32px;" maxlength="20" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
-                </div>
-               
-                
-             
-             
-                
-                
-                
-               
-            
-                
+                </div>    
             </div>
           
         </div>
