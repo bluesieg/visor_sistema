@@ -138,29 +138,35 @@ class ReportesController extends Controller
     
     public function listado_contribuyentes($anio,$sector){
         
-        if ($anio != 0 && $sector == 0) {
-    
-                $personas = DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->get();
+        if($anio != 0 && $sector == 0){
+            
+        \Excel::create('REPORTE DE CONTRIBUYENTES', function($excel) use ( $anio ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
                 
-                \Excel::create('Lista Datos de Contribuyente', function($excel) {
-
-                $excel->sheet('Contribuyentes', function($sheet) {
-
-                    
-
-                    $data= json_decode( json_encode($personas), true);
-
-                    $sheet->fromArray($data);
-
-                });
-            })->export('xls');
-        }
-        else{
-        
-            $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_sec',$sector)->get();
+                $sql = DB::select("select nro_doc, contribuyente, persona, dom_fis from adm_tri.vw_contrib_predios_c where ano_cta = '$anio'" );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("DNI/RUC", "CONTRIBUYENTE", "TIPO PERSONA", "DOMICILIO"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  50,
+                    'C'     =>  30,
+                    'D'     =>  70
+                ));
+            });
+        })->export('xls');
         
         }
+        else
+        {
         
+        $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_sec',$sector)->get();
+        
+        }
+
         if(count($sql)>0)
         {
             $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes', compact('sql','anio','sector'))->render();
@@ -304,12 +310,41 @@ class ReportesController extends Controller
     public function reporte_contribuyentes_predios_zonas($anio,$sector)
     {
         
+        if($anio != 0 && $sector == 0){
+            
+        \Excel::create('REPORTE DE CANTIDAD DE CONTRIBUYENTES Y PREDIOS POR ZONA', function($excel) use ( $anio ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+                
+                $sql = DB::select("select nro_doc, contribuyente, cond_prop_descripc, dom_fis, (coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as predio from adm_tri.vw_predi_urba where anio = '$anio'" );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("DNI/RUC", "NOMBRE", "TIPO CONTRIBUYENTE", "DOMICILIO FISCAL", "LISTA DE PREDIOS"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  50,
+                    'C'     =>  25,
+                    'D'     =>  70,
+                    'E'     =>  70
+                ));
+            });
+        })->export('xls');
+        
+        }
+        else
+        {
+        
         $sql=DB::table('adm_tri.vw_predi_urba')->where('anio',$anio)->where('id_sec',$sector)->orderBy('id_contrib')->get();
+        
         
         $nro_sectores = DB::select("select count(distinct id_contrib) as total from adm_tri.vw_predi_urba where id_sec = '$sector' ");
        
         $total = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where id_sec = '$sector' ");
-       
+        
+        }
+        
         if(count($sql)>0)
         {
             $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_predios_zonas', compact('sql','anio','sector','nro_sectores','total'))->render();
@@ -325,12 +360,38 @@ class ReportesController extends Controller
     
     public function reporte_emision_predial($anio,$sector,$uso)
     {
+        if($anio != 0 && $sector == 0 && $uso == 0){
+            
+        \Excel::create('REPORTE DE EMISION PREDIAL POR USO', function($excel) use ( $anio ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+                
+                $sql = DB::select("select pers_nro_doc, contribuyente, (coalesce(dir_pred, '') || ' ' || coalesce(referencia, '')) as domicilio, uso_arbitrio from reportes.vw_predios_tipo_uso_arb where anio = '$anio'" );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("DNI/RUC", "CONTRIBUYENTE", "DOMICILIO", "USO"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  50,
+                    'C'     =>  120,
+                    'D'     =>  20
+                ));
+            });
+        })->export('xls');
         
+        }
+        else
+        {
+
         $sql = DB::table('reportes.vw_predios_tipo_uso_arb')->where('anio',$anio)->where('id_sec',$sector)->where('id_uso_arb',$uso)->get();
         
         $nombre_uso = DB::select("select uso_arbitrio from reportes.vw_predios_tipo_uso_arb where id_uso_arb = '$uso' ");
         
         $total = DB::select("select count(uso_arbitrio) as usos from reportes.vw_predios_tipo_uso_arb where id_uso_arb = '$uso' and id_sec='$sector'");
+        
+        }
         
         if(count($sql)>0)
         {
@@ -347,12 +408,40 @@ class ReportesController extends Controller
     
     public function reporte_cant_cont_ded_mont_bas_imp($anio,$sector,$condicion)
     {
+        if($anio != 0 && $sector == 0 && $condicion == 0){
+            
+        \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+                
+                $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio'" );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "SECTOR", "BASE IMPONIBLE"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  50,
+                    'C'     =>  100,
+                    'D'     =>  30,
+                    'E'     =>  30,
+                    'F'     =>  20,
+                    'G'     =>  20
+                ));
+            });
+        })->export('xls');
+        
+        }
+        else{
         
         $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_sec',$sector)->where('id_cond_exonerac',$condicion)->get();
         
         $nombre_condicion = DB::select("select desc_exon from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' ");
         
         $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_sec = '$sector'");
+        
+        }
         
         if(count($sql)>0)
         {

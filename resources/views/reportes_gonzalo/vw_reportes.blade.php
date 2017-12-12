@@ -543,6 +543,7 @@ $("#dlg_usuario").keypress(function (e) {
                         <label class="label">SECTOR:</label>
                         <label class="select">
                             <select id='select_sector_rcp' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($sectores as $sector_cp)
                                     <option value='{{$sector_cp->id_sec}}' >{{$sector_cp->sector}}</option>
                                 @endforeach
@@ -575,6 +576,7 @@ $("#dlg_usuario").keypress(function (e) {
                         <label class="label">SECTOR:</label>
                         <label class="select">
                             <select id='select_sec_ep' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($sectores as $sector_ep)
                                     <option value='{{$sector_ep->id_sec}}' >{{$sector_ep->sector}}</option>
                                 @endforeach
@@ -584,6 +586,7 @@ $("#dlg_usuario").keypress(function (e) {
                         <label class="label">USO:</label>
                         <label class="select"> 
                             <select id='select_uso_ep' class="form-control col-lg-8" >
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($usos_predio_arb as $usos_ep)
                                     <option value='{{$usos_ep->id_uso_arb}}' >{{$usos_ep->uso_arbitrio}}</option>
                                 @endforeach
@@ -616,6 +619,7 @@ $("#dlg_usuario").keypress(function (e) {
                         <label class="label">SECTOR:</label>
                         <label class="select">
                             <select id='select_sec_ccdmbi' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($sectores as $sector_ccdmbi)
                                     <option value='{{$sector_ccdmbi->id_sec}}' >{{$sector_ccdmbi->sector}}</option>
                                 @endforeach
@@ -625,6 +629,7 @@ $("#dlg_usuario").keypress(function (e) {
                         <label class="label">CONDICION:</label>
                         <label class="select"> 
                             <select id='select_condicion_ccdmbi' class="form-control col-lg-8" >
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($condicion as $condicion_ccdmbi)
                                     <option value='{{$condicion_ccdmbi->id_exo}}' >{{$condicion_ccdmbi->desc_exon}}</option>
                                 @endforeach

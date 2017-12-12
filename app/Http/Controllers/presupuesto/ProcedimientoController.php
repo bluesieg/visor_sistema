@@ -67,12 +67,12 @@ class ProcedimientoController extends Controller
         return response()->json($todo);
     }
     function autocompletar_esp_detalle(){
-        $Consulta = DB::table('presupuesto.vw_especif_detalle')->get();
+        $Consulta = DB::table('presupuesto.vw_especif_detalle_1')->get();
         $todo = array();
         foreach ($Consulta as $Datos) {
             $Lista = new \stdClass();
             $Lista->value = $Datos->id_espec_det;
-            $Lista->label = trim($Datos->desc_espec_detalle);
+            $Lista->label = trim($Datos->detalle);
             array_push($todo, $Lista);
         }
         return response()->json($todo);

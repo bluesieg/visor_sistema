@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\presupuesto\Tributos;
 
 class TributosController extends Controller
 {
@@ -27,9 +28,15 @@ class TributosController extends Controller
         return view('tributos_gonzalo/vw_presupuesto_tributos', compact('menu','permisos','procedimientos','anio','oficinas'));
     }
 
-    public function create()
-    {
-        //
+    public function create(Request $request){
+        $tributo = new  Tributos;
+        $tributo->id_procedimiento = $request['id_procedimiento'];
+        $tributo->descrip_tributo = $request['descrip_tributo'];
+        $tributo->soles = $request['soles'];
+        $tributo->save();
+        
+        return $tributo->id_tributo;
+
     }
 
     /**
@@ -61,9 +68,18 @@ class TributosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
-        //
+        $tributo = new  Tributos;
+        $val=  $tributo::where("id_tributo","=",$id )->first();
+        if(count($val)>=1)
+        {
+            $val->id_procedimiento = $request['id_procedimiento'];
+            $val->descrip_tributo = $request['descrip_tributo'];
+            $val->soles = $request['soles'];
+            $val->save();
+        }
+        return $id;
     }
 
     /**
@@ -84,44 +100,17 @@ class TributosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
-    }
-    
-    public function insertar_nuevo_tributo(Request $request){
-        header('Content-type: application/json');
-        $data = $request->all();
-        
-        $insert=DB::table('presupuesto.sub_proced_tributos')->insert($data);
-
-        if ($insert) return response()->json($data);
-        else return false;
-    }
-    
-    function modificar_tributo(Request $request) {
-        $data = $request->all();
-        unset($data['id_tributo']);
-        
-        $update=DB::table('presupuesto.sub_proced_tributos')->where('id_tributo',$request['id_tributo'])->update($data);
-        
-        if ($update){
-            return response()->json([
-                'msg' => 'si',
-            ]);
-        }else return false;
-    }
-    
-    function eliminar_tributo(Request $request){
-        
-        $delete = DB::table('presupuesto.sub_proced_tributos')->where('id_tributo', $request['id_tributo'])->delete();
-
-        if ($delete) {
-            return response()->json([
-                'msg' => 'si',
-            ]);
+        $tributo = new  Tributos;
+        $val=  $tributo::where("id_tributo","=",$request['id_tributo'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
         }
+        return "destroy ".$request['id_tributo'];
     }
+    
     
     public function getTributos(Request $request){
         header('Content-type: application/json');

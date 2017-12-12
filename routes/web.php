@@ -461,10 +461,7 @@ Route::group(['middleware' => 'auth'], function() {
        
         //CONFIGURACION TRIBUTOS_GONZALO TRIBUTOS
         Route::resource('tributos', 'TributosController');
-        Route::post('insertar_nuevo_tributo', 'TributosController@insertar_nuevo_tributo');
         Route::get('listar_tributos','TributosController@getTributos');
-        Route::post('modificar_tributo', 'TributosController@modificar_tributo');
-        Route::post('eliminar_tributo', 'TributosController@eliminar_tributo');
         Route::get('autocomplete_oficinas','TributosController@autocompletar_oficinas');
         Route::get('autocomplete_procedimientos','TributosController@autocompletar_procedimientos');
         
@@ -480,5 +477,23 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('getdatos', 'MapaController@get_datos');
      
 
+    });
+    
+    
+    Route::group(['namespace' => 'configuracion_gonzalo'], function() {
+       
+        //CONFIGURACION TASA DE INTERES MORATORIO
+        Route::resource('tim', 'TimController');
+        Route::post('insertar_nuevo_tim', 'TimController@insertar_nuevo_tim');
+        Route::get('listar_tim','TimController@getTim');
+        Route::post('modificar_tim', 'TimController@modificar_tim');
+        Route::post('eliminar_tim', 'TimController@eliminar_tim');
+        
+        //CONFIGURACION INDICE DE PRECIOS AL POR MAYOR
+        Route::resource('ipm', 'IpmController');
+        Route::get('listar_ipm','IpmController@getIpm');
+        Route::post('insertar_nuevo_ipm', 'IpmController@insertar_nuevo_ipm');
+        Route::post('modificar_ipm', 'IpmController@modificar_ipm');
+        Route::post('eliminar_ipm', 'IpmController@eliminar_ipm');
     });
 });

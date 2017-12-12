@@ -119,8 +119,8 @@ function guardar_editar_tributo(tipo) {
     if (tipo == 1) {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'insertar_nuevo_tributo',
-            type: 'POST',
+            url: 'tributos/create',
+            type: 'GET',
             data: {
                 id_procedimiento: tipo_procedimiento,
                 descrip_tributo: nombre_tributo,
@@ -146,8 +146,8 @@ function guardar_editar_tributo(tipo) {
                 Confirmar: function () {
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        url: 'modificar_tributo',
-                        type: 'POST',
+                        url: 'tributos/'+id+'/edit',
+                        type: 'GET',
                         data: {
                             id_tributo:id,
                             id_procedimiento: tipo_procedimiento,
@@ -193,9 +193,9 @@ function eliminar_tributo() {
             Confirmar: function () {
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: 'eliminar_tributo',
+                    url: 'tributos/destroy',
                     type: 'POST',
-                    data: {id_tributo: id},
+                    data: {_method: 'delete', id_tributo: id},
                     success: function (data) {
                         fn_actualizar_grilla('tabla_tributo');
                         MensajeExito('Eliminar Tributo', id + ' - Ha sido Eliminado');
