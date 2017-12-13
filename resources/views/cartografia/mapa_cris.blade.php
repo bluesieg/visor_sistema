@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.map')
 
 @section('content')
     <style>
@@ -7,12 +7,7 @@
         }
     </style>
     <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
+        
         .ol-touch .rotate-north {
             top: 80px;
         }
@@ -26,17 +21,11 @@
             left:40px;
         }
     </style>
-    <!--
-    <div id="map">
-        <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content"></div>
-        </div>
-    </div>-->
+  
     <form class="smart-form">
 
 
-    <div id="map" style="background: white; height: 100%">
+    <div id="map" style="background: white; height: 100% !important">
         <div id="popup" class="ol-popup">
             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
             <div id="popup-content"></div>
@@ -58,28 +47,12 @@
         var app = window.app;
         var layersList = [];
         var vectorSource = new ol.source.Vector({});
-        var lyr_sectores_cat1;
-        var lyr_manzanas2;
+        var lyr_sectores;
+        var lyr_manzanas;
         var lyr_limites_distritales0;
         var lyr_lotes3;
         var lyr_predios4;
-        var LayersList2= [lyr_sectores_cat1,lyr_manzanas2,lyr_limites_distritales0,lyr_lotes3,lyr_predios4];
-
-        var defaultCerroColorado = new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: 'red',
-                width: 2,
-                lineCap: 'butt',
-            }),
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 255, 0, 0.3)',
-            }),
-            text: new ol.style.Text({
-            font: '12px Roboto',
-            text: 'AAAAAAAAAAAAAAA',
-            })
-        });
-
+        var LayersList2= [lyr_sectores,lyr_manzanas,lyr_limites_distritales0,lyr_lotes3,lyr_predios4];
         
         app.CustomToolbarControl = function(opt_options) {
 
@@ -96,7 +69,7 @@
             selectList.className = "input-sm col-xs-3";
             selectList.onchange = function(e){
                 console.log(e);
-                //get_mzns_por_sector(this.value);
+                get_mzns_por_sector(this.value);
                 //alert(this.value);
             }
 
@@ -110,7 +83,6 @@
             option.value = '0';
             option.text = "- Sector -";
             selectList.appendChild(option);
-           // alert(global_cod_alm[0].codigo);
             for (var i = 0; i < sectores.length; i++) {
                 var option = document.createElement("option");
                 option.value = sectores[i].id_sec;
@@ -119,7 +91,6 @@
             }
 
             var anio = {!! json_encode($anio_tra) !!};
-            // alert(global_cod_alm[0].codigo);
             for (var i = 0; i < anio.length; i++) {
                 var option_anio = document.createElement("option");
                 option_anio.value = anio[i].anio;
@@ -146,31 +117,22 @@
                 this_.getMap().getView().setRotation(0);
             };
 
-
             button.addEventListener('click', handleRotateNorth, false);
             button.addEventListener('touchstart', handleRotateNorth, false);
 
             var element = document.createElement('div');
             element.className = 'ol-unselectable ol-mycontrol';
-
             element.appendChild(selectList);
             element.appendChild(div2);
             element.appendChild(selectList_anio);
             element.appendChild(div2);
             element.appendChild(label);
-
             ol.control.Control.call(this, {
                 element: element,
                 target: options.target
             });
-
         };
         ol.inherits(app.CustomToolbarControl, ol.control.Control);
-
-
-
-
-
         var map = new ol.Map({
             controls: ol.control.defaults({
                 attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -196,9 +158,6 @@
             target: 'map',
             
         });
-
-
-
         $.ajax({url: 'mapa_cris_getlimites',
             type: 'GET',
             async: false,
@@ -215,34 +174,80 @@
 
                 lyr_limites_distritales0 = new ol.layer.Vector({
                     source:jsonSource_limites_distritales0,
-                    style: defaultCerroColorado,
+                    style: polygonStyleFunction,
                     title: "Cerro COlorado",
                    
                 });
                 
                 map.addLayer(lyr_limites_distritales0);
-                
+                var scale = new ol.control.ScaleLine();
+                map.addControl(scale);
                 var extent = lyr_limites_distritales0.getSource().getExtent();
                 map.getView().fit(extent, map.getSize());
                 var fullscreen = new ol.control.FullScreen();
                 map.addControl(fullscreen);
-
             }
         });
-
-       
-        
-        
-        
-
-      
-        
-
+       function polygonStyleFunction(feature, resolution) {
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#626C0E',
+                    width: 2,
+                    lineCap: 'butt',
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 255, 0, 0.3)',
+                }),
+                text: new ol.style.Text({
+                //font: '12px Roboto',
+                text: feature.get('area_km2')+'km2'
+                })
+            });
+        }
     </script>
 
     <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/map/map_cris.js') }}"></script>
 @stop
     
+<div id="dlg_view_foto" style="display: none;">
+    <div class="panel panel-success cr-panel-sep" style="height: 550px">
+        <div class="panel-body cr-body">
+            <div id="dlg_img_view_big" style="padding-top: 0px"></div>
+        </div>
+    </div>
+</div> 
+<div id="dlg_selecciona_sector" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 5px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Selección de Sector::..</h2>
+                        </header>
+                    </div>
+                </section>
+                
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
+                        <div class="icon-addon addon-md">
+                            <select id='selsec' class="form-control" onchange="callpredtab()" style="height: 32px;" >
+                            @foreach ($sectores as $sec)
+                            <option value='{{$sec->id_sec}}' >{{$sec->sector}}</option>
+                            @endforeach
+                            </select>
+                        </div>
 
+                    </div>
+                </div>
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
+    
 
 @endsection

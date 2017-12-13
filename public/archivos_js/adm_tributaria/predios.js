@@ -276,7 +276,7 @@ function callpredtab()
 function fn_confirmar_predio()
 {
     if(parseInt($('#dlg_lot').val())<1||$('#dlg_lot').val()==""){mostraralertasconfoco('Ingresar un número de lote...',"#dlg_lot");return false}
-    if($('#dlg_inp_aranc').val()==""){mostraralertasconfoco('No existe Arancel, comunicar al administrador...',"#dlg_inp_aranc");return false}
+    if($('#dlg_inp_aranc').val()==""||$('#dlg_inp_aranc').val()==0){mostraralertasconfoco('No existe Arancel, comunicar al administrador...',"#dlg_inp_aranc");return false}
     if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
     if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia");return false}
     if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}

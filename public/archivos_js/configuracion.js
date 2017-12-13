@@ -141,6 +141,18 @@ function new_persona_user() {
             mostraralertasconfoco('Ingrese Sexo', '#pers_sexo');
             return false;
         }
+        if ($("#pers_nombres").val() == '-'||$("#pers_nombres").val() == '') {
+            mostraralertasconfoco('Ingrese Nombre', '#pers_pat');
+            return false;
+        }
+        if ($("#pers_nro_doc").val() == '-'||$("#pers_mat").val() == '') {
+            mostraralertasconfoco('Ingrese DNI', '#pers_nro_doc');
+            return false;
+        }
+        if ($("#pers_pat").val()+$("#pers_mat").val() == '') {
+            mostraralertasconfoco('Ingrese al menos un apellido', '#pers_pat');
+            return false;
+        }
     }
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

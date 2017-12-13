@@ -305,11 +305,11 @@ class DigitalizacionController extends Controller
         $lista="";
         foreach($direcs as $dirs)
         {
-            $count = DB::connection('digitalizacion')->select("select * from vw_digital where direccion like '%".strtoupper($dirs)."%' and id_contribuyente <> ".$request['contri']);
+            $count = DB::connection('digitalizacion')->select("select * from vw_digital where direccion like '%".strtoupper(str_replace("'", "''", $dirs))."%' and id_contribuyente <> ".$request['contri']);
             if(count($count)>0)
             {   
                 $lista=$lista."La Direccion -".$dirs."- ya fue registrada en los siguientes Contribuyentes:<br>";
-                $poseedores = DB::connection('digitalizacion')->select("select nombres from vw_digital where direccion like '%".strtoupper($dirs)."%' and id_contribuyente <> ".$request['contri']." group by nombres");
+                $poseedores = DB::connection('digitalizacion')->select("select nombres from vw_digital where direccion like '%".strtoupper(str_replace("'", "''", $dirs))."%' and id_contribuyente <> ".$request['contri']." group by nombres");
                 foreach($poseedores as $contri)
                 {
                     $lista=$lista."---".$contri->nombres."<br>";
@@ -318,7 +318,7 @@ class DigitalizacionController extends Controller
         }
         return $lista;
     }
-    /////////// reportes///////////
+    /////////// reportes ///////////
     public function index_reportes_arch()
     {
         $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_rep_arch' and id_usu=".Auth::user()->id);
@@ -759,22 +759,17 @@ class DigitalizacionController extends Controller
     }
       public function rep_avanceusu($id, Request $request)
     {
-        $sql = DB::connection('digitalizacion')->select("SELECT b.nro_expediente, 
-                b.nombres, to_char(b.fec_reg,'DD/MM/YYYY') as fec_reg
-                from digitalizacion a
-                left join contribuyente b on a.id_contribuyente=b.id_contrib 
-                WHERE id_usuario=$id and b.fec_reg between '".$request['ini']."' and '".$request['fin']."'
-                group by b.nro_expediente,b.nombres,b.fec_reg
+        $sql = DB::connection('digitalizacion')->select("
+                select b.nro_expediente, 
+                b.nombres, to_char(b.fec_reg,'DD/MM/YYYY') as fec_reg from contribuyente b
+                WHERE b.id_usu=$id and b.fec_reg between '".$request['ini']."' and '".$request['fin']."' order by 3
             ");
             if(count($sql)>=1)
             {
                 $sqlusu = DB::select("SELECT * from public.usuarios WHERE id=$id"); 
-                $sqldocu = DB::connection('digitalizacion')->select("SELECT b.nro_expediente, 
-                b.nombres, b.fec_reg
-                from digitalizacion a
-                left join contribuyente b on a.id_contribuyente=b.id_contrib 
-                WHERE id_usuario=$id and a.fec_reg between '".$request['ini']."' and '".$request['fin']."'
-                " ); 
+                $sqldocu = DB::connection('digitalizacion')->select("SELECT id
+                from digitalizacion 
+                WHERE id_usuario=$id and fec_reg between '".$request['ini']."' and '".$request['fin']."'" ); 
                 $ini=$request['ini'];
                 $fin=$request['fin'];
                 $view =  \View::make('archivo.reportes.rep_avanceusu', compact('sql','sqlusu','sqldocu','ini','fin'))->render();

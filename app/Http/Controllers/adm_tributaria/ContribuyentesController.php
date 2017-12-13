@@ -32,7 +32,7 @@ class ContribuyentesController extends Controller
 
     public function create(Request $request)
     {     
-        if($request['id_conv']==0&&$request['contrib_nro_doc_conv']==""&&$request['tipo_persona']==3)
+        if($request['id_conv']==0&&$request['contrib_nro_doc_conv']==""&&$request['tipo_persona']==3&&$request['pat_conv']!="")
         {
             $id_conv=$this->create_persona($request);
         }
@@ -64,18 +64,20 @@ class ContribuyentesController extends Controller
         $data->fch_inscripcion=date('Y-m-d');
         $data->nom_via_2=$request['nom_via_2'];
         $data->id_usu=Auth::user()->id;
+        $data->fec_reg=date("d/m/Y");
         $data->save();        
         return $data->id_contrib;
       
     }
     function create_persona(Request $request){
         $data = new Personas();
-        $data->pers_ape_pat = $request['pat_conv'];
-        $data->pers_ape_mat = $request['mat_conv'];
-        $data->pers_nombres = $request['nom_conv'];
+        $data->pers_ape_pat = strtoupper($request['pat_conv']);
+        $data->pers_ape_mat = strtoupper($request['mat_conv']);
+        $data->pers_nombres = strtoupper($request['nom_conv']);
         $data->pers_tip_doc = "02";
         $data->pers_nro_doc = "";
         $data->revisar = 1;
+        $data->fec_reg=date("d/m/Y");
         $data->save();        
         return $data->id_pers;
     }
@@ -83,9 +85,17 @@ class ContribuyentesController extends Controller
     public function edit(Request $request, $id)
     {
         $contrib = new Contribuyentes();
-        
+         if($request['id_conv']==0&&$request['nro_conv']==""&&$request['tipo_persona']==3&&$request['pat_conv']!="")
+        {
+            $conv=$this->create_persona($request);
+        }
+        else
+        {
+            $conv=$request['id_conv'];
+        }
         $val = $contrib::where("id_contrib", "=", $id)->first();
         if (count($val) >= 1) {
+                       
             $val->tipo_persona=$request['tipo_persona'];
             $val->tlfno_fijo=$request['tlfno_fijo']; 
             $val->tlfono_celular=$request['tlfono_celular']; 
@@ -101,13 +111,13 @@ class ContribuyentesController extends Controller
             $val->id_cond_exonerac=$request['id_cond_exonerac']; 
             $val->id_via=$request['id_via'];        
             $val->id_pers=$request['id_pers']; 
-            $val->id_conv=$request['id_conv'];
             $val->ref_dom_fis= strtoupper($request['ref_dom_fis']);
             $val->nom_via_2=$request['nom_via_2'];
             $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
-            $val->id_persona=$id_persona;                    
+            $val->id_persona=$id_persona;   
+            $val->id_conv=$conv;
             $val->save();  
-            return $val->id_contrib;
+            return $conv;
         }
     }
     
@@ -133,6 +143,7 @@ class ContribuyentesController extends Controller
         $image=$request['pers_foto'];
         //$img_file = file_get_contents($image);
         //$data->pers_foto = base64_encode($img_file);
+        $data->fec_reg=date("d/m/Y");
         $data->pers_foto = $image;
         $data->save();        
         return $data->id_pers;
@@ -153,20 +164,24 @@ class ContribuyentesController extends Controller
         }
     }
     function get_datos_dni(Request $request){
+        $jefe = DB::table('public.usuarios')->where('id',Auth::user()->id)->get();
+        $acceso = DB::table('adm_tri.conexion_reniec')->where('dni',$jefe[0]->dni_jefe)->get();
+        
         $rq		= new \stdClass();
         $rq->data	= new \stdClass();
         $rq->auth	= new \stdClass();
 
-        $rq->auth->dni	= '80673320';		// DNI del usuario
-        $rq->auth->pas	= 'Pr0gr4m4';           // Contrasenia
-        $rq->auth->ruc	= '20159515240';	// RUC de la entida del usuario
+        $rq->auth->dni	= $acceso[0]->dni;		// DNI del usuario
+        $rq->auth->pas	= $acceso[0]->clave;           // Contrasenia
+        $rq->auth->ruc	= $acceso[0]->ruc;	// RUC de la entida del usuario
 
         $rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
         $rq->data->dni	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
-        $rq->data->cache= 'true';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+        $rq->data->cache= 'false';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
 
 //        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
-        $url = 'http://ws.ehg.pe/';
+ //       $url = 'http://ws.ehg.pe/';
+        $url = 'http://10.11.10.104/';
         $options = array(
                 'http' => array(
                 'header'  => "Content-type: application/json\r\n",
@@ -194,7 +209,7 @@ class ContribuyentesController extends Controller
             $Lista->dir=$rpta->data->direccion;
             $Lista->ubigeo=$rpta->data->ubigeo;
 //            $Lista->foto='http://ws.ehg.pe'.$rpta->data->foto;
-            $Lista->foto='https://ehg.pe/delfos/'.$rpta->data->foto;
+            $Lista->foto='http://10.11.10.104'.$rpta->data->foto;
             return response()->json($Lista);
         }
     }

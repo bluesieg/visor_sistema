@@ -24,7 +24,7 @@ class MapaController extends Controller
     }
     function get_limites(){
 
-        $limites =  DB::connection('mapa_cris')->select("SELECT json_build_object(
+        $limites =  DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -34,11 +34,12 @@ class MapaController extends Controller
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                'gid', gid,
-                               'layer', layer,
-                               'text', text
+                               'area_km2', area_km2,
+                               'perimetro', perimetro,
+                               'poblacion', poblacion
                              )
                           ) AS feature
-                          FROM (SELECT * FROM jurisdiccion) row) features;");
+                          FROM (SELECT * FROM catastro.limites) row) features;");
 
         return response()->json($limites);
 

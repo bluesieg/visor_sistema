@@ -76,7 +76,7 @@ class ModulosController extends Controller
         {
             $val->descripcion=$request['des'];
             $val->titulo=$request['tit'];
-            $val->id_sistena=$request['sis'];
+            $val->id_sistema=$request['sis'];
             $val->save();
        
         }

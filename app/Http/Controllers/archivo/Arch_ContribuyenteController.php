@@ -39,6 +39,7 @@ class Arch_ContribuyenteController extends Controller
         $contri->id_prov=$request['prov'];
         $contri->id_dist=$request['dis'];
         $contri->id_usu = Auth::user()->id;
+        $contri->fec_reg = date("d/m/Y");
         $contri->save();
         return $contri->id_contrib;
     }

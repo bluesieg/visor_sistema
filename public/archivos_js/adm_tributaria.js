@@ -251,9 +251,10 @@ function update_contrib(){
             id_conv:$("#vw_contrib_id_conv").val() || '0',
             ref_dom_fis:$("#contrib_dom_fiscal").val() || '-',
             nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-',
-            conpat:$("#contrib_conviviente_pat").val(),
-            conmat:$("#contrib_conviviente_mat").val(),
-            connom:$("#contrib_conviviente_nom").val(),
+            pat_conv:$("#contrib_conviviente_pat").val(),
+            mat_conv:$("#contrib_conviviente_mat").val(),
+            nom_conv:$("#contrib_conviviente_nom").val(),
+            nro_conv:$("#contrib_nro_doc_conv").val()
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
@@ -310,9 +311,21 @@ function btn_bus_getdatos(){
     }
 }
 function new_persona(){
-    if($("#cb_tip_doc_3").val()=='02'){
-        if($("#pers_sexo").val()=='-'){
-            mostraralertasconfoco('Ingrese Sexo','#pers_sexo');
+    if ($("#cb_tip_doc_3").val() == '02') {
+        if ($("#pers_sexo").val() == '-') {
+            mostraralertasconfoco('Ingrese Sexo', '#pers_sexo');
+            return false;
+        }
+        if ($("#pers_nombres").val() == '-'||$("#pers_nombres").val() == '') {
+            mostraralertasconfoco('Ingrese Nombre', '#pers_pat');
+            return false;
+        }
+        if ($("#pers_nro_doc").val() == '-'||$("#pers_mat").val() == '') {
+            mostraralertasconfoco('Ingrese DNI', '#pers_nro_doc');
+            return false;
+        }
+        if ($("#pers_pat").val()+$("#pers_mat").val() == '') {
+            mostraralertasconfoco('Ingrese al menos un apellido', '#pers_pat');
             return false;
         }
     }

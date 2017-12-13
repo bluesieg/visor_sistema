@@ -9,11 +9,6 @@ use App\Http\Controllers\Controller;
 
 class MapController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -27,23 +22,8 @@ class MapController extends Controller
         return view('cartografia/cartografia_predios', compact('sectores','anio_tra','menu'));
     }
 
-    function get_manzanas(){
-        //$lotes = DB::select('select ST_AsGeoJSON(geom) geometry from espacial.manzanas');
-/*
-        $manzanas = DB::select(" SELECT json_build_object(
-                'type',       'Feature',
-                'id',         gid,
-                'properties', json_build_object(
-                   'gid', gid,
-                    'cod_sect', cod_sect,
-                    'cod_mza', cod_mza,
-                    'mza_urb', mza_urb
-                 ),
-                 'geometry',   ST_AsGeoJSON(geom)::json
-                  ) features
-                  FROM espacial.manzanas limit 10;");*/
-
-
+    function get_manzanas(Request $request){
+  
         $mznas = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -51,23 +31,17 @@ class MapController extends Controller
                         FROM (
                           SELECT json_build_object(
                             'type',       'Feature',
-                            'id',         gid,
+                            'id_mzna',         id_mzna,
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
-                               'gid', gid,
-                                'mz_cat', mz_cat,
-                                'mz_urb', mz_urb,
-                                'sector_cat', sector_cat,
-                                'aprobacion', aprobacion,
-                                'cod_hab',cod_hab,
-                                'nombre', nombre,
-                                'jurisdicci', jurisdicci
+                                'codi_mzna', codi_mzna
                              )
                           ) AS feature
-                          FROM (SELECT * FROM mdcc_2017.manzanas) row) features;");
+                          FROM (SELECT * FROM catastro.manzanas where id_sect=".$request['sector'].") row) features;");
 
         return response()->json($mznas);
     }
+    
     function get_limites(){
 
         $limites =  DB::select("SELECT json_build_object(
@@ -229,15 +203,15 @@ class MapController extends Controller
                         FROM (
                           SELECT json_build_object(
                             'type',       'Feature',
-                            'id',         gid,
+                            'id_hab_urb',         id_hab_urb,
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
-                              'cod_hab',cod_hab,
-                              'nom_hab_urb',nom_hab_urb,
-                               'gid', gid
+                              'codi_hab_urba',codi_hab_urba,
+                              'nomb_hab_urba',nomb_hab_urba
+                 
                              )
                           ) AS feature
-                          FROM (SELECT * FROM cartografia.hab_urba) row) features;");
+                          FROM (SELECT * FROM catastro.hab_urb) row) features;");
 
         return response()->json($sectores);
     }
