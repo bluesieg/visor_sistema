@@ -378,7 +378,7 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
                         <div class="input-group input-group-md" style="width: 100%">
-                            <span class="input-group-addon" style="width: 165px">Fecha inicio &nbsp;<i class="fa fa-calendar"></i></span>
+                            <span class="input-group-addon" style="width: 165px">Fecha fin &nbsp;<i class="fa fa-calendar"></i></span>
                             <div>
                             <input id="fec_fin" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                             </div>

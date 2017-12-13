@@ -187,6 +187,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('recaudacion_get_op', 'EnvDocCoactivaController@fis_getOP');        
         Route::get('updat_env_doc','EnvDocCoactivaController@up_env_doc');
         Route::get('listado_op','EnvDocCoactivaController@imp_op');
+        Route::resource('modificar_persona','PersonaController');
+
     });
     Route::group(['namespace' => 'presupuesto'], function() {
         Route::resource('generica', 'GenericaController');
