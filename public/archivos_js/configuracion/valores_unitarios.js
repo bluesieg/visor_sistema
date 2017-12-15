@@ -67,6 +67,9 @@ function crear_grid_por_anio() {
             }
         });
     }
+    else{
+        mostraralertasconfoco('Ya Existen registros en la tabla');
+    }
 }
 
 function refresh_grilla_val_unit(anio) {

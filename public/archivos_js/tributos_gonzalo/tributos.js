@@ -127,9 +127,15 @@ function guardar_editar_tributo(tipo) {
                 soles: valor_tributo
             },
             success: function (data) {
-                dialog_close('dlg_nuevo_tributo');
-                fn_actualizar_grilla('tabla_tributo');
-                MensajeExito('Nuevo Tributo', 'El Item se a Creado Correctamente.');
+                if (data.msg === 'si'){
+                    dialog_close('dlg_nuevo_tributo');
+                    fn_actualizar_grilla('tabla_tributo');
+                    mostraralertasconfoco('* FALTA INGRESAR EL PROCEDIMIENTO');
+                }else{
+                    dialog_close('dlg_nuevo_tributo');
+                    fn_actualizar_grilla('tabla_tributo');
+                    MensajeExito('Nuevo Tributo', 'El Item se a Creado Correctamente.');
+                }
             },
             error: function (data) {
                 mostraralertas('* Contactese con el Administrador...');

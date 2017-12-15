@@ -32,6 +32,7 @@
             </div>                   
         </div>
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <input type="hidden" id="current_id" value="0">
             <table id="table_Val_Unitarios"></table>
             <div id="pager_table_Val_Unitarios"></div>
         </article>
@@ -58,13 +59,14 @@
                 {name: 'valor', index: 'valor', align: 'right', width: 60}                
             ],
             pager: '#pager_table_Val_Unitarios',
-            rowList: [13, 20],
+            rowList: [10, 20, 30, 40],
             onSelectRow: function (Id) {
 //                $('#btn_vw_valores_unitarios_Editar').attr('onClick', 'open_dialog_new_edit_Val_Unitarios("' + 'EDITAR' + '","' + Id + '")');
 //                $('#btn_vw_valores_arancelarios_Eliminar').attr('onClick', 'eliminar_val_arancel(' + Id + ')');
             },
             ondblClickRow: function (Id) {
-                $("#btn_vw_valores_unitarios_Editar").click();
+                $('#current_id').val($("#table_Val_Unitarios").getCell(Id, "cod_val"));
+                open_dialog_new_edit_Val_Unitarios('EDITAR');
             }
         });
         $(window).on('resize.jqGrid', function () {

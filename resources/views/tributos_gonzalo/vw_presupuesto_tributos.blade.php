@@ -130,8 +130,8 @@
             rowNum: 20,sortname: 'id_tributo', viewrecords: true, caption: 'TRIBUTOS', align: "center",
             colModel: [
                 {name: 'id_tributo', index: 'id_tributo', align: 'center',width:(pageWidth*(10/100))},
-                {name: 'descrip_procedim', index: 'descrip_procedim', align: 'center', width:(pageWidth*(70/100))}, 
-                {name: 'descrip_tributo', index: 'descrip_tributo', align: 'center', width:(pageWidth*(70/100))},
+                {name: 'descrip_procedim', index: 'descrip_procedim', align: 'left', width:(pageWidth*(70/100))}, 
+                {name: 'descrip_tributo', index: 'descrip_tributo', align: 'left', width:(pageWidth*(70/100))},
                 {name: 'soles', index: 'soles', align: 'center', width:(pageWidth*(10/100))},
 
             ],
@@ -195,7 +195,8 @@
                         <span class="input-group-addon" style="width: 165px">Procedimiento &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input type="hidden" id="hidden_nombre_procedimiento" value="0">
-                            <input id="nombre_procedimiento" type="text"  placeholder="Escriba el tipo de Procedimiento" class="form-control text-uppercase" style="height: 32px;">
+                            <!-- <input id="nombre_procedimiento" type="text"  placeholder="Escriba el tipo de Procedimiento" class="form-control text-uppercase" style="height: 32px;"> -->
+                            <textarea id="nombre_procedimiento" rows="10" placeholder="Escriba el tipo de Procedimiento" class="form-control text-uppercase"></textarea>
                         </div>
                     </div>
                 </div>
@@ -204,7 +205,8 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Tributo &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="nombre_tributo" type="text"  class="form-control text-uppercase" style="height: 32px;" onkeyup="javascript:this.value=this.value.toUpperCase();"  maxlength="200">
+                            <!-- <input id="nombre_tributo" type="text"  class="form-control text-uppercase" style="height: 32px;" onkeyup="javascript:this.value=this.value.toUpperCase();"  maxlength="200"> -->
+                            <textarea id="nombre_tributo" rows="10" class="form-control text-uppercase" onkeyup="javascript:this.value=this.value.toUpperCase();" class="input-sm text-uppercase"></textarea>
                         </div>
                     </div>
                 </div>

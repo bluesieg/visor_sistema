@@ -29,7 +29,7 @@ class MapaController extends Controller
     
     function get_datos(){
 
-        $sql =  DB::connection('gis_prueba')->select("SELECT json_build_object(
+        $sql =  DB::connection('mapa')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                             )

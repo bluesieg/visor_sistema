@@ -1,7 +1,7 @@
 
 function dlg_procedimiento(){
     $("#dlg_proced").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.: Procedimientos - TUPA :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
@@ -55,7 +55,7 @@ function new_procedimiento(){
 }
 function up_dlg_procedimiento(){
     $("#dlg_proced").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.: Procedimientos - TUPA :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",

@@ -125,7 +125,7 @@ $(document).ready(function () {
                                 <label class="label">Descripción:</label>
                                 <label class="input textarea">
                                     <!--<input id="proced_desc" type="textarea" placeholder="Descripción" class="input-sm text-uppercase">-->
-                                    <textarea rows="2" id="proced_desc" laceholder="Descripción" class="input-sm text-uppercase"></textarea>
+                                    <textarea rows="12" id="proced_desc" placeholder="Descripción" class="input-sm text-uppercase"></textarea>
                                 </label>                      
                             </section>
                         </fieldset>

@@ -29,14 +29,21 @@ class TributosController extends Controller
     }
 
     public function create(Request $request){
-        $tributo = new  Tributos;
-        $tributo->id_procedimiento = $request['id_procedimiento'];
-        $tributo->descrip_tributo = $request['descrip_tributo'];
-        $tributo->soles = $request['soles'];
-        $tributo->save();
         
-        return $tributo->id_tributo;
+        $tributo = new  Tributos;
+        
+        if ($request['id_procedimiento'] == 0) {
+            return response()->json([
+                'msg' => 'si',
+            ]);
+        }else{
+            $tributo->id_procedimiento = $request['id_procedimiento'];
+            $tributo->descrip_tributo = $request['descrip_tributo'];
+            $tributo->soles = $request['soles'];
+            $tributo->save();
 
+            return $tributo->id_tributo;
+        }
     }
 
     /**
