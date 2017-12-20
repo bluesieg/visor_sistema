@@ -24,6 +24,11 @@ class MapController extends Controller
 
     function get_manzanas(Request $request){
   
+        $where="";
+        if($request['sector']!='0')
+        {
+           $where="where id_sect=".$request['sector']; 
+        }
         $mznas = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -37,7 +42,7 @@ class MapController extends Controller
                                 'codi_mzna', codi_mzna
                              )
                           ) AS feature
-                          FROM (SELECT * FROM catastro.manzanas where id_sect=".$request['sector'].") row) features;");
+                          FROM (SELECT * FROM catastro.manzanas $where) row) features;");
 
         return response()->json($mznas);
     }
@@ -319,5 +324,179 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                                     on tb1.sec1 = lotes.cod_sect and tb1.mzna1 = lotes.cod_mza and tb1.lote1 = lotes.cod_lote where cod_sect = '".$req->codigo ."' ) row) features;");
         return response()->json($predios);*/
     }
+    
+    
+    function get_agencias(){
 
+        $agencias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id ',         id ,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'agencia', agencia
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.agencia_mun) row) features;");
+
+        return response()->json($agencias);
+
+      
+    }
+    
+    function get_agencias_polygono(){
+
+        $agencias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'layer', layer,
+                                'text', text
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.juridicc_agenc) row) features;");
+
+        return response()->json($agencias);
+
+      
+    }
+    
+    
+    function get_camaras(){
+
+        $camaras = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       
+                            'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'layer',layer,
+                                'gid',id
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.camaras) row) features;");
+
+        return response()->json($camaras);
+
+      
+    }
+    
+    function get_vias(){
+        $vias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'cod_via', cod_via,
+                                'result', result
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.vias_geom) row) features;");
+
+        return response()->json($vias);
+    }
+    
+    function get_z_urbana()
+    {
+
+        $agencias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'zona', zona
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.zon_terr where zona='ZONA URBANA') row) features;");
+
+        return response()->json($agencias);
+
+      
+    }
+    function get_z_agricola()
+    {
+
+        $agencias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'zona', zona
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.zon_terr where zona='ZONA AGRICOLA') row) features;");
+
+        return response()->json($agencias);
+    }
+    function get_z_eriaza()
+    {
+
+        $agencias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'zona', zona
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.zon_terr where zona='ZONA ERIAZA') row) features;");
+
+        return response()->json($agencias);
+    }
+    function get_aportes()
+    {
+
+        $agencias = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'gid',gid,
+                                'layer', layer,
+                                'ocupacion', ocupacion
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.aporte) row) features;");
+
+        return response()->json($agencias);
+    }
 }

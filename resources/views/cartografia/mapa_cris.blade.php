@@ -145,12 +145,24 @@
                 new ol.layer.Group({
                     'title': 'Base maps',
                     layers: [
-                        
+                        new ol.layer.Tile({
+                            title: 'Water color',
+                            type: 'base',
+                            visible: false,
+                            source: new ol.source.Stamen({
+                                layer: 'watercolor'
+                            })
+                        }),
                         new ol.layer.Tile({
                             title: 'OSM',
                             type: 'base',
                             visible: true,
                             source: new ol.source.OSM()
+                        }),
+                        new ol.layer.Tile({
+                            title: 'BLANK',
+                            type: 'base',
+                            visible: false
                         })
                     ]
                 })
@@ -175,7 +187,7 @@
                 lyr_limites_distritales0 = new ol.layer.Vector({
                     source:jsonSource_limites_distritales0,
                     style: polygonStyleFunction,
-                    title: "Cerro COlorado",
+                    title: "Limites",
                    
                 });
                 
@@ -234,12 +246,241 @@
                         <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
                         <div class="icon-addon addon-md">
                             <select id='selsec' class="form-control" onchange="callpredtab()" style="height: 32px;" >
+                            <option id='op_sel_sector' value='0' >Todos</option>
                             @foreach ($sectores as $sec)
+                            
                             <option value='{{$sec->id_sec}}' >{{$sec->sector}}</option>
                             @endforeach
                             </select>
                         </div>
 
+                    </div>
+                </div>
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
+<div id="dlg_limites" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-7" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Area &nbsp;<i class="fa fa-area-chart"></i></span>
+                        <div >
+                            <label id="input_limit_area" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Perímetro &nbsp;<i class="fa fa-cube"></i></span>
+                        <div >
+                            <label id="input_limit_perimetro"   class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Población &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <label id="input_limit_poblacion"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Creacion &nbsp;<i class="fa fa-globe"></i></span>
+                        <div>
+                            <label id="input_limit_creacion"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Colindantes Norte&nbsp;<i class="fa fa-map-signs"></i></span>
+                        <div>
+                            <label id="input_limit_norte"   class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Colindantes Sur &nbsp;<i class="fa fa-map-signs"></i></span>
+                        <div>
+                            <label id="input_limit_sur" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Colindantes Este &nbsp;<i class="fa fa-map-signs"></i></span>
+                        <div>
+                            <label id="input_limit_este" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 28%">Colindantes Oeste &nbsp;<i class="fa fa-map-signs"></i></span>
+                        <div>
+                            <label id="input_limit_oeste"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xs-5" style="padding: 0px; margin-top: 0px;">                
+                <div class="col-xs-12" style="padding: 0px;">
+                    <img src="img/recursos/limites.jpg" width="400px"/>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Ley
+                    </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CNA
+                    </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CN
+                    </button>
+                </div>
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
+<div id="dlg_agencias" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
+                
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Agencia &nbsp;<i class="fa fa-home"></i></span>
+                        <div >
+                            <input id="input_agencia" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Area &nbsp;<i class="fa fa-area-chart"></i></span>
+                        <div >
+                            <input id="input_agencia_area" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Direccion &nbsp;<i class="fa fa-map"></i></span>
+                        <div >
+                            <input id="input_agencia_dir" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Teléfono &nbsp;<i class="fa fa-phone"></i></span>
+                        <div >
+                            <input id="input_agencia_fono" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Población &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <input id="input_agencia_poblacion" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 text-align-center" style="padding: 0px; margin-top: 10px">
+                    <img src="img/recursos/agencias.jpg"/>
+                </div>
+                
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
+<div id="dlg_zonas_distritales" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
+                
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Zona &nbsp;<i class="fa fa-inbox"></i></span>
+                        <div >
+                            <input id="input_zona" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Area &nbsp;<i class="fa fa-area-chart"></i></span>
+                        <div >
+                            <input id="input_zona_area" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Cantidad Predios &nbsp;<i class="fa fa-home"></i></span>
+                        <div >
+                            <input id="input_zona_pred" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Cantidad Aportes &nbsp;<i class="fa fa-shopping-cart"></i></span>
+                        <div >
+                            <input id="input_zona_aportes" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Población &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <input id="input_zona_poblacion" type="text"  class="form-control" style="height: 32px;">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">Situación &nbsp;<i class="fa fa-info-circle"></i></span>
+                        <div>
+                            <input id="input_zona_situacion" type="text"  class="form-control" style="height: 32px;">
+                        </div>
                     </div>
                 </div>
            

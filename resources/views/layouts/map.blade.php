@@ -80,7 +80,7 @@
         
         @if (!Auth::guest())
         <aside id="left-panel" style="background: #231918 !important; border-right: 2px #bfbfbf dashed">        
-            <div class="login-info" style="background: #B40411;border-bottom: 3px solid #f2f2f2;">
+                <div class="login-info" style="background: #B40411;border-bottom: 3px solid #f2f2f2;">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a>
                         @if (Auth::user()->foto)
@@ -96,26 +96,32 @@
                     </a> 
                 </span>
             </div>
-               <div>
-				
-                    <!-- widget edit box -->
-                    <div class="jarviswidget-editbox">
-                            <!-- This area used as dropdown edit box -->
+            <!-- widget div-->
+            <div style="margin-top: 20px">
+            <!-- widget content -->
+                <div class="widget-body no-padding">
+                    <div class="panel-group smart-accordion-default" id="accordion-2" style="padding-right: 11px;">
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-1"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> General </a></h4>
+                            </div>
+                            <div id="collapseOne-1" class="panel-collapse collapse in cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+<!--                                            widget edit box -->
+                                           <div class="jarviswidget-editbox">
+<!--                                                    This area used as dropdown edit box -->
 
-                    </div>
-                    <!-- end widget edit box -->
-
-                    <!-- widget content -->
-                    <div class="widget-body">
-
-                        <div class="tree smart-form" style="color:white !important">
-                                    <ul>
-                                            <li>
-                                                    <span><i class="fa fa-lg fa-folder-open"></i> Capas</span>
+                                           </div>
+<!--                                            end widget edit box -->
+<!--                                            widget content -->
+                                           <div class="widget-body">
+                                               <div class="tree smart-form" style="color:white !important">
                                                     <ul >
-                                                          
                                                             <li >
-                                                                <span style="width: 130px;">
+                                                                <span style="width: 170px;">
                                                                     <label class="checkbox inline-block" style="color:white !important">
                                                                         <input type="checkbox" name="checkbox-inline" checked="checked" id="chk_limite" onchange="valida_capa('chk_limite')"/>
 
@@ -124,59 +130,327 @@
                                                                         Limites
                                                                 </span>
                                                             </li>
-                                                            <li >
-                                                                <span style="width: 130px;">
+                                                            <li>
+                                                                <span style="width: 170px;">
                                                                     <label class="checkbox inline-block" style="color:white !important">
-                                                                        <input type="checkbox" name="checkbox-inline" id="chk_sector" onchange="valida_capa('chk_sector')">
+                                                                        <input type="checkbox" name="checkbox-inline" id="chk_agencias" onchange="valida_capa('chk_agencias')">
                                                                         <i></i>
-                                                                        <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
-                                                                        Sector
+                                                                        <span style="background-color: #04A4B4; width: 5px !important ; height: 5px !important;"></span>
+                                                                        Sectores Administrativos
                                                                     </label> 
                                                                 </span>
                                                             </li>
-                                                            <li >
-                                                                <span style="width: 130px;">
-                                                                    <label class="checkbox inline-block" style="color:white !important">
-                                                                        <input type="checkbox" name="checkbox-inline" id="chk_mzna" onchange="valida_capa('chk_mzna')">
-                                                                        <i></i>
-                                                                        <span style="background-color: #009900; width: 5px !important ; height: 5px !important;"></span>
-                                                                        Manzana
-                                                                    </label> 
-                                                                </span>
-                                                            </li>
-                                                            
-                                                            <li >
-                                                                <span style="width: 130px;">
-                                                                    <label class="checkbox inline-block" style="color:white !important">
-                                                                        <input type="checkbox" name="checkbox-inline" id="chk_lote" onchange="valida_capa('chk_lote')">
-                                                                        <i></i>
-                                                                        <span style="background-color: #C70039; width: 5px !important ; height: 5px !important;"></span>
-                                                                        Lotes
-                                                                    </label> 
-                                                                </span>
-                                                            </li>
-                                                            <li >
-                                                                <span style="width: 130px;">
-                                                                    <label class="checkbox inline-block" style="color:white !important">
-                                                                        <input type="checkbox" name="checkbox-inline" id="chk_hab_urb" onchange="valida_capa('chk_hab_urb')">
-                                                                        <i></i>
-                                                                        <span style="background-color: #B40477; width: 5px !important ; height: 5px !important;"></span>
-                                                                        Hab. Urbanas
-                                                                    </label> 
-                                                                </span>
-                                                            </li>
-                                                            
                                                     </ul>
-                                            </li>
+                                                </div>
+                                           </div>
+<!--                                            end widget content -->
 
-                                    </ul>
-                                           
+                                   </div>
+                                </div>
                             </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background: transparent">
+                            <div class="panel-heading" style="background: #B40411; color: white" >
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseTwo-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> GDUC </a></h4>
+                            </div>
+                            <div id="collapseTwo-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-1"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> Zonas Distritales </a></h4>
+                                                </div>
+                                                <div id="collapseOne-sub-1" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
 
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_z_urbana" onchange="valida_capa('chk_z_urbana')"/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Z. Urbana
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_z_agricola" onchange="valida_capa('chk_z_agricola')">
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Z. Agrícola
+                                                                                    </label> 
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_z_eriaza" onchange="valida_capa('chk_z_eriaza')">
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #009900; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Z. Eriaza
+                                                                                    </label> 
+                                                                                </span>
+                                                                            </li>
+
+
+                                                                    </ul>
+                                                                   
+                                                              </div>
+
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> Catastro </a></h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-1" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_sector" onchange="valida_capa('chk_sector')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Sector
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mzna" onchange="valida_capa('chk_mzna')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #009900; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Manzana
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_lote" onchange="valida_capa('chk_lote')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #C70039; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Lotes
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_hab_urb" onchange="valida_capa('chk_hab_urb')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #B40477; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Hab. Urbanas
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_vias" onchange="valida_capa('chk_vias')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #B40477; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Vias
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_camaras" onchange="valida_capa('chk_camaras')">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Cámaras
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_aportes" onchange="valida_capa('chk_aportes')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Aportes
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTree_sub-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> Infra. Urbana </a></h4>
+                                                </div>
+                                                <div id="collapseTree_sub-1" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_salud" >
+                                                                                    <i></i>
+                                                                                    Salud
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_educa" >
+                                                                                    <i></i>
+                                                                                    Educación
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_comer" >
+                                                                                    <i></i>
+                                                                                    Comercio
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_industria" >
+                                                                                    <i></i>
+                                                                                    Industria
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_deporte">
+                                                                                    <i></i>
+                                                                                    Recre. Dep.
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_recre_esp">
+                                                                                    <i></i>
+                                                                                    Recre. Esp.
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_parque" >
+                                                                                    <i></i>
+                                                                                    Pareque Recre.
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_otros" >
+                                                                                    <i></i>
+                                                                                    Otros
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gob" >
+                                                                                    <i></i>
+                                                                                    Gubernamentales
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_finan" >
+                                                                                    <i></i>
+                                                                                    Ins. Financieras
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin option-->
+                        
+                       
                     </div>
-                    <!-- end widget content -->
-
+                </div>
+                <!-- end widget content -->
             </div>
+        
             <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit" style="color: red;"></i> </span>
         </aside>
         @endif

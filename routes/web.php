@@ -130,12 +130,20 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('getlimites', 'MapController@get_limites')->name('get.limites');
         Route::get('getsectores', 'MapController@get_sectores')->name('get.sectores');
         Route::get('getmznas', 'MapController@get_manzanas')->name('get.manzanas');
-        Route::get('gethab_urb', 'MapController@get_hab_urb')->name('get.manzanas');
+        Route::get('gethab_urb', 'MapController@get_hab_urb');
         Route::post('geogetmznas_x_sector', 'MapController@geogetmznas_x_sector');
         Route::post('get_centro_sector', 'MapController@get_centro_sector');
         Route::post('mznas_x_sector', 'MapController@mznas_x_sector');
         Route::post('get_lotes_x_sector', 'MapController@get_lotes_x_sector');
         Route::post('get_predios_rentas','MapController@get_predios_rentas');
+        Route::get('getagencias', 'MapController@get_agencias');
+        Route::get('getagencias_polygono', 'MapController@get_agencias_polygono');
+        Route::get('getcamaras', 'MapController@get_camaras');
+        Route::get('getvias_lineas', 'MapController@get_vias');
+        Route::get('get_z_urbana', 'MapController@get_z_urbana');
+        Route::get('get_z_agricola', 'MapController@get_z_agricola');
+        Route::get('get_z_eriaza', 'MapController@get_z_eriaza');
+        Route::get('get_aportes', 'MapController@get_aportes');
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios

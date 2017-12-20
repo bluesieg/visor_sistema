@@ -36,7 +36,12 @@ class MapaController extends Controller
                                'gid', gid,
                                'area_km2', area_km2,
                                'perimetro', perimetro,
-                               'poblacion', poblacion
+                               'poblacion', poblacion,
+                               'lim_norte', lim_norte,
+                               'lim_sur', lim_sur,
+                               'lim_este', lim_este,
+                               'lim_oeste', lim_oeste,
+                               'creacion', creacion
                              )
                           ) AS feature
                           FROM (SELECT * FROM catastro.limites) row) features;");

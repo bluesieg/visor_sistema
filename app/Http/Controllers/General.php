@@ -112,7 +112,7 @@ class General extends Controller {
 
     }
     function sel_viaby_sec(Request $request){
-        $Consulta = DB::table('catastro.vw_arancel')->where('anio',date("Y"))->where('sec',$request['sec'])->where('mzna',$request['mzna'])->get();  
+        $Consulta = DB::table('catastro.vw_arancel')->where('anio',$request['an'])->where('sec',$request['sec'])->where('mzna',$request['mzna'])->get();  
         return $Consulta;
 
     }
