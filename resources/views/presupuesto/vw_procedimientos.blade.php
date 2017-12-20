@@ -10,7 +10,7 @@
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-6 text-left">
                                 <label>Filtro Año:</label>
-                                <select id="vw_procedim_anio"  class="input-sm">
+                                <select id="vw_procedim_anio"  class="input-sm" onchange="seleccionar_anio();">
                                     @foreach ($anio as $anio)
                                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                     @endforeach
@@ -53,11 +53,15 @@
 @section('page-js-script')
 
 <script type="text/javascript">
+    
 $(document).ready(function () {
     $("#menu_presupuesto").show();
     $("#li_pres_proced").addClass('cr-active');
+    seleccionar_anio();
+    anio = $("#vw_procedim_anio").val();
+    
     jQuery("#table_Procedimiento").jqGrid({
-        url: 'get_procedimientos?anio='+$("#vw_procedim_anio").val(),
+        url: 'get_procedimientos?anio=' + anio,
         datatype: 'json', mtype: 'GET',
         height: 'auto', autowidth: true,
         toolbarfilter: true,

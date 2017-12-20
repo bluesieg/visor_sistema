@@ -79,8 +79,7 @@ class ProcedimientoController extends Controller
     }
     
     function get_procedimientos(Request $request){
-        $anio =  $request['anio'];
-        $totalg = DB::select("select count(id_proced) as total from presupuesto.vw_procedimiento where anio=".$anio);
+        $totalg = DB::select("select count(id_proced) as total from presupuesto.vw_procedimiento where anio='".$request['anio']."' ");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -102,7 +101,7 @@ class ProcedimientoController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('presupuesto.vw_procedimiento')->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('presupuesto.vw_procedimiento')->where('anio',$request['anio'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;

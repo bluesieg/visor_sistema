@@ -35,7 +35,7 @@ class Recibos_MasterController extends Controller
         $data->hora       = date('h:i:s A');
         $data->id_usuario = Auth::user()->id;
         $data->id_est_rec = $request['id_est_rec'];
-        $data->id_caja    = 0;        
+        $data->id_caja    = 1;        
         $data->hora_pago  = "";
         $data->glosa      = $request['glosa'];
         $data->total      = $request['total'];

@@ -87,7 +87,7 @@ function detalle_recibo() {
             <td><label class='input'>\n\
             <input id='id_tributo_" + cont + "' type='hidden' value='" + id_tributo + "'>\n\
             <input id='glosa_din_" + cont + "' type='text' value='" + (tributo).toUpperCase() + "' disabled='' class='input-xs'></label></td>\n\
-            <td><label class='input'><input id='sub_tot_din_" + cont + "' type='text' value='" + formato_numero(total, 3, '.', ',') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='sub_tot_din_" + cont + "' type='text' value='" + formato_numero(total, 3, '.', '') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
             <td align='center'><button onclick='btn_borrar_detalle(" + cont + ");' class='btn_din' id='btn_eliminar_din_" + cont + "' title='Eliminar'> <img src='img/trash.png' style='width:19px' ></img></button></td>\n\
         </tr>"
             );

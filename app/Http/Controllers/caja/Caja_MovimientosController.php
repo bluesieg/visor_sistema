@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Recibos_Master;
 use App\Models\CtaCte;
 use App\Models\Caja_apert_cierr;
-
+//40204770
 class Caja_MovimientosController extends Controller {
 
     public function index() {
@@ -174,7 +174,7 @@ class Caja_MovimientosController extends Controller {
                         . " where id_rec_mtr=".$id_recib);
         }else{
             $totalg = DB::select("select count(id_rec_mtr) as total from tesoreria.vw_caja_mov"
-                        . " where id_usuario='" . Auth::user()->id . "' and  fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
+                        . " where fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
         }
         
         $page = $_GET['page'];
@@ -205,7 +205,7 @@ class Caja_MovimientosController extends Controller {
         }else{
             $sql = DB::table('tesoreria.vw_caja_mov')
                         ->where([
-                                ['id_usuario', '=', Auth::user()->id],
+                                
                                 ['fecha', '=', date('d-m-Y')],
                                 ['id_est_rec', '=', $est_recibo]                                
                         ])
@@ -217,7 +217,7 @@ class Caja_MovimientosController extends Controller {
                         . " where id_rec_mtr=".$id_recib);
         }else{
             $suma = DB::select("select sum(total) as sum_total from tesoreria.vw_caja_mov"
-                    . " where id_usuario='" . Auth::user()->id . "' and  fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
+                    . " where fecha='" . date('d-m-Y') . "' and id_est_rec='" . $est_recibo . "'");
         }
         
         $array = array();

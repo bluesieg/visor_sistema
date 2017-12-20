@@ -180,6 +180,17 @@ function autocompletar_oficinas(textbox){
     });
 }
 
+     
+function seleccionar_anio(){
+    
+    anio = $("#vw_procedim_anio").val();
+
+    jQuery("#table_Procedimiento").jqGrid('setGridParam', {
+         url: 'get_procedimientos?anio=' + anio 
+    }).trigger('reloadGrid');
+
+}
+
 function limpiar_form_proced(){
     $("#proced_desc,#hiddenproced_ofi,#proced_ofi,#proced_esp_det,#hiddenproced_esp_det").val('');    
 }
