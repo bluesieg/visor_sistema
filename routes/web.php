@@ -234,6 +234,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_val_unitarios', 'Valores_Unitarios@grid_val_unitarios'); // tabla grilla VALORES UNITARIOS
         Route::get('create_magic_grid_val_unit', 'Valores_Unitarios@magic_grid_valores_unit'); // EXECUTE FUNCTION POSTGRES... VALORES UNITARIOS
         Route::post('update_valor_unitario', 'Valores_Unitarios@update_valor_unitario');
+        
+        Route::resource('obras_complementarias','ObrasController');
+        Route::get('get_instalaciones', 'ObrasController@grid_obras');
     });
     /******************** ********    TESORERIA     ****   EMISION DE RECIBOS DE PAGO            ************************************/
     Route::group(['namespace' => 'tesoreria'], function() {
