@@ -379,4 +379,10 @@ class PredioController extends Controller
             return 0; 
         }
     }
+    public function getloteid($lote,$anio)
+    {
+        $lote = DB::select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");
+        return $lote;
+       
+    }
 }

@@ -26,14 +26,15 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
-        
+        <script src='mapbox/mapbox.js'></script>
+        <link href='mapbox/mapbox.css' rel='stylesheet' />
 
 
     </head>
     <body class="desktop-detected pace-done fixed-header fixed-navigation" style="background: white !important">
         <header id="header" style="background: #B40411 !important;">
             <div id="logo-group">                
-                <span id="logo"> <img src="img/logo-white.png" alt="SmartAdmin"> </span> 
+                <span id="logo"> <img src="img/logos/logo_largo.png" alt="SmartAdmin"> </span> 
 
             </div>
             @if (Auth::guest())
@@ -79,7 +80,7 @@
         <div id="alertdialog" style="display: none;" ></div>
         
         @if (!Auth::guest())
-        <aside id="left-panel" style="background: #231918 !important; border-right: 2px #bfbfbf dashed">        
+        <aside id="left-panel" style="background: #231918 !important; border-right: 2px #bfbfbf dashed; overflow-y: scroll; width: 300px; padding-bottom: 50px">        
                 <div class="login-info" style="background: #B40411;border-bottom: 3px solid #f2f2f2;">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a>
@@ -161,6 +162,30 @@
                                     <!-- widget content -->
                                     <div class="widget-body no-padding">
                                         <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#zon_terri"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Zonas Territoriales </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-zon_terri" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
                                                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-1"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> Zonas Distritales </a></h4>
@@ -290,16 +315,42 @@
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_camaras" onchange="valida_capa('chk_camaras')">
-                                                                                    <i></i>
-                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
-                                                                                    Cámaras
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
+                                                                        
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-aportes" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Aportes 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-aportes" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
                                                                         <li>
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
@@ -340,8 +391,9 @@
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_salud" >
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_salud" onchange="valida_capa('chk_salud')">
                                                                                     <i></i>
+                                                                                    <img src="img/recursos/hospital.png" height="20px" />
                                                                                     Salud
                                                                                 </label> 
                                                                             </span>
@@ -349,8 +401,9 @@
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_educa" >
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_educacion" onchange="valida_capa('chk_educacion')">
                                                                                     <i></i>
+                                                                                    <img src="img/recursos/colegio.png" height="20px" />
                                                                                     Educación
                                                                                 </label> 
                                                                             </span>
@@ -436,6 +489,500 @@
                                                 </div>
                                             </div>
                                             <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-quebradas" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Quebradas 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-quebradas" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_quebradas" onchange="valida_capa('chk_quebradas')" >
+                                                                                    <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Quebradas
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                               </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-predios_mun" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Predios Municipales 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-predios_mun" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-plani_hab_urb" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Planeamiento y Hab. Urbanas 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-plani_hab_urb" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mod_hb_urb" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Modulo Hab. Urbana
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mod_cons_pos" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Modulo Const. Posesión
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-obras_priva" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub Gerencia Obras Privadas 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-obras_priva" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mod_lic_edi" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Modulo Lic. Edificación
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                       
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-espa_publi" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub Ge. Cat. y espacios Publicos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-espa_publi" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_fiscalizacion" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Fiscalización
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                       
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-planos_tematicos" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Planos Temáticos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-planos_tematicos" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_topografia" onchange="valida_capa('chk_topografia')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Topografía
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_relieve" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Relieve
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_3D" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    3D
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li style="padding-left: 0px;" >
+                                                                                
+                                                                                <div class="tree">
+                                                                                    <ul style="padding-left: 0px; padding-top: 0px">
+                                                                                            <li>
+                                                                                                <span class="label " style=" border: 1px dotted #999;width: 160px; color: white">
+                                                                                                        <i class="fa fa-lg fa-minus-circle"></i> PDM
+                                                                                                    </span>
+                                                                                                    <ul>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_pdm_zonificacion" onchange="valida_capa('chk_pdm_zonificacion')">
+                                                                                                                    <i></i>
+                                                                                                                    Zonificación
+                                                                                                                </label> 
+                                                                                                            </span> 
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_pdm_plan_vial" onchange="valida_capa('chk_pdm_plan_vial')">
+                                                                                                                    <i></i>
+                                                                                                                    Plan Vial
+                                                                                                                </label> 
+                                                                                                            </span>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                            </li>
+
+                                                                                    </ul>
+                                                                                </div>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_usos" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Usos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_espe_urba" onchange="valida_capa('chk_espe_urba')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Expediente Urbano
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_puntos_geo" onchange="valida_capa('chk_puntos_geo')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Puntos Geodésicos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_carta_nac" onchange="valida_capa('chk_carta_nac')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Carta Nacional
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important;padding-left: 0px;" onclick="viewlong('cartas_nacional/1940.jpg')">
+                                                                                    <img src="img/recursos/img_icon.png" height="20px" />
+                                                                                    Carta Nacional 1940
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important;padding-left: 0px;" onclick="viewlong('cartas_nacional/1956.jpg')">
+                                                                                    <img src="img/recursos/img_icon.png" height="20px" />
+                                                                                    Carta Nacional 1956
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                       
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-extrac_mat" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Extracción de Materiales 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-extrac_mat" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_ext_mat" onchange="valida_capa('chk_ext_mat')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #09EAD9; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Extracción de Materiales
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-uni_catas" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Unidades Catastrales
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-uni_catas" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_ext_mat" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #09EAD9; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Unidades Catastrales
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-lot_rurales" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Lotes Rurales
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-lot_rurales" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_lotes_rurales" onchange="valida_capa('chk_lotes_rurales')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #109528; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Lotes Rurales
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
                                         </div>
                                     </div>
                                     <!-- end widget content -->
@@ -444,8 +991,1394 @@
                             </div>
                         </div>
                         <!-- fin option-->
-                        
-                       
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsetree-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        Gerencia Adm. Tributaria 
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsetree-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsefour-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        Acesoría Legal
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsefour-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsefive-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        Procuraduria
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsefive-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsesix-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        Coactiva
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsesix-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseseven-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        G. Servicios Ciudadanos
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseseven-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-plan_tema_admini"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Plan Temático Administrativo
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-plan_tema_admini" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_predios" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Predios
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_aportes" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Aportes
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_complejos" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Complejos
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_parques" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Parques
+                                                                                </span>
+                                                                            </li>
+                                                                    </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-resi_soli" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Residuos Sólidos 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-resi_soli" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_botaderos" onchange="valida_capa('chk_aportes')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Botaderos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_curtiembre" onchange="valida_capa('chk_aportes')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Ubicación Curtiembres
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-atencion" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Plano Temático Atención
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-atencion" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_area_verdes" onchange="valida_capa('chk_aportes')">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Areas Verdes
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseeigth-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        G. Seguridad Ciudadana
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseeigth-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-comisarias"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Comisarias
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-comisarias" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_comisarias" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Comisarias
+                                                                                </span>
+                                                                            </li>
+                                    
+                                                                    </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-delitos" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Delitos 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-delitos" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_delitos" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Delitos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-camaras" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Cámaras
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-camaras" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_camaras" onchange="valida_capa('chk_camaras')">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Cámaras
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-recor_serenazgo" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Recorridos Serenazgo
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-recor_serenazgo" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_rec_serenazgo" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Recorridos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-riesgo_desa" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub Ge. Riesgos y Desastres
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-riesgo_desa" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_zon_riesgo" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Zonas de Riesgos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_plan_riesgo" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Zonas de Riesgos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-seguridad_vial" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub Ge. Transito y Seguridad Vial
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-seguridad_vial" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_semaforos" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Semáforos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_rutas_trans_public" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Rutas Trans. Público
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsenine-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        Património
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsenine-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-aportes_patri"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Aportes
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-aportes_patri" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_aportes_patri" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Aportes
+                                                                                </span>
+                                                                            </li>
+                                    
+                                                                    </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-terr_muni" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Terrenos Municipales 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-terr_muni" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_terr_muni_patri" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Terrenos Municipales
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseten-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        G. Desarr. Económico Local
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseten-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-zonificacion"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Zonificación
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-zonificacion" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_zonificacion" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Zonificación
+                                                                                </span>
+                                                                            </li>
+                                    
+                                                                    </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-usos_desa" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Usos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-usos_desa" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_usos_desa" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Usos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-info_urba_admin" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Informacion Urbana Administrativa.
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-info_urba_admin" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_info_urb_admin" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Información
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseeleven-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        G. Desarrollo Social
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseeleven-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-colegios"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Colegios
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-colegios" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_colegios" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Colegios
+                                                                                </span>
+                                                                            </li>
+                                    
+                                                                    </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-comple_deportivos" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Complejos Deportivos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-comple_deportivos" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_a_comple_deportivos" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Complejos Deportivos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-comedores" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Comedores Populares
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-comedores" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_comedores" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Comedores
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-guarderias" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Guarderías wawa wasi
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-guarderias" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_guarderias" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Guarderías
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-pro_soc" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub Ge. Programas Sociales
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-pro_soc" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_sisfoh" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    SISFOH
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_vaso_leche" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Vaso Leche
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_pension_65" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Pensión 65
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                       <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #B40411; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsetwelve-1">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        GOPI
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsetwelve-1" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-gopi_aportes"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Aportes
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-gopi_aportes" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_gopi_aportes" onchange=""/>
+
+                                                                                        <i></i>
+                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Aportes
+                                                                                </span>
+                                                                            </li>
+                                    
+                                                                    </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-gopi_vias" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Vias
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-gopi_vias" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gopi_vias" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Vias
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-gopi_terrenos" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Terrenos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-gopi_terrenos" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gopi_terrenos" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Terrenos
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-mod_infra_vial" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Mod. Infrac Vial
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-mod_infra_vial" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gopi_infra_vial" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Infraestructura Vial
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-mod_obras" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Mod. Obras
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-mod_obras" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gopi_obras" onchange="">
+                                                                                    <i></i>
+                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Obras
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
                     </div>
                 </div>
                 <!-- end widget content -->
@@ -455,7 +2388,7 @@
         </aside>
         @endif
 
-        <div id="main" role="main" style="padding-bottom: 0px !important; min-height: 0px !important;">            
+        <div id="main" role="main" style="padding-bottom: 0px !important; min-height: 0px !important; margin-left: 300px !important">            
             <div id="content">
                 @yield('content') 
             </div>

@@ -129,7 +129,11 @@ class MapController extends Controller
 
     function get_lotes_x_sector(Request $req){
 
-
+        $where="";
+        if($req->codigo!='0')
+        {
+           $where="where id_sect=".$req->codigo; 
+        }
         $lotes = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -148,34 +152,10 @@ class MapController extends Controller
                              )
                           ) AS feature
                           FROM (select l.id_lote, l.id_mzna, l.codi_lote, l.id_hab_urb, l.geom, m.id_sect from  catastro.lotes l
-                                join catastro.manzanas m on m.id_mzna = l.id_mzna where id_sect = '".$req->codigo."') row) features ;");
+                                join catastro.manzanas m on m.id_mzna = l.id_mzna $where) row) features ;");
 
         return response()->json($lotes);
-        /*
-        $lotes = DB::select("SELECT json_build_object(
-                            'type',     'FeatureCollection',
-                            'features', json_agg(feature)
-                        )
-                        FROM (
-                          SELECT json_build_object(
-                            'type',       'Feature',
-                            'id',         gid,
-                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
-                            'properties', json_build_object(
-                               'gid', gid,
-                                'cod_mza', cod_mza,
-                                'mz_urb', mz_urb,
-                                'cod_sect', cod_sect,
-                                'nom_lote',nom_lote,
-                                'cod_habi',cod_habi,
-                                'habilit',habilit,
-                                'sec_mzna',sec_mzna,
-                                'cod_lote',cod_lote
-                             )
-                          ) AS feature
-                          FROM (SELECT * FROM mdcc_2017.lotes where cod_sect = '".$req->codigo."') row) features;");
-
-        return response()->json($lotes);*/
+       
     }
 
 
@@ -212,11 +192,14 @@ class MapController extends Controller
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                               'codi_hab_urba',codi_hab_urba,
-                              'nomb_hab_urba',nomb_hab_urba
+                              'nomb_hab_urba',nomb_hab_urba,
+                              'aprobado',aprobado,
+                              'tot_lotes',tot_lotes,
+                              'area',area
                  
                              )
                           ) AS feature
-                          FROM (SELECT * FROM catastro.hab_urb) row) features;");
+                          FROM (SELECT * FROM catastro.vw_hab_urbana_gis) row) features;");
 
         return response()->json($sectores);
     }
@@ -362,7 +345,11 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                             'properties', json_build_object(
                                 'gid',gid,
                                 'layer', layer,
-                                'text', text
+                                'text', text,
+                                'color',color,
+                                'area',area,
+                                'ubicacion',ubicacion,
+                                'tlfno_anex',tlfno_anex
                              )
                           ) AS feature
                           FROM (SELECT * FROM catastro.juridicc_agenc) row) features;");
@@ -429,10 +416,13 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                 'gid',gid,
-                                'zona', zona
+                                'zona', zona,
+                                'area',area,
+                                'tot_predios_urbanos',tot_predios_urbanos,
+                                'poblacion',poblacion
                              )
                           ) AS feature
-                          FROM (SELECT * FROM catastro.zon_terr where zona='ZONA URBANA') row) features;");
+                          FROM (SELECT * FROM catastro.zon_terr_urbana where zona='ZONA URBANA') row) features;");
 
         return response()->json($agencias);
 
@@ -492,7 +482,8 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                             'properties', json_build_object(
                                 'gid',gid,
                                 'layer', layer,
-                                'ocupacion', ocupacion
+                                'ocupacion', ocupacion,
+                                'color',color
                              )
                           ) AS feature
                           FROM (SELECT * FROM catastro.aporte) row) features;");

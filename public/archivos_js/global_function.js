@@ -503,3 +503,4 @@ function ajustar(tam, num)
             return $("#" + num).val(data);
     }
 }
+

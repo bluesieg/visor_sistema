@@ -4,21 +4,84 @@ map.on('singleclick', function(evt) {
 //        if(el.get('title')=='lotes')
 //        { }});
             //alert(el.target.getFeatures().getLength());
+            
             mostrar=0;
             var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                if(layer.get('title')=='Zonificación'&&mostrar==0)
+                {   
+                    $("#show_img_pdm_zonificaicon").html('');
+                    mostrar=1;
+                    crear_dlg("dlg_zonificacion",600,"Zonificación");
+                    $("#show_img_pdm_zonificaicon").html('<center><img src="img/zonificacion/'+feature.get('id_zonif')+'.jpg"/></center>');
+                    return false;
+                }
                 if(layer.get('title')=='Agencias Juridiccion'&&mostrar==0)
                 {   
+                    $("#div_img_agencias").html("");
                     mostrar=1;
-                    $("#input_agencia").val(feature.get('text'));
-                    crear_dlg("dlg_agencias",600,"Angencias");
+                    $("#input_agencia").text(feature.get('text'));
+                    $("#input_agencia_area").text(feature.get('area'));
+                    $("#input_agencia_poblacion").text('113 171 hab');;
+                    $("#input_agencia_dir").text(feature.get('ubicacion'));;
+                    $("#input_agencia_fono").text(feature.get('tlfno_anex'));
+                    $("#div_img_agencias").html('<img src="img/recursos/agencias/'+feature.get('gid')+'.jpg" style="max-height:250px; max-width:400px" onclick="viewagencia('+feature.get('gid')+');"/>')
+                    crear_dlg("dlg_agencias",600,"Agencias");
                     return false;
+                }
+                
+                if(layer.get('title')=='lotes'&&mostrar==0)
+                {
+                    mostrar=1;
+                    verlote(feature.get('id_lote'));
+                    return false;
+                    
+                }
+                if(layer.get('title')=='Zona Urbana'||layer.get('title')=='Zona Agricola'||layer.get('title')=='Zona Eriaza'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#input_zona").val(feature.get('zona'));
+                    if(layer.get('title')=='Zona Urbana')
+                    {
+                        $("#input_zona_area").text(feature.get('area'));
+                        $("#input_zona_pred").text(feature.get('tot_predios_urbanos'));
+                        $("#input_zona_poblacion").text(feature.get('poblacion'));
+                    }
+                    crear_dlg("dlg_zonas_distritales",600,"Zonas Distritales");
+                    return false;
+                }
+                if(layer.get('title')=='Expediente Urbano'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#input_exur_nombre").text(feature.get('descrip'));
+                    $("#input_exur_altura").text(feature.get('altura_de'));
+                    $("#input_exur_mat").text(feature.get('material_1'));
+                    $("#input_exur_estconser").text(feature.get('e_conserva'));
+                    $("#input_exur_estconst").text(feature.get('e_construc'));
+                    $("#input_exur_agua").text(feature.get('agua_'));
+                    $("#input_exur_luz").text(feature.get('luz_'));
+                    $("#input_exur_desague").text(feature.get('desague_'));
+                    $("#input_exur_uso_pri").text(feature.get('uso_1'));
+                    $("#input_exur_uso_sec").text(feature.get('uso_2'));
+                    $("#input_exur_uso_ter").text(feature.get('uso_3'));
+                    verexp_urb();
+                    return false;
+                    
+                }
+                if(layer.get('title')=='Habilitacion Urbana'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#input_nom_haburb").text(feature.get('nomb_hab_urba'));
+                    $("#input_aprobado").text(feature.get('aprobado'));
+                    $("#input_tot_lotes_haburb").text(feature.get('tot_lotes'));
+                    $("#input_area_haburb").text(feature.get('area'));
+                    crear_dlg("dlg_hablitacion_urbana",900,"Hablitación Urbana");
                 }
                 if(layer.get('title')=='Limites'&&mostrar==0)
                 {
                     mostrar=1;
                     $("#input_limit_area").text(feature.get('area_km2')+" Km2");
                     $("#input_limit_poblacion").text(feature.get('poblacion'));
-                    $("#input_limit_poblacion").text(feature.get('poblacion'));
+                    $("#input_limit_poblacion").text('113 171 hab');
                     $("#input_limit_norte").text(feature.get('lim_norte'));
                     $("#input_limit_sur").text(feature.get('lim_sur'));
                     $("#input_limit_este").text(feature.get('lim_este'));
@@ -28,24 +91,20 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_limites",1100,"Cerro Colorado");
                     return false;
                 }
-                if(layer.get('title')=='lotes'&&mostrar==0)
-                {
-                    mostrar=1;
-//                    alert(feature.get('id_lote'));
-//                    alert(layer.get('title'));
-                    viewlong(feature.get('id_lote'));
-                }
-                if(layer.get('title')=='Zona Urbana'||layer.get('title')=='Zona Agricola'||layer.get('title')=='Zona Eriaza'&&mostrar==0)
-                {
-                    mostrar=1;
-                    $("#input_zona").val(feature.get('zona'));
-                    crear_dlg("dlg_zonas_distritales",600,"Zonas Distritales");
-                    return false;
-                }
                 
             });
     
 });
+function verlote(id)
+{
+    crear_dlg("dlg_predio_lote",900,"Informacion de Lote");
+    traerpredionuevo(id);
+    traerfoto(id);
+}
+function verexp_urb()
+{
+    crear_dlg("dlg_exp_urba",900,"Informacion de Expediente Urbano");
+}
 function crear_dlg(dlg,ancho,titulo)
 {
     $("#"+dlg).dialog({
@@ -210,37 +269,92 @@ function label_lotes(feature) {
        text: map.getView().getZoom() > 12 ? feature.get('nom_lote') : ''*/
     });
 }
-
-function viewlong(id)
+function traerpredionuevo(id)
 {
-    $("#dlg_img_view_big").html("");
-    $("#dlg_view_foto").dialog({
-    autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
-    title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
-    }).dialog('open');
-    MensajeDialogLoadAjax('dlg_img_view_big', '.:: Cargando ...');
+    MensajeDialogLoadAjax('dlg_predio_lote', '.:: Cargando ...');
+    $.ajax({url: 'traerlote/'+id+'/'+$("#anio_pred").val(),
+    type: 'GET',
+    success: function(r) 
+    {
+        if(r.length>0)
+        {
+            $("#input_pred_cod_cat").text(r[0].cod_cat);
+            $("#input_pred_habilitacion").text(r[0].habilitacion);
+            $("#input_pred_propietario").text(r[0].contribuyente);
+        }
+        MensajeDialogLoadAjaxFinish('dlg_predio_lote');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_predio_lote');
+    }
+    }); 
+}
+function traerfoto(id)
+    {
+        MensajeDialogLoadAjax('dlg_img_view', '.:: Cargando ...');
         $.ajax({url: 'traefoto_lote_id/'+id,
         type: 'GET',
         success: function(r) 
         {
             if(r!=0)
             {
-                $("#dlg_img_view_big").html('<center><img src="data:image/png;base64,'+r+'" height="500px" width="90%"/></center>');
+                $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r+'" width="85%"/></center>');
             }
             else
             {
-                $("#dlg_img_view_big").html('<center><img src="img/recursos/Home-icon.png" height="500px" width="65%"/></center>');
+                $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
             }
-            MensajeDialogLoadAjaxFinish('dlg_img_view_big');
+            MensajeDialogLoadAjaxFinish('dlg_img_view');
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
             console.log('error');
             console.log(data);
-            MensajeDialogLoadAjaxFinish('dlg_img_view_big');
+            MensajeDialogLoadAjaxFinish('dlg_img_view');
         }
         }); 
+    }
+function viewlong(ruta)
+{
+    $("#dlg_img_view_big").html("");
+    $("#dlg_view_foto").dialog({
+    autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+    }).dialog('open');
+  
+        $("#dlg_img_view_big").html("");
+        $("#dlg_view_foto").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+        }).dialog('open');
+        if(ruta!="")
+        {
+            $("#dlg_img_view_big").html('<center><img src="img/recursos/'+ruta+'" width="85%"/></center>');
+        }
+        else
+        {
+            $("#dlg_img_view_big").html($("#dlg_img_view").html());
+        }
     
+}
+function viewagencia(id)
+{
+    $("#dlg_img_view_big").html("");
+    $("#dlg_view_foto").dialog({
+    autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+    }).dialog('open');
+  
+        $("#dlg_img_view_big").html("");
+        $("#dlg_view_foto").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Agencia :.</h4></div>",
+        }).dialog('open');
+        $("#dlg_img_view_big").html('<center><img src="img/recursos/agencias/'+id+'.jpg"/></center>')
+
 }
 function dlg_sector(val)
 {
@@ -253,6 +367,11 @@ function dlg_sector(val)
     {
         $("#op_sel_sector").hide();
         texto='Traer Lotes';
+    }
+    if(val==3)
+    {
+        $("#op_sel_sector").hide();
+        texto='Traer Expediente Urbano';
     }
    
     $("#dlg_selecciona_sector").dialog({
@@ -271,6 +390,10 @@ function dlg_sector(val)
                     if(val==2)
                     {
                         crearlotes();
+                    }
+                    if(val==3)
+                    {
+                        crear_espe_urba();
                     }
                 }
             },
@@ -317,6 +440,14 @@ function valida_capa(check)
         {
             crearcamaras();
         }
+        if(check=='chk_educacion')
+        {
+            crearcolegios();
+        }
+        if(check=='chk_salud')
+        {
+            crearhospitales();
+        }
         if(check=='chk_vias')
         {
             crearvias();
@@ -337,12 +468,58 @@ function valida_capa(check)
         {
              crear_aportes();
         }
+        if(check=='chk_pdm_zonificacion')
+        {
+             crear_pdm_zonificacion();
+        }
+        if(check=='chk_pdm_plan_vial')
+        {
+             crear_pdm_plan_vial();
+        }
+        if(check=='chk_quebradas')
+        {
+             crear_quebrada();
+        }
+        if(check=='chk_topografia')
+        {
+             crear_topografía();
+        }
+        if(check=='chk_carta_nac')
+        {
+             crear_carta_nacional();
+        }
+        if(check=='chk_espe_urba')
+        {
+            dlg_sector(3);
+             
+        }
+        if(check=='chk_ext_mat')
+        {
+            crear_exta_mat();
+        }
+        if(check=='chk_puntos_geo')
+        {
+            crear_puntos_geo();
+        }
+        if(check=='chk_lotes_rurales')
+        {
+            crear_lotes_rurales();
+        }
     }
     else
     {
         if(check=='chk_limite')
         {
             map.removeLayer(lyr_limites_distritales0);
+            map.removeLayer(lyr_limit_text);
+            map.removeLayer(lyr_limit_vec);
+            
+        }
+        if(check=='chk_ext_mat')
+        {
+            map.removeLayer(lyr_extra_mat);
+            map.removeLayer(lyr_extra_mat_lin);
+            map.removeLayer(lyr_extra_mat_pun);
         }
         if(check=='chk_sector')
         {
@@ -388,6 +565,53 @@ function valida_capa(check)
         if(check=='chk_aportes')
         {
             map.removeLayer(lyr_aportes);
+            $("#legend").hide();
+        }
+        if(check=='chk_pdm_zonificacion')
+        {
+             map.removeLayer(lyr_pdm_zonificacion);
+        }
+        if(check=='chk_pdm_plan_vial')
+        {
+             map.removeLayer(lyr_pdm_plan_vial);
+        }
+        if(check=='chk_educacion')
+        {
+            map.removeLayer(lyr_colegios);
+        }
+        if(check=='chk_salud')
+        {
+            map.removeLayer(lyr_hospitales);
+        }
+         if(check=='chk_quebradas')
+        {
+             map.removeLayer(lyr_quebradas);
+        }
+        if(check=='chk_topografia')
+        {
+             map.removeLayer(lyr_topografia);
+        }
+        
+        if(check=='chk_carta_nac')
+        {
+             map.removeLayer(lyr_cotas);
+             map.removeLayer(lyr_cuadra);
+             map.removeLayer(lyr_curvas);
+             map.removeLayer(lyr_lagos);
+             map.removeLayer(lyr_rios);
+        }
+        if(check=='chk_espe_urba')
+        {
+             map.removeLayer(lyr_esp_urba);
+        }
+        if(check=='chk_puntos_geo')
+        {
+            map.removeLayer(lyr_puntos_geo);
+            map.removeLayer(lyr_puntos_geo_control);
+        }
+        if(check=='chk_lotes_rurales')
+        {
+           map.removeLayer(lyr_lotes_rurales);
         }
     }
 }
@@ -413,7 +637,6 @@ function crearlimites()
                     title: "Limites",
                    
                 });
-                
                 map.addLayer(lyr_limites_distritales0);
                 var scale = new ol.control.ScaleLine();
                 map.addControl(scale);
@@ -421,9 +644,111 @@ function crearlimites()
                 map.getView().fit(extent, map.getSize());
                 var fullscreen = new ol.control.FullScreen();
                 map.addControl(fullscreen);
-                MensajeDialogLoadAjaxFinish('map');
+                crear_limittxt();
             }
         });
+}
+function crear_limittxt()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_limit_txt',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_limit_text= new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_limite_puntos,
+                    title: "Limite Nombres"
+                });
+                map.addLayer(lyr_limit_text);
+                var extent = lyr_limit_text.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                crear_limitvecinos();
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+function stylez_limite_puntos(feature, resolution){
+    if(feature.get('refname')==null){
+                text='';
+            }
+            else
+            {
+                text=feature.get('refname');
+            }
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 255, 255  , 0.3)',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+            radius: 5
+        }),
+        text: new ol.style.Text({
+            text: text,
+            offsetY: -10,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+function crear_limitvecinos()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_limit_veci',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_limit_vec= new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylelimit_vecinos,
+                    title: "Limite Vecinos"
+                });
+                map.addLayer(lyr_limit_vec);
+                var extent = lyr_limit_vec.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+} 
+function stylelimit_vecinos(feature, resolution){
+    
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "white",
+        width: 2
+      })
+    });
 }
         
 function crearsector(tip)
@@ -503,8 +828,9 @@ function crearmanzana(val)
                 {
                     var extent = lyr_manzanas.getSource().getExtent();
                     map.getView().fit(extent, map.getSize());
+                    MensajeDialogLoadAjaxFinish('map');
                 }
-                MensajeDialogLoadAjaxFinish('map');
+                
             }
         });
 }
@@ -526,20 +852,19 @@ function stylemanzana(feature, resolution) {
 }
         
 function crearlotes()
-{
+{ 
     $("#dlg_selecciona_sector").dialog('close');
      $("#chk_sector").prop("checked", true);
      $("#chk_mzna").prop("checked", true);
     map.removeLayer(lyr_sectores);
     map.removeLayer(lyr_manzanas);
-    crearsector(1);
     crearmanzana(0);
     
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'get_lotes_x_sector',
             type: 'POST',
-            data: {codigo: $("#selsec").val()+""},
+            data: {codigo: $("#selsec").val()},
             success: function (data) {
                 var format_lotes3 = new ol.format.GeoJSON();
                 var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
@@ -565,6 +890,7 @@ function crearlotes()
             }
         });
 }
+
 
 function stylelotes(feature, resolution) {
     return new ol.style.Style({
@@ -611,7 +937,7 @@ function crearhaburb()
             }
         });
 }
-
+ 
 function stylehaburb(feature, resolution) {
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
@@ -624,7 +950,15 @@ function stylehaburb(feature, resolution) {
         }),
         text: new ol.style.Text({
         //font: '12px Roboto',
-        text: feature.get('codi_hab_urba')
+            text: map.getView().getZoom() > 14 ? feature.get('nomb_hab_urba') : "", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
         })
     });
 }
@@ -678,8 +1012,6 @@ function llamar_agenciaspoint()
                     title: "Agencias Punto"
                 });
                 map.addLayer(lyr_agencias);
-                var extent = lyr_agencias.getSource().getExtent();
-                map.getView().fit(extent, map.getSize());
                 MensajeDialogLoadAjaxFinish('map');
             }
         });
@@ -720,7 +1052,7 @@ function styleagencias_polygono(feature, resolution) {
             lineCap: 'butt',
         }),
         fill: new ol.style.Fill({
-            color: 'rgba(4, 164, 180, 0.3)',
+            color: 'rgba('+feature.get('color')+', 0.5)',
         }),
         text: new ol.style.Text({
         //font: '12px Roboto',
@@ -798,12 +1130,12 @@ function stylevias(feature, resolution){
     return new ol.style.Style({
        stroke: new ol.style.Stroke({
         color: '#B40477',
-        width: 3
+        width: 2
       }),
         text: new ol.style.Text({
             Placement: 'line',
             textAlign: "center",
-            text: feature.get('result'),
+            text: map.getView().getZoom() > 16 ? feature.get('result') : "", 
             Baseline:'middle',
             maxAngle: 6.283185307179586,
             rotation: 0,
@@ -976,6 +1308,7 @@ function crear_aportes()
 //            async: false,
             success: function(r)
             {
+                llamar_leyenda_aporte();
                 z_aportes = JSON.parse(r[0].json_build_object);
                 var format_z_aportes = new ol.format.GeoJSON();
                 var features_z_aportes = format_z_aportes.readFeatures(z_aportes,
@@ -1003,19 +1336,961 @@ function crear_aportes()
             }
         });
 }
+function  llamar_leyenda_aporte()
+{
+    $.ajax({url: 'get_leyenda_aportes',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                $("#legend").html("");
+                html="";
+                r.forEach(function(element) 
+                {
+                    html=html+'<div >\n\
+                                <div class="col-xs-3"><label style="background-color: rgba('+element.color.trim()+',1); width: 15px !important ; height: 15px !important; margin-left:5px; margin-top:5px"></label></div>    \n\
+                                    <div class="col-xs-9"><label class="checkbox inline-block" style="padding-left: 0px; font-size:8px" placehoder="'+element.layer.trim()+'">\n\
+                                        '+element.layer.trim()+'\n\
+                                    </label></div>\n\
+                                </div>';
+                });
+                $("#legend").html(html);
+                $("#legend").show();
+            }
+        });
+}
 
 function stylez_aportes(feature, resolution) {
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
-            color: '#EA7D09',
-            width: 2,
+            color: '#333',
+            width: 1,
             lineCap: 'butt',
         }),
         fill: new ol.style.Fill({
-            color: 'rgba(234, 125, 9 , 0.5)'
+            color: 'rgba('+feature.get('color')+' , 1)'
         }),
         text: new ol.style.Text({
-            text: feature.get('layer')
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+            text: map.getView().getZoom() > 14 ? feature.get('layer') : ''
         })
     });
+}
+
+
+function crear_pdm_zonificacion()
+{
+    
+    $.ajax({url: 'mapa_cris_getpdmzonificacion',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                zonificacion_bd = JSON.parse(r[0].json_build_object);
+                var format_zonificacion = new ol.format.GeoJSON();
+                var features_zonificacion = format_zonificacion.readFeatures(zonificacion_bd,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_zonificacion = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_zonificacion.addFeatures(features_zonificacion);
+
+                lyr_pdm_zonificacion = new ol.layer.Vector({
+                    source:jsonSource_zonificacion,
+                    style: stylez_zonificacion,
+                    title: "Zonificación",
+                   
+                });
+                
+                map.addLayer(lyr_pdm_zonificacion);
+                var scale = new ol.control.ScaleLine();
+                map.addControl(scale);
+                var extent = lyr_pdm_zonificacion.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                var fullscreen = new ol.control.FullScreen();
+                map.addControl(fullscreen);
+                MensajeDialogLoadAjaxFinish('map');
+                
+            }
+        });
+}
+function stylez_zonificacion(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'rgba('+feature.get('color2')+')',
+            width: 1,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba('+feature.get('color2')+', 0.8)'
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('zonificaci') : feature.get('id_zonif')
+             
+        })
+    });
+}
+function crear_pdm_plan_vial()
+{
+    $.ajax({url: 'getpdm_plan_vial',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                geojson_plan_vial = JSON.parse(r[0].json_build_object);
+                var format_plan_vial= new ol.format.GeoJSON();
+                var features_plan_vial = format_plan_vial.readFeatures(geojson_plan_vial,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_plan_vial = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_plan_vial.addFeatures(features_plan_vial);
+                lyr_pdm_plan_vial = new ol.layer.Vector({
+                    source:jsonSource_plan_vial,
+                    style: styleplanvial,
+                    title: "Plan Vial"
+                });
+                map.addLayer(lyr_pdm_plan_vial);
+                var extent = lyr_pdm_plan_vial.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+              
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleplanvial(feature, resolution){
+    
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: feature.get('color'),
+        width: 3
+      }),
+        text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: feature.get('layer'),
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+
+function crearcolegios()
+{
+    $.ajax({url: 'getcolegios',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                geojson_colegios = JSON.parse(r[0].json_build_object);
+                var format_colegios= new ol.format.GeoJSON();
+                var features_colegios = format_colegios.readFeatures(geojson_colegios,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_colegios = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_colegios.addFeatures(features_colegios);
+                lyr_colegios = new ol.layer.Vector({
+                    source:jsonSource_colegios,
+                    style: stylecolegios,
+                    title: "Colegios"
+                });
+                map.addLayer(lyr_colegios);
+                var extent = lyr_colegios.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function stylecolegios(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.4 : 0.1,
+          src: 'img/recursos/colegio.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+function crearhospitales()
+{
+    $.ajax({url: 'gethospitales',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                geojson_salud = JSON.parse(r[0].json_build_object);
+                var format_salud= new ol.format.GeoJSON();
+                var features_salud = format_salud.readFeatures(geojson_salud,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_salud = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_salud.addFeatures(features_salud);
+                lyr_hospitales = new ol.layer.Vector({
+                    source:jsonSource_salud,
+                    style: stylehospitales,
+                    title: "Hospitales"
+                });
+                map.addLayer(lyr_hospitales);
+                var extent = lyr_hospitales.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function stylehospitales(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.4 : 0.1,
+          src: 'img/recursos/hospital.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+function crear_quebrada()
+{
+    $.ajax({url: 'mapa_cris_getquebradas',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                quebrada = JSON.parse(r[0].json_build_object);
+                var format_quebrada = new ol.format.GeoJSON();
+                var features_quebrada = format_quebrada.readFeatures(quebrada,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_quebrada = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_quebrada.addFeatures(features_quebrada);
+
+                lyr_quebradas = new ol.layer.Vector({
+                    source:jsonSource_quebrada,
+                    style: stylequebrada,
+                    title: "Quebradas",
+                   
+                });
+                
+                map.addLayer(lyr_quebradas);
+                var scale = new ol.control.ScaleLine();
+                map.addControl(scale);
+                var extent = lyr_quebradas.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                var fullscreen = new ol.control.FullScreen();
+                map.addControl(fullscreen);
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+
+function stylequebrada(feature, resolution){
+    if(feature.get('refname')==null)
+    {
+        texto="-";
+    }
+    else
+    {
+        texto=feature.get('refname');
+    }
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "#008000",
+        width: 3
+      }),
+        text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: map.getView().getZoom() > 12 ? texto: '',
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+function crear_topografía()
+{
+    $.ajax({url: 'mapa_cris_gettopografia',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                topografia = JSON.parse(r[0].json_build_object);
+                var format_topografia = new ol.format.GeoJSON();
+                var features_topografia = format_topografia.readFeatures(topografia,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_topografia = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_topografia.addFeatures(features_topografia);
+
+                lyr_topografia = new ol.layer.Vector({
+                    source:jsonSource_topografia,
+                    style: styletopo,
+                    title: "Topografia",
+                   
+                });
+                
+                map.addLayer(lyr_topografia);
+                var scale = new ol.control.ScaleLine();
+                map.addControl(scale);
+                var extent = lyr_topografia.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                var fullscreen = new ol.control.FullScreen();
+                map.addControl(fullscreen);
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+
+function styletopo(feature, resolution){
+    if(feature.get('layer')==null)
+    {
+        texto="-";
+    }
+    else
+    {
+        texto=feature.get('layer');
+    }
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "#6666ff",
+        width: 3
+      }),
+        text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: map.getView().getZoom() > 12 ? texto: '',
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+
+
+
+
+
+function crear_carta_nacional()
+{ 
+//    map.removeLayer(lyr_cotas);
+//    map.removeLayer(lyr_cuadra);
+//    map.removeLayer(lyr_curvas);
+//    map.removeLayer(lyr_lagos);
+//    map.removeLayer(lyr_rios);
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_cua',
+            type: 'get',
+          
+            success: function (data) {
+                var format_cua = new ol.format.GeoJSON();
+                var features_cua= format_cua.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_cua = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_cua.addFeatures(features_cua);
+                lyr_cuadra = new ol.layer.Vector({
+                    source:jsonSource_cua,
+                    style: stylecua,
+                    title: "Cuadro"
+                });
+
+                map.addLayer(lyr_cuadra);
+                var extent = lyr_cuadra.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                obtenercurva();
+                //MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún cotas.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylecua(feature, resolution){
+    
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "#008000",
+        width: 3
+      })
+    });
+}
+
+function obtenercurva()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_curvas',
+            type: 'get',
+          
+            success: function (data) {
+                var format_curva = new ol.format.GeoJSON();
+                var features_curva= format_curva.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_curva = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_curva.addFeatures(features_curva);
+                lyr_curvas = new ol.layer.Vector({
+                    source:jsonSource_curva,
+                    style: stylecurva,
+                    title: "Curvas"
+                });
+
+                map.addLayer(lyr_curvas);
+                obtenercota();
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún cotas.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylecurva(feature, resolution){
+    
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "#008000",
+        width: 1
+      })
+    });
+}
+function obtenercota()
+{ 
+
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_cotas',
+            type: 'get',
+          
+            success: function (data) {
+                var format_cotas = new ol.format.GeoJSON();
+                var features_cotas= format_cotas.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_cotas = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_cotas.addFeatures(features_cotas);
+                lyr_cotas = new ol.layer.Vector({
+                    source:jsonSource_cotas,
+                    style: stylecotas,
+                    title: "Cotas"
+                });
+
+                map.addLayer(lyr_cotas);
+                obtenerlagos();
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún cotas.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylecotas(feature, resolution){
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+                color: 'rgba(4, 164, 180  , 0.3)',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+            radius: 5
+        })
+    });
+}
+function obtenerlagos()
+{ 
+
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_lagos',
+            type: 'get',
+          
+            success: function (data) {
+                var format_lagos = new ol.format.GeoJSON();
+                var features_lagos= format_lagos.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_lagos = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_lagos.addFeatures(features_lagos);
+                lyr_lagos = new ol.layer.Vector({
+                    source:jsonSource_lagos,
+                    style: stylez_lago,
+                    title: "Lagos"
+                });
+
+                map.addLayer(lyr_lagos);
+                obtenerrios();
+                //MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún cotas.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylez_lago(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#000000',
+            width: 2,
+            lineCap: 'butt'
+        }),
+        fill: new ol.style.Fill({
+            color: '#EA7D09'
+        })
+    });
+}
+
+function obtenerrios()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_rios',
+            type: 'get',
+          
+            success: function (data) {
+                var format_rios = new ol.format.GeoJSON();
+                var features_rios= format_rios.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_rios = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_rios.addFeatures(features_rios);
+                lyr_rios = new ol.layer.Vector({
+                    source:jsonSource_rios,
+                    style: stylerios,
+                    title: "Rios"
+                });
+
+                map.addLayer(lyr_rios);
+                //obtenercota();
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún cotas.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylerios(feature, resolution){
+    if(feature.get('nombre')==null)
+    {
+     texto="";
+    }
+    else
+    {
+        texto=feature.get('nombre');
+    }
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "blue",
+        width: 2
+      }),
+            text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: texto,
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+      
+    });
+}
+function crear_espe_urba()
+{ 
+     $("#dlg_selecciona_sector").dialog("close");
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_espe_urba',
+            type: 'get',
+            data: {codigo: $("#selsec option:selected").text()},
+            success: function (data) {
+                var format_urb = new ol.format.GeoJSON();
+                var features_urb= format_urb.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_urb = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_urb.addFeatures(features_urb);
+                lyr_esp_urba = new ol.layer.Vector({
+                    source:jsonSource_urb,
+                    style: stylez_expe,
+                    title: "Expediente Urbano"
+                });
+
+                map.addLayer(lyr_esp_urba);
+                var extent = lyr_esp_urba.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+               
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún cotas.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylez_expe(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#000000',
+            width: 2,
+            lineCap: 'butt'
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(9, 115, 234, 0.5)'
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 16 ? feature.get('id_lote') : ''
+             
+        })
+    });
+}
+
+function crear_exta_mat()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_extrac_pg',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_extra_mat = new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_extrac_poli,
+                    title: "Extracción Poligono"
+                });
+
+                map.addLayer(lyr_extra_mat);
+                var extent = lyr_extra_mat.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                crear_exta_mat_lineas();
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylez_extrac_poli(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#000000',
+            width: 1,
+            lineCap: 'butt'
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(9, 234, 217, 0.5)'
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('nombre') : ''
+             
+        })
+    });
+}
+
+function crear_exta_mat_lineas()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_extrac_pl',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_extra_mat_lin = new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_extrac_linea,
+                    title: "Extracción Lineas"
+                });
+
+                map.addLayer(lyr_extra_mat_lin);
+                var extent = lyr_extra_mat_lin.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                crear_exta_mat_puntos();
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylez_extrac_linea(feature, resolution){
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: "blue",
+        width: 1
+      })
+    });
+}
+
+function crear_exta_mat_puntos()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_extrac_pt',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_extra_mat_pun = new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_extrac_punto,
+                    title: "Extracción Puntos"
+                });
+
+                map.addLayer(lyr_extra_mat_pun);
+                var extent = lyr_extra_mat_pun.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+               
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylez_extrac_punto(feature, resolution){
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+                color: 'rgba(4, 164, 180  , 0.3)',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+            radius: 5
+        })
+    });
+}
+
+
+function crear_puntos_geo()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_puntosgeo',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_puntos_geo = new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_puntogeo,
+                    title: "Puntos Geodésicos"
+                });
+
+                map.addLayer(lyr_puntos_geo);
+                var extent = lyr_puntos_geo.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                crear_puntos_geo_control();
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+//                        mostraralertas('* Error al Eliminar Contribuyente...');
+            }
+        });
+}
+function stylez_puntogeo(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.1 : 0.05,
+          src: 'img/recursos/triangulo.png',
+        })
+      });
+   
+}
+
+
+function crear_puntos_geo_control()
+{ 
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_puntosgeo_control',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_puntos_geo_control = new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_puntogeo_control,
+                    title: "Puntos Geodésicos Control"
+                });
+                map.addLayer(lyr_puntos_geo_control);
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+function stylez_puntogeo_control(feature, resolution){
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+            radius: 5
+        })
+    });
+}
+function crear_lotes_rurales()
+{
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_lotes_rurales',
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_lotes_rurales = new ol.layer.Vector({
+                    source:jsonSource,
+                    style: stylez_lote_rural,
+                    title: "Lotes Rurales"
+                });
+                map.addLayer(lyr_lotes_rurales);
+                var extent = lyr_lotes_rurales.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+function stylez_lote_rural(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#109528',
+            width: 1,
+            lineCap: 'butt'
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(16, 149, 40  , 0.5)'
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('uni_catas') : ''
+             
+        })
+    });
+}
+function verpdf(ruta)
+{
+    crear_dlg("dlg_pdf",900,"Ver Información");
+    MensajeDialogLoadAjax('iframe_pdf', '.:: Cargando ...');
+    var iFrameObj = document.getElementById('iframe_pdf'); 
+    iFrameObj.src = "img/recursos/"+ruta; 
+    
+    $(iFrameObj).load(function() 
+    { 
+        MensajeDialogLoadAjaxFinish('iframe_pdf');
+    });
+    
+    
+    
+    
 }
