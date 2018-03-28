@@ -32,7 +32,7 @@
 
     </head>
     <body class="desktop-detected pace-done fixed-header fixed-navigation" style="background: white !important">
-        <header id="header" style="background: #B40411 !important;">
+        <header id="header" style="background: #154360 !important;">
             <div id="logo-group">                
                 <span id="logo"> <img src="img/logos/logo_largo.png" alt="SmartAdmin"> </span> 
 
@@ -81,7 +81,7 @@
         
         @if (!Auth::guest())
         <aside id="left-panel" style="background: #231918 !important; border-right: 2px #bfbfbf dashed; overflow-y: scroll; width: 300px; padding-bottom: 50px">        
-                <div class="login-info" style="background: #B40411;border-bottom: 3px solid #f2f2f2;">
+                <div class="login-info" style="background: #2471A3;border-bottom: 3px solid #f2f2f2;">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a>
                         @if (Auth::user()->foto)
@@ -104,7 +104,7 @@
                     <div class="panel-group smart-accordion-default" id="accordion-2" style="padding-right: 11px;">
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-1"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> General </a></h4>
                             </div>
@@ -153,7 +153,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background: transparent">
-                            <div class="panel-heading" style="background: #B40411; color: white" >
+                            <div class="panel-heading" style="background: #2471A3; color: white" >
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseTwo-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> GDUC </a></h4>
                             </div>
                             <div id="collapseTwo-1" class="panel-collapse collapse cr_toogle">
@@ -571,7 +571,7 @@
                                                     </h4>
                                                 </div>
                                                 <div id="collapseTwo_sub-plani_hab_urb" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                    <div class="panel-body" style="padding-left: 0px" >
                                                         <div>
                                                         <!--widget edit box -->
                                                             <div class="jarviswidget-editbox">
@@ -581,30 +581,37 @@
                                                             widget content -->
                                                            <div class="widget-body">
 
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                  <ul >
-                                                                        <li >
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mod_hb_urb" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Modulo Hab. Urbana
-                                                                                </label> 
-                                                                            </span>
+                                                               <li style="padding-left: 0px;" >
+                                                                                
+                                                                                <div class="tree">
+                                                                                    <ul style="padding-left: 0px; padding-top: 0px">
+                                                                                            <li>
+                                                                                                <span class="label " style=" border: 1px dotted #999;width: 160px; color: white">
+                                                                                                        <i class="fa fa-lg fa-minus-circle"></i> Constancia de Posesión
+                                                                                                    </span>
+                                                                                                    <ul>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <i></i>
+                                                                                                                    Registro de Expedientes
+                                                                                                            </span> 
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <i></i>
+                                                                                                                    Plan Vial
+                                                                                                                </label> 
+                                                                                                            </span>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                            </li>
+
+                                                                                    </ul>
+                                                                                </div>
                                                                         </li>
-                                                                        <li >
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mod_cons_pos" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Modulo Const. Posesión
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                  </ul>
-                                                              </div>
+                                                                        
                                                            </div>
                                                         <!--end widget content -->
                                                         </div>
@@ -993,7 +1000,7 @@
                         <!-- fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsetree-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1013,7 +1020,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsefour-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1033,7 +1040,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsefive-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1053,7 +1060,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsesix-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1073,7 +1080,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseseven-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1270,7 +1277,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseeigth-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1586,7 +1593,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsenine-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1701,7 +1708,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseten-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -1861,7 +1868,7 @@
                         <!--fin option-->
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseeleven-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -2131,7 +2138,7 @@
                         <!--fin option-->
                        <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
-                            <div class="panel-heading" style="background: #B40411; color: white">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
                                 
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsetwelve-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
