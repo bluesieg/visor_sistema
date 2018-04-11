@@ -560,60 +560,81 @@
                                             </div>
                                             <!-- fin option-->
                                             <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-plani_hab_urb" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                <div class="panel panel-default" style="background:  transparent;">
+                                                <div class="panel-heading" style="background: #2471A3; color: white">
+
+                                                    <h4 class="panel-title"><a data-toggle="collapse" href="#collapse_plan">
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
                                                             Planeamiento y Hab. Urbanas 
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapseTwo_sub-plani_hab_urb" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 0px" >
+                                                <div id="collapse_plan" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 20px" >
                                                         <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
+                                                        <!-- widget content -->
+                                                        <div class="widget-body no-padding">
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
 
-                                                            widget content -->
-                                                           <div class="widget-body">
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="registro_expedientes"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Constancia de Posesión
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                <!--option-->
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-hab_urb" class="collapsed"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Habilitación Urbana
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapseTwo_sub-hab_urb" class="panel-collapse collapse cr_toogle">
+                                                                        <div class="panel-body" style="padding-left: 30px" >
+                                                                            <div>
+                                                                            <!--widget edit box -->
+                                                                                <div class="jarviswidget-editbox">
+                                                                                </div>
+                                                                            <!--end widget edit box 
 
-                                                               <li style="padding-left: 0px;" >
-                                                                                
-                                                                                <div class="tree">
-                                                                                    <ul style="padding-left: 0px; padding-top: 0px">
+                                                                                widget content -->
+                                                                               <div class="widget-body">
+
+                                                                                   <div class="tree smart-form" style="color:white !important">
+                                                                                      <ul >
+
                                                                                             <li>
-                                                                                                <span class="label " style=" border: 1px dotted #999;width: 160px; color: white">
-                                                                                                        <i class="fa fa-lg fa-minus-circle"></i> Constancia de Posesión
-                                                                                                    </span>
-                                                                                                    <ul>
-                                                                                                        <li>
-                                                                                                            <span style="width: 120px">
-                                                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                                                    <i></i>
-                                                                                                                    Registro de Expedientes
-                                                                                                            </span> 
-                                                                                                        </li>
-                                                                                                        <li>
-                                                                                                            <span style="width: 120px">
-                                                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                                                    <i></i>
-                                                                                                                    Plan Vial
-                                                                                                                </label> 
-                                                                                                            </span>
-                                                                                                        </li>
-                                                                                                    </ul>
+                                                                                                <span style="width: 160px;">
+                                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_comple_deportivos" onchange="">
+                                                                                                        <i></i>
+                                                                                                        <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
+                                                                                                        Complejos Deportivos
+                                                                                                    </label> 
+                                                                                                </span>
                                                                                             </li>
 
-                                                                                    </ul>
-                                                                                </div>
-                                                                        </li>
-                                                                        
-                                                           </div>
-                                                        <!--end widget content -->
+                                                                                      </ul>
+                                                                                  </div>
+                                                                               </div>
+                                                                            <!--end widget content -->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- fin option-->
+                                                            </div>
+                                                        </div>
+                                                        <!-- end widget content -->
                                                         </div>
                                                     </div>
                                                 </div>

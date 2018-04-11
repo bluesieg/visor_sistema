@@ -77,5 +77,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('traerlote/{lote}/{anio}','PredioController@getloteid');
         
     });
+     Route::group(['namespace' => 'planeamiento_hab_urb'], function() {
+        Route::resource('registro_expedientes','RegistroExpedientesController');
+        Route::resource('registro_datos_lote','RegistroDatosLoteController');
+      
+        
+    });
 
 });
