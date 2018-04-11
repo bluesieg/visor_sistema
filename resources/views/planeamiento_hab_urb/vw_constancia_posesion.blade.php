@@ -11,13 +11,55 @@
                         <ul id="tabs1" class="nav nav-tabs bordered">
                             <li class="active">
                                 <a href="#s1" data-toggle="tab" aria-expanded="true">
-                                    VER PREDIAL
+                                    Reg. Expedientes
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
                                 <a href="#s2" data-toggle="tab" aria-expanded="false">
-                                    VER ARBITRIOS
+                                   Reg. Datos Lote
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Control Calidad
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Inspeccion de Campo
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Verif. Tecnica
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Vistos Legales
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Visto y Firma
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Firma Gerencia
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   Entrega Constancias
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
@@ -92,33 +134,7 @@
                             </div> 
                         </div>
                         </section>
-                        
-                        <section class="col col-lg-6"> 
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <section>
-                                    <div class="well well-sm well-light" style="padding:0px">
-                                    <table id="table_concepto"></table>
-                                    <div id="p_table_concepto"></div>
-                                    </div> 
-                                </section>    
-                            </div>
-                        </div> 
-                        </section>
-                            
-                        <section class="col col-lg-6">              
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <section style="padding-right: 30px">
-                                        <div class="well well-sm well-light" style="padding:0px">
-                                        <table id="table_meses"></table>
-                                        <div id="p_table_meses"></div>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div> 
-                        </section>
-                            
+
                         </div> 
                         </div> 
       
