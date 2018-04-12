@@ -10,7 +10,7 @@
 }
 
 .ui-dialog .ui-widget-header{
-    background: #01A858;    
+    background: #0B4C5F;    
 }
 .ui-dialog .ui-dialog-title {
     color: #ffffff;
@@ -118,7 +118,7 @@ nav ul li a {
     background-repeat: repeat-x;    
 }
 .fixed-header #header {
-    border-bottom: 1px solid #80C080;    
+    border-bottom: 1px solid #0B4C5F;    
 }
 
 #logo {   
@@ -130,7 +130,7 @@ nav ul li a {
 }
 
 .ui-jqgrid .ui-jqgrid-titlebar {    
-    background: #01a858;
+    background: #0B4C5F;
     /*background-image: linear-gradient(to bottom,#41be82,#43755d); /*COLOR HEADER TITLE*/
     background-repeat: repeat-x;
     border-left: 0 none;
@@ -147,13 +147,13 @@ nav ul li a {
 
 .ui-jqgrid .ui-state-default {
     background-color: #fff;
-    border: 1px solid #97D149;
+    border: 1px solid #0B4C5F;
     color: #017E42;/*titulos de las columnas*/
     font-weight: 400;
 }
 
 .ui-jqgrid {
-    border: 1px solid #80B23E !important;
+    border: 1px solid #0B4C5F !important;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -183,11 +183,11 @@ nav ul li a {
 
 .ui-widget-content {
     background: white none repeat scroll 0 0;
-    border: 1px solid #B1DD77;
-    color: #404040;
+    border: 1px solid #154360;
+    color: #154360;
 }
 .ui-jqgrid table, .ui-jqgrid tr.ui-row-ltr, .ui-jqgrid tr.ui-row-ltr td {
-    border: 1px solid #97D149 !important;
+    border: 1px solid #154360 !important;
 }
 
 .ui-jqgrid .ui-jqgrid-htable th div {
@@ -198,7 +198,7 @@ nav ul li a {
     padding-top: 4px;
 }
 
-.ui-widget-content table { border: 0px solid #97D149 !important; }
+.ui-widget-content table { border: 0px solid #154360 !important; }
 
 .ui-jqgrid tr.jqgrow {    
     height: 25px;
@@ -213,9 +213,9 @@ nav ul li a {
 }
 
 .ui-jqgrid .ui-state-highlight td {
-    background-color: #c0ffc0 !important;
-    border-color: #bce8f1 !important;
-    color: #006d00 !important;
+    background-color: #154360 !important;
+    border-color: #154360 !important;
+    color: #154360 !important;
     font-weight: bold !important;
 }
 

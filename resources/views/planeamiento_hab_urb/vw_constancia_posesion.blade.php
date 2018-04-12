@@ -72,11 +72,11 @@
                         <div class="col-xs-12">               
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <section style="padding-right: 10px">
+                                    <section style="padding-right: 0px">
                                         <div class="col-xs-12">
                                             
-                                    <h1 class="txt-color-green"><b>REGISTRO DE EXPEDIENTES</b></h1>
-                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                        <h1 ><b>REGISTRO DE EXPEDIENTES</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
@@ -109,14 +109,16 @@
 
                                        </div>
                                         </div>
+                                        
                                     </section>
-                                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                    
+                                </div>
+                                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                         <article class="col-xs-11" style=" padding: 0px !important">
                                                 <table id="table_expedientes"></table>
                                                 <div id="pager_table_expedientes"></div>
                                         </article>
                                     </div>
-                                </div>
                             </div>
                            </div>
                         </section>
@@ -130,7 +132,7 @@
                                     <section style="padding-right: 10px">
                                         <div class="col-xs-12">
                                             
-                                    <h1 class="txt-color-green"><b>REGISTRO DE DATOS DEL LOTE</b></h1>
+                                    <h1 ><b>REGISTRO DE DATOS DEL LOTE</b></h1>
                                         <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
@@ -245,10 +247,7 @@
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                
-                
                 <input type="hidden" id="id_expediente" value="0">
-   
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Posesionario: &nbsp;<i class="fa fa-hashtag"></i></span>
@@ -287,6 +286,7 @@
                             <input id="vw_sub_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>                        
                     </div>
+                    
                 </div>
                 
                 <div class="col-xs-12" style="padding: 0px; ">
@@ -295,21 +295,80 @@
                         <div>
                             <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
-                    </div>
-                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Area: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input id="vw_sector" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
-                        
                     </div>
-                    
-                   
-                </div>
-                              
+                </div>     
             </div>
-          
+        </div> 
+    </div>
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">                
+                
+                <input type="hidden" id="id_expediente" value="0">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 150px">Por el Frente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 150px">Por el Costado Derecho: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 150px">Por el Costado Izquierdo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 150px">Por el Fondo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>   
+            </div>
         </div>
     </div>
+     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">         
+                <input type="hidden" id="id_expediente" value="0">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 150px">Tipo de Solicitud: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
     </div>
+</div>
 @endsection
+
