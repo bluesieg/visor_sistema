@@ -15,7 +15,8 @@
         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('layers/ol3-layerswitcher.css')}}">
         <script  src="{{ asset('layers/ol3-layerswitcher.js')}}"></script>
-
+        <script src="{{ asset('js/plugin/jqgrid/jquery.jqGrid.min.js') }}"></script>
+        <script src="{{ asset('js/plugin/jqgrid/grid.locale-en.min.js') }}"></script>
 
         <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
 <!-- Basic Styles -->
@@ -26,8 +27,10 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
+                <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
         <script src='mapbox/mapbox.js'></script>
         <link href='mapbox/mapbox.css' rel='stylesheet' />
+         
 
 
     </head>

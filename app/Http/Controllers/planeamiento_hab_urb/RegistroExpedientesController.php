@@ -12,14 +12,7 @@ class RegistroExpedientesController extends Controller
 
     public function index()
     {
-        //$permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_tasa_interes_moratorio' and id_usu=".Auth::user()->id);
-        //$menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
-        
-        //if(count($permisos)==0)
-       // {
-       //     return view('errors/sin_permiso',compact('menu','permisos'));
-       // }
-        //$anio = DB::select('SELECT anio FROM adm_tri.uit order by anio desc');
+      
          $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
         return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1'));
@@ -27,7 +20,8 @@ class RegistroExpedientesController extends Controller
 
     public function create()
     {
-        //
+         return DB::connection("sqlsrv")->select('select anio from vw_catastro limit 10');
+        
     }
 
     /**
