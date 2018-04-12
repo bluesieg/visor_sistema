@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\RegistroExpedientes;
+
 
 class RegistroExpedientesController extends Controller
 {
@@ -13,14 +15,38 @@ class RegistroExpedientesController extends Controller
     public function index()
     {
       
-         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
+        $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
         return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-         return DB::connection("sqlsrv")->select('select anio from vw_catastro limit 10');
+        $codigo = $request['cod'];
+        $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite',$codigo)->first();
+        
+        if(count($expedientes)>=1)
+        {
+            $RegistroExpedientes = new  RegistroExpedientes;
+            
+            $RegistroExpedientes->nro_expediente = $expedientes->codigoTramite;
+            $RegistroExpedientes->id_gestor = $expedientes->idInteresado;
+            $RegistroExpedientes->id_estado = 1;
+            $RegistroExpedientes->id_usuario = 1;
+            $RegistroExpedientes->fase = 1;
+            $RegistroExpedientes->gestor = $expedientes->nombres;
+            $RegistroExpedientes->fecha_inicio_tramite = $expedientes->iniciado;
+            $RegistroExpedientes->fecha_registro = date('d-m-Y');
+            $RegistroExpedientes->numero_identificacion = $expedientes->numeroIdentificacion;
+  
+            $RegistroExpedientes->save();
+            
+            return $RegistroExpedientes->id_reg_exp;
+        }else{
+            return response()->json([
+                'msg' => 'no',
+            ]);
+        }
         
     }
 
@@ -81,40 +107,11 @@ class RegistroExpedientesController extends Controller
         //
     }
     
-    public function insertar_nuevo_tim(Request $request){
+    public function getExpedientes(Request $request){
         header('Content-type: application/json');
-        $data = $request->all();
-        $insert=DB::table('fraccionamiento.tim')->insert($data);
-
-        if ($insert) return response()->json($data);
-        else return false;
-    }
-    
-    function modificar_tim(Request $request) {
-        $data = $request->all();
-        unset($data['id_tim']);
-        $update=DB::table('fraccionamiento.tim')->where('id_tim',$request['id_tim'])->update($data);
-        if ($update){
-            return response()->json([
-                'msg' => 'si',
-            ]);
-        }else return false;
-    }
-    
-    function eliminar_tim(Request $request){
-        $delete = DB::table('fraccionamiento.tim')->where('id_tim', $request['id_tim'])->delete();
-
-        if ($delete) {
-            return response()->json([
-                'msg' => 'si',
-            ]);
-        }
-    }
-    
-    public function getTim(Request $request){
-        header('Content-type: application/json');
-
-        $totalg = DB::select("select count(id_tim) as total from fraccionamiento.vw_tim where anio='".$request['anio']."'");
+        $fecha_desde = $request['fecha_desde'];
+        $fecha_hasta = $request['fecha_hasta'];
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_const_posesion.vw_expedientes where fecha_registro between '$fecha_desde' and '$fecha_hasta'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -138,7 +135,7 @@ class RegistroExpedientesController extends Controller
 
      
 
-        $sql = DB::table('fraccionamiento.vw_tim')->where('anio',$request['anio'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->whereBetween('fecha_registro', [$fecha_desde, $fecha_hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -146,12 +143,14 @@ class RegistroExpedientesController extends Controller
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->id_tim;
+            $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;
             $Lista->rows[$Index]['cell'] = array(
-                trim($Datos->id_tim),
-                trim($Datos->documento_aprob),
-                trim($Datos->tim),
-                trim($Datos->anio),
+                trim($Datos->id_reg_exp),
+                trim($Datos->nro_expediente),
+                trim($Datos->fase),
+                trim($Datos->gestor),
+                trim($Datos->fecha_inicio_tramite),
+                trim($Datos->fecha_registro)
             );
         }
 

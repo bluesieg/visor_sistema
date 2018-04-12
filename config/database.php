@@ -67,6 +67,19 @@ return [
             'sslmode' => 'prefer',
         ],
         
+        'gerencia_catastro' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_GERENCIA_HOST', '127.0.0.1'),
+            'port' => env('DB_GERENCIA_PORT', '5432'),
+            'database' => env('DB_GERENCIA_DATABASE', 'forge'),
+            'username' => env('DB_GERENCIA_USERNAME', 'forge'),
+            'password' => env('DB_GERENCIA_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+        
         'fotos' => [
             'driver' => 'pgsql',
             'host' => env('FOTOS_HOST', '127.0.0.1'),
@@ -118,6 +131,17 @@ return [
         ],
         
         'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'host' => env('SQL_DB_HOST', 'localhost'),
+            'port' => env('SQL_DB_PORT', '1433'),
+            'database' => env('SQL_DB_DATABASE', 'forge'),
+            'username' => env('SQL_DB_USERNAME', 'forge'),
+            'password' => env('SQL_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+        
+        'sql_crud' => [
             'driver' => 'sqlsrv',
             'host' => env('SQL_DB_HOST', 'localhost'),
             'port' => env('SQL_DB_PORT', '1433'),

@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
      Route::group(['namespace' => 'planeamiento_hab_urb'], function() {
         Route::resource('registro_expedientes','RegistroExpedientesController');
+        Route::get('getExpedientes','RegistroExpedientesController@getExpedientes');
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
       
         

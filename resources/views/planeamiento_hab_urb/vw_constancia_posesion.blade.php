@@ -80,7 +80,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_exp" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="dlg_fec_desde" name="dlg_fec" type="text"  onchange="selecciona_fecha();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -88,7 +88,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="fec_fin_exp" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="dlg_fec_hasta" name="dlg_fec" type="text" onchange="selecciona_fecha();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -106,10 +106,16 @@
                                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                            </button>
 
+                                           <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                                <article class="col-xs-12" style=" padding: 0px !important">
+                                                        <table id="table_expedientes"></table>
+                                                        <div id="pager_table_expedientes"></div>
+                                                </article>
+                                            </div>
+
 
                                        </div>
                                         </div>
-                                        
                                     </section>
                                     
                                 </div>
@@ -192,23 +198,22 @@
     $(document).ready(function (){
         $("#menu_fisca").show();
         $("#li_fisca_carta").addClass('cr-active')
+        fecha_desde = $("#dlg_fec_desde").val(); 
+        fecha_hasta = $("#dlg_fec_hasta").val(); 
         jQuery("#table_expedientes").jqGrid({
-            url: '',
+            url: 'getExpedientes?fecha_desde='+fecha_desde +'&fecha_hasta='+fecha_hasta,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Notificación','Estado','Ver','Anulado'],
-            rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
+            colNames: ['id_reg_exp', 'NRO. EXPEDIENTE', 'FASE', 'GESTOR DEL TRAMITE','FECHA INICIO','FECHA REGISTRO'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO EXPEDIENTES', align: "center",
             colModel: [
-                {name: 'id_car', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 10},
-                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 30},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
-                {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 15},
-                {name: 'fecha_notificacion', index: 'fecha_notificacion', align: 'center', width: 20},
-                {name: 'flg_est', index: 'flg_est', align: 'center', width: 10},
-                {name: 'id_car', index: 'id_car', align: 'center', width: 10},
-                {name: 'flg_anu', index: 'flg_anu', align: 'center', width: 10},
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'center', width: 10},
+                {name: 'fase', index: 'fase', align: 'center', width: 10},
+                {name: 'gestor', index: 'gestor', align: 'center', width: 40},
+                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'center', width: 20},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'center', width: 15}
             ],
             pager: '#pager_table_cartas',
             rowList: [20, 50],
