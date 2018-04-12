@@ -40,3 +40,25 @@ function obtener_exp()
         }); 
 }
 
+function crear_reg_datos_lote()
+{
+    $("#dlg_nuevo_reg_datos_lote").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Registrar Datos del Lote :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+
+                guardar_editar_tim(1);
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+    $("#dlg_nuevo_reg_datos_lote").dialog('open');
+}
