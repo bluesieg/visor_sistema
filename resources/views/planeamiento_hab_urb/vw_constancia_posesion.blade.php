@@ -201,7 +201,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="dlg_fecha_desde_cc" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                                   <input  id="dlg_fecha_desde_cc" type="text"  onchange="selecciona_fecha_cc();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div> 
                                            </div>
                                        </div>
@@ -209,7 +209,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="dlg_fecha_hasta_cc" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="dlg_fecha_hasta_cc" type="text"  onchange="selecciona_fecha_cc();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -217,7 +217,7 @@
                                            <div class="input-group input-group-md">
                        
                                                <div class="icon-addon addon-md">
-                                                   <input type="checkbox" id="dlg_ver_expediente" onclick="check_cambiar_estado('#dlg_ver_expediente')" style="width:22px;height:22px">VER EXPEDIENTES CON NOTIFICACION
+                                                   <input type="checkbox" id="dlg_ver_expediente" onclick="check_cambiar_estado('#dlg_ver_expediente')" style="width:22px;height:22px">NOTIFICADOS
                                                </div>
                                            </div>
                                        </div>
@@ -225,11 +225,11 @@
                                        <div class="text-right" style=" padding-top: 20px">
 
                                                 <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nueva_notificacion();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Reg. Notificacion
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Notificacion
                                                </button>
 
                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="pasar_inspeccion();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Pasar a Inspeccion
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Inspeccion
                                                </button>
 
                                        </div>

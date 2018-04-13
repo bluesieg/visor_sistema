@@ -91,6 +91,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('asignar_expediente','ControlCalidadController@asignar_expediente');
         Route::get('registrar_notificacion','ControlCalidadController@registrar_notificacion');
         Route::get('actualizar_expediente','ControlCalidadController@actualizar_expediente');
+        Route::get('traer_inspecciones','ControlCalidadController@traer_inspecciones');
+        Route::get('recuperar_expediente','ControlCalidadController@recuperar_expediente');
       
         
         
