@@ -213,7 +213,6 @@ nav ul li a {
 }
 
 .ui-jqgrid .ui-state-highlight td {
-    //background-color: #154360 !important;
     border-color: #154360 !important;
     color: #154360 !important;
     font-weight: bold !important;

@@ -96,10 +96,22 @@ class RegistroExpedientesController extends Controller
      */
     public function show($id,Request $request)
     {
-       $RegistroExpedientes = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('id_reg_exp',$id)->get();
-       return $RegistroExpedientes;
+        if($id==0)
+            {
+                $expe=new RegistroExpedientes;
+                $val=  $expe::where("nro_expediente","=",$request['cod'] )->first();
+                if(count($val)>=1)
+                {
+                    return $val;
     }
+                else
+                {
+                    return 0;
+                }
+            }
        
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

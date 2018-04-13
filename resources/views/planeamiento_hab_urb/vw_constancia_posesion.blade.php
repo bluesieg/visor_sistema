@@ -34,31 +34,31 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                <a href="#s5" data-toggle="tab" aria-expanded="false">
                                    Verif. Tecnica
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                <a href="#s6" data-toggle="tab" aria-expanded="false">
                                    Vistos Legales
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                <a href="#s7" data-toggle="tab" aria-expanded="false">
                                    Visto y Firma
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                <a href="#s8" data-toggle="tab" aria-expanded="false">
                                    Firma Gerencia
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                <a href="#s9" data-toggle="tab" aria-expanded="false">
                                    Entrega Constancias
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -173,22 +173,18 @@
 
                                        </div>
                                         </div>
+                                        
+                                    </section>
+                                    
+                                </div>
                                         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                             <article class="col-xs-11" style=" padding: 0px !important">
                                                     <table id="table_datos_predio"></table>
                                                     <div id="pager_table_datos_predio"></div>
                                             </article>
                                         </div>
-                                    </section>
-                                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                        <article class="col-xs-11" style=" padding: 0px !important">
-                                                <table id="table_expedientes"></table>
-                                                <div id="pager_table_expedientes"></div>
-                                        </article>
                                     </div>
                                 </div>
-                            </div>
-                           </div>
                         </section>
                         </div> 
                         
@@ -322,8 +318,8 @@
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
                 {name: 'anio', index: 'anio', align: 'center', width: 100},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'center', width: 100},
-                {name: 'gestor', index: 'gestor', align: 'center', width: 100},
-                {name: 'gestor', index: 'gestor', align: 'center', width: 100},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 300},
+                {name: 'hab_urb', index: 'hab_urb', align: 'center', width: 300},
                 {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'center', width: 100}
             ],
             pager: '#pager_table_datos_predio',
