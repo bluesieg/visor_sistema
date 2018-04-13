@@ -15,7 +15,7 @@ $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 
 
 
-
+Route::get('autocomplete_hab_urba', 'General@autocomplete_hab_urb'); //autocomplentar habilitaciones urbanas
 Route::group(['middleware' => 'auth'], function() {
  
     Route::get('$',function(){ echo 0;});//url auxiliar

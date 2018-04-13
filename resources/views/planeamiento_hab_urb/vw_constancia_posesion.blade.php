@@ -80,7 +80,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                                   <input  id="dlg_fec_desde" name="dlg_fec" type="text"  onchange="selecciona_fecha();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                               <input  id="fec_ini_exp" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -88,7 +88,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                    <input id="dlg_fec_hasta" name="dlg_fec" type="text" onchange="selecciona_fecha();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                <input id="fec_fin_exp" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -106,16 +106,10 @@
                                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                            </button>
 
-                                           <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                                <article class="col-xs-12" style=" padding: 0px !important">
-                                                        <table id="table_expedientes"></table>
-                                                        <div id="pager_table_expedientes"></div>
-                                                </article>
-                                            </div>
-
 
                                        </div>
                                         </div>
+                                        
                                     </section>
                                     
                                 </div>
@@ -198,10 +192,8 @@
     $(document).ready(function (){
         $("#menu_fisca").show();
         $("#li_fisca_carta").addClass('cr-active')
-        fecha_desde = $("#dlg_fec_desde").val(); 
-        fecha_hasta = $("#dlg_fec_hasta").val(); 
         jQuery("#table_expedientes").jqGrid({
-            url: 'getExpedientes?fecha_desde='+fecha_desde +'&fecha_hasta='+fecha_hasta,
+            url: '',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -227,6 +219,12 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){fn_new_carta(Id);}
         });
+        $("#inp_cod_exp_lote").keypress(function (e) {
+            if (e.which == 13) {
+                traer_cod_expediente();
+            }
+        });
+        
        
     });
 </script>
@@ -249,46 +247,59 @@
     </div>
     </div>
 <div id="dlg_nuevo_reg_datos_lote" style="display: none;">
+    
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                <input type="hidden" id="id_expediente" value="0">
                 <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                            <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Posesionario: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Sector: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_sector" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_sector_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
+                        
+                    </div>
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        
                         <span class="input-group-addon" style="width: 150px">Zona: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="vw_zona" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
-                        </div>
+                        <div> 
+                             <input type="hidden" id="hidden_inp_zona_reg_lote" value="0">
+                             <input  id="inp_zona_exp_lote" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  >
+                       </div>
+                        
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Super Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_super_mzna" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_super_mzna_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_mzna" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_mzna_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Lote: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_lote_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Sub Lote: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_sub_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_sub_lote_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>                        
                     </div>
                     
@@ -298,11 +309,11 @@
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Año inicio de Posesión: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_año_ini_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Area: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_sector" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_area_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                 </div>     
@@ -318,41 +329,41 @@
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Por el Frente: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_frente_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_frente_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Por el Costado Derecho: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_derecho_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_derecho_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Por el Costado Izquierdo: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_izquierdo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_izquierdo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Por el Fondo: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_fondo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                         <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_fondo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                 </div>   
@@ -366,9 +377,9 @@
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 150px">Tipo de Solicitud: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="vw_posesionario" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
-                        </div>
+                             <select id='select_ep_autovaluo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()"> 
+                                  <option value='0' >dd</option>
+                             </select> 
                     </div>
                 </div>   
             </div>

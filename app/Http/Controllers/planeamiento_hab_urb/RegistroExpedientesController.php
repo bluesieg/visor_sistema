@@ -67,10 +67,22 @@ class RegistroExpedientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
-       $tim = DB::table('fraccionamiento.tim')->where('id_tim',$id)->get();
-       return $tim;
+        if($id==0)
+            {
+                $expe=new RegistroExpedientes;
+                $val=  $expe::where("nro_expediente","=",$request['cod_expediente'] )->first();
+                if(count($val)>=1)
+                {
+                    return $val->id_reg_exp;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+       
     }
 
     /**
