@@ -84,9 +84,15 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
         Route::resource('datos_predio','Datos_PredioController');
         
+        Route::resource('registro_datos_lote','RegistroDatosLoteController');
+        
         Route::resource('registro_control_calidad','ControlCalidadController');
         Route::get('getExpedientes_ControlCalidad','ControlCalidadController@getExpedientes_ControlCalidad');
+        Route::get('asignar_expediente','ControlCalidadController@asignar_expediente');
+        Route::get('registrar_notificacion','ControlCalidadController@registrar_notificacion');
+        Route::get('actualizar_expediente','ControlCalidadController@actualizar_expediente');
       
+        
         
     });
 

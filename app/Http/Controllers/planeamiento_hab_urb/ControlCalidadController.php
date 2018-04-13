@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\RegistroExpedientes;
+use App\Models\Notificaciones;
+use App\Models\AsignarExpediente;
 
 
 class ControlCalidadController extends Controller
@@ -17,6 +19,7 @@ class ControlCalidadController extends Controller
       
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
+        
         return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1'));
     }
     
@@ -24,8 +27,12 @@ class ControlCalidadController extends Controller
         header('Content-type: application/json');
         $fecha_desde = $request['fecha_desde_cc'];
         $fecha_hasta = $request['fecha_hasta_cc'];
- 
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_const_posesion.vw_expedientes where fase = 2");
+        $check = $request['check'];
+        if ($check == '1') {
+            $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_const_posesion.vw_expedientes where fase = 10");
+        }else{
+            $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_const_posesion.vw_expedientes where fase = 2");
+        }
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -47,10 +54,12 @@ class ControlCalidadController extends Controller
             $start = 0;
         }
 
-     
+        if ($check == '1') {
+            $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('fase',10)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }else{
+            $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('fase',2)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
 
-        $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('fase',2)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-        
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -72,4 +81,55 @@ class ControlCalidadController extends Controller
 
     }
     
+    public function asignar_expediente(Request $request){
+            $AsignarExpediente = new  AsignarExpediente;
+            $AsignarExpediente->id_reg_exp = $request['id_control_calidad'];
+            $AsignarExpediente->id_inspec = $request['inspector'];
+            $AsignarExpediente->estado = 0;
+            $AsignarExpediente->save();
+            $this->asignar_inspeccion($AsignarExpediente->id_reg_exp);
+    }
+    
+    public function asignar_inspeccion($id_reg_exp){
+            $RegistroExpedientes = new  RegistroExpedientes;
+            $val=  $RegistroExpedientes::where("id_reg_exp","=",$id_reg_exp )->first();
+            if(count($val)>=1)
+            {
+                $val->fase = 3;
+                $val->save();
+            }
+            return $id_reg_exp;
+    }
+    
+    public function registrar_notificacion(Request $request){
+            
+            $Notificaciones = new  Notificaciones;
+            $Notificaciones->cod_expediente = $request['nro_expediente'];
+            $Notificaciones->notificacion = $request['notificacion'];
+            $Notificaciones->save();
+            $this->modificar_fase($Notificaciones->cod_expediente);
+            
+    }
+    
+    public function modificar_fase($cod_expediente){ 
+            $RegistroExpedientes = new  RegistroExpedientes;
+            $val=  $RegistroExpedientes::where("nro_expediente","=",$cod_expediente)->first();
+            if(count($val)>=1)
+            {
+                $val->fase = 10;
+                $val->save();
+            }
+            return $cod_expediente;
+    }
+    
+    public function actualizar_expediente(Request $request){
+            $RegistroExpedientes = new  RegistroExpedientes;
+            $val=  $RegistroExpedientes::where("id_reg_exp","=",$request['id_control_calidad'] )->first();
+            if(count($val)>=1)
+            {
+                $val->fase = 2;
+                $val->save();
+            }
+            return $request['id_control_calidad'];
+    }
 }

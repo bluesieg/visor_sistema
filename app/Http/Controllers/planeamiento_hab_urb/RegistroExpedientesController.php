@@ -18,7 +18,8 @@ class RegistroExpedientesController extends Controller
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
         $tip_sol = DB::connection('gerencia_catastro')->select('select * from soft_const_posesion.tipo_solictud');
-        return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1','tip_sol'));
+        $inspectores = DB::connection('gerencia_catastro')->select('select id_inspector,apenom from soft_const_posesion.inspectores order by id_inspector');
+        return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1','tip_sol','inspectores'));
     }
 
     public function create(Request $request)
@@ -95,22 +96,10 @@ class RegistroExpedientesController extends Controller
      */
     public function show($id,Request $request)
     {
-        if($id==0)
-            {
-                $expe=new RegistroExpedientes;
-                $val=  $expe::where("nro_expediente","=",$request['cod'] )->first();
-                if(count($val)>=1)
-                {
-                    return $val;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-       
+       $RegistroExpedientes = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('id_reg_exp',$id)->get();
+       return $RegistroExpedientes;
     }
-
+       
     /**
      * Show the form for editing the specified resource.
      *
