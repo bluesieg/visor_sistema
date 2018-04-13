@@ -263,7 +263,70 @@
                         </section>
                         </div>
                         
+                        <div id="s4" class="tab-pane fade active in">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 0px">
+                                        <div class="col-xs-12">
+                                            
+                                        <h1 ><b>INSPECCIÓN DE CAMPO</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                                               <span class="input-group-addon">Desde:</span>
+                                               <div class="icon-addon addon-md">
+                                                   <input  id="dlg_fec_desde" name="dlg_fec" type="text"  onchange="selecciona_fecha();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Hasta:</span>
+                                                <div class="icon-addon addon-md">
+                                                    <input id="dlg_fec_hasta" name="dlg_fec" type="text" onchange="selecciona_fecha();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="text-right" style=" padding-top: 20px">
+
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_acta_ins();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                               </button>
+
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_acta_ins();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                               </button>
+
+                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_acta_ins();">
+                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                           </button>
+
+                                           <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                                <article class="col-xs-12" style=" padding: 0px !important">
+                                                        <table id="table_expedientes"></table>
+                                                        <div id="pager_table_expedientes"></div>
+                                                </article>
+                                            </div>
+
+
+                                       </div>
+                                        </div>
+                                        
+                                    </section>
+                                    
+                                </div>
+                                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                    <article class="col-xs-11" style=" padding: 0px !important">
+                                            <table id="table_expedientes"></table>
+                                            <div id="pager_table_expedientes"></div>
+                                    </article>
+                                </div>
+                            </div>
+                           </div>
+                        </section>
                         
+                      </div>
                         
                     </div> 
                        
@@ -558,6 +621,205 @@
             </div>
         </div>
     </div>
+</div>
+<div id="dlg_nuevo_acta_ins" style="display: none;">    
+    <section class="col col-lg-12">
+                        <ul id="tab_insp1" class="nav nav-tabs bordered">
+                            <li class="active">
+                                <a href="#inps1" data-toggle="tab" aria-expanded="true">
+                                    Datos Expedientes
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#inps2" data-toggle="tab" aria-expanded="false">
+                                   Datos Vecino
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                        </ul>
+        
+                       <div id="myTabContent1" class="tab-content padding-1"> 
+                        <div id="inps1" class="tab-pane fade active in">
+                        <section class="col col-lg-12">
+                            <div class='cr_content col-xs-12 ' style="margin-bottom: 5px;">
+                                <div class="col-xs-12 cr-body" >
+                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                                            <div class="col-xs-12" style="padding: 0px; ">
+                                                <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                    <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                    <div>
+                                                        <input type="hidden"id="hidden_inp_cod_exp_ins" value="0"/>
+                                                        <input id="inp_cod_exp_ins" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                    </div>
+                                                    <span class="input-group-addon">Fecha Inspección:</span>
+                                                    <div class="icon-addon addon-md">
+                                                        <input id="inp_fec_ins" name="dlg_fec" type="text" onchange="selecciona_fecha();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                    <span class="input-group-addon" style="width: 150px">Solicitante: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                    <div>
+                                                        <input id="inp_solicitante_inp" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                                                    </div>
+
+                                                </div>
+                                                <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">                        
+                                                    <span class="input-group-addon" style="width: 150px">Habilitación Urbana: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                    <div> 
+                                                         <input type="hidden" id="hidden_inp_zona_ins" value="0">
+                                                         <input  id="inp_zona_ins" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  >
+                                                   </div>
+                                                </div>
+                                                <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                    <span class="input-group-addon" style="width: 5px">Super Mzna:</span>
+                                                    <div>
+                                                        <input id="inp_super_mzna_ins" type="text" class="form-control" style="height: 30px;" >
+                                                    </div>
+                                                    <span class="input-group-addon" style="width: 5px">Mzna: </span>
+                                                    <div>
+                                                        <input id="inp_mzna_ins" type="text" class="form-control" style="height: 30px;" >
+                                                    </div>
+                                                    <span class="input-group-addon" style="width: 5px">Lote: </span>
+                                                    <div>
+                                                        <input id="inp_lote_ins" type="text" class="form-control" style="height: 30px;">
+                                                    </div>
+                                                    <span class="input-group-addon" style="width: 5px">Sector: </span>
+                                                    <div>
+                                                        <input id="inp_sector_ins" type="text" class="form-control" style="height: 30px;" >
+                                                    </div>     
+                                                     <span class="input-group-addon" style="width: 5px">Zona: </span>
+                                                    <div>
+                                                        <input id="inp_zona_ins" type="text" class="form-control" style="height: 30px;" 
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div> 
+                                </div>
+                            </div>
+                            <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+                                <div class='cr_content col-xs-4 ' style="margin-bottom: 10px; padding-right: 5px;">
+                                    <div class="col-xs-12 cr-body" >
+                                            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                                                <div class="col-xs-12" >
+                                                    <div  style="width: 100%;">
+                                                        <div>
+                                                            <label>A. Tipo de Suelo:</label>
+                                                                <div>
+                                                                <input id="inp_tip_suelo_ins" type="text" class="form-control" style="height: 30px;" >
+                                                                </div>
+                                                            <label>B. Consideraciones:</label>
+                                                                <div>
+                                                                    <div>
+                                                                        <label>Zonificación</label>
+                                                                        <input id="inp_zonificaion_ins" type="checkbox" >
+                                                                    </div>
+                                                                    <div>
+                                                                        <label>Planos MPA</label>
+                                                                        <input id="inp_zonificaion_ins" type="checkbox" >
+                                                                    </div><div>
+                                                                        <label>RES H. Urbana</label>
+                                                                        <input id="inp_zonificaion_ins" type="checkbox" >
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                </div>
+                                <div class='cr_content col-xs-4 ' style="margin-bottom: 10px;">
+                                <div class="col-xs-12 cr-body" >
+                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                                            <div class="col-xs-12" style="padding: 0px; ">
+                                                <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                    <span class="input-group-addon" style="width: 5px">Consideraciones:</span>
+                                                    <div>
+                                                        <input id="inp_super_mzna_ins" type="text" class="form-control" style="height: 30px;" >
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                
+                            </div>
+                                <div class='cr_content col-xs-4 ' style="margin-bottom: 10px;">
+                                <div class="col-xs-12 cr-body" >
+                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                                            <div class="col-xs-12" style="padding: 0px; ">
+                                                <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                    <span class="input-group-addon" style="width: 150px">Solicitante: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                    <div>
+                                                        <input id="inp_solicitante_inp" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                
+                            </div>
+                            </div>
+                        </section>
+                        
+                      </div>
+                        <div id="s2" class="tab-pane fade" style="height: auto">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 10px">
+                                        <div class="col-xs-12">
+                                            
+                                    <h1 ><b>REGISTRO DE DATOS DEL LOTE</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                                               <span class="input-group-addon">Desde:</span>
+                                               <div class="icon-addon addon-md">
+                                               <input  id="fec_ini_datos_lote" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Hasta:</span>
+                                                <div class="icon-addon addon-md">
+                                                <input id="fec_fin_datos_lote" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="text-right" style=" padding-top: 20px">
+
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_reg_datos_lote();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                               </button>
+
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_datos_lote();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                               </button>
+
+                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_datos_lote();">
+                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                           </button>
+
+
+                                       </div>
+                                        </div>
+                                    </section>
+                                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                        <article class="col-xs-11" style=" padding: 0px !important">
+                                                <table id="table_expedientes"></table>
+                                                <div id="pager_table_expedientes"></div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
+                           </div>
+                        </section>
+                        </div> 
+                     </div>            
+    </section>
 </div>
 @endsection
 

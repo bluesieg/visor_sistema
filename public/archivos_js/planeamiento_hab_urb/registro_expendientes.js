@@ -352,3 +352,26 @@ function guardar_editar_datos_lote()
         }
         }); 
 }
+
+function crear_acta_ins()
+{
+    limpiar_datos();
+    $("#dlg_nuevo_acta_ins").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  ACTA DE INSPECCIÓN EFECTIVA :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    obtener_exp();
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+    $("#dlg_nuevo_acta_ins").dialog('open');
+}
