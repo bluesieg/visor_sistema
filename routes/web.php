@@ -82,8 +82,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('getExpedientes','RegistroExpedientesController@getExpedientes');
         Route::get('traer_datos','RegistroExpedientesController@traer_datos');
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
-        
-        Route::resource('registro_datos_lote','RegistroDatosLoteController');
+        Route::resource('datos_predio','Datos_PredioController');
         
         Route::resource('registro_control_calidad','ControlCalidadController');
         Route::get('getExpedientes_ControlCalidad','ControlCalidadController@getExpedientes_ControlCalidad');

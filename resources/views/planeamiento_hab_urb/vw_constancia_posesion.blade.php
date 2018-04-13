@@ -114,11 +114,11 @@
                                     
                                 </div>
                                 <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                        <article class="col-xs-11" style=" padding: 0px !important">
-                                                <table id="table_expedientes"></table>
-                                                <div id="pager_table_expedientes"></div>
-                                        </article>
-                                    </div>
+                                    <article class="col-xs-11" style=" padding: 0px !important">
+                                            <table id="table_expedientes"></table>
+                                            <div id="pager_table_expedientes"></div>
+                                    </article>
+                                </div>
                             </div>
                            </div>
                         </section>
@@ -166,6 +166,12 @@
 
                                        </div>
                                         </div>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                            <article class="col-xs-11" style=" padding: 0px !important">
+                                                    <table id="table_datos_predio"></table>
+                                                    <div id="pager_table_datos_predio"></div>
+                                            </article>
+                                        </div>
                                     </section>
                                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                         <article class="col-xs-11" style=" padding: 0px !important">
@@ -207,13 +213,40 @@
                 {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'center', width: 20},
                 {name: 'fecha_registro', index: 'fecha_registro', align: 'center', width: 15}
             ],
-            pager: '#pager_table_cartas',
+            pager: '#pager_table_expedientes',
             rowList: [20, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_cartas').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_expedientes').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_cartas').jqGrid('getDataIDs')[0];
-                            $("#table_cartas").setSelection(firstid);    
+                    var firstid = jQuery('#table_expedientes').jqGrid('getDataIDs')[0];
+                            $("#table_expedientes").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){fn_new_carta(Id);}
+        });
+        jQuery("#table_datos_predio").jqGrid({
+            url: 'datos_predio?grid=1',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'AÑO', 'N° EXPEDIENTE', 'GESTOR DEL TRAMITE','HAB.URB','FECHA INICIO'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO EXPEDIENTES', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'anio', index: 'anio', align: 'center', width: 100},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'center', width: 100},
+                {name: 'gestor', index: 'gestor', align: 'center', width: 100},
+                {name: 'gestor', index: 'gestor', align: 'center', width: 100},
+                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'center', width: 100}
+            ],
+            pager: '#pager_table_datos_predio',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_datos_predio').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_datos_predio').jqGrid('getDataIDs')[0];
+                            $("#table_datos_predio").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
@@ -253,53 +286,53 @@
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                            <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Posesionario: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Posesionario: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;"  disabled="">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Sector: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Sector: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_sector_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_sector_exp_lote" type="text" class="form-control" style="height: 30px;"  >
                         </div>
                         
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         
-                        <span class="input-group-addon" style="width: 150px">Zona: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Zona: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div> 
-                             <input type="hidden" id="hidden_inp_zona_reg_lote" value="0">
+                             <input type="hidden" id="hidden_inp_zona_exp_lote" value="0">
                              <input  id="inp_zona_exp_lote" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  >
                        </div>
                         
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Super Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Super Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_super_mzna_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_super_mzna_exp_lote" type="text" class="form-control" style="height: 30px;" >
                         </div>
-                        <span class="input-group-addon" style="width: 150px">Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_mzna_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_mzna_exp_lote" type="text" class="form-control" style="height: 30px;" >
                         </div>
                         
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Lote: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Lote: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_lote_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_lote_exp_lote" type="text" class="form-control" style="height: 30px;" >
                         </div>
-                        <span class="input-group-addon" style="width: 150px">Sub Lote: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Sub Lote: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_sub_lote_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_sub_lote_exp_lote" type="text" class="form-control" style="height: 30px;" >
                         </div>                        
                     </div>
                     
@@ -307,13 +340,13 @@
                 
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Año inicio de Posesión: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Año inicio de Posesión: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_año_ini_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_anio_ini_exp_lote" type="text" class="form-control" style="height: 30px;"  maxlength="4" onkeypress="return soloNumeroTab(event);">
                         </div>
-                        <span class="input-group-addon" style="width: 150px">Area: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Area: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_area_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_area_exp_lote" type="text" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                 </div>     
@@ -327,43 +360,43 @@
                 <input type="hidden" id="id_expediente" value="0">
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Por el Frente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Por el Frente: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_frente_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_frente_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="100">
                         </div>
-                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_con_frente_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
-                        </div>
-                    </div>
-                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Por el Costado Derecho: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="inp_derecho_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
-                        </div>
-                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="inp_con_derecho_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_frente_exp_lote" type="text" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Por el Costado Izquierdo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Por Costado Derecho: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_izquierdo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_derecho_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="100" >
                         </div>
-                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_con_izquierdo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_derecho_exp_lote" type="text" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Por el Fondo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Por Costado Izquierdo: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_fondo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_izquierdo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="100">
                         </div>
-                        <span class="input-group-addon" style="width: 150px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <span class="input-group-addon" style="width: 180px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_con_fondo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="7" onkeypress="return soloNumeroTab(event);">
+                            <input id="inp_con_izquierdo_exp_lote" type="text" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                        <span class="input-group-addon" style="width: 180px">Por el Fondo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_fondo_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="100">
+                        </div>
+                        <span class="input-group-addon" style="width: 180px">Con: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_con_fondo_exp_lote" type="text" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                 </div>   
@@ -376,9 +409,11 @@
                 <input type="hidden" id="id_expediente" value="0">
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        <span class="input-group-addon" style="width: 150px">Tipo de Solicitud: &nbsp;<i class="fa fa-hashtag"></i></span>
-                             <select id='select_ep_autovaluo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()"> 
-                                  <option value='0' >dd</option>
+                        <span class="input-group-addon" style="width: 180px">Tipo de Solicitud: &nbsp;<i class="fa fa-hashtag"></i></span>
+                             <select id='select_tip_sol_exp_lote' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()"> 
+                                @foreach ($tip_sol as $tip)
+                                <option value='{{$tip->id}}' >{{$tip->tipo}}</option>
+                                @endforeach
                              </select> 
                     </div>
                 </div>   

@@ -17,7 +17,8 @@ class RegistroExpedientesController extends Controller
       
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
         $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
-        return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1'));
+        $tip_sol = DB::connection('gerencia_catastro')->select('select * from soft_const_posesion.tipo_solictud');
+        return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1','tip_sol'));
     }
 
     public function create(Request $request)
@@ -100,7 +101,7 @@ class RegistroExpedientesController extends Controller
                 $val=  $expe::where("nro_expediente","=",$request['cod'] )->first();
                 if(count($val)>=1)
                 {
-                    return $val->id_reg_exp;
+                    return $val;
                 }
                 else
                 {
