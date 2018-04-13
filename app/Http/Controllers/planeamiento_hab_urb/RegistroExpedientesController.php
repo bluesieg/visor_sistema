@@ -25,23 +25,36 @@ class RegistroExpedientesController extends Controller
         $codigo = $request['cod'];
         $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite',$codigo)->first();
         
+        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$expedientes->codigoTramite)->get();
+        
         if(count($expedientes)>=1)
         {
-            $RegistroExpedientes = new  RegistroExpedientes;
+            if (count($select)>=1) {
+                
+                return response()->json([
+                'msg' => 'repetido',
+                ]);
+                
+            }else{
+                
+                $RegistroExpedientes = new  RegistroExpedientes;
             
-            $RegistroExpedientes->nro_expediente = $expedientes->codigoTramite;
-            $RegistroExpedientes->id_gestor = $expedientes->idInteresado;
-            $RegistroExpedientes->id_estado = 1;
-            $RegistroExpedientes->id_usuario = 1;
-            $RegistroExpedientes->fase = 1;
-            $RegistroExpedientes->gestor = $expedientes->nombres;
-            $RegistroExpedientes->fecha_inicio_tramite = $expedientes->iniciado;
-            $RegistroExpedientes->fecha_registro = date('d-m-Y');
-            $RegistroExpedientes->numero_identificacion = $expedientes->numeroIdentificacion;
-  
-            $RegistroExpedientes->save();
+                $RegistroExpedientes->nro_expediente = $expedientes->codigoTramite;
+                $RegistroExpedientes->id_gestor = $expedientes->idInteresado;
+                $RegistroExpedientes->id_estado = 1;
+                $RegistroExpedientes->id_usuario = 1;
+                $RegistroExpedientes->fase = 1;
+                $RegistroExpedientes->gestor = $expedientes->nombres;
+                $RegistroExpedientes->fecha_inicio_tramite = $expedientes->iniciado;
+                $RegistroExpedientes->fecha_registro = date('d-m-Y');
+                $RegistroExpedientes->numero_identificacion = $expedientes->numeroIdentificacion;
+
+                $RegistroExpedientes->save();
+
+                return $RegistroExpedientes->id_reg_exp;
+                
+            }
             
-            return $RegistroExpedientes->id_reg_exp;
         }else{
             return response()->json([
                 'msg' => 'no',
@@ -56,18 +69,7 @@ class RegistroExpedientesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id,Request $request)
+    public function traer_datos($id,Request $request)
     {
         if($id==0)
             {
@@ -82,7 +84,18 @@ class RegistroExpedientesController extends Controller
                     return 0;
                 }
             }
-       
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id,Request $request)
+    {
+       $RegistroExpedientes = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('id_reg_exp',$id)->get();
+       return $RegistroExpedientes;
     }
 
     /**
@@ -91,9 +104,29 @@ class RegistroExpedientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
-        //
+        
+        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$request['nro_expediente'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
+        
+        if (count($select)>= 1) {
+            return response()->json([
+                'msg' => 'repetido',
+                ]);
+        }else{
+            $RegistroExpedientes = new  RegistroExpedientes;
+            $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
+            if(count($val)>=1)
+            {
+                $val->nro_expediente = $request['nro_expediente'];
+                $val->gestor = $request['gestor'];
+                $val->fecha_inicio_tramite = $request['fecha_inicio_tramite'];
+                $val->fecha_registro = $request['fecha_registro'];
+                $val->save();
+            }
+            return $id;
+        }
+        
     }
 
     /**
@@ -114,9 +147,15 @@ class RegistroExpedientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $RegistroExpedientes = new  RegistroExpedientes;
+        $val=  $RegistroExpedientes::where("id_reg_exp","=",$request['id_reg_exp'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id_reg_exp'];
     }
     
     public function getExpedientes(Request $request){

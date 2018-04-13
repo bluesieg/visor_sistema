@@ -80,7 +80,13 @@ Route::group(['middleware' => 'auth'], function() {
      Route::group(['namespace' => 'planeamiento_hab_urb'], function() {
         Route::resource('registro_expedientes','RegistroExpedientesController');
         Route::get('getExpedientes','RegistroExpedientesController@getExpedientes');
+        Route::get('traer_datos','RegistroExpedientesController@traer_datos');
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
+        
+        Route::resource('registro_datos_lote','RegistroDatosLoteController');
+        
+        Route::resource('registro_control_calidad','ControlCalidadController');
+        Route::get('getExpedientes_ControlCalidad','ControlCalidadController@getExpedientes_ControlCalidad');
       
         
     });

@@ -30,6 +30,7 @@
                 <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
         <script src='mapbox/mapbox.js'></script>
         <link href='mapbox/mapbox.css' rel='stylesheet' />
+        <link href="{{ asset('css/jquery-confirm.css') }}" rel="stylesheet">
          
 
 
@@ -2484,8 +2485,18 @@
         <script src="{{ asset('js/app.config.js') }}"></script>
         <script src="{{ asset('js/app.min.js') }}"></script>
         <script src="{{ asset('js/block_ui.js') }}"></script>
+        
+         <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
+        <script src="{{ asset('js/plugin/jqgrid/jquery.jqGrid.min.js') }}"></script>
+        <script src="{{ asset('js/plugin/jqgrid/grid.locale-en.min.js') }}"></script>
+
+        <script src="{{ asset('js/plugin/masked-input/jquery.maskedinput.min.js') }}"></script>
+
+        <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
 
         <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('archivos_js/configuracion.js') }}"></script>
 
         <script src="{{ asset('js/jquery-confirm.js')}}"></script>
 
