@@ -27,7 +27,7 @@ class RegistroExpedientesController extends Controller
         $codigo = $request['cod'];
         $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite',$codigo)->first();
         
-        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$expedientes->codigoTramite)->get();
+        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$codigo)->get();
         
         if(count($expedientes)>=1)
         {
@@ -46,7 +46,7 @@ class RegistroExpedientesController extends Controller
                 $RegistroExpedientes->id_estado = 1;
                 $RegistroExpedientes->id_usuario = 1;
                 $RegistroExpedientes->fase = 1;
-                $RegistroExpedientes->gestor = $expedientes->nombres;
+                $RegistroExpedientes->gestor = $expedientes->nombres.' '.$expedientes->apellidos;
                 $RegistroExpedientes->fecha_inicio_tramite = $expedientes->iniciado;
                 $RegistroExpedientes->fecha_registro = date('d-m-Y');
                 $RegistroExpedientes->numero_identificacion = $expedientes->numeroIdentificacion;
@@ -73,19 +73,8 @@ class RegistroExpedientesController extends Controller
      */
     public function traer_datos($id,Request $request)
     {
-        if($id==0)
-            {
-                $expe=new RegistroExpedientes;
-                $val=  $expe::where("nro_expediente","=",$request['cod_expediente'] )->first();
-                if(count($val)>=1)
-                {
-                    return $val->id_reg_exp;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
+        $expedientes = DB::connection("gerencia_catastro")->table('soft_const_posesion.vw_expedientes')->where('id_reg_exp',$id)->get();
+        return $expedientes;
     }
 
     /**

@@ -110,7 +110,7 @@ function actualizar_exp()
     MensajeDialogLoadAjax('dlg_nuevo_exp_edit', '.:: Cargando ...');
 
     id = $('#table_expedientes').jqGrid ('getGridParam', 'selrow');
-    $.ajax({url: 'registro_expedientes/'+id,
+    $.ajax({url: 'traer_datos/'+id,
         type: 'GET',
         success: function(r)
         {

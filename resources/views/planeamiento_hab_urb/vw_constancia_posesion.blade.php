@@ -22,7 +22,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#s3" data-toggle="tab" aria-expanded="false" onclick="grilla_control_calidad();">
+                                <a href="#s3" data-toggle="tab" aria-expanded="false">
                                    Control Calidad
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -53,12 +53,6 @@
                             </li>
                             <li>
                                 <a href="#s8" data-toggle="tab" aria-expanded="false">
-                                   Firma Gerencia
-                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#s9" data-toggle="tab" aria-expanded="false">
                                    Entrega Constancias
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -263,20 +257,21 @@
                         </section>
                         </div>
                         
-                        <div id="s4" class="tab-pane fade active in">
+                        
+                        <div id="s4" class="tab-pane fade" style="height: auto">
                         <section class="col col-lg-12">
                         <div class="col-xs-12">               
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <section style="padding-right: 0px">
+                                    <section style="padding-right: 10px">
                                         <div class="col-xs-12">
                                             
-                                        <h1 ><b>INSPECCIÓN DE CAMPO</b></h1>
-                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
+                                    <h1 ><b>INSPECCION DE CAMPO</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                                   <input  id="dlg_fec_desde" name="dlg_fec" type="text"  onchange="selecciona_fecha();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                               <input  id="fec_ini_insp_campo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -284,30 +279,23 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                    <input id="dlg_fec_hasta" name="dlg_fec" type="text" onchange="selecciona_fecha();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                <input id="fec_fin_ins_campo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
                                        <div class="text-right" style=" padding-top: 20px">
 
-                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_acta_ins();">
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_ins_campo();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                                                </button>
 
-                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_acta_ins();">
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_ins_campo();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                                </button>
 
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_acta_ins();">
+                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_ins_campo();">
                                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                            </button>
-
-                                           <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                                <article class="col-xs-12" style=" padding: 0px !important">
-                                                        <table id="table_expedientes"></table>
-                                                        <div id="pager_table_expedientes"></div>
-                                                </article>
-                                            </div>
 
 
                                        </div>
@@ -316,17 +304,256 @@
                                     </section>
                                     
                                 </div>
-                                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                    <article class="col-xs-11" style=" padding: 0px !important">
-                                            <table id="table_expedientes"></table>
-                                            <div id="pager_table_expedientes"></div>
-                                    </article>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 70px">
+                                            <article class="col-xs-11" style=" padding: 0px !important">
+                                                    <table id="table_inspeccion_campo"></table>
+                                                    <div id="pager_table_inspeccion_campo"></div>
+                                            </article>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                           </div>
                         </section>
+                        </div>
                         
-                      </div>
+                        <div id="s5" class="tab-pane fade" style="height: auto">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 10px">
+                                        <div class="col-xs-12">
+                                            
+                                    <h1 ><b>EXPEDIENTES PARA EVALUACION TECNICA</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                                               <span class="input-group-addon">Desde:</span>
+                                               <div class="icon-addon addon-md">
+                                               <input  id="fec_ini_eva_tecnica" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Hasta:</span>
+                                                <div class="icon-addon addon-md">
+                                                <input id="fec_fin_eva_tecnica" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2" style="padding-right: 5px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                       
+                                               <div class="icon-addon addon-md">
+                                                   <input type="checkbox" id="dlg_ver_improcedentes" onclick="check_ver_improcedentes('#dlg_ver_improcedentes')" style="width:22px;height:22px">IMPROCEDENTES
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="text-rigth" style=" padding-top: 20px">
+
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="emitir_ofic_impro();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Emitir Oficio de Impro.
+                                               </button>
+
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="aprobar_expediente();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Aprobar Expediente
+                                               </button>
+
+                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_eva_tecnica());">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Editar
+                                               </button>
+
+                                                <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_eva_tecnica();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                                </button>
+
+
+                                       </div>
+                                        </div>
+                                        
+                                    </section>
+                                    
+                                </div>
+                                           <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                                <article class="col-xs-12" style=" padding: 0px !important">
+                                                        <table id="table_evaluacion_tecnica"></table>
+                                                        <div id="pager_table_evaluacion_tecnica"></div>
+                                                </article>
+                                            </div>
+                                    </div>
+                                </div>
+                        </section>
+                        </div> 
+
+                        <div id="s6" class="tab-pane fade" style="height: auto">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 10px">
+                                        <div class="col-xs-12">
+                                            
+                                    <h1 ><b>EXPEDIENTES PARA VISTO LEGAL</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                                               <span class="input-group-addon">Desde:</span>
+                                               <div class="icon-addon addon-md">
+                                               <input  id="fec_ini_visto_legal" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Hasta:</span>
+                                                <div class="icon-addon addon-md">
+                                                <input id="fec_fin_visto_legal" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="text-right" style=" padding-top: 20px">
+
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="aprobar_para_firmas();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Aprobar para Firmas
+                                               </button>
+
+                                       </div>
+                                        </div>
+                                        
+                                    </section>
+                                    
+                                </div>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                            <article class="col-xs-11" style=" padding: 0px !important">
+                                                    <table id="table_expediente_visto_legal"></table>
+                                                    <div id="pager_table_expediente_visto_legal"></div>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                        </section>
+                        </div> 
+                        
+                        
+                        <div id="s7" class="tab-pane fade" style="height: auto">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 10px">
+                                        <div class="col-xs-12">
+                                            
+                                    <h1 ><b>EXPEDIENTES PARA VISTO Y FIRMA</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                                               <span class="input-group-addon">Desde:</span>
+                                               <div class="icon-addon addon-md">
+                                               <input  id="fec_ini_exp_visto_firma" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Hasta:</span>
+                                                <div class="icon-addon addon-md">
+                                                <input id="fec_fin_exp_visto_firma" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="text-right" style=" padding-top: 20px">
+
+                                               <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_visto_firma();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>......
+                                               </button>
+                                               
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="sin_especificar();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>......
+                                               </button>
+
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_expe_visto_firma();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                               </button>
+
+                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_exp_visto_firma();">
+                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                           </button>
+
+
+                                       </div>
+                                        </div>
+                                        
+                                    </section>
+                                    
+                                </div>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                            <article class="col-xs-11" style=" padding: 0px !important">
+                                                    <table id="table_expediente_visto_firma"></table>
+                                                    <div id="pager_table_expediente_visto_firma"></div>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                        </section>
+                        </div>
+                        
+                        
+                        <div id="s8" class="tab-pane fade" style="height: auto">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 10px">
+                                        <div class="col-xs-12">
+                                            
+                                    <h1 ><b>ENTREGA DE CONSTANCIAS DE POSESION</b></h1>
+                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                           <div class="input-group input-group-md">
+                                               <span class="input-group-addon">Desde:</span>
+                                               <div class="icon-addon addon-md">
+                                               <input  id="fec_ini_entr_const_pos" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Hasta:</span>
+                                                <div class="icon-addon addon-md">
+                                                <input id="fec_fin_entr_const_pos" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="text-right" style=" padding-top: 20px">
+
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="entregar_a();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Entregar a
+                                               </button>
+
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_entr_const_pos();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                               </button>
+
+                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_entr_const_pos();">
+                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                           </button>
+
+
+                                       </div>
+                                        </div>
+                                        
+                                    </section>
+                                    
+                                </div>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 70px">
+                                            <article class="col-xs-11" style=" padding: 0px !important">
+                                                    <table id="table_entr_const_pos"></table>
+                                                    <div id="pager_table_entr_const_pos"></div>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                        </section>
+                        </div> 
+                                     
+                        
+                     
                         
                     </div> 
                        
@@ -401,6 +628,198 @@
             if (e.which == 13) {
                 traer_cod_expediente();
             }
+        });
+        
+        fecha_desde = $("#dlg_fecha_desde_cc").val(); 
+        fecha_hasta = $("#dlg_fecha_hasta_cc").val();
+        jQuery("#table_control_calidad").jqGrid({
+            url: 'getExpedientes_ControlCalidad?fecha_desde='+fecha_desde +'&fecha_hasta='+fecha_hasta,
+            datatype: 'json', mtype: 'GET',
+            height: '120px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE','GESTOR DEL TRAMITE','FECHA INICIO','FECHA REGISTRO','ESTADO'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO EXPEDIENTES', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 200},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 300},
+                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 200},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 200},
+                {name: 'fase', index: 'fase', align: 'left', width: 15, hidden:true}
+            ],
+            pager: '#pager_table_control_calidad',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_control_calidad').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_control_calidad').jqGrid('getDataIDs')[0];
+                            $("#table_control_calidad").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){
+                 $('#hidden_id').val($("#table_control_calidad").getCell(Id, "nro_expediente"));
+            },
+            ondblClickRow: function (Id){actualizar_expediente();}
+        });
+       
+        
+        jQuery("#table_inspeccion").jqGrid({
+            url: 'traer_inspecciones',
+            datatype: 'json', mtype: 'GET',
+            height: '90px', width: 950,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE','GESTOR DEL TRAMITE','INSPECTOR'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'INSPECCION', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 20},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 40},
+                {name: 'apenom', index: 'apenom', align: 'left', width: 40}
+            ],
+            pager: '#pager_table_inspeccion',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_inspeccion').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_inspeccion').jqGrid('getDataIDs')[0];
+                            $("#table_inspeccion").setSelection(firstid);    
+                        }
+                },
+            ondblClickRow: function (Id){actualizar_inspeccion();}
+    });
+        
+        //NUEVOS
+        jQuery("#table_inspeccion_campo").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO',],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'INSPECCION DE CAMPO', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'anio', index: 'anio', align: 'left', width: 300},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 200}
+            ],
+            pager: '#pager_table_inspeccion_campo',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_inspeccion_campo').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_inspeccion_campo').jqGrid('getDataIDs')[0];
+                            $("#table_inspeccion_campo").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        
+        jQuery("#table_evaluacion_tecnica").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'FECHA INSPECCION', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'EXPEDIENTES PARA EVALUACION TECNICA', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'anio', index: 'anio', align: 'left', width: 200},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 200},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 300},
+                {name: 'hab_urb', index: 'hab_urb', align: 'left', width: 200}
+            ],
+            pager: '#pager_table_evaluacion_tecnica',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_evaluacion_tecnica').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_evaluacion_tecnica').jqGrid('getDataIDs')[0];
+                            $("#table_evaluacion_tecnica").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        
+        jQuery("#table_expediente_visto_legal").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO','FECHA INSPECCION'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'EXPEDIENTES PARA VISTO LEGAL', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'anio', index: 'anio', align: 'left', width: 200},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 200},
+                {name: 'hab_urb', index: 'hab_urb', align: 'left', width: 200}
+            ],
+            pager: '#pager_table_expediente_visto_legal',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_expediente_visto_legal').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_expediente_visto_legal').jqGrid('getDataIDs')[0];
+                            $("#table_expediente_visto_legal").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        
+        jQuery("#table_expediente_visto_firma").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO','FECHA INSPECCION'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'EXPEDIENTES PARA VISTO Y FIRMA', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'anio', index: 'anio', align: 'left', width: 200},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 200},
+                {name: 'hab_urb', index: 'hab_urb', align: 'left', width: 200}
+            ],
+            pager: '#pager_table_expediente_visto_firma',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_expediente_visto_firma').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_expediente_visto_firma').jqGrid('getDataIDs')[0];
+                            $("#table_expediente_visto_firma").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+        
+        jQuery("#table_entr_const_pos").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '280px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE', 'SOLICITANTE','FECHA DE REGISTRO',],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'ENTREGA DE CONSTANCIAS DE POSESION', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'anio', index: 'anio', align: 'center', width: 300},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 200}
+            ],
+            pager: '#pager_table_entr_const_pos',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_entr_const_pos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_entr_const_pos').jqGrid('getDataIDs')[0];
+                            $("#table_entr_const_pos").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
         });
         
        
@@ -764,60 +1183,7 @@
                         </section>
                         
                       </div>
-                        <div id="s2" class="tab-pane fade" style="height: auto">
-                        <section class="col col-lg-12">
-                        <div class="col-xs-12">               
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <section style="padding-right: 10px">
-                                        <div class="col-xs-12">
-                                            
-                                    <h1 ><b>REGISTRO DE DATOS DEL LOTE</b></h1>
-                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
-                                           <div class="input-group input-group-md">
-                                               <span class="input-group-addon">Desde:</span>
-                                               <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_datos_lote" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
-                                            <div class="input-group input-group-md">
-                                                <span class="input-group-addon">Hasta:</span>
-                                                <div class="icon-addon addon-md">
-                                                <input id="fec_fin_datos_lote" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                       <div class="text-right" style=" padding-top: 20px">
-
-                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_reg_datos_lote();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                               </button>
-
-                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_datos_lote();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                               </button>
-
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_datos_lote();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                           </button>
-
-
-                                       </div>
-                                        </div>
-                                    </section>
-                                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                        <article class="col-xs-11" style=" padding: 0px !important">
-                                                <table id="table_expedientes"></table>
-                                                <div id="pager_table_expedientes"></div>
-                                        </article>
-                                    </div>
-                                </div>
-                            </div>
-                           </div>
-                        </section>
-                        </div> 
+                        
                      </div>            
     </section>
 </div>
