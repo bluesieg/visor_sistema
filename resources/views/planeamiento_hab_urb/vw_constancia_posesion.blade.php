@@ -348,7 +348,7 @@
                                                </div>
                                            </div>
                                        </div>
-                                       <div class="text-rigth" style=" padding-top: 20px">
+                                       <div class="" style="float:right; padding-top: 20px">
 
                                                 <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="emitir_ofic_impro();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Emitir Oficio de Impro.
@@ -512,7 +512,7 @@
                                                </div>
                                            </div>
                                        </div>
-                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                       <div class="col-lg-2" style="padding-right: 5px; padding-top: 20px; ">
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
@@ -520,7 +520,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       <div class="text-right" style=" padding-top: 20px">
+                                       <div class="" style="float:right; padding-top: 20px">
 
                                                 <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="entregar_a();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Entregar a
@@ -544,8 +544,8 @@
                                     </section>
                                     
                                 </div>
-                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 70px">
-                                            <article class="col-xs-11" style=" padding: 0px !important">
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
                                                     <table id="table_entr_const_pos"></table>
                                                     <div id="pager_table_entr_const_pos"></div>
                                             </article>
@@ -808,8 +808,8 @@
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'ENTREGA DE CONSTANCIAS DE POSESION', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 300},
-                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
+                {name: 'anio', index: 'anio', align: 'center', width: 150},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 600},
                 {name: 'gestor', index: 'gestor', align: 'left', width: 200}
             ],
             pager: '#pager_table_entr_const_pos',
