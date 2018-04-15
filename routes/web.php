@@ -94,7 +94,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('traer_inspecciones','ControlCalidadController@traer_inspecciones');
         Route::get('recuperar_expediente','ControlCalidadController@recuperar_expediente');
       
-        
+        Route::resource('entrega_constancia','EntregaConstanciaController');
+        Route::get('reporte_constancia','EntregaConstanciaController@reporte_constancia'); //reporte constancia de posesion
+
         
     });
 

@@ -352,8 +352,8 @@ function guardar_editar_datos_lote()
         }
         }); 
 }
-
-function crear_acta_ins()
+ins=0;
+function crear_ins_campo()
 {
     limpiar_datos();
     $("#dlg_nuevo_acta_ins").dialog({
@@ -373,5 +373,15 @@ function crear_acta_ins()
             }
         }],
     });
-    $("#dlg_nuevo_acta_ins").dialog('open');
+   
+    if(ins==0)
+    {
+        autocompletar_haburb('inp_hab_urb_ins');
+        ins=1;
+    }
+     $("#dlg_nuevo_acta_ins").dialog('open');
+}
+
+function imprimir_constancia()
+{    window.open('reporte_constancia'+'');
 }
