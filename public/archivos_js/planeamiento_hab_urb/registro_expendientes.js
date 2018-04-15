@@ -363,7 +363,7 @@ function crear_ins_campo()
             html: "<i class='fa fa-save'></i>&nbsp; Guardar",
             "class": "btn btn-success bg-color-green",
             click: function () {
-                    obtener_exp();
+                    guardar_acta_ins_campo();
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",

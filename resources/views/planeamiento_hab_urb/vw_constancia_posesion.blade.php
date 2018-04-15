@@ -885,7 +885,6 @@
     </div>
 </div>
 <div id="dlg_nuevo_reg_datos_lote" style="display: none;">
-    
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
@@ -1141,8 +1140,8 @@
                                      </div>
                                      <div>
                                          <section class="col-xs-4">
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-bottom:  1px;padding-top:  0px">
-                                                <div class="col-xs-12 cr-body panel-success" >
+                                              <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-top:  0px">
+                                                <div class="col-xs-12 cr-body panel-success" style="margin-top:5px;margin-bottom:5px" >
                                                    <div class="panel-heading bg-color-success">Tipo de Suelo</div>
                                                       <div class="col col-xs-12">
                                                                <select id="inp_tipo_suelo"  class="form-control" onchange="" >
@@ -1152,7 +1151,7 @@
                                                        </div>
                                                 </div>  
                                               </div>
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
+                                              <div class='cr_content col-xs-12 ' style="margin-top:0px;padding-bottom:10px">
                                                       <div class="col-xs-12 cr-body panel-success" >
                                                          <div class="panel-heading bg-color-success">Consideraciones</div>
                                                          <div class="col-xs-12" >
@@ -1177,88 +1176,189 @@
                                                      </div>  
                                               </div>
                                          </section>
-                                         <section class="col-xs-4 ">
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-bottom:  1px;padding-top:  0px">
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                   <div class="panel-heading bg-color-success">Condición del Predio</div>
-                                                      <div class="col col-xs-12">
-                                                               <label class="label">Tipo de Cerco</label>
-                                                                <select id="inp_tipo_cerco"  class="form-control" onchange="">
-                                                                     <option value='1' >Piedra</option>
-                                                                     <option value='2' >Sillar</option>
-                                                                     <option value='3' >Bloqueta</option>
-                                                                     <option value='4' >Ladrillo</option>
-                                                                     <option value='5' >Concreto</option>
-                                                                     <option value='6' >Estera</option>
-                                                                </select>
-                                                       </div>
-                                                   <div class="col col-xs-12">
-                                                               <label class="label">Habitaciones</label>
-                                                                <select id="inp_habitaciones"  class="form-control" onchange="">
-                                                                     <option value='1' >Sillar</option>
-                                                                     <option value='2' >Bloqueta</option>
-                                                                     <option value='3' >Ladrillo</option>
-                                                                     <option value='4' >Concreto</option>
-                                                                     <option value='5' >Pre fabricado</option>
-                                                                     <option value='6' >Dry-wall</option>
-                                                                </select>
-                                                    </div>
-                                                   <div class="col col-xs-12">
-                                                               <label class="label">Tipo de Techo</label>
-                                                                <select id="inp_tipo_techo"  class="form-control" onchange="">
-                                                                     <option value='1' >Calamina</option>
-                                                                     <option value='2' >Madera</option>
-                                                                     <option value='3' >MDF</option>
-                                                                     <option value='4' >Concreto</option>
-                                                                     <option value='5' >Plasticos</option>
-                                                                </select>
-                                                    </div>
-                                                </div>  
-                                              </div>
-
-                                         </section>
-                                         <section class="col-xs-4">
+                                        <section class="col-xs-4">
                                               <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
                                                       <div class="col-xs-12 cr-body panel-success" >
-                                                         <div class="panel-heading bg-color-success">Posesión del Predio</div>
+                                                         <div class="panel-heading bg-color-success" >Condición del predio</div>
+                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Tipo de cerco</div>
                                                          <div class="col-xs-12" >
                                                                         <form style="padding-left:20px" class="col-xs-12">
                                                                                 <div class="form-check">
                                                                                         <label class="toggle">
-                                                                                            <input id="inp_habita_ins"type="checkbox" name="toggle" checked> <span class="label-text" >Habita en el Predio </span>
+                                                                                            <input id="inp_piedra_cerco"type="checkbox" name="toggle" checked> <span class="label-text" >Piedra </span>
                                                                                         </label>
                                                                                 </div>
-
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_sillar_cerco" type="checkbox" name="toggle"> <span class="label-text">Sillar</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_bloqueta_cerco" type="checkbox" name="toggle"> <span class="label-text">Bloqueta</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_ladrillo_cerco" type="checkbox" name="toggle"> <span class="label-text">Ladrillo</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_concreto_cerco" type="checkbox" name="toggle"> <span class="label-text">Concreto</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_estera_cerco" type="checkbox" name="toggle"> <span class="label-text">Estera</span>
+                                                                                        </label>
+                                                                                </div>                                                                     
                                                                         </form>
                                                          </div>
                                                      </div>  
-                                                  <div class="">
-                                                      <div class="col col-xs-6">
-                                                        <label class="label">N°Personas :</label>
-                                                        <label class="input">
-                                                            <input id="inp_nro_pers_ins" type="text"  class="input-sm" autofocus="">
-                                                        </label>
-                                                      </div>
-                                                      <div class="col col-xs-6">
-                                                        <label class="label">N°Habitaciones:</label>
-                                                        <label class="input">
-                                                            <input id="inp_nro_habitaciones_ins" type="text"  class="input-sm" autofocus="">
-                                                        </label>
-                                                      </div>
-                                                    </div>
                                               </div>
+                                         </section>
+                                         <section class="col-xs-4">
                                               <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
                                                       <div class="col-xs-12 cr-body panel-success" >
-                                                         <div class="panel-heading bg-color-success">Servicios</div>
+                                                         <div class="panel-heading bg-color-success" >Condición del predio</div>
+                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Habitaciones</div>
                                                          <div class="col-xs-12" >
-                                                                <select id="inp_servicios"  class="form-control" onchange="">
-                                                                     <option value='1' >Pileta Comunal</option>
-                                                                     <option value='2' >Agua/medidor</option>
-                                                                </select>
+                                                                        <form style="padding-left:20px" class="col-xs-12">
+                                                                               <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_sillar_hab" type="checkbox" name="toggle"> <span class="label-text">Sillar</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_bloqueta_hab" type="checkbox" name="toggle"> <span class="label-text">Bloqueta</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="in_ladrillo_hab" type="checkbox" name="toggle"> <span class="label-text">Ladrillo</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_concreto_hab" type="checkbox" name="toggle"> <span class="label-text">Concreto</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_fabricado_hab" type="checkbox" name="toggle"> <span class="label-text">Pre fabricado</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_dry_hab" type="checkbox" name="toggle"> <span class="label-text">Dry-wall</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                        </form>
                                                          </div>
                                                      </div>  
                                               </div>
-                                         </section>       
+                                           </section>
+                                     </div>
+                                      <div>
+                                         <section class="col-xs-4">
+                                              <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-top:  5px">
+                                                <div class="col-xs-12 cr-body panel-success" style="margin-bottom:5px" >
+                                                   <div class="panel-heading bg-color-success" >Condición del predio</div>
+                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Tipo de TEcho</div>
+                                                         <div class="col-xs-12" >
+                                                                        <form style="padding-left:20px" class="col-xs-12">
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                            <input id="inp_calamina"type="checkbox" name="toggle" checked> <span class="label-text" >Calamina </span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_madera" type="checkbox" name="toggle"> <span class="label-text">Madera</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_mdf" type="checkbox" name="toggle"> <span class="label-text">MDF</span>
+                                                                                        </label>
+                                                                                </div>                                               
+                                                                        </form>
+                                                         </div>
+                                                </div>  
+                                              </div>
+                                              <div class='cr_content col-xs-12 ' style="margin-top:0px;padding-bottom:10px">
+                                                      <div class="col-xs-12 cr-body panel-success" >
+                                                         <div class="panel-heading bg-color-success">Ocupación del Predio</div>
+                                                         <div class="col-xs-12" >
+                                                                        <form style="padding-left:20px" class="col-xs-12">
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                            <input id="inp_habita_pred"type="checkbox" name="toggle" checked> <span class="label-text" >Habita el Predio</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                
+                                                                        </form>
+                                                             
+                                                         </div>
+                                                     </div>  
+                                              </div>
+                                         </section>
+                                        <section class="col-xs-4"style="margin-top:5px;padding-bottom:70px">
+                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
+                                                      <div class="col-xs-12 cr-body panel-success" >
+                                                         <div class="panel-heading bg-color-success" >Condición del predio</div>
+                                                         <div class="col-xs-12" >
+                                                                <div class="col col-xs-12">
+                                                                <label class="label">N°Personas:</label>
+                                                                <label class="input">
+                                                                    <input id="inp_nro_pers" type="text"  pclass="input-sm" autofocus="">
+                                                                </label>
+                                                                </div>
+                                                                 <div class="col col-xs-12">
+                                                                    <label class="label">N°Habitaciones:</label>
+                                                                    <label class="input">
+                                                                        <input id="inp_nro_habita" type="text" class="input-sm" autofocus="">
+                                                                    </label>
+
+                                                                </div>
+                                                         </div>
+                                                     </div>  
+                                              </div>
+                                         </section>
+                                         <section class="col-xs-4"style="margin-top:5px;padding-bottom:70px">
+                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
+                                                      <div class="col-xs-12 cr-body panel-success" >
+                                                         <div class="panel-heading bg-color-success" >Servicios</div>
+                                                         <div class="col-xs-12" >
+                                                                        <form style="padding-left:20px" class="col-xs-12">
+                                                                               <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_pileta" type="checkbox" name="toggle"> <span class="label-text">Pileta Comunal</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_agua_med" type="checkbox" name="toggle"> <span class="label-text">Agua/Medidor</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_luz_colec" type="checkbox" name="toggle"> <span class="label-text">Luz Colectiva</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_luz_med" type="checkbox" name="toggle"> <span class="label-text">Luz Medidor</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                
+                                                                        </form>
+                                                         </div>
+                                                     </div>  
+                                              </div>
+                                           </section>
                                      </div>
                                      <div>
                                            <section class="col-xs-4">
@@ -1675,6 +1775,33 @@
                                                 </div> 
                                          </section>
                                          
+                                     </div>
+                                        <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-bottom:  1px;">
+                                        <section class="col-xs-12 ">
+                                                <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
+                                                   <div class="panel-heading bg-color-success">Foto Firma</div>
+                                                      <div class="col col-xs-12">
+                                                               <div class="panel-body cr-body">
+                                                                    <div id="inp_foto_firma" style="padding: 5px; " onclick="viewlong()"></div>
+                                                                </div>
+                                                       </div>
+                                                </div>  
+                                                <div class="col-xs-12 cr-body panel-success" >
+                                                    <div class="col col-xs-12" >
+                                                        <button type="button" class="btn btn-info btn-lg" style="margin-left:10px;" onclick="subir_foto();">
+                                                                   <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
+                                                              </button>
+                                                        <button type="button" class="btn btn-success btn-lg"style="margin-left:10px;"onclick="guardar_foto();">
+                                                                <span class="glyphicon glyphicon-ok"></span> 
+                                                              </button>
+                                                        <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto();">
+                                                                <span class="glyphicon glyphicon-trash"></span> 
+                                                              </button>
+                                                       </div>  
+                                                   
+                                                </div> 
+                                         </section>
+                                        
                                      </div>
                                 </div>
 
