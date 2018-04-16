@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\planeamiento_hab_urb\Insp_Campo;
-
+use App\MODELS\planeamiento_hab_urb\fotos_predio;
+use App\MODELS\planeamiento_hab_urb\firmas;
+use App\Traits\DatesTranslator;
 class Insp_CampoController extends Controller
 {
-
+    use DatesTranslator;
     public function index()
     {
         //
@@ -96,6 +98,50 @@ class Insp_CampoController extends Controller
         return $datos->ide;
 
     }
+    public function create_fotos($id_reg_exp,Request $request)
+    {
+        $foto1 = $request->file('file1');
+        $foto2 = $request->file('file2');
+        $foto3 = $request->file('file3');
+        $firma = $request->file('file4');
+        if($foto1)
+        {
+            $file2 = \File::get($foto1);
+            $foto=new fotos_predio;
+            $foto->id_reg_exp=$id_reg_exp;
+            $foto->foto_b64=base64_encode($file2);
+            $foto->n_foto=1;
+            $foto->save();
+        }
+        if($foto2)
+        {
+            $file2 = \File::get($foto2);
+            $foto=new fotos_predio;
+            $foto->id_reg_exp=$id_reg_exp;
+            $foto->foto_b64=base64_encode($file2);
+            $foto->n_foto=2;
+            $foto->save();
+        }
+        if($foto3)
+        {
+            $file2 = \File::get($foto3);
+            $foto=new fotos_predio;
+            $foto->id_reg_exp=$id_reg_exp;
+            $foto->foto_b64=base64_encode($file2);
+            $foto->n_foto=3;
+            $foto->save();
+        }
+        if($firma)
+        {
+            $file2 = \File::get($firma);
+            $foto=new firmas;
+            $foto->id_reg_exp=$id_reg_exp;
+            $foto->firma=base64_encode($file2);
+            $foto->save();
+        }
+        return $id_reg_exp;
+        
+    }
 
     public function store(Request $request)
     {
@@ -104,7 +150,12 @@ class Insp_CampoController extends Controller
 
     public function show($id)
     {
-        //
+        $db= DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_insp_campo_completo')->where('ide',$id)->get();
+        if(count($db)>=0)
+        {
+            $db[0]->fch_inspeccion= $this->getCreatedAtAttribute($db[0]->fch_inspeccion)->format('d/m/Y');
+        }
+        return $db;
     }
 
     public function edit($id)

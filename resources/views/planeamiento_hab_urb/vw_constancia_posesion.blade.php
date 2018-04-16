@@ -744,7 +744,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){actualizar_ins_campo();}
         });
         
         jQuery("#table_evaluacion_tecnica").jqGrid({
@@ -1162,31 +1162,31 @@
                                                 <div class="col col-xs-2">
                                                     <label class="label">Super Mzna:</label>
                                                     <label class="input">
-                                                        <input id="inp_super_mzna_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="inp_super_mzna_ins" type="text"  class="input-sm" disabled="">
                                                     </label>
                                                 </div>
                                                 <div class="col col-xs-2">
                                                     <label class="label">Mzna:</label>
                                                     <label class="input">
-                                                        <input id="inp_mzna_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="inp_mzna_ins" type="text"  class="input-sm" disabled="">
                                                     </label>
                                                 </div>
                                                 <div class="col col-xs-2">
                                                     <label class="label">Lote:</label>
                                                     <label class="input">
-                                                        <input id="inp_lote_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="inp_lote_ins" type="text"  class="input-sm" disabled="">
                                                     </label>
                                                 </div>
                                                 <div class="col col-xs-3">
                                                     <label class="label">Sector:</label>
                                                     <label class="input">
-                                                        <input id="inp_sector_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="inp_sector_ins" type="text"  class="input-sm" disabled="">
                                                     </label>
                                                 </div>
                                                 <div class="col col-xs-3">
                                                     <label class="label">Zona:</label>
                                                     <label class="input">
-                                                        <input id="inp_zona_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="inp_zona_ins" type="text"  class="input-sm" disabled="">
                                                     </label>
                                                 </div>
 
@@ -1773,117 +1773,123 @@
                                               </div>  
                                          </section>
                                      </div>
-                                     <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-bottom:  1px;">
-                                        <section class="col-xs-4 ">
-                                                <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                   <div class="panel-heading bg-color-success">Foto del Predio</div>
-                                                      <div class="col col-xs-12">
-                                                               <div class="panel-body cr-body">
-                                                                    <div id="inp_foto_pred1" style="padding: 5px; " onclick="viewlong()"></div>
-                                                                </div>
-                                                       </div>
-                                                </div>  
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                    <div class="col col-xs-12" >
-                                                        <section>
-                                                                <div class="input input-file">
-                                                                        <span class="button ">
-                                                                            <input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">
-                                                                            <span class="glyphicon glyphicon-level-up label-text">&nbsp</span>Subir imagen 
-                                                                        </span>
-                                                                            <input type="text" placeholder="Include some files" readonly="">
-                                                                </div>
-                                                        </section>
-                                                        <button type="button" class="btn btn-info btn-lg" style="margin-left:10px;" onclick="subir_foto();">
-                                                                <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
-                                                           </button>
-                                                        <button type="button" class="btn btn-success btn-lg"style="margin-left:10px;"onclick="guardar_foto();">
-                                                                <span class="glyphicon glyphicon-ok"></span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto();">
-                                                                <span class="glyphicon glyphicon-trash"></span> 
-                                                              </button>
-                                                       </div>  
-                                                   
-                                                </div> 
-                                         </section>
-                                         <section class="col-xs-4 ">
-                                                <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                   <div class="panel-heading bg-color-success">Foto del Predio</div>
-                                                      <div class="col col-xs-12">
-                                                               <div class="panel-body cr-body">
-                                                                    <div id="inp_foto_pred2" style="padding: 5px; " onclick="viewlong()"></div>
-                                                                </div>
-                                                       </div>
-                                                </div>  
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                    <div class="col col-xs-12" >
-                                                        <button type="button" class="btn btn-info btn-lg" style="margin-left:10px;" onclick="subir_foto();">
-                                                                   <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-success btn-lg"style="margin-left:10px;"onclick="guardar_foto();">
-                                                                <span class="glyphicon glyphicon-ok"></span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto();">
-                                                                <span class="glyphicon glyphicon-trash"></span> 
-                                                              </button>
-                                                       </div>  
-                                                   
-                                                </div> 
-                                         </section>
-                                         <section class="col-xs-4 ">
-                                                <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                   <div class="panel-heading bg-color-success">Foto del Predio</div>
-                                                      <div class="col col-xs-12">
-                                                               <div class="panel-body cr-body">
-                                                                    <div id="inp_foto_pred3" style="padding: 5px; " onclick="viewlong()"></div>
-                                                                </div>
-                                                       </div>
-                                                </div>  
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                    <div class="col col-xs-12" >
-                                                        <button type="button" class="btn btn-info btn-lg" style="margin-left:10px;" onclick="subir_foto();">
-                                                                   <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-success btn-lg"style="margin-left:10px;"onclick="guardar_foto();">
-                                                                <span class="glyphicon glyphicon-ok"></span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto();">
-                                                                <span class="glyphicon glyphicon-trash"></span> 
-                                                              </button>
-                                                       </div>  
-                                                   
-                                                </div> 
-                                         </section>
-                                         
-                                     </div>
+                                    <form id="FormularioFiles" name="FormularioFiles" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
                                         <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-bottom:  1px;">
-                                        <section class="col-xs-12 ">
-                                                <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                   <div class="panel-heading bg-color-success">Foto Firma</div>
-                                                      <div class="col col-xs-12">
-                                                               <div class="panel-body cr-body">
-                                                                    <div id="inp_foto_firma" style="padding: 5px; " onclick="viewlong()"></div>
-                                                                </div>
-                                                       </div>
-                                                </div>  
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                    <div class="col col-xs-12" >
-                                                        <button type="button" class="btn btn-info btn-lg" style="margin-left:10px;" onclick="subir_foto();">
-                                                                   <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-success btn-lg"style="margin-left:10px;"onclick="guardar_foto();">
-                                                                <span class="glyphicon glyphicon-ok"></span> 
-                                                              </button>
-                                                        <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto();">
-                                                                <span class="glyphicon glyphicon-trash"></span> 
-                                                              </button>
-                                                       </div>  
-                                                   
-                                                </div> 
-                                         </section>
+                                           <section class="col-xs-4 ">
+                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
+                                                      <div class="panel-heading bg-color-success">Foto del Predio 1</div>
+                                                         <div class="col col-xs-12">
+                                                                  <div class="panel-body cr-body">
+                                                                      <div id="inp_foto_pred1" style="padding: 5px; ">
+
+                                                                      </div>
+                                                                   </div>
+                                                          </div>
+                                                   </div>  
+                                                   <div class="col-xs-12 cr-body panel-success" >
+                                                       <div class="col col-xs-12" >
+                                                           <section>
+                                                               <div class="input input-file col-xs-10" style="padding: 0px">
+                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file1" name="file1">Subir imagen</span><input id="textfile1" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
+                                                               </div>
+                                                               <div class="col-xs-2"  style="padding: 0px">
+                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(1);">
+                                                                       <span class="glyphicon glyphicon-trash"></span> 
+                                                                   </button>
+                                                               </div>
+                                                           </section>
+
+                                                          </div>  
+
+                                                   </div> 
+                                            </section>
+
+                                           <section class="col-xs-4 ">
+                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
+                                                      <div class="panel-heading bg-color-success">Foto del Predio 2</div>
+                                                         <div class="col col-xs-12">
+                                                                  <div class="panel-body cr-body">
+                                                                      <div id="inp_foto_pred2" style="padding: 5px; ">
+
+                                                                      </div>
+                                                                   </div>
+                                                          </div>
+                                                   </div>  
+                                                   <div class="col-xs-12 cr-body panel-success" >
+                                                       <div class="col col-xs-12" >
+                                                           <section>
+                                                               <div class="input input-file col-xs-10" style="padding: 0px">
+                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file2" name="file2">Subir imagen</span><input id="textfile2" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
+                                                               </div>
+                                                               <div class="col-xs-2"  style="padding: 0px">
+                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(2);">
+                                                                       <span class="glyphicon glyphicon-trash"></span> 
+                                                                   </button>
+                                                               </div>
+                                                           </section>
+
+                                                          </div>  
+
+                                                   </div> 
+                                            </section>
+
+                                           <section class="col-xs-4 ">
+                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
+                                                      <div class="panel-heading bg-color-success">Foto del Predio 3</div>
+                                                         <div class="col col-xs-12">
+                                                                  <div class="panel-body cr-body">
+                                                                      <div id="inp_foto_pred3" style="padding: 5px;  ">
+
+                                                                      </div>
+                                                                   </div>
+                                                          </div>
+                                                   </div>  
+                                                   <div class="col-xs-12 cr-body panel-success" >
+                                                       <div class="col col-xs-12" >
+                                                           <section>
+                                                               <div class="input input-file col-xs-10" style="padding: 0px">
+                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file3" name="file3">Subir imagen</span><input id="textfile3" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
+                                                               </div>
+                                                               <div class="col-xs-2"  style="padding: 0px">
+                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(3);">
+                                                                       <span class="glyphicon glyphicon-trash"></span> 
+                                                                   </button>
+                                                               </div>
+                                                           </section>
+                                                          </div>  
+                                                   </div> 
+                                            </section>
+
+                                           <section class="col-xs-12 ">
+                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
+                                                      <div class="panel-heading bg-color-success">Subir Firma (.jpg)</div>
+                                                         <div class="col col-xs-12">
+                                                                  <div class="panel-body cr-body">
+                                                                      <div id="inp_foto_pred4" style="padding: 5px;  ">
+
+                                                                      </div>
+                                                                   </div>
+                                                          </div>
+                                                   </div>  
+                                                   <div class="col-xs-12 cr-body panel-success" >
+                                                       <div class="col col-xs-12" >
+                                                           <section>
+                                                               <div class="input input-file col-xs-4" style="padding: 0px">
+                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file4" name="file4">Subir imagen</span><input id="textfile4" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
+                                                               </div>
+                                                               <div class="col-xs-1"  style="padding: 0px">
+                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(4);">
+                                                                       <span class="glyphicon glyphicon-trash"></span> 
+                                                                   </button>
+                                                               </div>
+                                                           </section>
+                                                          </div>  
+                                                   </div> 
+                                            </section>
+                                        </div>
+                                    </form>
                                         
-                                     </div>
                                 </div>
 
 

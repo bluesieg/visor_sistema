@@ -91,7 +91,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
         /////inspeccion
         Route::resource('inspeccion_efectiva','Insp_CampoController');
-        
+        Route::post('create_fotos/{id}', 'Insp_CampoController@create_fotos');
+       
         
         Route::resource('registro_control_calidad','ControlCalidadController');
         Route::get('getExpedientes_ControlCalidad','ControlCalidadController@getExpedientes_ControlCalidad');
