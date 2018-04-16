@@ -245,7 +245,6 @@ function selecciona_fecha(){
 
 }
 
-aux=0;
 function crear_reg_datos_lote()
 {
     $("#dlg_nuevo_reg_datos_lote").dialog({
@@ -266,11 +265,7 @@ function crear_reg_datos_lote()
             }
         }],
     });
-    if(aux==0)
-    {
-        autocompletar_haburb('inp_zona_exp_lote');
-        aux=1;
-    }
+    
     $("#dlg_nuevo_reg_datos_lote").dialog('open');
 }
 function traer_cod_expediente()
@@ -310,17 +305,17 @@ function guardar_editar_datos_lote()
         mostraralertasconfoco("Seleccione Codigo de Expediente","#inp_cod_exp_lote");
         return false;
     }
-    if($("#hidden_inp_zona_exp_lote").val()==0||$("#inp_zona_exp_lote").val()=="")
+    if($("#hidden_dlg_lot").val()==0)
     {
-        mostraralertasconfoco("Seleccione Zona","#inp_zona_exp_lote");
+        mostraralertasconfoco("Seleccione Sector, Manzana, Lote","#hidden_dlg_lot");
         return false;
     }
+   
     MensajeDialogLoadAjax('dlg_nuevo_reg_datos_lote', '.:: Cargando ...');
         $.ajax({url: 'datos_predio/create',
         type: 'GET',
         data:{  cod:$("#hidden_inp_cod_exp_lote").val(),
                 sector:$("#inp_sector_exp_lote").val(),
-                zona:$("#hidden_inp_zona_exp_lote").val(),
                 sup_mzna:$("#inp_super_mzna_exp_lote").val(),
                 mzna:$("#inp_mzna_exp_lote").val(),
                 lote:$("#inp_lote_exp_lote").val(),
@@ -335,7 +330,8 @@ function guardar_editar_datos_lote()
                 izquierda_con:$("#inp_con_izquierdo_exp_lote").val(),
                 fondo:$("#inp_fondo_exp_lote").val(),
                 fondo_con:$("#inp_con_fondo_exp_lote").val(),
-                tip_sol:$("#select_tip_sol_exp_lote").val()
+                tip_sol:$("#select_tip_sol_exp_lote").val(),
+                id_lote:$("#hidden_dlg_lot").val()
         },
         success: function(r) 
         {
@@ -353,34 +349,6 @@ function guardar_editar_datos_lote()
         }); 
 }
 ins=0;
-function crear_ins_campo()
-{
-    limpiar_datos();
-    $("#dlg_nuevo_acta_ins").dialog({
-        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  ACTA DE INSPECCIÓN EFECTIVA :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-            "class": "btn btn-success bg-color-green",
-            click: function () {
-                    guardar_acta_ins_campo();
-            }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }],
-    });
-   
-    if(ins==0)
-    {
-        autocompletar_haburb('inp_hab_urb_ins');
-        ins=1;
-    }
-     $("#dlg_nuevo_acta_ins").dialog('open');
-}
 
 function imprimir_constancia()
 {    window.open('reporte_constancia'+'');

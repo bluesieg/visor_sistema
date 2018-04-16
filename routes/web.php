@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_puntosgeo_control', 'MapaController@get_puntosgeo_control');
         Route::get('get_lotes_rurales', 'MapaController@get_lotes_rurales');
         Route::get('get_leyenda_aportes', 'MapaController@leyenda_aportes');
+        Route::get('gethab_urb_by_id/{id}', 'MapaController@get_hab_urb');
+        Route::get('get_lotes_x_hab_urb', 'MapaController@get_lotes_x_hab_urb');
+
     });
     Route::group(['namespace' => 'adm_tributaria'], function() {
         Route::get('traefoto_lote/{sec}/{mzna}/{lote}','PredioController@getfoto');
@@ -78,13 +81,17 @@ Route::group(['middleware' => 'auth'], function() {
         
     });
      Route::group(['namespace' => 'planeamiento_hab_urb'], function() {
+         //////expedientes
         Route::resource('registro_expedientes','RegistroExpedientesController');
         Route::get('getExpedientes','RegistroExpedientesController@getExpedientes');
         Route::get('traer_datos/{id}','RegistroExpedientesController@traer_datos');
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
+        ///// datos predios
         Route::resource('datos_predio','Datos_PredioController');
-        
         Route::resource('registro_datos_lote','RegistroDatosLoteController');
+        /////inspeccion
+        Route::resource('inspeccion_efectiva','Insp_CampoController');
+        
         
         Route::resource('registro_control_calidad','ControlCalidadController');
         Route::get('getExpedientes_ControlCalidad','ControlCalidadController@getExpedientes_ControlCalidad');

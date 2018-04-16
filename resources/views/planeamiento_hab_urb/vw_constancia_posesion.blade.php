@@ -1,5 +1,29 @@
 @extends('layouts.map')
 @section('content')
+<style>
+        
+        .ol-touch .rotate-north {
+            top: 80px;
+        }
+        .ol-mycontrol {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            padding: 2px;
+            position: absolute;
+            width:300px;
+            top: 5px;
+            left:40px;
+        }
+        #legend{
+        right:10px; 
+        top:20px; 
+        z-index:10000; 
+        width:130px; 
+        height:370px; 
+        background-color:#FFFFFF;
+        display: none;
+        }
+    </style>
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -304,7 +328,7 @@
                                     </section>
                                     
                                 </div>
-                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 70px">
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
                                             <article class="col-xs-11" style=" padding: 0px !important">
                                                     <table id="table_inspeccion_campo"></table>
                                                     <div id="pager_table_inspeccion_campo"></div>
@@ -693,17 +717,19 @@
         
         //NUEVOS
         jQuery("#table_inspeccion_campo").jqGrid({
-            url: '',
+            url: 'datos_predio?grid=2',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO',],
+            colNames: ['id_asig_exp','id_reg_exp', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','HABILITACION','FECHA DE ASIGNACION'],
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'INSPECCION DE CAMPO', align: "center",
             colModel: [
+                {name: 'id_asig_exp', index: 'id_reg_exp', hidden: true},
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
-                {name: 'anio', index: 'anio', align: 'left', width: 300},
-                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
-                {name: 'gestor', index: 'gestor', align: 'left', width: 200}
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 100},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 300},
+                {name: 'nomb_hab_urba', index: 'nomb_hab_urba', align: 'left', width: 300},
+                {name: 'fec_asig', index: 'fec_asig', align: 'left', width: 200}
             ],
             pager: '#pager_table_inspeccion_campo',
             rowList: [20, 50],
@@ -828,9 +854,12 @@
        
     });
 </script>
+
 @stop
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/registro_expendientes.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/control_calidad.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/mapa_lote.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/inspeccion_campo.js') }}"></script>
 <div id="dlg_nuevo_exp" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
@@ -884,10 +913,42 @@
         </div>
     </div>
 </div>
+
 <div id="dlg_nuevo_reg_datos_lote" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-3" style="padding-left: 0px;">
+                        <div class="input-group input-group-md">
+                            <input type="hidden" id="dlg_idpre" value="0">
+                            <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec" type="text" disabled="" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3" style="padding-left: 0px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input class="text-center form-control" style="height: 32px;" id="dlg_mzna" type="text"  disabled="" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3" style="padding-left: 0px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input class="text-center form-control" style="height: 32px;" id="dlg_lot" type="text"  disabled="" >
+                                <input type="hidden" id="hidden_dlg_lot" value="0">
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-xs-3" style="padding-left: 0px;">
+                    <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="map_reg_lote();">
+                        <span class="btn-label"><i class="glyphicon glyphicon-globe"></i></span>Buscar en Mapa
+                    </button>
+                </div>
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 180px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
@@ -909,15 +970,7 @@
                         </div>
                         
                     </div>
-                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                        
-                        <span class="input-group-addon" style="width: 180px">Zona: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div> 
-                             <input type="hidden" id="hidden_inp_zona_exp_lote" value="0">
-                             <input  id="inp_zona_exp_lote" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  >
-                       </div>
-                        
-                    </div>
+                    
                     <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
                         <span class="input-group-addon" style="width: 180px">Super Manzana: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
@@ -1072,19 +1125,20 @@
                                                 <div class="col col-xs-2">
                                                     <label class="label">Cod. Expediente:</label>
                                                     <label class="input">
-                                                        <input id="inp_cod_expe_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="hidden_inp_cod_expe_ins" type="hidden" value="0">
+                                                        <input id="inp_cod_expe_ins" type="text"  class="input-sm"  disabled="">
                                                     </label>
                                                 </div>
                                                 <div class="col col-xs-8">
                                                     <label class="label">Solicitante:</label>
                                                     <label class="input">
-                                                        <input id="inp_solicitante_ins" type="text"  class="input-sm" autofocus="">
+                                                        <input id="inp_solicitante_ins" type="text"  class="input-sm" disabled="">
                                                     </label>
                                                 </div>
                                                 <div class="col col-2">
-                                                    <label class="label">Fecha Inscripción:</label>
+                                                    <label class="label">Fecha Inspención:</label>
                                                             <label class="input">
-                                                                <input id="inp_fecha_ins" type="text" onchange="selecciona_fecha();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                                <input id="inp_fecha_inspec" type="text"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                             </label>
                                                 </div>     
                                              </div>
@@ -1095,7 +1149,7 @@
                                                     <input type="hidden" id="hidden_inp_hab_urb_ins" value="0">
                                                     <label class="label">Habilitación Urbana:</label>
                                                     <label class="input">
-                                                        <input id="inp_hab_urb_ins" type="text"  placeholder="Escriba una Habilitación Urbana"  class="input-sm" autofocus="">
+                                                        <input id="inp_hab_urb_ins" type="text"   class="input-sm" disabled="">
                                                     </label>
                                                 </div>
                                              </div>
@@ -1313,13 +1367,13 @@
                                                                 <div class="col col-xs-12">
                                                                 <label class="label">N°Personas:</label>
                                                                 <label class="input">
-                                                                    <input id="inp_nro_pers" type="text"  pclass="input-sm" autofocus="">
+                                                                    <input id="inp_nro_pers" type="text"  pclass="input-sm" onkeypress="return soloDNI(event);">
                                                                 </label>
                                                                 </div>
                                                                  <div class="col col-xs-12">
                                                                     <label class="label">N°Habitaciones:</label>
                                                                     <label class="input">
-                                                                        <input id="inp_nro_habita" type="text" class="input-sm" autofocus="">
+                                                                        <input id="inp_nro_habita" type="text" class="input-sm" onkeypress="return soloDNI(event);">
                                                                     </label>
 
                                                                 </div>
@@ -1520,7 +1574,7 @@
                                                 <div class="col-xs-12 cr-body panel-success" >
                                                    <div class="panel-heading bg-color-success">Área total Aproximada del predio</div>
                                                       <div class="col col-xs-8">
-                                                        <label class="label input">El predio se encuentra encerrado en un area aproximado de (M2):<input id="inp_area_pred_ins" type="text"  class="input" autofocus="">
+                                                        <label class="label input">El predio se encuentra encerrado en un area aproximado de (M2):<input id="inp_area_pred_ins" type="text"  class="input" onkeypress="return soloNumeroTab(event);">
                                                         </label>
 
                                                        </div>
@@ -1535,25 +1589,25 @@
                                                       <div class="col col-xs-12">
                                                                <label class="label">Linea Recta Frente</label>
                                                                     <label class="input">
-                                                                    <input id="inp_linea_frente_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_linea_frente_ins" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);">
                                                                 </label>
                                                        </div>
                                                    <div class="col col-xs-12">
                                                                <label class="label">Linea Recta Derecha</label>
                                                                     <label class="input">
-                                                                    <input id="inp_linea_der_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_linea_der_ins" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);">
                                                                 </label>
                                                        </div>
                                                    <div class="col col-xs-12">
                                                                <label class="label">Linea Recta Izquierda</label>
                                                                     <label class="input">
-                                                                    <input id="inp_linea_izq_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_linea_izq_ins" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);">
                                                                 </label>
                                                        </div>
                                                    <div class="col col-xs-12">
                                                                <label class="label">Linea Recta Fondo</label>
                                                                     <label class="input">
-                                                                    <input id="inp_linea_fondo_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_linea_fondo_ins" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);">
                                                                 </label>
                                                        </div>
 
@@ -1566,25 +1620,25 @@
                                                       <div class="col col-xs-12">
                                                                <label class="label">Por el frente con</label>
                                                                     <label class="input">
-                                                                    <input id="inp_por_frente_ins" type="text"  class="input-sm" autofocus="">
+                                                                        <input id="inp_por_frente_ins" type="text"  class="input-sm" maxlength="50">
                                                                 </label>
                                                        </div>
                                                    <div class="col col-xs-12">
                                                                <label class="label">Por la Derecha con</label>
                                                                     <label class="input">
-                                                                    <input id="inp_por_der_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_por_der_ins" type="text"  class="input-sm" maxlength="50">
                                                                 </label>
                                                        </div>
                                                    <div class="col col-xs-12">
                                                                <label class="label">Por Izquierda con</label>
                                                                     <label class="input">
-                                                                    <input id="inp_por_izq_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_por_izq_ins" type="text"  class="input-sm" maxlength="50">
                                                                 </label>
                                                        </div>
                                                    <div class="col col-xs-12">
                                                                <label class="label">Por el Fondo con</label>
                                                                     <label class="input">
-                                                                    <input id="inp_por_fondo_ins" type="text"  class="input-sm" autofocus="">
+                                                                    <input id="inp_por_fondo_ins" type="text"  class="input-sm" maxlength="50">
                                                                 </label>
                                                        </div>
 
@@ -1815,5 +1869,58 @@
 </div>
 
 
+
+<div id="dlg_mapa_reg_lote" >
+    <input type="hidden" id="hidden_inp_habilitacion" value="0"/>
+    <form class="smart-form">
+        <div id="id_map_reg_lote" style="background: white; height: 100% !important">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+            <div id="legend"></div>
+        </div>
+    </form>
+</div>
+<div id="dlg_view_foto" style="display: none;">
+    <div class="col-xs-12">
+       <div class=" col-xs-3">
+            <div class="input-group input-group-md">
+                <input type="hidden" id="dlg_idpre" value="0">
+                <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec_foto" type="text" name="dlg_sec" disabled="" >
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_mzna_foto" type="text" name="dlg_mzna" disabled="" >
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_lot_foto" type="text" name="dlg_mzna" disabled="" >
+                    <input type="hidden" id="hidden_dlg_lot_foto" value="0">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3" style="padding-left: 0px;">
+            <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="selec_reg_lote();">
+                <span class="btn-label"><i class="glyphicon glyphicon-check"></i></span>Seleccinar Lote
+            </button>
+        </div>
+    </div>
+    <div class="panel panel-success cr-panel-sep" style="border:0px; margin-top: 10px">
+        <div class="panel-body cr-body">
+            <div id="dlg_img_view_big" style="padding-top: 0px"></div>
+        </div>
+    </div>
+</div> 
 @endsection
 
