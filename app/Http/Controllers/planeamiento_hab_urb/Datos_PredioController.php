@@ -107,6 +107,7 @@ class Datos_PredioController extends Controller
                     trim($Datos->gestor),
                     trim($Datos->nomb_hab_urba),
                     trim($this->getCreatedAtAttribute($Datos->fec_asig)->format('d/m/Y')),
+                     trim($Datos->fch_inspeccion),
                 );
             }
             return response()->json($Lista);
