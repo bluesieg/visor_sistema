@@ -1,6 +1,11 @@
 
 
 function pasar_inspeccion(){
+    
+    Id=$('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
+    if(Id)
+    {
+    
     id_control_calidad = $('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
     inspector = $('#select_inspector').val();
     
@@ -19,11 +24,18 @@ function pasar_inspeccion(){
             console.log(data);
         }
         }); 
+    }
+    else{
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_control_calidad");
+    }
 }
 
 
 function crear_nueva_notificacion()
 {
+    Id=$('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
+    if(Id)
+    {
     //limpiar_datos();
     $("#dlg_registrar_notificacion").dialog({
         autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
@@ -43,6 +55,10 @@ function crear_nueva_notificacion()
         }],
     });
     $("#dlg_registrar_notificacion").dialog('open');
+    }
+    else{
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_control_calidad");
+    }
 }
 
 function registrar_notificacion(){
