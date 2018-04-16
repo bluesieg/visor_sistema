@@ -1785,9 +1785,18 @@
                                                 </div>  
                                                 <div class="col-xs-12 cr-body panel-success" >
                                                     <div class="col col-xs-12" >
+                                                        <section>
+                                                                <div class="input input-file">
+                                                                        <span class="button ">
+                                                                            <input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">
+                                                                            <span class="glyphicon glyphicon-level-up label-text">&nbsp</span>Subir imagen 
+                                                                        </span>
+                                                                            <input type="text" placeholder="Include some files" readonly="">
+                                                                </div>
+                                                        </section>
                                                         <button type="button" class="btn btn-info btn-lg" style="margin-left:10px;" onclick="subir_foto();">
-                                                                   <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
-                                                              </button>
+                                                                <span class="glyphicon glyphicon-level-up label-text">&nbsp;Subir imagen</span> 
+                                                           </button>
                                                         <button type="button" class="btn btn-success btn-lg"style="margin-left:10px;"onclick="guardar_foto();">
                                                                 <span class="glyphicon glyphicon-ok"></span> 
                                                               </button>

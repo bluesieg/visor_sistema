@@ -133,17 +133,15 @@ class RegistroExpedientesController extends Controller
         }
         else
         {
-            if($request['estado']=='5')
+            
+            $RegistroExpedientes = new  RegistroExpedientes;
+            $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
+            if(count($val)>=1)
             {
-                $RegistroExpedientes = new  RegistroExpedientes;
-                $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
-                if(count($val)>=1)
-                {
-                    $val->fase = 5;
-                    $val->save();
-                }
-                return $id;
+                $val->fase = $request['estado'];
+                $val->save();
             }
+            return $id;
         }
         
     }
