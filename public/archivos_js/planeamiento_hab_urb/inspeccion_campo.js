@@ -1,8 +1,6 @@
-
 function actualizar_ins_campo()
 {
-    
-   Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
+    Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
     if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')==0)
     {
         MensajeAlerta("Crear Nueva Inspeccion","Antes de modificar.",4000);

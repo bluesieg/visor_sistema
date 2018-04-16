@@ -175,7 +175,6 @@ class Insp_CampoController extends Controller
             {
                 $foto = new  firmas;
                 $datos=  $foto::where("id_firm","=",$request['hidden_inp_foto_pred4'] )->first();
-                
                 if(count($datos)>=1)
                 {
                     $datos->firma=base64_encode($file2);

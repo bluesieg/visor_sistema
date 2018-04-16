@@ -744,7 +744,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){actualizar_ins_campo();}
         });
         
         fecha_ini_eva_tecnica = $("#fec_ini_eva_tecnica").val();
@@ -1791,7 +1791,6 @@
 
                                                                       </div>
                                                                    </div>
-                                                             
                                                           </div>
                                                    </div>  
                                                    <div class="col-xs-12 cr-body panel-success" >
