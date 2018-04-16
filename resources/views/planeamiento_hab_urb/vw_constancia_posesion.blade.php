@@ -1118,6 +1118,7 @@
                         </ul>
         
                         <div id="myTabContent1" class="tab-content padding-1"> 
+                            <input type="hidden" id="hidden_ide_inps" value="0">
                             <div id="insp1" class="tab-pane fade active in">
                                 <section class="col col-lg-12">
                                   <div class="widget-body">
@@ -1781,10 +1782,12 @@
                                                       <div class="panel-heading bg-color-success">Foto del Predio 1</div>
                                                          <div class="col col-xs-12">
                                                                   <div class="panel-body cr-body">
+                                                                      <input type="hidden" id="hidden_inp_foto_pred1" name="hidden_inp_foto_pred1" value="0">
                                                                       <div id="inp_foto_pred1" style="padding: 5px; ">
 
                                                                       </div>
                                                                    </div>
+                                                             
                                                           </div>
                                                    </div>  
                                                    <div class="col-xs-12 cr-body panel-success" >
@@ -1809,6 +1812,7 @@
                                                    <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
                                                       <div class="panel-heading bg-color-success">Foto del Predio 2</div>
                                                          <div class="col col-xs-12">
+                                                                      <input type="hidden" id="hidden_inp_foto_pred2" name="hidden_inp_foto_pred2" value="0">
                                                                   <div class="panel-body cr-body">
                                                                       <div id="inp_foto_pred2" style="padding: 5px; ">
 
@@ -1838,6 +1842,7 @@
                                                    <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
                                                       <div class="panel-heading bg-color-success">Foto del Predio 3</div>
                                                          <div class="col col-xs-12">
+                                                                      <input type="hidden" id="hidden_inp_foto_pred3" name="hidden_inp_foto_pred3" value="0">
                                                                   <div class="panel-body cr-body">
                                                                       <div id="inp_foto_pred3" style="padding: 5px;  ">
 
@@ -1865,6 +1870,7 @@
                                                    <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
                                                       <div class="panel-heading bg-color-success">Subir Firma (.jpg)</div>
                                                          <div class="col col-xs-12">
+                                                                      <input type="hidden" id="hidden_inp_foto_pred4" name="hidden_inp_foto_pred4" value="0">
                                                                   <div class="panel-body cr-body">
                                                                       <div id="inp_foto_pred4" style="padding: 5px;  ">
 

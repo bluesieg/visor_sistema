@@ -1,8 +1,9 @@
 
 function actualizar_ins_campo()
 {
+    
    Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
-    if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')==null)
+    if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')==0)
     {
         MensajeAlerta("Crear Nueva Inspeccion","Antes de modificar.",4000);
         return false;
@@ -16,8 +17,10 @@ function actualizar_ins_campo()
         MensajeDialogLoadAjax('dlg_nuevo_acta_ins', '.:: Cargando ...');
         $.ajax({url: 'inspeccion_efectiva/'+$('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide'),
         type: 'GET',
+        data:{foto:0},
         success: function(r) 
         {
+            $("#hidden_ide_inps").val(r[0].ide);
             $("#inp_cod_expe_ins").val($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'nro_expediente'));
             $("#inp_solicitante_ins").val($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'gestor'));
             $("#inp_hab_urb_ins").val($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'nomb_hab_urba'));
@@ -26,7 +29,6 @@ function actualizar_ins_campo()
             $("#inp_lote_ins").val(r[0].lote);
             $("#inp_sector_ins").val(r[0].sector);
             $("#inp_zona_ins").val(r[0].zona);
-            
             $("#hidden_inp_cod_expe_ins").val(r[0].id_reg_exp);
             $("#inp_fecha_inspec").val(r[0].fch_inspeccion);
             $("#inp_tipo_suelo").val(r[0].tipo_suelo);
@@ -153,15 +155,14 @@ function actualizar_ins_campo()
             $('#inp_por_izq_ins').val(r[0].por_la_izquierda);
             $('#inp_por_fondo_ins').val(r[0].por_el_fondo);
             $('#inp_obs_ins').text(r[0].observaciones);
-            $('#inp_nom_vec1').text(r[0].vecin_01_apenom);
-            
-            $('#inp_dni_vec1').text(r[0].vecin_01_dni);
-            $('#inp_dir_vec1').text(r[0].vecin_01_direcc);
-            $('#inp_nom_vec2').text(r[0].vecin_02_apenom);
-            $('#vecin_02_dni').text(r[0].inp_dni_vec2);
-            $('#inp_dir_vec2').text(r[0].vecin_02_direcc);
-            $('#inp_nom_vec3').text(r[0].vecin_03_apenom);
-            $('#inp_dni_vec3').text(r[0].vecin_03_dni);
+            $('#inp_nom_vec1').val(r[0].vecin_01_apenom);
+            $('#inp_dni_vec1').val(r[0].vecin_01_dni);
+            $('#inp_dir_vec1').val(r[0].vecin_01_direcc);
+            $('#inp_nom_vec2').val(r[0].vecin_02_apenom);
+            $('#vecin_02_dni').val(r[0].inp_dni_vec2);
+            $('#inp_dir_vec2').val(r[0].vecin_02_direcc);
+            $('#inp_nom_vec3').val(r[0].vecin_03_apenom);
+            $('#inp_dni_vec3').val(r[0].vecin_03_dni);
             $('#inp_dir_vec3').val(r[0].vecin_03_direcc);
             
             if(r[0].tipo_cerco1==1)
@@ -249,6 +250,7 @@ function actualizar_ins_campo()
             else
                 $('#inp_luz_med').prop('checked', false);
             MensajeDialogLoadAjaxFinish('dlg_nuevo_acta_ins');
+            traer_fotos_y_firma(r[0].ide);
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -259,9 +261,71 @@ function actualizar_ins_campo()
         }); 
     }
 }
+function traer_fotos_y_firma(id)
+{
+    MensajeDialogLoadAjax('inp_foto_pred1', '.:: Cargando ...');
+    MensajeDialogLoadAjax('inp_foto_pred2', '.:: Cargando ...');
+    MensajeDialogLoadAjax('inp_foto_pred3', '.:: Cargando ...');
+    MensajeDialogLoadAjax('inp_foto_pred4', '.:: Cargando ...');
+    $.ajax({url: 'inspeccion_efectiva/'+id,
+        type: 'GET',
+        data:{foto:1},
+        success: function(r) 
+        {
+            for(i=0;i<=(r.length)-1;i++){
+                $("#hidden_inp_foto_pred"+r[i].n_foto).val(r[i].ide);
+                $("#inp_foto_pred"+r[i].n_foto).html("<img src='data:image/png;base64,"+r[i].foto_b64+"' style='width: 100%'/>");
+            }
+           
+                MensajeDialogLoadAjaxFinish('inp_foto_pred1');
+                MensajeDialogLoadAjaxFinish('inp_foto_pred2');
+                MensajeDialogLoadAjaxFinish('inp_foto_pred3');
+                $.ajax({url: 'inspeccion_efectiva/'+id,
+                type: 'GET',
+                data:{foto:2},
+                success: function(r) 
+                {
+                    for(i=0;i<=(r.length)-1;i++){
+                        $("#hidden_inp_foto_pred4").val(r[i].id_firm);
+                        $("#inp_foto_pred4").html("<img src='data:image/png;base64,"+r[i].firma+"' style='width: 100%'/>");
+                    }
+                    MensajeDialogLoadAjaxFinish('inp_foto_pred4');
+                },
+                error: function(data) {
+                    mostraralertas("hubo un error, Comunicar al Administrador");
+                    console.log('error');
+                    console.log(data);
+                    MensajeDialogLoadAjaxFinish('dlg_nuevo_acta_ins');
+                }
+                }); 
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_nuevo_acta_ins');
+        }
+        }); 
+}
 aux_foto=0;
 function create_dialog_ins()
 {
+    if(aux_foto==0)
+    {
+        aux_foto=1;
+        $('#file1').change(function(e) {
+        readFile(e,this,1);
+        });
+        $('#file2').change(function(e) {
+        readFile(e,this,2);
+        });
+        $('#file3').change(function(e) {
+        readFile(e,this,3);
+        });
+        $('#file4').change(function(e) {
+        readFile(e,this,4);
+        });
+    }
     $("#dlg_nuevo_acta_ins").dialog({
             autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
             title: "<div class='widget-header'><h4>.:  ACTA DE INSPECCIÓN EFECTIVA :.</h4></div>",
@@ -291,6 +355,11 @@ function create_dialog_ins()
 }
 function crear_ins_campo()
 {
+    $("#hidden_ide_inps").val(0);
+    $("#hidden_inp_foto_pred1").val(0);
+    $("#hidden_inp_foto_pred2").val(0);
+    $("#hidden_inp_foto_pred3").val(0);
+    $("#hidden_inp_foto_pred4").val(0);
     Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
     if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')>0)
     {
@@ -314,22 +383,7 @@ function crear_ins_campo()
     {
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_inspeccion_campo");
     }
-    if(aux_foto==0)
-    {
-        aux_foto=1;
-        $('#file1').change(function(e) {
-        readFile(e,this,1);
-        });
-        $('#file2').change(function(e) {
-        readFile(e,this,2);
-        });
-        $('#file3').change(function(e) {
-        readFile(e,this,3);
-        });
-        $('#file4').change(function(e) {
-        readFile(e,this,4);
-        });
-    }
+    
 }
 
 function guardar_acta_ins_campo(modo)
@@ -337,6 +391,8 @@ function guardar_acta_ins_campo(modo)
  
     if(modo==1)
         url='inspeccion_efectiva/create'; 
+    if(modo==2)
+        url='inspeccion_efectiva/'+$("#hidden_ide_inps").val()+'/edit'; 
     MensajeDialogLoadAjax('dlg_nuevo_acta_ins', '.:: Cargando ...');
         $.ajax({url: url,
         type: 'GET',
@@ -506,6 +562,5 @@ function readFile(e,esto,num)
 function fileOnload(e) {
     var result=e.target.result;
     $("#inp_foto_pred"+numerodivfoto).html("<img src='"+result+"' style='width: 100%'/>");
-
-        
+       
 }
