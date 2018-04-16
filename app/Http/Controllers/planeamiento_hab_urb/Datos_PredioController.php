@@ -98,16 +98,22 @@ class Datos_PredioController extends Controller
             $Lista->total = $total_pages;
             $Lista->records = $count;
             foreach ($sql as $Index => $Datos) {
-                
+                $btn="";
+                if($Datos->ide>0)
+                {
+                    $btn='<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="envia_verificacion('.trim($Datos->id_reg_exp).')"><span class="btn-label"><i class="fa fa-edit"></i></span> Env. Verif. Tecnica</button>';
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_asig_exp;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_asig_exp),
                     trim($Datos->id_reg_exp),
+                    trim($Datos->ide),
                     trim($Datos->nro_expediente),
                     trim($Datos->gestor),
                     trim($Datos->nomb_hab_urba),
                     trim($this->getCreatedAtAttribute($Datos->fec_asig)->format('d/m/Y')),
-                     trim($Datos->fch_inspeccion),
+                    trim($this->getCreatedAtAttribute($Datos->fch_inspeccion)->format('d/m/Y')),
+                    $btn,
                 );
             }
             return response()->json($Lista);

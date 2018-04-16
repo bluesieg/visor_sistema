@@ -2,6 +2,11 @@
 function crear_ins_campo()
 {
     Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
+    if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')>0)
+    {
+        MensajeAlerta("Ya Existe Inspenccion","Ya fue creado un registro...",4000);
+        return false;
+    }
     if(Id)
     {
         $("#hidden_inp_cod_expe_ins").val($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'id_reg_exp'));
@@ -126,6 +131,35 @@ function guardar_acta_ins_campo()
             console.log('error');
             console.log(data);
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
+        }
+        }); 
+}
+
+function envia_verificacion(registro)
+{
+    Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
+    if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')==0)
+    {
+        MensajeAlerta("NO Hay Inspección","Cree inspeccion Primero...",4000);
+        return false;
+    }
+    MensajeDialogLoadAjax('table_inspeccion_campo', '.:: Cargando ...');
+        $.ajax({url: 'registro_expedientes/'+registro+'/edit',
+        type: 'GET',
+        data:{  
+            estado:5
+        },
+        success: function(r) 
+        {
+            MensajeExito("Envió Correctamente","Su Registro Fue Enviado con Éxito...",4000);
+            MensajeDialogLoadAjaxFinish('table_inspeccion_campo');
+            jQuery("#table_inspeccion_campo").jqGrid('setGridParam', {url: 'datos_predio?grid=2'}).trigger('reloadGrid');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('table_inspeccion_campo');
         }
         }); 
 }

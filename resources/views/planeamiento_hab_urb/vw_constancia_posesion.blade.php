@@ -721,16 +721,18 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_asig_exp','id_reg_exp', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','HABILITACION','FECHA DE ASIGNACION','FECHA INSPECCION'],
+            colNames: ['id_asig_exp','id_reg_exp','ide', 'COD. EXPEDIENTE', 'GESTOR DEL TRAMITE','HABILITACION','FECHA DE ASIGNACION','FECHA INSPECCION','ENVIAR'],
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'INSPECCION DE CAMPO', align: "center",
             colModel: [
                 {name: 'id_asig_exp', index: 'id_reg_exp', hidden: true},
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'ide', index: 'ide', hidden: true},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 100},
-                {name: 'gestor', index: 'gestor', align: 'left', width: 300},
-                {name: 'nomb_hab_urba', index: 'nomb_hab_urba', align: 'left', width: 300},
-                {name: 'fec_asig', index: 'fec_asig', align: 'left', width: 100},
-                {name: 'fec_asig', index: 'fch_inspeccion', align: 'left', width: 100}
+                {name: 'gestor', index: 'gestor', align: 'left', width: 200},
+                {name: 'nomb_hab_urba', index: 'nomb_hab_urba', align: 'left', width: 200},
+                {name: 'fec_asig', index: 'fec_asig', align: 'left', width: 150},
+                {name: 'fec_asig', index: 'fch_inspeccion', align: 'left', width: 150},
+                {name: 'btn', index: 'btn', align: 'left', width: 150}
             ],
             pager: '#pager_table_inspeccion_campo',
             rowList: [20, 50],

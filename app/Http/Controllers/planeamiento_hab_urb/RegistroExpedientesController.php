@@ -109,25 +109,41 @@ class RegistroExpedientesController extends Controller
      */
     public function edit($id,Request $request)
     {
-        
-        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$request['nro_expediente'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
-        
-        if (count($select)>= 1) {
-            return response()->json([
-                'msg' => 'repetido',
-                ]);
-        }else{
-            $RegistroExpedientes = new  RegistroExpedientes;
-            $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
-            if(count($val)>=1)
-            {
-                $val->nro_expediente = $request['nro_expediente'];
-                $val->gestor = $request['gestor'];
-                $val->fecha_inicio_tramite = $request['fecha_inicio_tramite'];
-                $val->fecha_registro = $request['fecha_registro'];
-                $val->save();
+        if(!$request['estado'])
+        {
+            $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$request['nro_expediente'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
+
+            if (count($select)>= 1) {
+                return response()->json([
+                    'msg' => 'repetido',
+                    ]);
+            }else{
+                $RegistroExpedientes = new  RegistroExpedientes;
+                $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
+                if(count($val)>=1)
+                {
+                    $val->nro_expediente = $request['nro_expediente'];
+                    $val->gestor = $request['gestor'];
+                    $val->fecha_inicio_tramite = $request['fecha_inicio_tramite'];
+                    $val->fecha_registro = $request['fecha_registro'];
+                    $val->save();
+                }
+                return $id;
             }
-            return $id;
+        }
+        else
+        {
+            if($request['estado']=='5')
+            {
+                $RegistroExpedientes = new  RegistroExpedientes;
+                $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
+                if(count($val)>=1)
+                {
+                    $val->fase = 5;
+                    $val->save();
+                }
+                return $id;
+            }
         }
         
     }
