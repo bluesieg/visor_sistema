@@ -16,7 +16,7 @@ class Insp_CampoController extends Controller
         //
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $datos = new  Insp_Campo;
         $datos->id_reg_exp = $request['id_reg_exp'];
@@ -43,6 +43,7 @@ class Insp_CampoController extends Controller
         $datos->f_c_ollas = $request['f_c_ollas'];
         $datos->f_c_repostero = $request['f_c_repostero'];
         $datos->f_c_servicios = $request['f_c_servicios'];
+        $datos->f_p_cordeles = $request['f_p_cordeles'];
         $datos->f_p_baldes_lavadores = $request['f_p_baldes_lavadores'];
         $datos->fp_bidones_agua = $request['fp_bidones_agua'];
         $datos->f_p_lavatorio = $request['f_p_lavatorio'];
@@ -85,6 +86,8 @@ class Insp_CampoController extends Controller
         $datos->tipo_de_techo1 = $request['tipo_de_techo1'];
         $datos->tipo_de_techo2 = $request['tipo_de_techo2'];
         $datos->tipo_de_techo3 = $request['tipo_de_techo3'];
+        $datos->tipo_de_techo4 = $request['tipo_de_techo4'];
+        $datos->tipo_de_techo5 = $request['tipo_de_techo5'];
         $datos->servicios1 = $request['servicios1'];
         $datos->servicios2 = $request['servicios2'];
         $datos->servicios3 = $request['servicios3'];

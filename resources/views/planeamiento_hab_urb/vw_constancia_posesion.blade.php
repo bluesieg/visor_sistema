@@ -1320,7 +1320,7 @@
                                               <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-top:  5px">
                                                 <div class="col-xs-12 cr-body panel-success" style="margin-bottom:5px" >
                                                    <div class="panel-heading bg-color-success" >Condición del predio</div>
-                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Tipo de TEcho</div>
+                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Tipo de Techo</div>
                                                          <div class="col-xs-12" >
                                                                         <form style="padding-left:20px" class="col-xs-12">
                                                                                 <div class="form-check">
@@ -1337,7 +1337,17 @@
                                                                                         <label class="toggle">
                                                                                                 <input id="inp_mdf" type="checkbox" name="toggle"> <span class="label-text">MDF</span>
                                                                                         </label>
-                                                                                </div>                                               
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_concreto" type="checkbox" name="toggle"> <span class="label-text">Concreto</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                                <input id="inp_plasticos" type="checkbox" name="toggle"> <span class="label-text">Plasticos</span>
+                                                                                        </label>
+                                                                                </div>
                                                                         </form>
                                                          </div>
                                                 </div>  
@@ -1523,9 +1533,14 @@
                                               <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
                                                       <div class="col-xs-12 cr-body panel-success" >
                                                          <div class="panel-heading bg-color-success" >Mobiliario</div>
-                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Habitación</div>
+                                                         <div class="panel-heading" style="background-color:#F8F8FF	;color:#000000" >Patio</div>
                                                          <div class="col-xs-12" >
                                                                         <form style="padding-left:20px" class="col-xs-12">
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                            <input id="inp_cordeles"type="checkbox" name="toggle" checked> <span class="label-text" >Cordeles</span>
+                                                                                        </label>
+                                                                                </div>
                                                                                 <div class="form-check">
                                                                                         <label class="toggle">
                                                                                             <input id="inp_baldes"type="checkbox" name="toggle" checked> <span class="label-text" >Baldes/Lavadores</span>
