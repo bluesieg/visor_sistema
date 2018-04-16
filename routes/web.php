@@ -102,6 +102,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('traer_inspecciones','ControlCalidadController@traer_inspecciones');
         Route::get('recuperar_expediente','ControlCalidadController@recuperar_expediente');
       
+        Route::get('get_evaluacion_tecnica','EvaluacionTecnicaController@get_evaluacion_tecnica');
+        Route::get('actualizar_informe','EvaluacionTecnicaController@actualizar_informe');
+        Route::get('registrar_notificacion_eva_tec','EvaluacionTecnicaController@registrar_notificacion_eva_tec');
+        Route::get('rep_constancia/{id}','EvaluacionTecnicaController@rep_constancia');
+        
+      
         Route::resource('entrega_constancia','EntregaConstanciaController');
         Route::get('reporte_constancia','EntregaConstanciaController@reporte_constancia'); //reporte constancia de posesion
 

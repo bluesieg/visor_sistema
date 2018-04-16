@@ -348,11 +348,11 @@
                                         <div class="col-xs-12">
                                             
                                     <h1 ><b>EXPEDIENTES PARA EVALUACION TECNICA</b></h1>
-                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_eva_tecnica" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="fec_ini_eva_tecnica" type="text" onchange="selecciona_fecha_eva_t();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -360,7 +360,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="fec_fin_eva_tecnica" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                <input id="fec_fin_eva_tecnica" type="text"  onchange="selecciona_fecha_eva_t();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -375,19 +375,19 @@
                                        <div class="" style="float:right; padding-top: 20px">
 
                                                 <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="emitir_ofic_impro();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Emitir Oficio de Impro.
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Emitir Ofic. de Impro.
                                                </button>
 
                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="aprobar_expediente();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Aprobar Expediente
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Aprob. Exp.
                                                </button>
 
-                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_eva_tecnica());">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Editar
+                                                <button  type="button" class="btn btn-labeled bg-color-orange txt-color-white" onclick="imprimir_evaluacion_tecnica();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                                                </button>
 
-                                                <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_eva_tecnica();">
-                                                    <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                               <button  type="button" class="btn btn-labeled bg-color-magenta txt-color-white" onclick="enviar_legar();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Enviar a Legal
                                                 </button>
 
 
@@ -744,22 +744,25 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){actualizar_ins_campo();}
+            ondblClickRow: function (Id){}
         });
         
+        fecha_ini_eva_tecnica = $("#fec_ini_eva_tecnica").val();
+        fecha_fin_eva_tecnica = $("#fec_fin_eva_tecnica").val();
         jQuery("#table_evaluacion_tecnica").jqGrid({
-            url: '',
+            url: 'get_evaluacion_tecnica?fecha_ini_eva_tecnica='+fecha_ini_eva_tecnica+'&fecha_fin_eva_tecnica='+fecha_fin_eva_tecnica,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_reg_exp', 'FECHA INSPECCION', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO'],
+            colNames: ['id_reg_exp', 'FECHA INSPECCION', 'CODIGO EXPEDIENTE', 'GESTOR DEL TRAMITE','FECHA DE REGISTRO','FASE'],
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'EXPEDIENTES PARA EVALUACION TECNICA', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
-                {name: 'anio', index: 'anio', align: 'left', width: 200},
+                {name: 'fch_inspeccion', index: 'fch_inspeccion', align: 'left', width: 200},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 200},
                 {name: 'gestor', index: 'gestor', align: 'left', width: 300},
-                {name: 'hab_urb', index: 'hab_urb', align: 'left', width: 200}
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 200},
+                {name: 'fase', index: 'fase', align: 'left', width: 200, hidden:true}
             ],
             pager: '#pager_table_evaluacion_tecnica',
             rowList: [20, 50],
@@ -771,7 +774,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){actualizar_evaluacion_tecnica(Id);}
         });
         
         jQuery("#table_expediente_visto_legal").jqGrid({
@@ -863,6 +866,7 @@
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/control_calidad.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/mapa_lote.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/inspeccion_campo.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/evaluacion_tecnica.js') }}"></script>
 <div id="dlg_nuevo_exp" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
@@ -1955,5 +1959,39 @@
         </div>
     </div>
 </div> 
+
+<div id="dlg_aprobar_expediente" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 150px">Nro. Informe: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_aprob_exp" type="text" class="form-control" style="height: 30px;" maxlength="30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<div id="dlg_notificaciones_eva_tec" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 150px">Notificacion: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_notificacion_eva_tec" type="text" class="form-control" style="height: 30px;" maxlength="50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 @endsection
 

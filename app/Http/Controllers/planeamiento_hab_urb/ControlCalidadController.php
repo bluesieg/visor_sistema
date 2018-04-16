@@ -56,7 +56,7 @@ class ControlCalidadController extends Controller
         }
 
         if ($check == '1') {
-            $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->where('fase',10)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->whereBetween('fecha_registro', [$fecha_desde, $fecha_hasta])->where('fase',10)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }else{
             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_expedientes')->whereBetween('fecha_registro', [$fecha_desde, $fecha_hasta])->where('fase',2)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }

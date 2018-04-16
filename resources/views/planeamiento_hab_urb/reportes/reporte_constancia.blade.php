@@ -34,7 +34,8 @@
     <center><div Class="asunto" style="margin-top: 10px;">
                <b>GERENCIA DE DESARROLLO URBANO Y CATASTRO DE LA MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</b>   
             </div></center>
-        <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">OTORGA</div>
+        <div class="subasunto" style="text-align: center; padding-left: 30px; margin-top: 20px;">CONSTANCIA DE POSESION Nº: {{$sql[0]->nro_constancia}}</div>
+        <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">EXPEDIENTE Nº: {{$sql[0]->nro_expediente}}</div>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
             <thead>
               <tr>
@@ -46,10 +47,10 @@
             <tbody>
                     <tr>
                         <td>
-                            Solicitante
+                            {{$sql[0]->numero_identificacion}}
                         </td> 
                         <td>
-                            Solicitante
+                            {{$sql[0]->gestor}}
                         </td> 
                     </tr>
             </tbody>
@@ -68,19 +69,19 @@
             <tbody>
                     <tr>
                         <td>
-                            Solicitante
+                            {{$sql[0]->nomb_hab_urba}}
                         </td> 
                         <td>
-                            Solicitante
+                           {{$sql[0]->sup_mzna}}
                         </td> 
                         <td>
-                            Solicitante
+                            {{$sql[0]->mzna}}
                         </td> 
                         <td>
-                            Solicitante
+                            {{$sql[0]->lote}}
                         </td> 
                         <td>
-                            Solicitante
+                            {{$sql[0]->sub_lote}}
                         </td> 
                           </tr>
             </tbody>
@@ -95,19 +96,18 @@
               <tr>
                   <th style="width: 30%">Inicio de Posesión</th>
                   <th style="width: 30%">Área (M2)</th>
-                  <th style="width: 30%">Área (M2)</th>
+                  <th style="width: 30%"></th>
               </tr>
             </thead>
             <tbody>
                     <tr>
                         <td>
-                            Solicitante
+                            {{$sql[0]->anio_posesion}}
                         </td> 
                         <td>
-                            Solicitante
+                            {{$sql[0]->area_m2}}
                         </td> 
                         <td>
-                            Solicitante
                         </td> 
                     </tr>
             </tbody>
@@ -115,7 +115,7 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
             <thead>
               <tr>
-                  <th style="width: 10%">Región</th>
+                  <th style="width: 70%">Región</th>
                   <th style="width: 70%">Provincia</th>
                   <th style="width: 70%">Distrito</th>
               </tr>
@@ -123,13 +123,13 @@
             <tbody>
                     <tr>
                         <td>
-                            Solicitante
+                                AREQUIPA
                         </td> 
                         <td>
-                            Solicitante
+                                AREQUIPA
                         </td> 
                         <td>
-                            Solicitante
+                                CERRO COLORADO
                         </td> 
                     </tr>
             </tbody>
@@ -141,30 +141,31 @@
         </div>
         
         <table >
-                <tr>
-                  <th>Linea Recta Frente</th>
-                  <td>Linea Recta Frente</td>
-                  <th>Por el frente con</th>
-                  <td>Por el frente con</td>
-                </tr>
-                <tr>
-                  <th>Linea Recta Derecha</th>
-                  <td>Linea Recta Derecha</td>
-                  <th>Por la Derecha con</th>
-                  <td>Por la Derecha con</td>
-                </tr>
-                <tr>
+            <tr>
                   <th>Linea Recta Izquierda</th>
-                  <td>Linea Recta Izquierda</td>
+                  <td>{{$sql[0]->g_lin_rec_izq}}</td>
                   <th>Por Izquierda con</th>
-                  <td>Por Izquierda con</td>
+                  <td>{{$sql[0]->por_la_izquierda}}</td>
                 </tr>
                 <tr>
                   <th>Linea Recta Fondo</th>
-                  <td>Linea Recta Fondo</td>
+                  <td>{{$sql[0]->g_lin_rec_fondo}}</td>
                   <th>Por el Fondo con</th>
-                  <td>Por el Fondo con</td>
+                  <td>{{$sql[0]->por_el_fondo}}</td>
                 </tr>
+                <tr>
+                  <th>Linea Recta Frente</th>
+                  <td>{{$sql[0]->g_lin_rec_frent}}</td>
+                  <th>Por el frente con</th>
+                  <td>{{$sql[0]->por_el_frente}}</td>
+                </tr>
+                <tr>
+                  <th>Linea Recta Derecha</th>
+                  <td>{{$sql[0]->g_lin_rec_derecha}}</td>
+                  <th>Por la Derecha con</th>
+                  <td>{{$sql[0]->por_la_derecha}}</td>
+                </tr>
+                
         </table>
         <div style="width: 100%; text-align: justify; font-size: 1.0em; margin-top: 10px;margin-bottom:10px;">
             Se emite la presente constancia únicamente para el <b>OTORGAMIENTO DE LA FACTIBILIDAD DE SERVICIOS
@@ -178,18 +179,18 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
             <thead>
               <tr>
-                  <th style="width: 10%">DNI/RUC</th>
-                  <th style="width: 70%">Solicitante</th>
+                  <th style="width: 50%">Informe Nº/th>
+                  <th style="width: 50%">Informe Nº</th>
                   
               </tr>
             </thead>
             <tbody>
                     <tr>
                         <td>
-                            Solicitante
+                            {{$parametros[0]->informe_base}}
                         </td> 
                         <td>
-                            Solicitante
+                            {{$sql[0]->nro_informe}}
                         </td> 
                     </tr>
             </tbody>
