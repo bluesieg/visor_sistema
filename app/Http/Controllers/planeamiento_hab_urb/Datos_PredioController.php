@@ -22,6 +22,18 @@ class Datos_PredioController extends Controller
         {
             return $this->cargar_datos_vw_asig_exped($request);
         }
+        if($request['grid']=='3')
+        {
+            return $this->cargar_datos_vw_vistos_legales($request);
+        }
+         if($request['grid']=='4')
+        {
+            return $this->cargar_datos_vw_vistos_y_firmas($request);
+        }
+         if($request['grid']=='5')
+        {
+            return $this->cargar_datos_vw_entrega_cons($request);
+        }
     }
     public function cargar_datos_predio(Request $request)
     {
@@ -53,8 +65,7 @@ class Datos_PredioController extends Controller
             $Lista->page = $page;
             $Lista->total = $total_pages;
             $Lista->records = $count;
-            foreach ($sql as $Index => $Datos) {
-                
+            foreach ($sql as $Index => $Datos) {                
                 $Lista->rows[$Index]['id'] = $Datos->id_dat_predio;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_dat_predio),
@@ -118,6 +129,133 @@ class Datos_PredioController extends Controller
             }
             return response()->json($Lista);
     }
+    public function cargar_datos_vw_vistos_legales(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_legal");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_legal')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+            foreach ($sql as $Index => $Datos) {                
+                $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_reg_exp),
+                    trim($Datos->nro_expediente),
+                    trim($Datos->gestor),
+                    trim($this->getCreatedAtAttribute($Datos->fecha_registro)->format('d/m/Y')),
+                     trim($this->getCreatedAtAttribute($Datos->fch_inspeccion)->format('d/m/Y')),
+                );
+            }
+            return response()->json($Lista);
+    }
+       public function cargar_datos_vw_vistos_y_firmas(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_firma");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_firma')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+            foreach ($sql as $Index => $Datos) {                
+                $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_reg_exp),
+                    trim($Datos->nro_expediente),
+                    trim($Datos->gestor),
+                    trim($this->getCreatedAtAttribute($Datos->fecha_registro)->format('d/m/Y')),
+                     trim($this->getCreatedAtAttribute($Datos->fch_inspeccion)->format('d/m/Y')),
+                );
+            }
+            return response()->json($Lista);
+    }
+      public function cargar_datos_vw_entrega_cons(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_entrega_constancias");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_entrega_constancias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+            foreach ($sql as $Index => $Datos) {                
+                $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_reg_exp),
+                    trim($Datos->nro_expediente),
+                    trim($Datos->gestor),
+                    trim($this->getCreatedAtAttribute($Datos->fecha_registro)->format('d/m/Y')),
+                );
+            }
+            return response()->json($Lista);
+    }
+
+
 
     public function create(Request $request)
     {

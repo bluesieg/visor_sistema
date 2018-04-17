@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\RegistroExpedientes;
 use App\Models\Notificaciones;
 use App\Models\AsignarExpediente;
-
+use App\Models\EntregarConstanciasA;
 
 class EntregaConstanciaController extends Controller
 {
@@ -42,5 +42,13 @@ class EntregaConstanciaController extends Controller
             }
     }
    
-   
+    public function insertar_datos(Request $request){
+            $EntregarConstanciasA = new  EntregarConstanciasA;
+            $EntregarConstanciasA->id_reg_exp = $request['id_reg_exp'];
+            $EntregarConstanciasA->nro_dni = $request['nro_dni'];
+            $EntregarConstanciasA->apenom = $request['apenom'];
+            
+            $EntregarConstanciasA->save();
+
+    }
 }
