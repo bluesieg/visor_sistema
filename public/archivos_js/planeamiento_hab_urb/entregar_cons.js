@@ -42,7 +42,7 @@ function guardar_datos_usuario(){
             data:{id_reg_exp:id_reg_exp,nro_dni:nro_dni,apenom:apenom},
             success: function(data) 
             {
-                fn_actualizar_grilla('table_evaluacion_tecnica');
+                fn_actualizar_grilla('table_entr_const_pos');
                 MensajeExito('Expediente', 'Se Registraron los datos.');
                 dialog_close('dlg_entregar_a_usuario');
                 cambiar_estado(Id);
