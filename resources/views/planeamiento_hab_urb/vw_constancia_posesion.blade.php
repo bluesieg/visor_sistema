@@ -484,21 +484,12 @@
                                         </div>
                                        <div class="text-right" style=" padding-top: 20px">
 
-                                               <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_visto_firma();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>......
-                                               </button>
                                                
-                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="sin_especificar();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>......
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="aprobar_para_visto_y_firma();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Aprobar para Visto y Firma
                                                </button>
 
-                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_expe_visto_firma();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                               </button>
 
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_exp_visto_firma();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                           </button>
 
 
                                        </div>
@@ -549,19 +540,6 @@
                                                 <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="entregar_a();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Entregar a
                                                </button>
-
-                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_entr_const_pos();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                               </button>
-                                           <button  type="button" class="btn btn-labeled bg-color-orange txt-color-white" onclick="imprimir_constancia();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Imprimir
-                                               </button>
-
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_entr_const_pos();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                           </button>
-
-
                                        </div>
                                         </div>
                                         
@@ -778,7 +756,7 @@
         });
         
         jQuery("#table_expediente_visto_legal").jqGrid({
-            url: '',
+            url: 'datos_predio?grid=3',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -786,10 +764,10 @@
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'EXPEDIENTES PARA VISTO LEGAL', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
-                {name: 'anio', index: 'anio', align: 'left', width: 200},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
                 {name: 'gestor', index: 'gestor', align: 'left', width: 200},
-                {name: 'hab_urb', index: 'hab_urb', align: 'left', width: 200}
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 200},
+                {name: 'fch_inspeccion', index: 'fch_inspeccion', align: 'left', width: 200},
             ],
             pager: '#pager_table_expediente_visto_legal',
             rowList: [20, 50],
@@ -805,7 +783,7 @@
         });
         
         jQuery("#table_expediente_visto_firma").jqGrid({
-            url: '',
+            url: 'datos_predio?grid=4',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -813,10 +791,10 @@
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'EXPEDIENTES PARA VISTO Y FIRMA', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
-                {name: 'anio', index: 'anio', align: 'left', width: 200},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 300},
                 {name: 'gestor', index: 'gestor', align: 'left', width: 200},
-                {name: 'hab_urb', index: 'hab_urb', align: 'left', width: 200}
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 200},
+                {name: 'fch_inspeccion', index: 'fch_inspeccion', align: 'left', width: 200},
             ],
             pager: '#pager_table_expediente_visto_firma',
             rowList: [20, 50],
@@ -832,7 +810,7 @@
         });
         
         jQuery("#table_entr_const_pos").jqGrid({
-            url: '',
+            url: 'datos_predio?grid=5',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -840,9 +818,9 @@
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'ENTREGA DE CONSTANCIAS DE POSESION', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
-                {name: 'anio', index: 'anio', align: 'center', width: 150},
-                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 600},
-                {name: 'gestor', index: 'gestor', align: 'left', width: 200}
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 200},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 600},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 100},
             ],
             pager: '#pager_table_entr_const_pos',
             rowList: [20, 50],
@@ -867,6 +845,10 @@
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/mapa_lote.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/inspeccion_campo.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/evaluacion_tecnica.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/visto_legal.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/visto_y_firma.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/entregar_cons.js') }}"></script>
+
 <div id="dlg_nuevo_exp" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
@@ -1991,6 +1973,34 @@
                         <span class="input-group-addon" style="width: 150px">Notificacion: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input id="inp_notificacion_eva_tec" type="text" class="form-control" style="height: 30px;" maxlength="50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+<div id="dlg_entregar_a_usuario" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 150px">DNI: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_dni_entregar" type="number" class="form-control" style="height: 30px;" maxlength="8">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">                   
+                     <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 150px">Usuario: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_nombre_entregar" type="text" class="form-control" style="height: 30px;" maxlength="30">
                         </div>
                     </div>
                 </div>

@@ -110,6 +110,8 @@ Route::group(['middleware' => 'auth'], function() {
         
       
         Route::resource('entrega_constancia','EntregaConstanciaController');
+        Route::get('insertar_datos','EvaluacionTecnicaController@actualizar_informe');
+
         Route::get('reporte_constancia','EntregaConstanciaController@reporte_constancia'); //reporte constancia de posesion
 
         
