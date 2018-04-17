@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         
 
     ],
@@ -232,6 +233,7 @@ return [
         'Carbon' => 'Carbon\Carbon',
         'Date' => Jenssegers\Date\Date::class,
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
 
     ],
 

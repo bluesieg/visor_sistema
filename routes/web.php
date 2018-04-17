@@ -106,6 +106,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('actualizar_informe','EvaluacionTecnicaController@actualizar_informe');
         Route::get('registrar_notificacion_eva_tec','EvaluacionTecnicaController@registrar_notificacion_eva_tec');
         Route::get('rep_constancia/{id}','EvaluacionTecnicaController@rep_constancia');
+        Route::get('genera_qr','EvaluacionTecnicaController@genera_qr');
         
       
         Route::resource('entrega_constancia','EntregaConstanciaController');

@@ -12,26 +12,8 @@
 <body>
 <main>
 
-    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
-        <tr>
-            <td style="width: 10%; border: 0px;" >
-                <img src="img/escudo.png" height="70px"/>
-            </td>
-            <td style="width: 80%; padding-top: 10px; border:0px;">
-                <div id="details" class="clearfix">
-                    <div id="invoice" >
-                      <h1>{{$institucion[0]->nom1}}&nbsp;{{$institucion[0]->nom2}}</h1>
-                        <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
-                    </div>
-                    <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
-                </div>
-            </td>
-            <td style="width: 10%;border: 0px;"></td>
-        </tr>
 
-    </table>
-
-    <center><div Class="asunto" style="margin-top: 10px;">
+    <center><div Class="asunto" style="margin-top: 60px;">
                <b>GERENCIA DE DESARROLLO URBANO Y CATASTRO DE LA MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</b>   
             </div></center>
         <div class="subasunto" style="text-align: center; padding-left: 30px; margin-top: 20px;">CONSTANCIA DE POSESION Nº: {{$sql[0]->nro_constancia}}</div>
@@ -207,6 +189,18 @@
             <br>
             <b>“ESTE DOCUMENTO TIENE VALIDEZ POR SEIS MESES CONFORME A LA ORDENANZA MUNICIPAL N°380. MDCC DE FECHA
             27 DE MARZO DEL 2015 Y SOLO PARA EL TRAMITE DE LOS SERVICIOS BASICOS”</b>
+        </div>
+        
+        <div style="width: 100%; text-align: justify; margin-left: 600px;">
+            <img style="width: 100px; height: 100px;" src="data:image/png;base64, {{ base64_encode(\QrCode::format('png')->generate($sql[0]->qr))}} ">
+        </div>
+        <b>__________________________________________</b>
+        <div style="width: 100%; text-align: justify; font-size: 0.5em; margin-top: 4px;margin-bottom:10px;">
+        <sup>1</sup>LEY DE FACTIBILIDAD DE CONEXIONES DOMICILIARIAS DEL SERVICIO PÚBLICO DE DISTRIBUCIÓN DE GAS NATURAL.<br>
+        <sup>2</sup>LEY DE DESARROLLO Y COMPLEMENTACION DE FORMALIZACIÓN DE LA PROPIEDAD INFORMAL, ACCESO AL SUELO Y DOTACIÓN DE SERVICIOS.<br>
+        <sup>3</sup>LEY QUE ESTABLECE LA PRESUNCIÓN DE QUE EL ESTADO ES POSEEDOR DE LOS INMUEBLES DE SU PROPIEDADY DECLARA IMPRESCRIPTIBLES LOS
+        BIENES INMUEBLES DE DOMINIO PRIVADO ESTATAL.<br>
+        <sup>4</sup>DECRETO LEGISLATIVO QUE MODIFICA EL DECRETO LEGISLATIVO Nº 803, LEY DE PROMOCIÓN DEL ACCESO A LA PROPIEDAD FORMAL Y QUE DICTA
         </div>
 </body>
 
