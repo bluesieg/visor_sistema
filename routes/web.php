@@ -115,6 +115,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_constancia','EntregaConstanciaController@reporte_constancia'); //reporte constancia de posesion
 
         Route::resource('consultar_expedientes','ConsultaExpedientesController');
+        Route::get('buscar_expediente','ConsultaExpedientesController@buscar_expediente');
     });
 
 });

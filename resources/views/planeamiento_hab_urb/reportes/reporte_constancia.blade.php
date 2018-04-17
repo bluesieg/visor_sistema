@@ -124,27 +124,27 @@
         
         <table >
             <tr>
-                  <th>Linea Recta Izquierda</th>
+                  <th style="text-align: left; width: 20%">Linea Recta Izquierda</th>
                   <td>{{$sql[0]->g_lin_rec_izq}}</td>
-                  <th>Por Izquierda con</th>
+                  <th style="text-align: left; width: 20%">Por Izquierda con</th>
                   <td>{{$sql[0]->por_la_izquierda}}</td>
                 </tr>
                 <tr>
-                  <th>Linea Recta Fondo</th>
+                  <th style="text-align: left;">Linea Recta Fondo</th>
                   <td>{{$sql[0]->g_lin_rec_fondo}}</td>
-                  <th>Por el Fondo con</th>
+                  <th style="text-align: left;">Por el Fondo con</th>
                   <td>{{$sql[0]->por_el_fondo}}</td>
                 </tr>
                 <tr>
-                  <th>Linea Recta Frente</th>
+                  <th style="text-align: left;">Linea Recta Frente</th>
                   <td>{{$sql[0]->g_lin_rec_frent}}</td>
-                  <th>Por el frente con</th>
+                  <th style="text-align: left;">Por el frente con</th>
                   <td>{{$sql[0]->por_el_frente}}</td>
                 </tr>
                 <tr>
-                  <th>Linea Recta Derecha</th>
+                  <th style="text-align: left;">Linea Recta Derecha</th>
                   <td>{{$sql[0]->g_lin_rec_derecha}}</td>
-                  <th>Por la Derecha con</th>
+                  <th style="text-align: left;">Por la Derecha con</th>
                   <td>{{$sql[0]->por_la_derecha}}</td>
                 </tr>
                 

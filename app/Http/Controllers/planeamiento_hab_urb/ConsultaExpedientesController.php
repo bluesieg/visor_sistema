@@ -22,7 +22,26 @@ class ConsultaExpedientesController extends Controller
         return view('planeamiento_hab_urb/wv_consulta_expedientes',compact('anio','anio1','tip_sol','inspectores'));
     }
 
-    
+    public function buscar_expediente(Request $request){
+        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exp_fase')->where('nro_expediente',$request['num_expediente'])->get();
+        
+        
+        if(count($select)>=1)
+        {
+            return response()->json([
+                'msg' => 'si',
+                'nro_expediente' => $select[0]->nro_expediente,
+                'fase' => $select[0]->fase,
+                'descrip_fase' => $select[0]->descrip_fase
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'msg' => 'no',
+            ]);
+        }
+    }
    
     
 }

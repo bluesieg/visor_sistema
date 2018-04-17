@@ -1990,12 +1990,12 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 150px">DNI: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_dni_entregar" type="number" class="form-control" style="height: 30px;" maxlength="8">
+                            <input id="inp_dni_entregar" type="text" class="form-control" onkeypress="return soloNumeroTab(event);" style="height: 30px;" maxlength="8">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
                 <div class="col-xs-12" style="padding: 0px; ">                   
                      <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 150px">Usuario: &nbsp;<i class="fa fa-hashtag"></i></span>
