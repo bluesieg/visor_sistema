@@ -13,10 +13,13 @@ function selecciona_fecha_eva_t(){
 function aprobar_expediente()
 {
     Id=$('#table_evaluacion_tecnica').jqGrid ('getGridParam', 'selrow');
+    estado = $('#table_evaluacion_tecnica').jqGrid ('getCell', Id, 'fase');
     if(Id)
     {
-        
-        $("#dlg_aprobar_expediente").dialog({
+       if(estado == 6){
+           mostraralertasconfoco("El Expediente ya fue Aprobado");
+       }else{
+           $("#dlg_aprobar_expediente").dialog({
             autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
             title: "<div class='widget-header'><h4>.:  APROBAR EXPEDIENTE :.</h4></div>",
             buttons: [{
@@ -35,6 +38,8 @@ function aprobar_expediente()
         });
 
          $("#dlg_aprobar_expediente").dialog('open');
+       } 
+        
      }
      else
     {
