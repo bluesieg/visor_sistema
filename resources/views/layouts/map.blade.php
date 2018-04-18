@@ -601,16 +601,7 @@
                                                                         </h4>
                                                                     </div>
                                                                </div>
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="registro_expedientes"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Ver Mapa de Constancias
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                               </div>
+                                                                
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
                                                                         <h4 class="panel-title"><a href="registro_expedientes"> 
@@ -621,53 +612,65 @@
                                                                         </h4>
                                                                     </div>
                                                                </div>
-                                                                <!--option-->
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title">
-                                                                            <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-hab_urb" class="collapsed"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Habilitación Urbana
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                    <div id="collapseTwo_sub-hab_urb" class="panel-collapse collapse cr_toogle">
-                                                                        <div class="panel-body" style="padding-left: 30px" >
-                                                                            <div>
-                                                                            <!--widget edit box -->
-                                                                                <div class="jarviswidget-editbox">
-                                                                                </div>
-                                                                            <!--end widget edit box 
-
-                                                                                widget content -->
-                                                                               <div class="widget-body">
-
-                                                                                   <div class="tree smart-form" style="color:white !important">
-                                                                                      <ul >
-
-                                                                                            <li>
-                                                                                                <span style="width: 160px;">
-                                                                                                    <label class="checkbox inline-block" style="color:white !important">
-                                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_comple_deportivos" onchange="">
-                                                                                                        <i></i>
-                                                                                                        <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                                        Complejos Deportivos
-                                                                                                    </label> 
-                                                                                                </span>
-                                                                                            </li>
-
-                                                                                      </ul>
-                                                                                  </div>
-                                                                               </div>
-                                                                            <!--end widget content -->
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- fin option-->
+                                                                
                                                             </div>
                                                         </div>
+                                                        <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li style="padding-left: 0px;" >
+                                                                                <div class="tree">
+                                                                                    <ul style="padding-left: 0px; padding-top: 0px">
+                                                                                            <li>
+                                                                                                <span class="label " style=" border: 1px dotted #999;width: 160px; color: white">
+                                                                                                        <i class="fa fa-lg fa-minus-circle"></i> Mapas Constancias
+                                                                                                    </span>
+                                                                                                    <ul>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2015" onchange="valida_capa('chk_map_cons_2015')">
+                                                                                                                    <i></i>
+                                                                                                                    2015
+                                                                                                                </label> 
+                                                                                                            </span> 
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2016" onchange="valida_capa('chk_map_cons_2016')">
+                                                                                                                    <i></i>
+                                                                                                                    2016
+                                                                                                                </label> 
+                                                                                                            </span>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2017" onchange="valida_capa('chk_map_cons_2017')">
+                                                                                                                    <i></i>
+                                                                                                                    2017
+                                                                                                                </label> 
+                                                                                                            </span>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <span style="width: 120px">
+                                                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2018" onchange="valida_capa('chk_map_cons_2018')">
+                                                                                                                    <i></i>
+                                                                                                                    2018
+                                                                                                                </label> 
+                                                                                                            </span>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                            </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
                                                         <!-- end widget content -->
                                                         </div>
                                                     </div>

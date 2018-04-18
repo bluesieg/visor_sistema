@@ -387,6 +387,36 @@
         </div>
     </div>
 </div> 
+<div id="dlg_selecciona_hab_urb_contancias" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 5px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Selección de Habilitacion::..</h2>
+                        </header>
+                    </div>
+                </section>
+                
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
+                        <div class="icon-addon addon-md">
+                            <input id="input_hab_urb_constancias" type="text"  class="form-control" style="height: 32px;">
+                            <input id="hidden_input_hab_urb_constancias" type="hidden"  value="0">
+
+                        </div>
+
+                    </div>
+                </div>
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
 <div id="dlg_limites" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
         <div class="col-xs-12 cr-body" >

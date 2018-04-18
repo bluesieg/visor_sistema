@@ -533,6 +533,28 @@ class MapaController extends Controller
 
         return response()->json($lotes);
     }
+    public function get_constancias($anio,$haburb,Request $req){
+
+
+        $lotes = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_lote',         id_lote,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_reg_exp',id_reg_exp,
+                                'nro_constancia',nro_constancia,
+                                'gestor',gestor
+                             )
+                          ) AS feature
+                          FROM (select * from soft_const_posesion.vw_const_para_mapa where id_hab_urb=$haburb) row) features ;");
+
+        return response()->json($lotes);
+    }
 
 
 }

@@ -505,6 +505,22 @@ function valida_capa(check)
         {
             crear_lotes_rurales();
         }
+        if(check=='chk_map_cons_2015')
+        {
+            crear_constancias_mapa(2015);
+        }
+        if(check=='chk_map_cons_2016')
+        {
+            crear_constancias_mapa(2016);
+        }
+        if(check=='chk_map_cons_2017')
+        {
+            crear_constancias_mapa(2017);
+        }
+        if(check=='chk_map_cons_2018')
+        {
+            crear_constancias_mapa(2018);
+        }
     }
     else
     {
@@ -612,6 +628,22 @@ function valida_capa(check)
         if(check=='chk_lotes_rurales')
         {
            map.removeLayer(lyr_lotes_rurales);
+        }
+        if(check=='chk_map_cons_2015')
+        {
+           map.removeLayer(lyr_map_cons_2015);
+        }
+        if(check=='chk_map_cons_2016')
+        {
+           map.removeLayer(lyr_map_cons_2016);
+        }
+        if(check=='chk_map_cons_2017')
+        {
+           map.removeLayer(lyr_map_cons_2017);
+        }
+        if(check=='chk_map_cons_2018')
+        {
+           map.removeLayer(lyr_map_cons_2018);
         }
     }
 }
@@ -2278,6 +2310,129 @@ function stylez_lote_rural(feature, resolution) {
         })
     });
 }
+aux_constancias=0;
+function crear_constancias_mapa(anio)
+{
+    if(aux_constancias==0)
+    {
+        aux_constancias=1;
+         autocompletar_haburb('input_hab_urb_constancias');
+    }
+    $("#dlg_selecciona_hab_urb_contancias").dialog({
+    autoOpen: false, modal: true, width: 600,height:400, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.: Seleccione Habiltacion :.</h4></div>",
+    buttons: [
+            {
+                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Crear Mapa',
+                "class": "btn btn-labeled bg-color-green txt-color-white",
+                click: function () 
+                {
+                    crea_mapa_constancias(anio)
+                }
+            },
+
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");MensajeDialogLoadAjaxFinish('map');}
+            }]
+    }).dialog('open');
+    
+    
+}
+function crea_mapa_constancias(anio)
+{
+    if($("#hidden_input_hab_urb_constancias").val()==0)
+    {
+        mostraralertasconfoco("Seleccione Hablitacion","#input_hab_urb_constancias");
+        return false;
+        
+    }
+    traer_hab_by_id($("#hidden_input_hab_urb_constancias").val());
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_map_constancias/'+anio+'/'+$("#hidden_input_hab_urb_constancias").val(),
+            type: 'get',
+            success: function (data) {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                if(anio==2015)
+                {
+                    lyr_map_cons_2015 = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: stylez_constancias,
+                        title: "Constancias 2015"
+                    });
+                    map.addLayer(lyr_map_cons_2015);
+                    var extent = lyr_map_cons_2015.getSource().getExtent();
+                }
+                if(anio==2016)
+                {
+                    lyr_map_cons_2016 = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: stylez_constancias,
+                        title: "Constancias 2016"
+                    });
+                    map.addLayer(lyr_map_cons_2016);
+                    var extent = lyr_map_cons_2016.getSource().getExtent();
+                }
+                if(anio==2017)
+                {
+                    lyr_map_cons_2017 = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: stylez_constancias,
+                        title: "Constancias 2017"
+                    });
+                    map.addLayer(lyr_map_cons_2017);
+                    var extent = lyr_map_cons_2017.getSource().getExtent();
+                }
+                if(anio==2018)
+                {
+                    lyr_map_cons_2018 = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: stylez_constancias,
+                        title: "Constancias 2018"
+                    });
+                    map.addLayer(lyr_map_cons_2018);
+                    var extent = lyr_map_cons_2018.getSource().getExtent();
+                }
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+function stylez_constancias(feature, resolution) {
+    if(feature.get('nro_constancia')==null)
+    {
+        texto="";
+    }
+    else
+    {
+        texto=feature.get('nro_constancia');
+    }
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'yellow',
+            width: 1,
+            lineCap: 'butt'
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 252, 51  , 0.5)'
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? texto : ''
+             
+        })
+    });
+}
 function verpdf(ruta)
 {
     crear_dlg("dlg_pdf",900,"Ver Información");
@@ -2294,3 +2449,92 @@ function verpdf(ruta)
     
     
 }
+
+
+function autocompletar_haburb(textbox){
+            $.ajax({
+                type: 'GET',
+                url: 'autocomplete_hab_urba',
+                success: function (data) {
+
+                    var $datos = data;
+                    $("#"+ textbox).autocomplete({
+                        source: $datos,
+                        focus: function (event, ui) {
+                            $("#" + textbox).val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#" + textbox).val(ui.item.label);
+                            $("#hidden_"+ textbox).val(ui.item.value);
+                            return false;
+                        }
+                    });
+                }
+            });
+        }
+        
+        
+        
+function traer_hab_by_id(id)
+{
+        MensajeDialogLoadAjax('dlg_map', '.:: Cargando ...');
+        $.ajax({url: 'gethab_urb_by_id/'+id,
+                    type: 'GET',
+                    async: false,
+                    success: function(r)
+                    {
+                        geojson_sectores_cat1 = JSON.parse(r[0].json_build_object);
+                        var format_sectores_cat1 = new ol.format.GeoJSON();
+                        var features_sectores_cat1 = format_sectores_cat1.readFeatures(geojson_sectores_cat1,
+                                {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                        var jsonSource_sectores_cat1 = new ol.source.Vector({
+                            attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                        });
+                        jsonSource_sectores_cat1.addFeatures(features_sectores_cat1);
+                        lyr_sectores_cat1 = new ol.layer.Vector({
+                            source:jsonSource_sectores_cat1,
+                            style: polygonStyleFunction,
+                            title: "Habilitaciones Urbanas"
+                        });
+                        map.addLayer(lyr_sectores_cat1);
+                        var extent = lyr_sectores_cat1.getSource().getExtent();
+                        map.getView().fit(extent, map.getSize());
+                        traer_lote_by_hab(id);
+
+                    }
+                });
+    }
+        function traer_lote_by_hab(id)
+        {
+            $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: 'get_lotes_x_hab_urb',
+                    type: 'GET',
+                    data: {codigo: id},
+                    success: function (data) {
+                        //alert(data[0].json_build_object);
+                        //alert(geojson_manzanas2);
+                        map.removeLayer(lyr_lotes3);
+                        var format_lotes3 = new ol.format.GeoJSON();
+                        var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                        var jsonSource_lotes3 = new ol.source.Vector({
+                            attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                        });
+                        //vectorSource.addFeatures(features_manzanas2);
+                        jsonSource_lotes3.addFeatures(features_lotes3);
+                        lyr_lotes3 = new ol.layer.Vector({
+                            source:jsonSource_lotes3,
+                            style: label_lotes,
+                            title: "lotes"
+                        });
+                        map.addLayer(lyr_lotes3);
+                        MensajeDialogLoadAjaxFinish('dlg_map');
+
+                    },
+                    error: function (data) {
+                        MensajeAlerta('Predios','No se encontró ningún predio.');
+                    }
+                });
+        }

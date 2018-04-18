@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_leyenda_aportes', 'MapaController@leyenda_aportes');
         Route::get('gethab_urb_by_id/{id}', 'MapaController@get_hab_urb');
         Route::get('get_lotes_x_hab_urb', 'MapaController@get_lotes_x_hab_urb');
+        Route::get('get_map_constancias/{anio}/{hab_urb}', 'MapaController@get_constancias');
 
     });
     Route::group(['namespace' => 'adm_tributaria'], function() {
