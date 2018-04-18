@@ -116,6 +116,10 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::resource('consultar_expedientes','ConsultaExpedientesController');
         Route::get('buscar_expediente','ConsultaExpedientesController@buscar_expediente');
+        
+         //////inspectoress
+        Route::resource('mantenimiento_inspectores','MantenimientoInspectoresController');
+         Route::get('getInspectores','MantenimientoInspectoresController@getInspectores');
     });
 
 });
