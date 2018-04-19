@@ -41,6 +41,7 @@ function guardar_inspec(){
                 fn_actualizar_grilla('table_inspectores');
                 MensajeExito('INSPECTOR', 'Se Registraron los datos.');
                 dialog_close('dlg_nuevo_inspec');
+                MensajeDialogLoadAjaxFinish('dlg_nuevo_inspec');
                 
             },
             error: function(data) {

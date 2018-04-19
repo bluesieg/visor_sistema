@@ -120,7 +120,7 @@ Route::group(['middleware' => 'auth'], function() {
         
          //////inspectoress
         Route::resource('mantenimiento_inspectores','MantenimientoInspectoresController');
-         Route::get('getInspectores','MantenimientoInspectoresController@getInspectores');
+        Route::get('getInspectores','MantenimientoInspectoresController@getInspectores');
     });
 
 });

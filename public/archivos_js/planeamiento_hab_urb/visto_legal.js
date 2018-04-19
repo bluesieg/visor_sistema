@@ -25,3 +25,14 @@ function aprobar_para_firmas()
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_expediente_visto_legal");
     }
 }
+
+function selecciona_visto_legal(){
+
+    fecha_inicio = $('#fec_ini_visto_legal').val();
+    fecha_fin = $('#fec_fin_visto_legal').val();
+
+    jQuery("#table_expediente_visto_legal").jqGrid('setGridParam', {
+         url: 'datos_predio?grid=3&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin
+    }).trigger('reloadGrid');
+
+}

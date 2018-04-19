@@ -3,29 +3,33 @@
 function pasar_inspeccion(){
     
     Id=$('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
+    estado = $('#table_control_calidad').jqGrid ('getCell', Id, 'fase');
     if(Id)
     {
+        if(estado == 10){
+           mostraralertasconfoco("El Expediente no puede pasar a Inspeccion Porque esta Notificado");
+        }else{
     
-    id_control_calidad = $('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
-    inspector = $('#select_inspector').val();
-    
-    $.ajax({url: 'asignar_expediente',
-        type: 'GET',
-        data:{id_control_calidad:id_control_calidad,inspector:inspector},
-        success: function(data) 
-        {
-            fn_actualizar_grilla('table_control_calidad');
-            fn_actualizar_grilla('table_inspeccion');
-            MensajeExito('Expediente', 'El Expediente Paso a Inspeccion.');
-        },
-        error: function(data) {
-            mostraralertas("hubo un error, Comunicar al Administrador");
-            console.log('error');
-            console.log(data);
-        }
-        }); 
-    }
-    else{
+                id_control_calidad = $('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
+                inspector = $('#select_inspector').val();
+
+                $.ajax({url: 'asignar_expediente',
+                    type: 'GET',
+                    data:{id_control_calidad:id_control_calidad,inspector:inspector},
+                    success: function(data) 
+                    {
+                        fn_actualizar_grilla('table_control_calidad');
+                        fn_actualizar_grilla('table_inspeccion');
+                        MensajeExito('Expediente', 'El Expediente Paso a Inspeccion.');
+                    },
+                    error: function(data) {
+                        mostraralertas("hubo un error, Comunicar al Administrador");
+                        console.log('error');
+                        console.log(data);
+                    }
+                    }); 
+              }
+    }else{
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_control_calidad");
     }
 }
@@ -34,27 +38,31 @@ function pasar_inspeccion(){
 function crear_nueva_notificacion()
 {
     Id=$('#table_control_calidad').jqGrid ('getGridParam', 'selrow');
+    estado = $('#table_control_calidad').jqGrid ('getCell', Id, 'fase');
     if(Id)
     {
-    //limpiar_datos();
-    $("#dlg_registrar_notificacion").dialog({
-        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  NUEVA NOTIFICACION :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-            "class": "btn btn-success bg-color-green",
-            click: function () {
-                    registrar_notificacion();
-            }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }],
-    });
-    $("#dlg_registrar_notificacion").dialog('open');
+        if(estado == 10){
+           mostraralertasconfoco("El Expediente ya fue Notificado");
+        }else{
+        $("#dlg_registrar_notificacion").dialog({
+            autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  NUEVA NOTIFICACION :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                        registrar_notificacion();
+                }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_registrar_notificacion").dialog('open');
+        }
     }
     else{
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_control_calidad");

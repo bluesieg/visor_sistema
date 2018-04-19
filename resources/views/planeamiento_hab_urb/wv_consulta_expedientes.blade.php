@@ -76,7 +76,7 @@
                 {
                     if (data.msg === 'si'){
                         MensajeDialogLoadAjaxFinish('dlg_expediente');
-                        mostraralertasconfoco("El Numero de Expediente"+data.nro_expediente+" se encuentra en Fase: "+data.descrip_fase+".");
+                        mostraralertasconfoco("El Numero de Expediente: "+data.nro_expediente+", se encuentra en Fase: "+data.descrip_fase+".");
                     }
                     else
                     {

@@ -25,3 +25,16 @@ function aprobar_para_visto_y_firma()
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_expediente_visto_firma");
     }
 }
+
+
+function selecciona_visto_firma(){
+
+    fecha_inicio = $('#fec_ini_exp_visto_firma').val();
+    fecha_fin = $('#fec_fin_exp_visto_firma').val();
+
+    jQuery("#table_expediente_visto_firma").jqGrid('setGridParam', {
+         url: 'datos_predio?grid=4&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin
+    }).trigger('reloadGrid');
+
+}
+

@@ -103,17 +103,29 @@ class EvaluacionTecnicaController extends Controller
             $Notificaciones->cod_expediente = $request['cod_expediente'];
             $Notificaciones->notificacion = $request['notificacion'];
             $Notificaciones->save();
-            //$this->modificar_fase($Notificaciones->cod_expediente);    
+            $this->modificar_fase($Notificaciones->cod_expediente);    
+    }
+    
+    public function modificar_fase($cod_expediente){
+            $RegistroExpedientes = new  RegistroExpedientes;
+            $val=  $RegistroExpedientes::where("nro_expediente","=",$cod_expediente)->first();
+            if(count($val)>=1)
+            {
+                $val->fase = 13;
+                $val->save();
+            }
+            return $cod_expediente;
     }
     
     public function rep_constancia($id){
             
-        $sql=DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_report_constan')->where('id_reg_exp',$id)->orderBy('id_reg_exp')->get();     
+        $sql=DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_report_constan')->where('id_reg_exp',$id)->orderBy('id_reg_exp')->get();   
+        $constancia = $sql[0]->tipo_constancia;
         $institucion = DB::select('SELECT * FROM maysa.institucion');
         $parametros = DB::connection('gerencia_catastro')->select('SELECT informe_base FROM soft_const_posesion.parametros');
         if(count($sql)>=1)
         {
-            $view =  \View::make('planeamiento_hab_urb.reportes.reporte_constancia', compact('sql','institucion','parametros'))->render();
+            $view =  \View::make('planeamiento_hab_urb.reportes.reporte_constancia', compact('sql','institucion','parametros','constancia'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Reporte Constancia".".pdf");

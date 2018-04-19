@@ -482,6 +482,8 @@ function guardar_acta_ins_campo(modo)
 }
 function grabarfotos(id)
 {
+    fecha_inicio_ins_campo = $('#fec_ini_ins_campo').val();
+    fecha_fin_ins_campo = $('#fec_fin_ins_campo').val();
     var form= new FormData($("#FormularioFiles")[0]);
         $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -496,8 +498,7 @@ function grabarfotos(id)
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('dlg_nuevo_acta_ins');
             $("#dlg_nuevo_acta_ins").dialog('close');
-            jQuery("#table_inspeccion_campo").jqGrid('setGridParam', {url: 'datos_predio?grid=2'}).trigger('reloadGrid');
-       
+            jQuery("#table_inspeccion_campo").jqGrid('setGridParam', {url: 'datos_predio?grid=2&fecha_inicio='+fecha_inicio_ins_campo+'&fecha_fin='+fecha_fin_ins_campo}).trigger('reloadGrid');
             
         },
         error: function(data) {
@@ -511,6 +512,9 @@ function grabarfotos(id)
 
 function envia_verificacion(registro)
 {
+    fecha_inicio_ins_campo = $('#fec_ini_ins_campo').val();
+    fecha_fin_ins_campo = $('#fec_fin_ins_campo').val();
+
     Id=$('#table_inspeccion_campo').jqGrid ('getGridParam', 'selrow');
     if($('#table_inspeccion_campo').jqGrid ('getCell', Id, 'ide')==0)
     {
@@ -527,7 +531,7 @@ function envia_verificacion(registro)
         {
             MensajeExito("Envió Correctamente","Su Registro Fue Enviado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('table_inspeccion_campo');
-            jQuery("#table_inspeccion_campo").jqGrid('setGridParam', {url: 'datos_predio?grid=2'}).trigger('reloadGrid');
+            jQuery("#table_inspeccion_campo").jqGrid('setGridParam', {url: 'datos_predio?grid=2&fecha_inicio='+fecha_inicio_ins_campo+'&fecha_fin='+fecha_fin_ins_campo}).trigger('reloadGrid');
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -561,4 +565,15 @@ function fileOnload(e) {
     var result=e.target.result;
     $("#inp_foto_pred"+numerodivfoto).html("<img src='"+result+"' style='width: 100%'/>");
        
+}
+
+function selecciona_fecha_insp_campo(){
+
+    fecha_inicio_ins_campo = $('#fec_ini_ins_campo').val();
+    fecha_fin_ins_campo = $('#fec_fin_ins_campo').val();
+
+    jQuery("#table_inspeccion_campo").jqGrid('setGridParam', {
+         url: 'datos_predio?grid=2&fecha_inicio='+fecha_inicio_ins_campo+'&fecha_fin='+fecha_fin_ins_campo
+    }).trigger('reloadGrid');
+
 }

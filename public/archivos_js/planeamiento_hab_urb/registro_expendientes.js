@@ -310,7 +310,9 @@ function guardar_editar_datos_lote()
         mostraralertasconfoco("Seleccione Sector, Manzana, Lote","#hidden_dlg_lot");
         return false;
     }
-   
+    fecha_inicio_datos_lote = $('#fec_ini_datos_lote').val();
+    fecha_fin_datos_lote = $('#fec_fin_datos_lote').val();
+    
     MensajeDialogLoadAjax('dlg_nuevo_reg_datos_lote', '.:: Cargando ...');
         $.ajax({url: 'datos_predio/create',
         type: 'GET',
@@ -338,7 +340,7 @@ function guardar_editar_datos_lote()
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('dlg_nuevo_reg_datos_lote');
             $("#dlg_nuevo_reg_datos_lote").dialog('close');
-            jQuery("#table_datos_predio").jqGrid('setGridParam', {url: 'datos_predio?grid=1'}).trigger('reloadGrid');
+            jQuery("#table_datos_predio").jqGrid('setGridParam', {url: 'datos_predio?grid=1&fecha_inicio='+fecha_inicio_datos_lote+'&fecha_fin='+fecha_fin_datos_lote}).trigger('reloadGrid');
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -352,4 +354,16 @@ ins=0;
 
 function imprimir_constancia()
 {    window.open('reporte_constancia'+'');
+}
+
+
+function selecciona_fecha_datos_lote(){
+
+    fecha_inicio_datos_lote = $('#fec_ini_datos_lote').val();
+    fecha_fin_datos_lote = $('#fec_fin_datos_lote').val();
+
+    jQuery("#table_datos_predio").jqGrid('setGridParam', {
+         url: 'datos_predio?grid=1&fecha_inicio='+fecha_inicio_datos_lote+'&fecha_fin='+fecha_fin_datos_lote
+    }).trigger('reloadGrid');
+
 }

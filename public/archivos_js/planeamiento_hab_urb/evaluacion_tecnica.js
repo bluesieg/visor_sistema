@@ -18,6 +18,8 @@ function aprobar_expediente()
     {
        if(estado == 6){
            mostraralertasconfoco("El Expediente ya fue Aprobado");
+       }else if(estado == 13){
+           mostraralertasconfoco("El Expediente es Improcedente y debe ser Aprobado");  
        }else{
            $("#dlg_aprobar_expediente").dialog({
             autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
@@ -61,7 +63,8 @@ function fn_aprobar_expediente(){
             {
                 fn_actualizar_grilla('table_evaluacion_tecnica');
                 MensajeExito('Expediente', 'Se Registro el Informe.');
-                dialog_close('dlg_aprobar_expediente');
+                dialog_close('dlg_aprobar_expediente');c
+                MensajeDialogLoadAjaxFinish('dlg_aprobar_expediente');
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
@@ -74,28 +77,33 @@ function fn_aprobar_expediente(){
 
 function emitir_ofic_impro(){
     Id=$('#table_evaluacion_tecnica').jqGrid ('getGridParam', 'selrow');
+    estado = $('#table_evaluacion_tecnica').jqGrid ('getCell', Id, 'fase');
     if(Id)
-    {  
-        $("#dlg_notificaciones_eva_tec").dialog({
-            autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
-            title: "<div class='widget-header'><h4>.: INFORME DE EVALUACION TECNICA :.</h4></div>",
-            buttons: [{
-                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-success bg-color-green",
-                click: function () {
-                        fn_emitir_ofic_impro();
-                }
-            }, {
-                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-danger",
-                click: function () {
-                    $(this).dialog("close");
-                }
-            }],
-        });
+    {
+        if(estado == 13){
+           mostraralertasconfoco("El Expediente ya fue declarado como Improcedente"); 
+            }else{
+             $("#dlg_notificaciones_eva_tec").dialog({
+                 autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+                 title: "<div class='widget-header'><h4>.: INFORME DE EVALUACION TECNICA :.</h4></div>",
+                 buttons: [{
+                     html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                     "class": "btn btn-success bg-color-green",
+                     click: function () {
+                             fn_emitir_ofic_impro();
+                     }
+                 }, {
+                     html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                     "class": "btn btn-danger",
+                     click: function () {
+                         $(this).dialog("close");
+                     }
+                 }],
+             });
 
-         $("#dlg_notificaciones_eva_tec").dialog('open');
-     }
+              $("#dlg_notificaciones_eva_tec").dialog('open');
+          }
+      }
      else
     {
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_evaluacion_tecnica");
@@ -115,10 +123,10 @@ function fn_emitir_ofic_impro(){
             data:{cod_expediente:cod_expediente,notificacion:notificacion},
             success: function(data) 
             {
-                fn_actualizar_grilla('table_evaluacion_tecnica');
                 MensajeExito('Expediente', 'Se Registro la Notificacion.');
                 dialog_close('dlg_notificaciones_eva_tec');
-                cambiar_estado(id_reg_exp);
+                fn_actualizar_grilla('table_evaluacion_tecnica');
+                MensajeDialogLoadAjaxFinish('dlg_notificaciones_eva_tec');
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
@@ -128,25 +136,6 @@ function fn_emitir_ofic_impro(){
         });
 }
 
-function cambiar_estado(id_reg_exp){
-    
-    $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'registro_expedientes/'+id_reg_exp+'/edit',
-            type: 'GET',
-            data:{estado:13},
-            success: function(data) 
-            {
-                fn_actualizar_grilla('table_evaluacion_tecnica');
-            },
-            error: function(data) {
-                mostraralertas("hubo un error, Comunicar al Administrador");
-                console.log('error');
-                console.log(data);
-            }
-        });
-        
-}
 
 function check_ver_improcedentes(val){
     fecha_ini_eva_tecnica = $("#fec_ini_eva_tecnica").val();
@@ -201,7 +190,7 @@ function enviar_legar(){
     estado = $('#table_evaluacion_tecnica').jqGrid ('getCell', Id, 'fase');
     if(Id)
     {
-        if(estado == 5){
+        if(estado == 5 || estado == 13){
             mostraralertasconfoco("El Expediente debe ser aprobado");
         }else{
             $.ajax({

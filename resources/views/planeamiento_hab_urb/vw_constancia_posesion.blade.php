@@ -40,43 +40,43 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                <a href="#s2" data-toggle="tab" aria-expanded="false" onclick="selecciona_fecha_datos_lote();">
                                    Reg. Datos Lote
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s3" data-toggle="tab" aria-expanded="false">
+                                <a href="#s3" data-toggle="tab" aria-expanded="false" onclick="selecciona_fecha_cc();">
                                    Control Calidad
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s4" data-toggle="tab" aria-expanded="false">
+                                <a href="#s4" data-toggle="tab" aria-expanded="false" onclick="selecciona_fecha_insp_campo();">
                                    Inspeccion de Campo
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s5" data-toggle="tab" aria-expanded="false">
+                                <a href="#s5" data-toggle="tab" aria-expanded="false" onclick="selecciona_fecha_eva_t();">
                                    Verif. Tecnica
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s6" data-toggle="tab" aria-expanded="false">
+                                <a href="#s6" data-toggle="tab" aria-expanded="false" onclick="selecciona_visto_legal();">
                                    Vistos Legales
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s7" data-toggle="tab" aria-expanded="false">
+                                <a href="#s7" data-toggle="tab" aria-expanded="false" onclick="selecciona_visto_firma();">
                                    Visto y Firma
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s8" data-toggle="tab" aria-expanded="false">
+                                <a href="#s8" data-toggle="tab" aria-expanded="false" onclick="selecciona_entregar_constancia();">
                                    Entrega Constancias
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -162,7 +162,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_datos_lote" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="fec_ini_datos_lote" name="dlg_fec" onchange="selecciona_fecha_datos_lote();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -170,7 +170,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="fec_fin_datos_lote" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_datos_lote" name="dlg_fec" onchange="selecciona_fecha_datos_lote();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -295,7 +295,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_insp_campo" name="dlg_fec" type="text"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="fec_ini_ins_campo" name="dlg_fec" onchange="selecciona_fecha_insp_campo();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -303,7 +303,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                    <input id="fec_fin_ins_campo" name="dlg_fec" type="text"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_ins_campo" name="dlg_fec" onchange="selecciona_fecha_insp_campo();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -421,7 +421,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_visto_legal" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="fec_ini_visto_legal" type="text" onchange="selecciona_visto_legal();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -429,7 +429,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="fec_fin_visto_legal" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_visto_legal" type="text" onchange="selecciona_visto_legal();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -470,7 +470,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_exp_visto_firma" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="fec_ini_exp_visto_firma" name="dlg_fec" type="text"  onchange="selecciona_visto_firma();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -478,7 +478,7 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="fec_fin_exp_visto_firma" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                <input id="fec_fin_exp_visto_firma" name="dlg_fec" type="text"  onchange="selecciona_visto_firma();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -523,15 +523,15 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                               <input  id="fec_ini_entr_const_pos" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                   <input  id="fec_ini_entr_const_pos" name="dlg_fec" type="text" onchange="selecciona_entregar_constancia();"  class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
-                                       <div class="col-lg-2" style="padding-right: 5px; padding-top: 20px; ">
+                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                <input id="fec_fin_entr_const_pos" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_entr_const_pos" name="dlg_fec" type="text"  onchange="selecciona_entregar_constancia();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -602,8 +602,13 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){actualizar_exp();}
         });
+        
+        
+        fecha_inicio_datos_lote = $('#fec_ini_datos_lote').val();
+        fecha_fin_datos_lote = $('#fec_fin_datos_lote').val();
+        
         jQuery("#table_datos_predio").jqGrid({
-            url: 'datos_predio?grid=1',
+            url: 'datos_predio?grid=1&fecha_inicio='+fecha_inicio_datos_lote+'&fecha_fin='+fecha_fin_datos_lote,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -694,8 +699,10 @@
     });
         
         //NUEVOS
+        fecha_inicio_ins_campo = $('#fec_ini_ins_campo').val();
+        fecha_fin_ins_campo = $('#fec_fin_ins_campo').val();
         jQuery("#table_inspeccion_campo").jqGrid({
-            url: 'datos_predio?grid=2',
+            url: 'datos_predio?grid=2&fecha_inicio='+fecha_inicio_ins_campo+'&fecha_fin='+fecha_fin_ins_campo,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -755,8 +762,11 @@
             ondblClickRow: function (Id){actualizar_evaluacion_tecnica(Id);}
         });
         
+        
+        fecha_inicio = $('#fec_ini_visto_legal').val();
+        fecha_fin = $('#fec_fin_visto_legal').val();
         jQuery("#table_expediente_visto_legal").jqGrid({
-            url: 'datos_predio?grid=3',
+            url: 'datos_predio?grid=3&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -782,8 +792,10 @@
             ondblClickRow: function (Id){}
         });
         
+        fecha_inicio = $('#fec_ini_exp_visto_firma').val();
+        fecha_fin = $('#fec_fin_exp_visto_firma').val();
         jQuery("#table_expediente_visto_firma").jqGrid({
-            url: 'datos_predio?grid=4',
+            url: 'datos_predio?grid=4&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -809,8 +821,11 @@
             ondblClickRow: function (Id){}
         });
         
+        
+        fecha_inicio_entr_const = $('#fec_ini_entr_const_pos').val();
+        fecha_fin_entr_const = $('#fec_fin_entr_const_pos').val();
         jQuery("#table_entr_const_pos").jqGrid({
-            url: 'datos_predio?grid=5',
+            url: 'datos_predio?grid=5&fecha_inicio='+fecha_inicio_entr_const+'&fecha_fin='+fecha_fin_entr_const,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,

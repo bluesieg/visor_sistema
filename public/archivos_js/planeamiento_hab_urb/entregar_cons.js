@@ -83,3 +83,16 @@ function cambiar_estado(Id)
         mostraralertasconfoco("No Hay Expediente Seleccionado","#table_entr_const_pos");
     }
 }
+
+
+function selecciona_entregar_constancia(){
+
+    fecha_inicio_entr_const = $('#fec_ini_entr_const_pos').val();
+    fecha_fin_entr_const = $('#fec_fin_entr_const_pos').val();
+
+    jQuery("#table_entr_const_pos").jqGrid('setGridParam', {
+         url: 'datos_predio?grid=5&fecha_inicio='+fecha_inicio_entr_const+'&fecha_fin='+fecha_fin_entr_const,
+    }).trigger('reloadGrid');
+
+}
+
