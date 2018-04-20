@@ -1,5 +1,12 @@
+function limpiar_datos(){
+   $("#inp_dni_entregar").val("");
+   $("#inp_nombre_entregar").val("");
+}
+
+
 function entregar_a()
 {
+    limpiar_datos();
     Id=$('#table_entr_const_pos').jqGrid ('getGridParam', 'selrow');
     if(Id)
     {
@@ -30,6 +37,7 @@ function entregar_a()
     }
 }
 function guardar_datos_usuario(){
+    
     id_reg_exp=$('#table_entr_const_pos').jqGrid ('getGridParam', 'selrow');
     nro_dni = $("#inp_dni_entregar").val();
     apenom = $("#inp_nombre_entregar").val();
@@ -46,6 +54,7 @@ function guardar_datos_usuario(){
                 MensajeExito('Expediente', 'Se Registraron los datos.');
                 dialog_close('dlg_entregar_a_usuario');
                 cambiar_estado(Id);
+                MensajeDialogLoadAjaxFinish('dlg_entregar_a_usuario');
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");

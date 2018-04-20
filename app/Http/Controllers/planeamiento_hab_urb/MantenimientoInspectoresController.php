@@ -86,10 +86,10 @@ class MantenimientoInspectoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
-        
-       
+        $inspectores = DB::connection("gerencia_catastro")->table('soft_const_posesion.inspectores')->where('id_inspector',$id)->get();
+        return $inspectores;
     }
 
     /**
@@ -98,43 +98,25 @@ class MantenimientoInspectoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,Request $request)
+    public function edit(Request $request)
     {
-        if(!$request['estado'])
-        {
-            $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.regist_expediente')->where('nro_expediente',$request['nro_expediente'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
+        $select=DB::connection('gerencia_catastro')->table('soft_const_posesion.inspectores')->where('dni',$request['dni'])->where('id_inspector','<>',$request['id_inspector'])->get();
 
             if (count($select)>= 1) {
                 return response()->json([
                     'msg' => 'repetido',
                     ]);
             }else{
-                $RegistroExpedientes = new  RegistroExpedientes;
-                $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
+                $Inspectores = new  Inspectores;
+                $val=  $Inspectores::where("id_inspector","=",$request['id_inspector'])->first();
                 if(count($val)>=1)
                 {
-                    $val->nro_expediente = $request['nro_expediente'];
-                    $val->gestor = $request['gestor'];
-                    $val->fecha_inicio_tramite = $request['fecha_inicio_tramite'];
-                    $val->fecha_registro = $request['fecha_registro'];
+                    $val->dni = $request['dni'];
+                    $val->apenom = $request['apenom'];
                     $val->save();
                 }
-                return $id;
-            }
-        }
-        else
-        {
-            
-            $RegistroExpedientes = new  RegistroExpedientes;
-            $val=  $RegistroExpedientes::where("id_reg_exp","=",$id )->first();
-            if(count($val)>=1)
-            {
-                $val->fase = $request['estado'];
-                $val->save();
-            }
-            return $id;
-        }
-        
+                return $request['id_inspector'];
+            }  
     }
 
     /**
@@ -157,13 +139,13 @@ class MantenimientoInspectoresController extends Controller
      */
     public function destroy(Request $request)
     {
-        $RegistroExpedientes = new  RegistroExpedientes;
-        $val=  $RegistroExpedientes::where("id_reg_exp","=",$request['id_reg_exp'] )->first();
+        $Inspectores = new  Inspectores;
+        $val=  $Inspectores::where("id_inspector","=",$request['id_inspector'] )->first();
         if(count($val)>=1)
         {
             $val->delete();
         }
-        return "destroy ".$request['id_reg_exp'];
+        return "destroy ".$request['id_inspector'];
     }
     
     public function getExpedientes(Request $request){

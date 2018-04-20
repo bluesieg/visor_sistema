@@ -46,11 +46,11 @@
                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                                                </button>
 
-                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_exp();">
+                                               <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_insp();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                                </button>
 
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_exp();">
+                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_insp();">
                                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                            </button>
 
@@ -108,7 +108,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){actualizar_exp();}
+            ondblClickRow: function (Id){actualizar_insp();}
         });
         
         

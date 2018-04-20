@@ -763,10 +763,10 @@
         });
         
         
-        fecha_inicio = $('#fec_ini_visto_legal').val();
-        fecha_fin = $('#fec_fin_visto_legal').val();
+        fecha_inicio_visto_legal = $('#fec_ini_visto_legal').val();
+        fecha_fin_visto_legal = $('#fec_fin_visto_legal').val();
         jQuery("#table_expediente_visto_legal").jqGrid({
-            url: 'datos_predio?grid=3&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin,
+            url: 'datos_predio?grid=3&fecha_inicio='+fecha_inicio_visto_legal+'&fecha_fin='+fecha_fin_visto_legal,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -792,10 +792,10 @@
             ondblClickRow: function (Id){}
         });
         
-        fecha_inicio = $('#fec_ini_exp_visto_firma').val();
-        fecha_fin = $('#fec_fin_exp_visto_firma').val();
+        fecha_inicio_visto_firma = $('#fec_ini_exp_visto_firma').val();
+        fecha_fin_visto_firma = $('#fec_fin_exp_visto_firma').val();
         jQuery("#table_expediente_visto_firma").jqGrid({
-            url: 'datos_predio?grid=4&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin,
+            url: 'datos_predio?grid=4&fecha_inicio='+fecha_inicio_visto_firma+'&fecha_fin='+fecha_fin_visto_firma,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,

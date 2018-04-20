@@ -153,7 +153,7 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_legal where fch_inspeccion between '$fecha_inicio' and '$fecha_fin' group by id_reg_exp order by id_reg_exp");
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_legal where fch_inspeccion between '$fecha_inicio' and '$fecha_fin'");
              $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_legal')->whereBetween('fch_inspeccion', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;
@@ -199,7 +199,7 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_firma where fch_inspeccion between '$fecha_inicio' and '$fecha_fin' group by id_reg_exp order by id_reg_exp");
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_firma where fch_inspeccion between '$fecha_inicio' and '$fecha_fin'");
              $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_firma')->whereBetween('fch_inspeccion', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;

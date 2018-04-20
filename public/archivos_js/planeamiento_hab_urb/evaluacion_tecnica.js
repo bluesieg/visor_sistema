@@ -63,7 +63,7 @@ function fn_aprobar_expediente(){
             {
                 fn_actualizar_grilla('table_evaluacion_tecnica');
                 MensajeExito('Expediente', 'Se Registro el Informe.');
-                dialog_close('dlg_aprobar_expediente');c
+                dialog_close('dlg_aprobar_expediente');
                 MensajeDialogLoadAjaxFinish('dlg_aprobar_expediente');
             },
             error: function(data) {

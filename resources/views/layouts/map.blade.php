@@ -604,7 +604,7 @@
                                                                 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="registro_expedientes"> 
+                                                                        <h4 class="panel-title"><a href="mantenimiento_inspectores"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mantenimiento de Inspectores
