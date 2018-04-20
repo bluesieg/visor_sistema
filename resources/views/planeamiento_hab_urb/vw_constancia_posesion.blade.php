@@ -81,6 +81,12 @@
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
+                            <li>
+                                <a href="#s9" data-toggle="tab" aria-expanded="false">
+                                   Escaneo Documentos
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
                         </ul>
                         
                     <div id="myTabContent1" class="tab-content padding-1"> 
@@ -514,7 +520,7 @@
                         <section class="col col-lg-12">
                         <div class="col-xs-12">               
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px">
                                     <section style="padding-right: 10px">
                                         <div class="col-xs-12">
                                             
@@ -558,8 +564,53 @@
                         </div> 
                                      
                         
-                     
-                        
+                        <div id="s9" class="tab-pane fade" style="height: auto">
+                            <section class="col col-lg-12">
+                                <div class="col-xs-12">               
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style='padding: 0px'>
+                                            <section style="padding-right: 10px">
+                                                <div class="col-xs-12" style='padding: 0px'>
+                                                    <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; padding-left: 0px ">
+                                                       <div class="input-group input-group-md">
+                                                           <span class="input-group-addon">Desde:</span>
+                                                           <div class="icon-addon addon-md">
+                                                                <input  id="fec_ini_escaneo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                    </div> 
+                                                       </div>
+                                                    </div>
+                                                    <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                                        <div class="input-group input-group-md">
+                                                            <span class="input-group-addon">Hasta:</span>
+                                                            <div class="icon-addon addon-md">
+                                                                <input id="fec_fin_escaneo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                                        <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="busqueda_escaneo();">
+                                                            <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_escaneos"></table>
+                                                    <div id="pager_table_escaneos"></div>
+                                            </article>
+                                        </div>
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_doc"></table>
+                                                    <div id="pager_table_doc"></div>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div> 
                     </div> 
                        
                     </section>
@@ -849,6 +900,62 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
         });
+        jQuery("#table_escaneos").jqGrid({
+            url: 'datos_predio?grid=9&fecini='+$("#fec_ini_escaneo").val()+'&fecfin='+$("#fec_fin_escaneo").val(),
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_reg_exp', 'CODIGO EXPEDIENTE', 'SOLICITANTE','Nro CONSTANCIA','FECHA DE ENTREGA','SUBIR'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'CONSTANCIAS', align: "center",
+            colModel: [
+                {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 200},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 380},
+                {name: 'nro_constancia', index: 'nro_constancia', align: 'left', width: 120},
+                {name: 'fecha_entrega', index: 'fecha_entrega', align: 'left', width: 100},
+                {name: 'btn', index: 'btn', align: 'left', width: 160},
+            ],
+            pager: '#pager_table_escaneos',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_escaneos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                        var firstid = jQuery('#table_escaneos').jqGrid('getDataIDs')[0];
+                            $("#table_escaneos").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id)
+            {
+                jQuery("#table_doc").jqGrid('setGridParam', {url: 'datos_predio?grid=9_1&id='+Id}).trigger('reloadGrid');
+            },
+            ondblClickRow: function (Id){}
+        });
+        jQuery("#table_doc").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '200px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_doc_adj', 'Documento', 'Descripcion','Ver','Eliminar'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'DOCUMENTOS ESCANEADOS', align: "center",
+            colModel: [
+                {name: 'id_doc_adj', index: 'id_doc_adj', hidden: true},
+                {name: 't_documento', index: 't_documento', align: 'center', width: 250},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 400},
+                {name: 'ver', index: 'ver', align: 'center', width: 160},
+                {name: 'del', index: 'del', align: 'center', width: 150},
+            ],
+            pager: '#pager_table_doc',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_doc').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                        var firstid = jQuery('#table_doc').jqGrid('getDataIDs')[0];
+                            $("#table_doc").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
         
        
     });
@@ -863,6 +970,7 @@
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/visto_legal.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/visto_y_firma.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/entregar_cons.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/planeamiento_hab_urb/escaneo.js') }}"></script>
 
 <div id="dlg_nuevo_exp" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
@@ -2023,5 +2131,48 @@
         </div>
     </div>
     </div>
+
+<div id="dlg_subir_escaneo" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <form id="FormularioScans" name="FormularioScans" method="post" enctype="multipart/form-data" action="callpdf"  target="ifrafile">
+                <input type="hidden" name="_token" id="_token1" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
+                <input type="hidden" value='0' id='id_scan' name="id_scan"/>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon"  style="width: 165px" >Tipo Documento &nbsp;<i class="fa fa-file"></i></span>
+                        <div class="icon-addon addon-md">
+                            <select id='seltipdoc' name="seltipdoc" class="form-control col-lg-8" style="height: 32px;">
+                            @foreach ($tip_doc as $docs)
+                            <option value='{{$docs->id_tip_doc}}' >{{$docs->t_documento}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; padding-top: 10px ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Documento &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                        <div>
+                            <input name="dlg_documento_file" id="dlg_documento_file" type="file"  class="form-control" style="height: 32px; width: 100%" onchange="llamarsubmitscan();">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; padding-top: 10px ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Descripción &nbsp;<i class="fa fa-text-height"></i></span>
+                        <div>
+                            <input name="dlg_documento_des" id="dlg_documento_des" type="text"  class="form-control" style="height: 32px; width: 100%">
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+            <div id="dlg_sub_frame" class='cr_content col-xs-12 ' style="margin-bottom: 10px; padding-top: 10px ">
+                <iframe name="ifrafile" id="ifrafile" class="form-control col-xs-12"  style=" height: 400px; padding: 0px"></iframe>
+            </div>
+    </div>
+    </div>
+</div>
 @endsection
 

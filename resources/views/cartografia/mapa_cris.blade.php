@@ -16,7 +16,7 @@
             border-radius: 4px;
             padding: 2px;
             position: absolute;
-            width:300px;
+            width:500px;
             top: 5px;
             left:40px;
         }
@@ -24,9 +24,8 @@
         position:absolute; 
         left:10px; 
         top:100px; 
-        z-index:10000; 
+        z-index:10; 
         width:130px; 
-        height:370px; 
         background-color:#FFFFFF;
         display: none;
         }
@@ -34,7 +33,7 @@
   
     <form class="smart-form">
 
-
+    <input type="hidden" id="hidden_inp_habilitacion" value="0"/>
     <div id="map" style="background: white; height: 100% !important">
         <div id="popup" class="ol-popup">
             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
@@ -75,18 +74,15 @@
             var button1 = document.createElement('button');
             button1.innerHTML = 'some button';
 
-//            var selectList = document.createElement("select");
-//            selectList.id = "sectores_map";
-//            selectList.className = "input-sm col-xs-3";
-//            selectList.onchange = function(e){
-//                console.log(e);
-//                get_mzns_por_sector(this.value);
-//                //alert(this.value);
-//            }
-
+            var selectList = document.createElement("input");
+            selectList.id = "inp_habilitacion";
+            selectList.className = "input-sm col-xs-9";
+            selectList.type = "text";
+            selectList.style = "height:18px;display:none";
+            selectList.placeholder = "Seleccione Habilitación";
             var selectList_anio = document.createElement("select");
             selectList_anio.id = "anio_pred";
-            selectList_anio.className = "input-sm col-xs-3";
+            selectList_anio.className = "input-sm col-xs-2";
 
 
 //            var sectores = {!! json_encode($sectores) !!};
@@ -108,7 +104,7 @@
                 option_anio.text = anio[i].anio;
                 selectList_anio.appendChild(option_anio);
             }
-
+           
 
 //            var checkbox = document.createElement('input');
 //            checkbox.type = "checkbox";
@@ -133,8 +129,9 @@
 
             var element = document.createElement('div');
             element.className = 'ol-unselectable ol-mycontrol';
-            //element.appendChild(selectList);
+            
             element.appendChild(selectList_anio);
+            element.appendChild(selectList);
             //element.appendChild(div2);
             //element.appendChild(label);
             ol.control.Control.call(this, {
@@ -387,36 +384,7 @@
         </div>
     </div>
 </div> 
-<div id="dlg_selecciona_hab_urb_contancias" style="display: none;">
-    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
-        <div class="col-xs-12 cr-body" >
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 5px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                                <h2>Selección de Habilitacion::..</h2>
-                        </header>
-                    </div>
-                </section>
-                
-                <div class="col-xs-12" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
-                        <div class="icon-addon addon-md">
-                            <input id="input_hab_urb_constancias" type="text"  class="form-control" style="height: 32px;">
-                            <input id="hidden_input_hab_urb_constancias" type="hidden"  value="0">
-
-                        </div>
-
-                    </div>
-                </div>
-           
-            </div>
-          
-        </div>
-    </div>
-</div> 
+ 
 <div id="dlg_limites" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
         <div class="col-xs-12 cr-body" >
@@ -503,12 +471,12 @@
                     <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px" onclick="verpdf('ley/ley.pdf')">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Ley
                     </button>
-                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;">
+<!--                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CNA
                     </button>
                     <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CN
-                    </button>
+                    </button>-->
                 </div>
            
             </div>
@@ -652,7 +620,16 @@
                 <div class="col-xs-9" style="padding: 0px;">
                     <div class="col-xs-12" style="padding: 0px;">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 30%">Codigo Catastral &nbsp;<i class="fa fa-power-off"></i></span>
+                            <span class="input-group-addon" style="width: 40%">Año de consulta &nbsp;<i class="fa fa-power-off"></i></span>
+                            <div >
+                                <label id="anio_consulta_lote"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px;margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 40%">Codigo Referencial Catastral &nbsp;<i class="fa fa-power-off"></i></span>
                             <div >
                                 <label id="input_pred_cod_cat"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -661,7 +638,7 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 30%">Habilitación &nbsp;<i class="fa fa-map"></i></span>
+                            <span class="input-group-addon" style="width: 40%">Habilitación &nbsp;<i class="fa fa-map"></i></span>
                             <div >
                                 <label id="input_pred_habilitacion"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -670,7 +647,7 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 30%">Propietario &nbsp;<i class="fa fa-male"></i></span>
+                            <span class="input-group-addon" style="width: 40%">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
                             <div >
                                 <label id="input_pred_propietario"  class="form-control" style="height: 32px;"></label>
                             </div>

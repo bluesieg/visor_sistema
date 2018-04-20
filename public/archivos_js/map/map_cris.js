@@ -1,4 +1,7 @@
-
+var lyr_map_cons_2015;
+var lyr_map_cons_2016;
+var lyr_map_cons_2017;
+var lyr_map_cons_2018;
 map.on('singleclick', function(evt) {
 //    map.getLayers().forEach(function(el) {
 //        if(el.get('title')=='lotes')
@@ -97,7 +100,7 @@ map.on('singleclick', function(evt) {
 });
 function verlote(id)
 {
-    crear_dlg("dlg_predio_lote",900,"Informacion de Lote");
+    crear_dlg("dlg_predio_lote",900,"Informacion Referencia del Lote de Lote");
     traerpredionuevo(id);
     traerfoto(id);
 }
@@ -276,8 +279,10 @@ function traerpredionuevo(id)
     type: 'GET',
     success: function(r) 
     {
+        $("#anio_consulta_lote").text($("#anio_pred").val());
         if(r.length>0)
         {
+            
             $("#input_pred_cod_cat").text(r[0].cod_cat);
             $("#input_pred_habilitacion").text(r[0].habilitacion);
             $("#input_pred_propietario").text(r[0].contribuyente);
@@ -505,21 +510,25 @@ function valida_capa(check)
         {
             crear_lotes_rurales();
         }
+        if(check=='chk_map_cons')
+        {
+            crear_constancias_mapa();
+        }
         if(check=='chk_map_cons_2015')
         {
-            crear_constancias_mapa(2015);
+            crea_mapa_constancias(2015);
         }
         if(check=='chk_map_cons_2016')
         {
-            crear_constancias_mapa(2016);
+            crea_mapa_constancias(2016);
         }
         if(check=='chk_map_cons_2017')
         {
-            crear_constancias_mapa(2017);
+            crea_mapa_constancias(2017);
         }
         if(check=='chk_map_cons_2018')
         {
-            crear_constancias_mapa(2018);
+            crea_mapa_constancias(2018);
         }
     }
     else
@@ -629,20 +638,33 @@ function valida_capa(check)
         {
            map.removeLayer(lyr_lotes_rurales);
         }
+        if(check=='chk_map_cons')
+        {
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            map.removeLayer(lyr_map_cons_2015);
+            map.removeLayer(lyr_map_cons_2016);
+            map.removeLayer(lyr_map_cons_2017);
+            map.removeLayer(lyr_map_cons_2018);
+            $("#inp_habilitacion,#legend").hide();
+        }
         if(check=='chk_map_cons_2015')
         {
            map.removeLayer(lyr_map_cons_2015);
         }
         if(check=='chk_map_cons_2016')
         {
+           
            map.removeLayer(lyr_map_cons_2016);
         }
         if(check=='chk_map_cons_2017')
         {
+           
            map.removeLayer(lyr_map_cons_2017);
         }
         if(check=='chk_map_cons_2018')
         {
+         
            map.removeLayer(lyr_map_cons_2018);
         }
     }
@@ -2310,48 +2332,79 @@ function stylez_lote_rural(feature, resolution) {
         })
     });
 }
-aux_constancias=0;
-function crear_constancias_mapa(anio)
-{
-    if(aux_constancias==0)
-    {
-        aux_constancias=1;
-         autocompletar_haburb('input_hab_urb_constancias');
-    }
-    $("#dlg_selecciona_hab_urb_contancias").dialog({
-    autoOpen: false, modal: true, width: 600,height:400, show: {effect: "fade", duration: 300}, resizable: false,
-    title: "<div class='widget-header'><h4>.: Seleccione Habiltacion :.</h4></div>",
-    buttons: [
-            {
-                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Crear Mapa',
-                "class": "btn btn-labeled bg-color-green txt-color-white",
-                click: function () 
-                {
-                    crea_mapa_constancias(anio)
-                }
-            },
 
-            {
-                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-primary bg-color-red",
-                click: function () {$(this).dialog("close");MensajeDialogLoadAjaxFinish('map');}
-            }]
-    }).dialog('open');
+
+aux_haburb=0;
+function crear_constancias_mapa()
+{
+    $("#inp_habilitacion").show();
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2015" onchange="valida_capa('+"'chk_map_cons_2015'"+')">\n\
+                                    <i></i>\n\
+                                    2015\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2016" onchange="valida_capa('+"'chk_map_cons_2016'"+')">\n\
+                                    <i></i>\n\
+                                    2016\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2017" onchange="valida_capa('+"'chk_map_cons_2017'"+')">\n\
+                                    <i></i>\n\
+                                    2017\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2018" onchange="valida_capa('+"'chk_map_cons_2018'"+')">\n\
+                                    <i></i>\n\
+                                    2018\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+    
+    if(aux_haburb==0)
+    {
+        aux_haburb=1;
+        autocompletar_haburb('inp_habilitacion');
+    }
+    MensajeDialogLoadAjaxFinish('map');
     
     
 }
 function crea_mapa_constancias(anio)
 {
-    if($("#hidden_input_hab_urb_constancias").val()==0)
+    if($("#hidden_inp_habilitacion").val()==0)
     {
-        mostraralertasconfoco("Seleccione Hablitacion","#input_hab_urb_constancias");
+        mostraralertasconfoco("Seleccione Hablitacion","#inp_habilitacion");
+        MensajeDialogLoadAjaxFinish('map');
+        $("#chk_map_cons_2015,#chk_map_cons_2016,#chk_map_cons_2017,#chk_map_cons_2018").prop("checked", false);
         return false;
-        
     }
-    traer_hab_by_id($("#hidden_input_hab_urb_constancias").val());
+    traer_hab_by_id($("#hidden_inp_habilitacion").val());
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'get_map_constancias/'+anio+'/'+$("#hidden_input_hab_urb_constancias").val(),
+            url: 'get_map_constancias/'+anio+'/'+$("#hidden_inp_habilitacion").val(),
             type: 'get',
             success: function (data) {
                 var format = new ol.format.GeoJSON();
@@ -2409,6 +2462,7 @@ function crea_mapa_constancias(anio)
             }
         });
 }
+
 function stylez_constancias(feature, resolution) {
     if(feature.get('nro_constancia')==null)
     {
@@ -2433,6 +2487,7 @@ function stylez_constancias(feature, resolution) {
         })
     });
 }
+
 function verpdf(ruta)
 {
     crear_dlg("dlg_pdf",900,"Ver Información");
@@ -2475,9 +2530,14 @@ function autocompletar_haburb(textbox){
         }
         
         
-        
+var lyr_sectores_cat1;        
 function traer_hab_by_id(id)
 {
+    if(lyr_sectores_cat1)
+    {
+        map.removeLayer(lyr_sectores_cat1);
+        map.removeLayer(lyr_lotes3);
+    }
         MensajeDialogLoadAjax('dlg_map', '.:: Cargando ...');
         $.ajax({url: 'gethab_urb_by_id/'+id,
                     type: 'GET',
@@ -2505,36 +2565,36 @@ function traer_hab_by_id(id)
                     }
                 });
     }
-        function traer_lote_by_hab(id)
-        {
-            $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: 'get_lotes_x_hab_urb',
-                    type: 'GET',
-                    data: {codigo: id},
-                    success: function (data) {
-                        //alert(data[0].json_build_object);
-                        //alert(geojson_manzanas2);
-                        map.removeLayer(lyr_lotes3);
-                        var format_lotes3 = new ol.format.GeoJSON();
-                        var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
-                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                        var jsonSource_lotes3 = new ol.source.Vector({
-                            attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                        });
-                        //vectorSource.addFeatures(features_manzanas2);
-                        jsonSource_lotes3.addFeatures(features_lotes3);
-                        lyr_lotes3 = new ol.layer.Vector({
-                            source:jsonSource_lotes3,
-                            style: label_lotes,
-                            title: "lotes"
-                        });
-                        map.addLayer(lyr_lotes3);
-                        MensajeDialogLoadAjaxFinish('dlg_map');
-
-                    },
-                    error: function (data) {
-                        MensajeAlerta('Predios','No se encontró ningún predio.');
-                    }
+function traer_lote_by_hab(id)
+{
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_lotes_x_hab_urb',
+            type: 'GET',
+            data: {codigo: id},
+            success: function (data) {
+                //alert(data[0].json_build_object);
+                //alert(geojson_manzanas2);
+                map.removeLayer(lyr_lotes3);
+                var format_lotes3 = new ol.format.GeoJSON();
+                var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_lotes3 = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
                 });
-        }
+                //vectorSource.addFeatures(features_manzanas2);
+                jsonSource_lotes3.addFeatures(features_lotes3);
+                lyr_lotes3 = new ol.layer.Vector({
+                    source:jsonSource_lotes3,
+                    style: label_lotes,
+                    title: "lotes"
+                });
+                map.addLayer(lyr_lotes3);
+                MensajeDialogLoadAjaxFinish('dlg_map');
+
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún predio.');
+            }
+        });
+}

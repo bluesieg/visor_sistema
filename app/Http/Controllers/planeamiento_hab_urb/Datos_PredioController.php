@@ -34,14 +34,18 @@ class Datos_PredioController extends Controller
         {
             return $this->cargar_datos_vw_entrega_cons($request);
         }
+         if($request['grid']=='9')
+        {
+            return $this->cargar_constancias_entregadas($request);
+        }
+         if($request['grid']=='9_1')
+        {
+            return $this->cargar_documetos($request);
+        }
     }
     public function cargar_datos_predio(Request $request)
     {
             header('Content-type: application/json');
-            
-            $fecha_inicio = $request['fecha_inicio'];
-            $fecha_fin = $request['fecha_fin'];
-            
             $page = $_GET['page'];
             $limit = $_GET['rows'];
             $sidx = $_GET['sidx'];
@@ -51,8 +55,8 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_reg_datos_lote where fecha_registro between '$fecha_inicio' and '$fecha_fin'");
-             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_reg_datos_lote')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_reg_datos_lote");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_reg_datos_lote')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;
             if (!$sidx) {
@@ -85,10 +89,6 @@ class Datos_PredioController extends Controller
     public function cargar_datos_vw_asig_exped(Request $request)
     {
             header('Content-type: application/json');
-            
-            $fecha_inicio = $request['fecha_inicio'];
-            $fecha_fin = $request['fecha_fin'];
-            
             $page = $_GET['page'];
             $limit = $_GET['rows'];
             $sidx = $_GET['sidx'];
@@ -98,8 +98,8 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_asig_exp) as total from soft_const_posesion.vw_reg_insp_campo where fec_asig between '$fecha_inicio' and '$fecha_fin'");
-             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_reg_insp_campo')->whereBetween('fec_asig', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_asig_exp) as total from soft_const_posesion.vw_reg_insp_campo");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_reg_insp_campo')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;
             if (!$sidx) {
@@ -140,10 +140,6 @@ class Datos_PredioController extends Controller
     public function cargar_datos_vw_vistos_legales(Request $request)
     {
             header('Content-type: application/json');
- 
-            $fecha_inicio = $request['fecha_inicio'];
-            $fecha_fin = $request['fecha_fin'];
-            
             $page = $_GET['page'];
             $limit = $_GET['rows'];
             $sidx = $_GET['sidx'];
@@ -153,8 +149,8 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_legal where fch_inspeccion between '$fecha_inicio' and '$fecha_fin'");
-             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_legal')->whereBetween('fch_inspeccion', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_legal");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_legal')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;
             if (!$sidx) {
@@ -186,10 +182,6 @@ class Datos_PredioController extends Controller
        public function cargar_datos_vw_vistos_y_firmas(Request $request)
     {
             header('Content-type: application/json');
-            
-            $fecha_inicio = $request['fecha_inicio'];
-            $fecha_fin = $request['fecha_fin'];
-            
             $page = $_GET['page'];
             $limit = $_GET['rows'];
             $sidx = $_GET['sidx'];
@@ -199,8 +191,8 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_firma where fch_inspeccion between '$fecha_inicio' and '$fecha_fin'");
-             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_firma')->whereBetween('fch_inspeccion', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_exped_para_visto_firma");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_exped_para_visto_firma')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;
             if (!$sidx) {
@@ -232,10 +224,6 @@ class Datos_PredioController extends Controller
       public function cargar_datos_vw_entrega_cons(Request $request)
     {
             header('Content-type: application/json');
-            
-            $fecha_inicio = $request['fecha_inicio'];
-            $fecha_fin = $request['fecha_fin'];
-            
             $page = $_GET['page'];
             $limit = $_GET['rows'];
             $sidx = $_GET['sidx'];
@@ -245,8 +233,8 @@ class Datos_PredioController extends Controller
                 $start = 0;
             }
 
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_entrega_constancias where fecha_registro between '$fecha_inicio' and '$fecha_fin'");
-             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_entrega_constancias')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_entrega_constancias");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_entrega_constancias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                     
             $total_pages = 0;
             if (!$sidx) {
@@ -274,7 +262,91 @@ class Datos_PredioController extends Controller
             }
             return response()->json($Lista);
     }
+    public function cargar_constancias_entregadas(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
 
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_constancias_entregadas");
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_constancias_entregadas')->whereBetween('fecha_entrega',[$request['fecini'], $request['fecfin']])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+            foreach ($sql as $Index => $Datos) {                
+                $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_reg_exp),
+                    trim($Datos->nro_expediente),
+                    trim($Datos->gestor),
+                    trim($Datos->nro_constancia),
+                    trim($this->getCreatedAtAttribute($Datos->fecha_entrega)->format('d/m/Y')),
+                    '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="subir_scan('.trim($Datos->id_reg_exp).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR ESCANEO</button>'
+                );
+            }
+            return response()->json($Lista);
+    }
+    public function cargar_documetos(Request $request)
+    {
+            header('Content-type: application/json');
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+            if ($start < 0) {
+                $start = 0;
+            }
+
+             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_doc_adjuntos where id_reg_exp=".$request['id']);
+             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_doc_adjuntos')->where('id_reg_exp',$request['id'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    
+            $total_pages = 0;
+            if (!$sidx) {
+                $sidx = 1;
+            }
+            $count = $totalg[0]->total;
+            if ($count > 0) {
+                $total_pages = ceil($count / $limit);
+            }
+            if ($page > $total_pages) {
+                $page = $total_pages;
+            }
+            $Lista = new \stdClass();
+            $Lista->page = $page;
+            $Lista->total = $total_pages;
+            $Lista->records = $count;
+            foreach ($sql as $Index => $Datos) {                
+                $Lista->rows[$Index]['id'] = $Datos->id_doc_adj;            
+                $Lista->rows[$Index]['cell'] = array(
+                    trim($Datos->id_doc_adj),
+                    trim($Datos->t_documento),
+                    trim($Datos->descripcion),
+                    '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
+                    '<button class="btn btn-labeled btn-danger" type="button" onclick="delfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-trash"></i></span> Borrar</button>',
+                );
+            }
+            return response()->json($Lista);
+    }
 
 
     public function create(Request $request)

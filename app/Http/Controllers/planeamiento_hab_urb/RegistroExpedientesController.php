@@ -19,7 +19,8 @@ class RegistroExpedientesController extends Controller
         $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
         $tip_sol = DB::connection('gerencia_catastro')->select('select * from soft_const_posesion.tipo_solictud');
         $inspectores = DB::connection('gerencia_catastro')->select('select id_inspector,apenom from soft_const_posesion.inspectores order by id_inspector');
-        return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1','tip_sol','inspectores'));
+        $tip_doc = DB::connection('gerencia_catastro')->select('select * from soft_const_posesion.tipo_documento order by 1');
+        return view('planeamiento_hab_urb/vw_constancia_posesion',compact('anio','anio1','tip_sol','inspectores','tip_doc'));
     }
 
     public function create(Request $request)
