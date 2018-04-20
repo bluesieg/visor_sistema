@@ -192,7 +192,7 @@
         </aside>
         @endif
 
-        <div id="main" role="main" style="padding-bottom: 0px !important; min-height: 0px !important; margin-left: 300px !important">            
+        <div id="main" role="main" style="padding-bottom: 0px !important; min-height: 0px !important; margin-left: 250px !important">            
             <div id="content">
                 @yield('content') 
             </div>

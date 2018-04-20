@@ -619,58 +619,19 @@
 
                                                                <div class="tree smart-form" style="color:white !important">
                                                                   <ul >
-                                                                        <li style="padding-left: 0px;" >
-                                                                                <div class="tree">
-                                                                                    <ul style="padding-left: 0px; padding-top: 0px">
-                                                                                            <li>
-                                                                                                <span class="label " style=" border: 1px dotted #999;width: 160px; color: white">
-                                                                                                        <i class="fa fa-lg fa-minus-circle"></i> Mapas Constancias
-                                                                                                    </span>
-                                                                                                    <ul>
-                                                                                                        <li>
-                                                                                                            <span style="width: 120px">
+                                                                     <li >
+                                                                         <span style="width: 160px;">
                                                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2015" onchange="valida_capa('chk_map_cons_2015')">
+                                                                                 <input type="checkbox" name="checkbox-inline" id="chk_map_cons" onchange="valida_capa('chk_map_cons')" >
                                                                                                                     <i></i>
-                                                                                                                    2015
+                                                                                     <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                 Mapa Constancias
                                                                                                                 </label> 
                                                                                                             </span> 
                                                                                                         </li>
-                                                                                                        <li>
-                                                                                                            <span style="width: 120px">
-                                                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2016" onchange="valida_capa('chk_map_cons_2016')">
-                                                                                                                    <i></i>
-                                                                                                                    2016
-                                                                                                                </label> 
-                                                                                                            </span>
-                                                                                                        </li>
-                                                                                                        <li>
-                                                                                                            <span style="width: 120px">
-                                                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2017" onchange="valida_capa('chk_map_cons_2017')">
-                                                                                                                    <i></i>
-                                                                                                                    2017
-                                                                                                                </label> 
-                                                                                                            </span>
-                                                                                                        </li>
-                                                                                                        <li>
-                                                                                                            <span style="width: 120px">
-                                                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_cons_2018" onchange="valida_capa('chk_map_cons_2018')">
-                                                                                                                    <i></i>
-                                                                                                                    2018
-                                                                                                                </label> 
-                                                                                                            </span>
-                                                                                                        </li>
                                                                                                     </ul>
-                                                                                            </li>
-                                                                                    </ul>
                                                                                 </div>
-                                                                        </li>
-                                                                  </ul>
                                                               </div>
-                                                           </div>
                                                         <!-- end widget content -->
                                                         </div>
                                                     </div>
@@ -1083,7 +1044,7 @@
                                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsefour-1">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
                                         <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
-                                        Acesoría Legal
+                                        Asesoría Legal
                                     </a>
                                 </h4>
                             </div>
