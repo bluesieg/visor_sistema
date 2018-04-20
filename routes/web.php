@@ -123,7 +123,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('getInspectores','MantenimientoInspectoresController@getInspectores');
          
         //escaneo
-        Route::resource('mantenimiento_inspectores','Documentos_AjuntosController');
+        
         Route::post('callpdf', 'Documentos_AjuntosController@get_pdf');
         Route::post('create_scaneo', 'Documentos_AjuntosController@create');
 

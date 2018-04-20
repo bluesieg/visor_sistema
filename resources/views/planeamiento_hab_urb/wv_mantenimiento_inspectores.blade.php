@@ -1,4 +1,4 @@
-@extends('layouts.map')
+@extends('layouts.planeamiento_hab_urb')
 @section('content')
 <style>
         
