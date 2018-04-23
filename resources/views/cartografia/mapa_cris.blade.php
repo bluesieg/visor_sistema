@@ -536,10 +536,15 @@
 
                     </div>
                 </div>
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="verpdf('habilitaciones')">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Lista de Habilitaciones
+                    </button>
+                </div>
                 <div id="div_img_agencias" class="col-xs-12 text-align-center" style="padding: 0px; margin-top: 10px">
                     
                 </div>
-                
+                <input type="hidden" id="id_agencia" value="0">
            
             </div>
           
@@ -640,7 +645,7 @@
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 40%">Habilitación &nbsp;<i class="fa fa-map"></i></span>
                             <div >
-                                <label id="input_pred_habilitacion"  class="form-control" style="height: 32px;"></label>
+                                <label id="input_pred_habilitacion"  class="form-control" style="height: 32px; overflow-y: scroll"></label>
                             </div>
 
                         </div>

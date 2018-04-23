@@ -22,6 +22,7 @@ map.on('singleclick', function(evt) {
                 {   
                     $("#div_img_agencias").html("");
                     mostrar=1;
+                    $("#id_agencia").val(feature.get('gid'));
                     $("#input_agencia").text(feature.get('text'));
                     $("#input_agencia_area").text(feature.get('area'));
                     $("#input_agencia_poblacion").text('113 171 hab');;
@@ -2490,17 +2491,24 @@ function stylez_constancias(feature, resolution) {
 
 function verpdf(ruta)
 {
+    
     crear_dlg("dlg_pdf",900,"Ver Información");
     MensajeDialogLoadAjax('iframe_pdf', '.:: Cargando ...');
     var iFrameObj = document.getElementById('iframe_pdf'); 
-    iFrameObj.src = "img/recursos/"+ruta; 
+    if(ruta=="habilitaciones")
+    {
+        iFrameObj.src = "img/recursos/habilitaciones/"+$("#id_agencia").val()+".pdf"; 
+    }
+    else
+    {
+        iFrameObj.src = "img/recursos/"+ruta; 
+    }
     
     $(iFrameObj).load(function() 
     { 
         MensajeDialogLoadAjaxFinish('iframe_pdf');
     });
-    
-    
+   
     
     
 }
