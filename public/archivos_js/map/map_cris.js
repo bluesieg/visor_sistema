@@ -2408,54 +2408,61 @@ function crea_mapa_constancias(anio)
             url: 'get_map_constancias/'+anio+'/'+$("#hidden_inp_habilitacion").val(),
             type: 'get',
             success: function (data) {
-                var format = new ol.format.GeoJSON();
-                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
-                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                var jsonSource = new ol.source.Vector({
-                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                });
-                jsonSource.addFeatures(features);
-                if(anio==2015)
+                if(data==0)
                 {
-                    lyr_map_cons_2015 = new ol.layer.Vector({
-                        source:jsonSource,
-                        style: stylez_constancias,
-                        title: "Constancias 2015"
-                    });
-                    map.addLayer(lyr_map_cons_2015);
-                    var extent = lyr_map_cons_2015.getSource().getExtent();
+                    MensajeAlerta('Constancias','No se encontró ningúna constancia en esta habilitación.');
                 }
-                if(anio==2016)
+                else
                 {
-                    lyr_map_cons_2016 = new ol.layer.Vector({
-                        source:jsonSource,
-                        style: stylez_constancias,
-                        title: "Constancias 2016"
+                    var format = new ol.format.GeoJSON();
+                    var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
                     });
-                    map.addLayer(lyr_map_cons_2016);
-                    var extent = lyr_map_cons_2016.getSource().getExtent();
+                    jsonSource.addFeatures(features);
+                    if(anio==2015)
+                    {
+                        lyr_map_cons_2015 = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: stylez_constancias,
+                            title: "Constancias 2015"
+                        });
+                        map.addLayer(lyr_map_cons_2015);
+                        var extent = lyr_map_cons_2015.getSource().getExtent();
+                    }
+                    if(anio==2016)
+                    {
+                        lyr_map_cons_2016 = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: stylez_constancias,
+                            title: "Constancias 2016"
+                        });
+                        map.addLayer(lyr_map_cons_2016);
+                        var extent = lyr_map_cons_2016.getSource().getExtent();
+                    }
+                    if(anio==2017)
+                    {
+                        lyr_map_cons_2017 = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: stylez_constancias,
+                            title: "Constancias 2017"
+                        });
+                        map.addLayer(lyr_map_cons_2017);
+                        var extent = lyr_map_cons_2017.getSource().getExtent();
+                    }
+                    if(anio==2018)
+                    {
+                        lyr_map_cons_2018 = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: stylez_constancias,
+                            title: "Constancias 2018"
+                        });
+                        map.addLayer(lyr_map_cons_2018);
+                        var extent = lyr_map_cons_2018.getSource().getExtent();
+                    }
+                    map.getView().fit(extent, map.getSize());
                 }
-                if(anio==2017)
-                {
-                    lyr_map_cons_2017 = new ol.layer.Vector({
-                        source:jsonSource,
-                        style: stylez_constancias,
-                        title: "Constancias 2017"
-                    });
-                    map.addLayer(lyr_map_cons_2017);
-                    var extent = lyr_map_cons_2017.getSource().getExtent();
-                }
-                if(anio==2018)
-                {
-                    lyr_map_cons_2018 = new ol.layer.Vector({
-                        source:jsonSource,
-                        style: stylez_constancias,
-                        title: "Constancias 2018"
-                    });
-                    map.addLayer(lyr_map_cons_2018);
-                    var extent = lyr_map_cons_2018.getSource().getExtent();
-                }
-                map.getView().fit(extent, map.getSize());
                 MensajeDialogLoadAjaxFinish('map');
             },
             error: function (data) {

@@ -535,7 +535,9 @@ class MapaController extends Controller
     }
     public function get_constancias($anio,$haburb,Request $req){
 
-
+        $hab = DB::connection('gerencia_catastro')->select("select * from soft_const_posesion.vw_const_para_mapa where id_hab_urb=$haburb");
+        if(count($hab)>=1)
+        {
         $lotes = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -552,9 +554,11 @@ class MapaController extends Controller
                              )
                           ) AS feature
                           FROM (select * from soft_const_posesion.vw_const_para_mapa where id_hab_urb=$haburb) row) features ;");
-
         return response()->json($lotes);
+        }
+        else
+        {
+            return 0;
+        }
     }
-
-
 }
