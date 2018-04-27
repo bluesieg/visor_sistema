@@ -128,5 +128,18 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('create_scaneo', 'Documentos_AjuntosController@create');
 
     });
+    
+    
+    Route::group(['namespace' => 'licencias_edificacion'], function() {
+        Route::resource('procedimientos','ProcedimientoController');
+        Route::get('get_procedimientos','ProcedimientoController@get_procedimientos');
+        
+        Route::resource('requisitos','RequisitoController');
+        Route::get('get_requisitos','RequisitoController@get_requisitos');
+        
+        Route::resource('recepcion_documentos','RecDocumentosController');
+        Route::get('get_documentos','RecDocumentosController@get_documentos');
+        
+    });
 
 });

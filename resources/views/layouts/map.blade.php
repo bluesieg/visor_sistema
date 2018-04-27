@@ -640,46 +640,63 @@
                                             <!-- fin option-->
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                <div class="panel-heading" style=" background:  #2471A3; color: white;">
                                                     <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-obras_priva" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapse_licencias_edificacion" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
                                                             Sub Gerencia Obras Privadas 
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapseTwo_sub-obras_priva" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                <div id="collapse_licencias_edificacion" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 20px" >
                                                         <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
+                                                        <!-- widget content -->
+                                                        <div class="widget-body no-padding">
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="procedimientos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Procedimientos
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="requisitos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Requisitos
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Recepcion de Documentos
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                
                                                             </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                  <ul >
-                                                                        <li >
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_mod_lic_edi" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Modulo Lic. Edificación
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                       
-                                                                  </ul>
-                                                              </div>
-                                                           </div>
-                                                        <!--end widget content -->
                                                         </div>
+                                                       
+                                                        <!-- end widget content -->
                                                     </div>
                                                 </div>
+                                            </div>
+                                                
+                                                
                                             </div>
                                             <!-- fin option-->
                                             <!--option-->
