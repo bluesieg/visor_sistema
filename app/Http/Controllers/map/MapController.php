@@ -417,12 +417,15 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                             'properties', json_build_object(
                                 'gid',gid,
                                 'zona', zona,
-                                'area',area,
-                                'tot_predios_urbanos',tot_predios_urbanos,
-                                'poblacion',poblacion
+                                'total_predios', tot_predios,
+                                'poblacion', poblacion,
+                                'area', shape_area,
+                                'tot_aportes', tot_aportes,
+                                'situacion', situacion
+
                              )
                           ) AS feature
-                          FROM (SELECT * FROM catastro.zon_terr_urbana where zona='ZONA URBANA') row) features;");
+                          FROM (SELECT * FROM catastro.zon_terr where zona='ZONA URBANA') row) features;");
 
         return response()->json($agencias);
 
@@ -441,7 +444,12 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                 'gid',gid,
-                                'zona', zona
+                                'zona', zona,
+                                'total_predios', tot_predios,
+                                'poblacion', poblacion,
+                                'area', shape_area,
+                                'tot_aportes', tot_aportes,
+                                'situacion', situacion
                              )
                           ) AS feature
                           FROM (SELECT * FROM catastro.zon_terr where zona='ZONA AGRICOLA') row) features;");
@@ -461,7 +469,12 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                 'gid',gid,
-                                'zona', zona
+                                'zona', zona,
+                                'total_predios', tot_predios,
+                                'poblacion', poblacion,
+                                'area', shape_area,
+                                'tot_aportes', tot_aportes,
+                                'situacion', situacion
                              )
                           ) AS feature
                           FROM (SELECT * FROM catastro.zon_terr where zona='ZONA ERIAZA') row) features;");

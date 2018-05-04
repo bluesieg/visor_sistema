@@ -371,9 +371,10 @@ class PredioController extends Controller
                                                     left join catastro.manzanas b on a.id_mzna=b.id_mzna
                                                     left join catastro.sectores c on b.id_sect=c.id_sec
                                                    where id_lote=".$lote);
-        $foto = DB::connection('fotos')->select("select encode(foto,'base64') as foto from sect_".$lote[0]->sector." where id_lote='".$lote[0]->sector.$lote[0]->codi_mzna.$lote[0]->codi_lote."' limit 1");
+        $foto = DB::connection('fotos')->select("select encode(foto,'base64') as foto, nom_foto from sect_".$lote[0]->sector." where id_lote='".$lote[0]->sector.$lote[0]->codi_mzna.$lote[0]->codi_lote."'");
         if(count($foto)>=1){
-           return $foto[0]->foto;
+            return $foto;
+           //return $foto[0]->foto;
         }
         else{
             return 0; 

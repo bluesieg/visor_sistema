@@ -472,7 +472,7 @@ class MapaController extends Controller
     }
     function leyenda_aportes()
     {
-        $leyenda = DB::select("SELECT layer,  color
+        $leyenda = DB::select("SELECT count(gid) as total, layer,  color
             FROM catastro.aporte
             group by layer, color;");
 

@@ -2,6 +2,7 @@ var lyr_map_cons_2015;
 var lyr_map_cons_2016;
 var lyr_map_cons_2017;
 var lyr_map_cons_2018;
+var aux_constancias=0;
 map.on('singleclick', function(evt) {
 //    map.getLayers().forEach(function(el) {
 //        if(el.get('title')=='lotes')
@@ -25,7 +26,7 @@ map.on('singleclick', function(evt) {
                     $("#id_agencia").val(feature.get('gid'));
                     $("#input_agencia").text(feature.get('text'));
                     $("#input_agencia_area").text(feature.get('area'));
-                    $("#input_agencia_poblacion").text('113 171 hab');;
+                    $("#input_agencia_poblacion").text('----- hab');;
                     $("#input_agencia_dir").text(feature.get('ubicacion'));;
                     $("#input_agencia_fono").text(feature.get('tlfno_anex'));
                     $("#div_img_agencias").html('<img src="img/recursos/agencias/'+feature.get('gid')+'.jpg" style="max-height:250px; max-width:400px" onclick="viewagencia('+feature.get('gid')+');"/>')
@@ -44,12 +45,11 @@ map.on('singleclick', function(evt) {
                 {
                     mostrar=1;
                     $("#input_zona").val(feature.get('zona'));
-                    if(layer.get('title')=='Zona Urbana')
-                    {
-                        $("#input_zona_area").text(feature.get('area'));
-                        $("#input_zona_pred").text(feature.get('tot_predios_urbanos'));
-                        $("#input_zona_poblacion").text(feature.get('poblacion'));
-                    }
+                    $("#input_zona_area").text(feature.get('area'));
+                    $("#input_zona_poblacion").text(feature.get('poblacion'));
+                    $("#input_zona_aportes").text(feature.get('tot_aportes'));
+                    $("#input_zona_situacion").text(feature.get('situacion'));
+                        $("#input_zona_pred").text(feature.get('total_predios'));
                     crear_dlg("dlg_zonas_distritales",600,"Zonas Distritales");
                     return false;
                 }
@@ -95,13 +95,53 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_limites",1100,"Cerro Colorado");
                     return false;
                 }
-                
+                if(layer.get('title').match(/Constancias.*/)&&mostrar==0)
+                {
+                    mostrar=1;
+                    if(aux_constancias==0)
+                    {
+                        aux_constancias=1;
+                        crear_grilla_constancias();
+                    }
+                    jQuery("#table_doc_constancias").jqGrid('setGridParam', {url: 'datos_predio?grid=9_1&id='+feature.get('id_reg_exp')}).trigger('reloadGrid');
+                    crear_dlg("dlg_constancias_anios",1100,"Constancias");
+                    return false;
+                }
             });
     
 });
+function crear_grilla_constancias()
+{
+    jQuery("#table_doc_constancias").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '200px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_doc_adj', 'Documento', 'Descripcion','Ver','Eliminar'],
+            rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'DOCUMENTOS ESCANEADOS', align: "center",
+            colModel: [
+                {name: 'id_doc_adj', index: 'id_doc_adj', hidden: true},
+                {name: 't_documento', index: 't_documento', align: 'center', width: 250},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 400},
+                {name: 'ver', index: 'ver', align: 'center', width: 160},
+                {name: 'del', index: 'del', align: 'center', width: 150},
+            ],
+            pager: '#pager_table_doc_constancias',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_doc_constancias').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                        var firstid = jQuery('#table_doc_constancias').jqGrid('getDataIDs')[0];
+                            $("#table_doc_constancias").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+}
 function verlote(id)
 {
-    crear_dlg("dlg_predio_lote",900,"Informacion Referencia del Lote de Lote");
+    crear_dlg("dlg_predio_lote",900,"Informacion Referencia del Lote");
     traerpredionuevo(id);
     traerfoto(id);
 }
@@ -275,6 +315,9 @@ function label_lotes(feature) {
 }
 function traerpredionuevo(id)
 {
+    $("#input_pred_cod_cat").text("");
+    $("#input_pred_habilitacion").text("");
+    $("#input_pred_propietario").text("");
     MensajeDialogLoadAjax('dlg_predio_lote', '.:: Cargando ...');
     $.ajax({url: 'traerlote/'+id+'/'+$("#anio_pred").val(),
     type: 'GET',
@@ -300,6 +343,8 @@ function traerpredionuevo(id)
 }
 function traerfoto(id)
     {
+        texto1='';
+        texto2='';
         MensajeDialogLoadAjax('dlg_img_view', '.:: Cargando ...');
         $.ajax({url: 'traefoto_lote_id/'+id,
         type: 'GET',
@@ -307,7 +352,37 @@ function traerfoto(id)
         {
             if(r!=0)
             {
-                $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r+'" width="85%"/></center>');
+                $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r[0].foto+'" width="85%"/></center>');
+
+                for(i=0;i<r.length;i++)
+                {
+                    if(i==0)
+                    {
+                        texto1=texto1+'<li data-target="#myCarousel" data-slide-to="'+i+'" class="active"></li>';            
+                        texto2=texto2+'<div class="item active"><center><img src="data:image/png;base64,'+r[i].foto+'" alt=""></center></div>\n\
+                                       '
+                        
+                    }
+                    else
+                    {
+                        texto1=texto1+'<li data-target="#myCarousel" data-slide-to="'+i+'"></li>';            
+                        texto2=texto2+'<div class="item"><center><img src="data:image/png;base64,'+r[i].foto+'" alt=""></center></div>\n\
+                                      '
+                    }
+                }
+                
+                
+                final='<div id="myCarousel" class="carousel fade" style="margin-bottom: 20px;">\n\
+                      <ol class="carousel-indicators">\n\
+                      '+texto1+'\n\
+                      </ol>\n\
+                      <div class="carousel-inner">\n\
+                        '+texto2+'\n\
+                      </div>\n\
+                    <a class="left carousel-control" href="#myCarousel" data-slide="next"> <span class="glyphicon glyphicon-chevron-left"></span> </a>\n\
+                    <a class="right carousel-control" href="#myCarousel" data-slide="prev"> <span class="glyphicon glyphicon-chevron-right"></span> </a>\n\
+                    </div>';
+                $("#dlg_img_view_big").html(final);
             }
             else
             {
@@ -325,25 +400,20 @@ function traerfoto(id)
     }
 function viewlong(ruta)
 {
-    $("#dlg_img_view_big").html("");
+    //$("#dlg_img_view_big").html("");
     $("#dlg_view_foto").dialog({
     autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
     title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
     }).dialog('open');
   
-        $("#dlg_img_view_big").html("");
-        $("#dlg_view_foto").dialog({
-        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
-        }).dialog('open');
         if(ruta!="")
         {
             $("#dlg_img_view_big").html('<center><img src="img/recursos/'+ruta+'" width="85%"/></center>');
         }
-        else
-        {
-            $("#dlg_img_view_big").html($("#dlg_img_view").html());
-        }
+//        else
+//        {
+//            //$("#dlg_img_view_big").html($("#dlg_img_view").html());
+       // }
     
 }
 function viewagencia(id)
@@ -1241,7 +1311,7 @@ function crear_z_urbana()
         });
 }
 
-function stylez_urbana(feature, resolution) {
+function stylez_eriaza(feature, resolution) {
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: '#000000',
@@ -1250,6 +1320,36 @@ function stylez_urbana(feature, resolution) {
         }),
         fill: new ol.style.Fill({
             color: 'rgba(255, 195, 0 , 0.3)',
+        }),
+        text: new ol.style.Text({
+        text: feature.get('zona')
+        })
+    });
+}
+function stylez_urbana(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#6666ff',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(12, 17, 178 , 0.3)',
+        }),
+        text: new ol.style.Text({
+        text: feature.get('zona')
+        })
+    });
+}
+function stylez_agircola(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#009900',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(17, 178, 12   , 0.3)',
         }),
         text: new ol.style.Text({
         text: feature.get('zona')
@@ -1291,21 +1391,7 @@ function crear_z_agricola()
         });
 }
 
-function stylez_agircola(feature, resolution) {
-    return new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: '#6666ff',
-            width: 2,
-            lineCap: 'butt',
-        }),
-        fill: new ol.style.Fill({
-            color: 'rgba(12, 17, 178 , 0.3)',
-        }),
-        text: new ol.style.Text({
-        text: feature.get('zona')
-        })
-    });
-}
+
 function crear_z_eriaza()
 {
     $.ajax({url: 'get_z_eriaza',
@@ -1341,21 +1427,7 @@ function crear_z_eriaza()
         });
 }
 
-function stylez_eriaza(feature, resolution) {
-    return new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: '#009900',
-            width: 2,
-            lineCap: 'butt',
-        }),
-        fill: new ol.style.Fill({
-            color: 'rgba(17, 178, 12   , 0.3)',
-        }),
-        text: new ol.style.Text({
-        text: feature.get('zona')
-        })
-    });
-}
+
 function crear_aportes()
 {
     $.ajax({url: 'get_aportes',
@@ -1405,7 +1477,7 @@ function  llamar_leyenda_aporte()
                     html=html+'<div >\n\
                                 <div class="col-xs-3"><label style="background-color: rgba('+element.color.trim()+',1); width: 15px !important ; height: 15px !important; margin-left:5px; margin-top:5px"></label></div>    \n\
                                     <div class="col-xs-9"><label class="checkbox inline-block" style="padding-left: 0px; font-size:8px" placehoder="'+element.layer.trim()+'">\n\
-                                        '+element.layer.trim()+'\n\
+                                        '+element.layer.trim()+'    ('+element.total+')\n\
                                     </label></div>\n\
                                 </div>';
                 });
@@ -2499,7 +2571,7 @@ function stylez_constancias(feature, resolution) {
 function verpdf(ruta)
 {
     
-    crear_dlg("dlg_pdf",900,"Ver Información");
+    crear_dlg("dlg_pdf",1000,"Ver Información");
     MensajeDialogLoadAjax('iframe_pdf', '.:: Cargando ...');
     var iFrameObj = document.getElementById('iframe_pdf'); 
     if(ruta=="habilitaciones")

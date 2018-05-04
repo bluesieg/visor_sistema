@@ -576,7 +576,7 @@
                                                            <span class="input-group-addon">Desde:</span>
                                                            <div class="icon-addon addon-md">
                                                                 <input  id="fec_ini_escaneo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
-                    </div> 
+                                                            </div> 
                                                        </div>
                                                     </div>
                                                     <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">

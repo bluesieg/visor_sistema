@@ -471,6 +471,21 @@
                     <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px" onclick="verpdf('ley/ley.pdf')">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Ley
                     </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px" title="LEY No 12075 (EXP. DE DIP.)" onclick="verpdf('ley/LEY_2075.pdf')">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Exp1
+                    </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px" title="LEY No 12075 (EXP. DEL SEN.)" onclick="verpdf('ley/LEY_12075_SEN.pdf')">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Exp2
+                    </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px" title="Cierre de Mesa GRA- Yanahuara y Cayma" onclick="verpdf('ley/cmcy.pdf')">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CM1
+                    </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px; margin-top: 5px" title="Cierre de Mesa GRA- Yura" onclick="verpdf('ley/cmy.pdf')">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CM2
+                    </button>
+                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;margin-top: 5px" title="Cierre de Mesa GRA- Sachaca" onclick="verpdf('ley/cms.pdf')">
+                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CM3
+                    </button>
 <!--                    <button   type="button" class="btn btn-labeled bg-color-green txt-color-white" style="width: 100px;">
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>CNA
                     </button>
@@ -848,8 +863,16 @@
     </div>
 </div> 
 <div id="dlg_pdf" style="display: none;">
-    <iframe id="iframe_pdf" style="width: 100%; height: 400px">
+    <iframe id="iframe_pdf" style="width: 100%; height: 500px">
         
     </iframe>
+</div> 
+<div id="dlg_constancias_anios" style="display: none;">
+    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
+        <article class="col-xs-12" style=" padding: 0px !important">
+            <table id="table_doc_constancias"></table>
+            <div id="pager_table_doc_constancias"></div>
+        </article>
+    </div>
 </div> 
 @endsection
