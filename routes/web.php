@@ -140,6 +140,16 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('recepcion_documentos','RecDocumentosController');
         Route::get('get_documentos','RecDocumentosController@get_documentos');
         
+        Route::resource('asignacion','AsignacionController');
+        Route::get('get_asignacion','AsignacionController@get_asignacion');
+        Route::get('buscar_expdiente_asignacion','AsignacionController@buscar_expdiente_asignacion');
+        
+        Route::resource('verificacion_administrativa','VerAdministrativaController');
+        Route::get('get_verif_administrativa','VerAdministrativaController@get_verif_administrativa');
+        Route::get('buscar_codigo_interno','VerAdministrativaController@buscar_codigo_interno');
+        Route::get('buscar_requisitos','VerAdministrativaController@buscar_requisitos');
+        Route::get('recuperar_requisitos','VerAdministrativaController@recuperar_requisitos');
+        
     });
 
 });

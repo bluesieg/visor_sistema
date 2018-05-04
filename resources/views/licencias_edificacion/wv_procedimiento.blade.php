@@ -1,4 +1,4 @@
-@extends('layouts.map')
+@extends('layouts.licencia_edificacion')
 @section('content')
 <style>
         
@@ -139,7 +139,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 150px">Descripcion: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_descripcion" type="text" class="form-control" style="height: 30px;" maxlength="30">
+                            <input id="inp_descripcion" type="text" class="form-control" style="height: 30px;" row="4">
                         </div>
                     </div>
                 </div>

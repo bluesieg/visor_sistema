@@ -9,55 +9,40 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\licencias_edificacion\RecDocumentos;
 
 
-class RecDocumentosController extends Controller
+class AsignacionController extends Controller
 {
 
     public function index()
     {
-        $modalidad = DB::connection('gerencia_catastro')->select('select * from soft_lic_edificacion.procedimiento order by descr_procedimiento desc');
-        return view('licencias_edificacion/wv_recdocumentos',  compact('modalidad'));
+        return view('licencias_edificacion/wv_recdocumentos');
     }
 
     public function create(Request $request)
     {
-        $codigo = $request['cod'];
-        $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite',$codigo)->first();
         
-        $select=DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('nro_exp',$codigo)->get();
+    }
+    
+    public function buscar_expdiente_asignacion(Request $request){
+        $codigo = $request['codigo'];
+        $expedientes = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.registro_expediente')->where('nro_exp',$codigo)->first();
         
         if(count($expedientes)>=1)
         {
-            if (count($select)>=1) {
-                
+            if ($expedientes->cod_interno == 0) {
                 return response()->json([
-                'msg' => 'repetido',
-                ]);
-                
+                    'msg' => 'si',
+                    'id_reg_exp' => $expedientes->id_reg_exp,
+                ]);    
             }else{
-                
-                $RecDocumentos = new  RecDocumentos;
-            
-                $RecDocumentos->nro_exp = $expedientes->codigoTramite;
-                $RecDocumentos->id_gestor = $expedientes->idInteresado;
-                $RecDocumentos->id_usuario = 1;
-                $RecDocumentos->fase = 1;
-                $RecDocumentos->gestor = $expedientes->nombres.' '.$expedientes->apellidos;
-                $RecDocumentos->fecha_inicio_tramite = $expedientes->iniciado;
-                $RecDocumentos->fecha_registro = date('d-m-Y');
-                $RecDocumentos->nro_doc_gestor = $expedientes->numeroIdentificacion;
-
-                $RecDocumentos->save();
-
-                return $RecDocumentos->id_reg_exp;
-                
-            }
-            
+                return response()->json([
+                    'msg' => 'existe',
+                ]);
+            } 
         }else{
             return response()->json([
                 'msg' => 'no',
             ]);
         }
-        
     }
 
     /**
@@ -85,9 +70,9 @@ class RecDocumentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,Request $request)
+    public function edit($id_reg_exp,Request $request)
     {
-        $select=DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('nro_exp',$request['nro_expediente'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
+        $select=DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('cod_interno',$request['codigo_interno'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
 
         if (count($select)>= 1) {
             return response()->json([
@@ -95,16 +80,14 @@ class RecDocumentosController extends Controller
                 ]);
         }else{
             $RecDocumentos = new  RecDocumentos;
-            $val=  $RecDocumentos::where("id_reg_exp","=",$id )->first();
+            $val=  $RecDocumentos::where("id_reg_exp","=",$id_reg_exp)->first();
             if(count($val)>=1)
             {
-                $val->nro_exp = $request['nro_expediente'];
-                $val->gestor = $request['gestor'];
-                $val->fecha_inicio_tramite = $request['fecha_inicio_tramite'];
-                $val->fecha_registro = $request['fecha_registro'];
+                $val->id_procedimiento = $request['modalidad'];
+                $val->cod_interno = $request['codigo_interno'];
                 $val->save();
             }
-            return $id;
+            return $id_reg_exp;
         }     
     }
 
@@ -137,10 +120,10 @@ class RecDocumentosController extends Controller
         return "destroy ".$request['id_reg_exp'];
     }
     
-    public function get_documentos(Request $request){
+    public function get_asignacion(Request $request){
         header('Content-type: application/json');
         
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_registro_expediente");
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_asignac");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -164,7 +147,7 @@ class RecDocumentosController extends Controller
 
      
 
-        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_registro_expediente')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_asignac')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -176,10 +159,10 @@ class RecDocumentosController extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_reg_exp),
                 trim($Datos->nro_exp),
-                trim($Datos->fase),
+                trim($Datos->fecha_registro),
                 trim($Datos->gestor),
-                trim($Datos->fecha_inicio_tramite),
-                trim($Datos->fecha_registro)
+                trim($Datos->cod_interno),
+                trim($Datos->descr_procedimiento)
             );
         }
 
