@@ -180,4 +180,57 @@ Route::group(['middleware' => 'auth'], function() {
         
     });
 
+        /******************************     HAB URBANA ********************************************************/
+
+     Route::group(['namespace' => 'hab_urbana'], function() {
+        //////expedientes
+        Route::resource('hab_urbana','RegistroExpedientesHabUrbController');
+        Route::get('getExpedientesHabUrb','RegistroExpedientesHabUrbController@getExpedientes');
+       ///// verif administrativa
+        Route::resource('verificacion_admin','VerificacionAdminController');
+        Route::get('getExpedientesVerif','VerificacionAdminController@getExpedientes');
+        Route::get('traer_datos_verif/{id}','VerificacionAdminController@traer_datos');
+        Route::get('getRequisitos','VerificacionAdminController@getRequisitos');
+        Route::get('insertar_requisitos','VerificacionAdminController@insertar_requisitos');
+        
+        Route::resource('notificaciones_verif_admin','NotificacionesAdminController');
+        Route::get('rep_notificacion_verif_admin/{id}','NotificacionesAdminController@rep_notificacion_verif_admin'); //reporte notificacion verificacion admin
+
+        //////expedientes
+        Route::resource('crear_poligono','CrearPoligonoController');
+        Route::get('getCrearPoligono','CrearPoligonoController@getExpedientes');
+        
+         /////verif tecnica
+        Route::resource('verificacion_tecnica','VerificacionTecnicaController');
+        Route::get('getVerifTecnica','VerificacionTecnicaController@getExpedientes');
+        Route::resource('notificaciones_tecnica','NotificacionesTecnicaController');
+        Route::get('rep_notificacion_verif_tecnica/{id}','NotificacionesTecnicaController@rep_notificacion_verif_tecnica'); //reporte notificacion verificacion admin
+        Route::get('traer_datos_verif_tecnica/{id}','VerificacionTecnicaController@traer_datos');
+         Route::post('create_verificacion_tecnica', 'VerificacionTecnicaController@create');
+         
+          /////resolucion
+        Route::resource('crear_resolucion','CrearResolucionController');
+        Route::get('get_crear_resolucion','CrearResolucionController@getExpedientes');
+        Route::get('cargar_documetos','CrearResolucionController@cargar_documetos');
+        Route::post('create_scaneo_hab_urb', 'CrearResolucionController@create');
+        Route::get('ver_file_hab_urb/{id}','CrearResolucionController@ver_file_hab_urb'); 
+
+
+        
+    });
+    
+    
+    
+    
+    /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
+    Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
+    Route::get('/usuarios', 'Usuarios@vw_usuarios_show')->name('usuarios'); //vw_usuarios
+    Route::post('usuario_save', 'Usuarios@insert_Usuario');
+    Route::post('usuario_update', 'Usuarios@update_Usuario');
+    Route::post('usuario_delete', 'Usuarios@eliminar_usuario'); //eliminar usuario
+    Route::get('usuarios_validar_user','Usuarios@validar_user');
+    Route::get('usuarios_validar_dni','Usuarios@validar_dni');
+    Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
+    Route::post('cambiar_foto_user','Usuarios@cambiar_foto_usuario');
+    Route::post('cambiar_pass_user','Usuarios@cambiar_pass_user');
 });

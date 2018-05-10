@@ -701,6 +701,45 @@
                                             <!-- fin option-->
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  #2471A3; color: #1C609B;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapse_hab_urbana" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                            Sub Gerencia Habilitaciones Urb 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_hab_urbana" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 20px" >
+                                                        <div>
+                                                        <!-- widget content -->
+                                                        <div class="widget-body no-padding">
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="hab_urbana"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Habilitaciones Urbanas
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                        <!-- end widget content -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                
+                                                
+                                            </div>
+                                            <!-- fin option-->
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-espa_publi" class="collapsed"> 
@@ -2418,6 +2457,55 @@
                                     </div>
                                     <!-- end widget content -->
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin option-->
+                        <!--option-->
+                        <div class="panel panel-default" style="background:  transparent;">
+                            <div class="panel-heading" style="background: #2471A3; color: white">
+                                
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsetwelve-config">
+                                        <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
+                                        <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                        Configuración
+                                    </a>
+                                </h4>
+                    </div>
+                            <div id="collapsetwelve-config" class="panel-collapse collapse cr_toogle">
+                                <div class="panel-body" style="padding-left: 20px" >
+                                    <div>
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="panel-group smart-accordion-default" id="accordion-3">
+                                            
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a href="usuarios"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Usuarios
+                                                        </a>
+                                                    </h4>
+                </div>
+                                                <div id="collapseOne-sub-usuarios" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                             
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                <!-- end widget content -->
+            </div>
                                 </div>
                             </div>
                         </div>
