@@ -701,7 +701,7 @@
                                             <!-- fin option-->
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  #2471A3; color: #1C609B;">
+                                                <div class="panel-heading" style=" background:  #2471A3; color: white;">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse" data-parent="#accordion-3" href="#collapse_hab_urbana" class="collapsed"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 

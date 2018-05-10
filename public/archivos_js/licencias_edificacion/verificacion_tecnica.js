@@ -40,7 +40,7 @@ function crear_nueva_verif_tecnica()
         MensajeDialogLoadAjax('dlg_verif_tecnica', '.:: Cargando ...');
 
         id = $('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
-        $.ajax({url: 'verificacion_tecnica/'+id,
+        $.ajax({url: 'licencias_verificacion_tecnica/'+id,
             type: 'GET',
             success: function(r)
             {
@@ -220,7 +220,7 @@ function modificar_verif_tecnica()
         MensajeDialogLoadAjax('dlg_verif_tecnica', '.:: Cargando ...');
 
         id = $('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
-        $.ajax({url: 'verificacion_tecnica/'+id,
+        $.ajax({url: 'licencias_verificacion_tecnica/'+id,
             type: 'GET',
             success: function(r)
             {

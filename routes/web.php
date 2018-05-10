@@ -158,7 +158,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('notificacion_estado','VerAdministrativaController@notificacion_estado');
         Route::get('agregar_observacion','VerAdministrativaController@agregar_observacion');
         
-        Route::resource('verificacion_tecnica','VerTecnicaController');
+        Route::resource('licencias_verificacion_tecnica','VerTecnicaController');
         Route::get('get_verif_tecnica','VerTecnicaController@get_verif_tecnica');
         Route::get('get_revision_expediente','VerTecnicaController@get_revision_expediente');
         Route::post('guardar_fotos/{id_reg_exp}/{id_rev_enc}', 'VerTecnicaController@guardar_fotos');
