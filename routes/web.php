@@ -194,7 +194,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('insertar_requisitos','VerificacionAdminController@insertar_requisitos');
         
         Route::resource('notificaciones_verif_admin','NotificacionesAdminController');
-        Route::get('rep_notificacion_verif_admin/{id}','NotificacionesAdminController@rep_notificacion_verif_admin'); //reporte notificacion verificacion admin
+        Route::get('rep_notificacion_verif_admin_hab_urb/{id}','NotificacionesAdminController@rep_notificacion_verif_admin'); //reporte notificacion verificacion admin
 
         //////expedientes
         Route::resource('crear_poligono','CrearPoligonoController');
@@ -204,7 +204,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('verificacion_tecnica','VerificacionTecnicaController');
         Route::get('getVerifTecnica','VerificacionTecnicaController@getExpedientes');
         Route::resource('notificaciones_tecnica','NotificacionesTecnicaController');
-        Route::get('rep_notificacion_verif_tecnica/{id}','NotificacionesTecnicaController@rep_notificacion_verif_tecnica'); //reporte notificacion verificacion admin
+        Route::get('rep_notificacion_verif_tecnica_hab_urb/{id}','NotificacionesTecnicaController@rep_notificacion_verif_tecnica'); //reporte notificacion verificacion admin
         Route::get('traer_datos_verif_tecnica/{id}','VerificacionTecnicaController@traer_datos');
          Route::post('create_verificacion_tecnica', 'VerificacionTecnicaController@create');
          

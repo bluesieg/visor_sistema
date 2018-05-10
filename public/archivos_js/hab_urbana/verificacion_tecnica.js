@@ -178,7 +178,7 @@ function guargar_notificacion(id_expediente)
 }
 function imprimir_notificacion(id)
 {
-    window.open('rep_notificacion_verif_tecnica/'+id+'');
+    window.open('rep_notificacion_verif_tecnica_hab_urb/'+id+'');
 }
 function enviar_a_notificados_tecnica(id)
 {

@@ -218,7 +218,7 @@ function guargar_notificacio_admin(id_expediente)
 }
 function imprimir_notificacion_admin(id)
 {
-    window.open('rep_notificacion_verif_admin/'+id+'');
+    window.open('rep_notificacion_verif_admin_hab_urb/'+id+'');
 }
 /////////////////// FECHA NOTIFICACION
 
