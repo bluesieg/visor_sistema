@@ -195,7 +195,8 @@ class MapController extends Controller
                               'nomb_hab_urba',nomb_hab_urba,
                               'aprobado',aprobado,
                               'tot_lotes',tot_lotes,
-                              'area',area
+                              'area',area,
+                              'color',color
                  
                              )
                           ) AS feature

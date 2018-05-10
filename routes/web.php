@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('getpdm_plan_vial', 'MapaController@get_pdm_plan_vial');
         Route::get('getcolegios', 'MapaController@get_colegios');
         Route::get('gethospitales', 'MapaController@get_hospitales');
+        Route::get('getcomisarias', 'MapaController@get_comisarias');
         Route::get('mapa_cris_getquebradas', 'MapaController@get_quebradas');
         Route::get('mapa_cris_gettopografia', 'MapaController@get_topografia');
         Route::get('get_cotas', 'MapaController@get_carta_cotas');
@@ -70,6 +71,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_puntosgeo_control', 'MapaController@get_puntosgeo_control');
         Route::get('get_lotes_rurales', 'MapaController@get_lotes_rurales');
         Route::get('get_leyenda_aportes', 'MapaController@leyenda_aportes');
+        Route::get('get_leyenda_hab_urb', 'MapaController@leyenda_hab_urb');
         Route::get('gethab_urb_by_id/{id}', 'MapaController@get_hab_urb');
         Route::get('get_lotes_x_hab_urb', 'MapaController@get_lotes_x_hab_urb');
         Route::get('get_map_constancias/{anio}/{hab_urb}', 'MapaController@get_constancias');

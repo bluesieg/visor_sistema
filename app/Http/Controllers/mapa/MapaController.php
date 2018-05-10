@@ -139,6 +139,30 @@ class MapaController extends Controller
 
       
     }
+    function get_comisarias(){
+
+        $cole = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       
+                            'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'nombre',nombre,
+                                'id',id,
+                                'x',x,
+                                'y',y
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM comisarias.comisar) row) features;");
+
+        return response()->json($cole);
+
+      
+    }
     
     function get_quebradas(){
 
@@ -479,6 +503,14 @@ class MapaController extends Controller
         return response()->json($leyenda);
         
     }
+    function leyenda_hab_urb()
+    {
+        $leyenda = DB::select("select count(id_hab_urb) as total,aprobado,color 
+            from catastro.hab_urb 
+            group by aprobado, color");
+        return response()->json($leyenda);
+        
+    }
      function get_hab_urb($id){
         $where="";
         if($id>0)
@@ -548,12 +580,14 @@ class MapaController extends Controller
                             'id_lote',         id_lote,
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
-                                'id_reg_exp',id_reg_exp,
-                                'nro_constancia',nro_constancia,
-                                'gestor',gestor
+                                'id_const',id_const,
+                                'cod_lote',cod_lote,
+                                'tipo',tipo,
+                                'id_lote',id_lote,
+                                'color',color
                              )
                           ) AS feature
-                          FROM (select * from soft_const_posesion.vw_const_para_mapa where id_hab_urb=$haburb) row) features ;");
+                          FROM (select * from plan_constancias.vw_constancias_$anio where id_hab_urb=$haburb) row) features ;");
         return response()->json($lotes);
         }
         else

@@ -1394,10 +1394,10 @@
                                                                             <li >
                                                                                 <span style="width: 160px;">
                                                                                     <label class="checkbox inline-block" style="color:white !important">
-                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_comisarias" onchange=""/>
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_comisarias" onchange="valida_capa('chk_a_comisarias')"/>
 
                                                                                         <i></i>
-                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        <img src="img/recursos/comisaria.png" height="20px" />
                                                                                         Comisarias
                                                                                 </span>
                                                                             </li>

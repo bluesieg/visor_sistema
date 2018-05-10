@@ -25,7 +25,7 @@
         left:10px; 
         top:100px; 
         z-index:10; 
-        width:130px; 
+        width:170px; 
         background-color:#FFFFFF;
         display: none;
         }

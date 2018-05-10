@@ -33,7 +33,18 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_agencias",600,"Agencias");
                     return false;
                 }
-                
+                if(layer.get('title').match(/Constancias.*/)&&mostrar==0)
+                {
+                    mostrar=1;
+                    if(aux_constancias==0)
+                    {
+                        aux_constancias=1;
+                        crear_grilla_constancias();
+                    }
+                    jQuery("#table_doc_constancias").jqGrid('setGridParam', {url: 'datos_predio?grid=9_1&id='+feature.get('id_reg_exp')}).trigger('reloadGrid');
+                    crear_dlg("dlg_constancias_anios",1100,"Constancias");
+                    return false;
+                }
                 if(layer.get('title')=='lotes'&&mostrar==0)
                 {
                     mostrar=1;
@@ -95,18 +106,8 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_limites",1100,"Cerro Colorado");
                     return false;
                 }
-                if(layer.get('title').match(/Constancias.*/)&&mostrar==0)
-                {
-                    mostrar=1;
-                    if(aux_constancias==0)
-                    {
-                        aux_constancias=1;
-                        crear_grilla_constancias();
-                    }
-                    jQuery("#table_doc_constancias").jqGrid('setGridParam', {url: 'datos_predio?grid=9_1&id='+feature.get('id_reg_exp')}).trigger('reloadGrid');
-                    crear_dlg("dlg_constancias_anios",1100,"Constancias");
-                    return false;
-                }
+                
+                
             });
     
 });
@@ -304,13 +305,8 @@ function label_lotes(feature) {
             }),
             // get the text from the feature - `this` is ol.Feature
             // and show only under certain resolution
-            text: map.getView().getZoom() > 16 ? feature.get('codi_lote') : ''
+            text: map.getView().getZoom() > 17 ? feature.get('codi_lote') : ''
         })
-         /*
-        text: new ol.style.Text({
-            text: feature.get('nom_lote')
-        })
-       text: map.getView().getZoom() > 12 ? feature.get('nom_lote') : ''*/
     });
 }
 function traerpredionuevo(id)
@@ -524,6 +520,10 @@ function valida_capa(check)
         {
             crearhospitales();
         }
+        if(check=='chk_a_comisarias')
+        {
+            crearcomisaria();
+        }
         if(check=='chk_vias')
         {
             crearvias();
@@ -632,6 +632,8 @@ function valida_capa(check)
         if(check=='chk_hab_urb')
         {
             map.removeLayer(lyr_hab_urb);
+            $("#legend").hide();
+
         }
         if(check=='chk_agencias')
         {
@@ -678,6 +680,10 @@ function valida_capa(check)
         if(check=='chk_salud')
         {
             map.removeLayer(lyr_hospitales);
+        }
+        if(check=='chk_a_comisarias')
+        {
+            map.removeLayer(lyr_comisarias);
         }
          if(check=='chk_quebradas')
         {
@@ -1042,6 +1048,7 @@ function crearhaburb()
             data:{sector:$("#selsec").val()},
             success: function(r)
             {
+                llamar_leyenda_hab_urb();
                 geojson_hab_urb = JSON.parse(r[0].json_build_object);
                 var format_sectores_cat1 = new ol.format.GeoJSON();
                 var features_sectores_cat1 = format_sectores_cat1.readFeatures(geojson_hab_urb,
@@ -1062,16 +1069,39 @@ function crearhaburb()
             }
         });
 }
+function  llamar_leyenda_hab_urb()
+{
+    $.ajax({url: 'get_leyenda_hab_urb',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                $("#legend").html("");
+                html="";
+                r.forEach(function(element) 
+                {
+                    html=html+'<div  >\n\
+                                <div class="col-xs-3"><label style="background-color: rgba('+element.color.trim()+',1); width: 15px !important ; height: 15px !important; margin-left:5px; margin-top:5px; "></label></div>    \n\
+                                    <div class="col-xs-9"><label class="checkbox inline-block" style="padding-left: 0px; font-size:8px" placehoder="'+element.aprobado.trim()+'">\n\
+                                        '+element.aprobado.trim()+'    ('+element.total+')\n\
+                                    </label></div>\n\
+                                </div>';
+                });
+                $("#legend").html(html);
+                $("#legend").show();
+            }
+        });
+}
  
 function stylehaburb(feature, resolution) {
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: '#B40477',
-            width: 2,
+            width: 1,
             lineCap: 'butt',
         }),
         fill: new ol.style.Fill({
-            color: 'rgba(180, 4, 119 , 0.3)',
+            color: 'rgba('+feature.get('color')+' , 0.6)',
         }),
         text: new ol.style.Text({
         //font: '12px Roboto',
@@ -1648,7 +1678,7 @@ function crearcolegios()
 function stylecolegios(feature, resolution){
     return  new ol.style.Style({
         image: new ol.style.Icon({
-          scale: map.getView().getZoom() > 16 ? 0.4 : 0.1,
+          scale: map.getView().getZoom() > 16 ? 0.05 : 0.07,
           src: 'img/recursos/colegio.png',
         }),
         text: new ol.style.Text({
@@ -1692,8 +1722,52 @@ function crearhospitales()
 function stylehospitales(feature, resolution){
     return  new ol.style.Style({
         image: new ol.style.Icon({
-          scale: map.getView().getZoom() > 16 ? 0.4 : 0.1,
+          scale: map.getView().getZoom() > 16 ? 0.05 : 0.07,
           src: 'img/recursos/hospital.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+function crearcomisaria()
+{
+    $.ajax({url: 'getcomisarias',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                geojson_salud = JSON.parse(r[0].json_build_object);
+                var format_salud= new ol.format.GeoJSON();
+                var features_salud = format_salud.readFeatures(geojson_salud,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_salud = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_salud.addFeatures(features_salud);
+                lyr_comisarias = new ol.layer.Vector({
+                    source:jsonSource_salud,
+                    style: stylecomisarias,
+                    title: "Comisarias"
+                });
+                map.addLayer(lyr_comisarias);
+                var extent = lyr_comisarias.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function stylecomisarias(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
+          src: 'img/recursos/comisaria.png',
         }),
         text: new ol.style.Text({
             text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
@@ -2474,7 +2548,7 @@ function crea_mapa_constancias(anio)
         $("#chk_map_cons_2015,#chk_map_cons_2016,#chk_map_cons_2017,#chk_map_cons_2018").prop("checked", false);
         return false;
     }
-    traer_hab_by_id($("#hidden_inp_habilitacion").val());
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'get_map_constancias/'+anio+'/'+$("#hidden_inp_habilitacion").val(),
@@ -2554,12 +2628,12 @@ function stylez_constancias(feature, resolution) {
     }
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
-            color: 'yellow',
+            color: 'rgba('+feature.get('color')+' , 0.5)',
             width: 1,
             lineCap: 'butt'
         }),
         fill: new ol.style.Fill({
-            color: 'rgba(255, 252, 51  , 0.5)'
+            color: 'rgba('+feature.get('color')+ ' , 0.5)'
         }),
         text: new ol.style.Text({
             text: map.getView().getZoom() > 14 ? texto : ''
@@ -2618,7 +2692,7 @@ function autocompletar_haburb(textbox){
         
         
 var lyr_sectores_cat1;        
-function traer_hab_by_id(id)
+function traer_hab_by_id(id,tip)
 {
     if(lyr_sectores_cat1)
     {
@@ -2647,21 +2721,27 @@ function traer_hab_by_id(id)
                         map.addLayer(lyr_sectores_cat1);
                         var extent = lyr_sectores_cat1.getSource().getExtent();
                         map.getView().fit(extent, map.getSize());
-                        traer_lote_by_hab(id);
+                        traer_lote_by_hab(id,tip);
 
                     }
                 });
     }
-function traer_lote_by_hab(id)
+function traer_lote_by_hab(id,tip)
 {
+    if(tip==1)
+    {
+        nombre="lotes constancias";
+    }
+    else
+    {
+        nombre=lotes;
+    }
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'get_lotes_x_hab_urb',
             type: 'GET',
             data: {codigo: id},
             success: function (data) {
-                //alert(data[0].json_build_object);
-                //alert(geojson_manzanas2);
                 map.removeLayer(lyr_lotes3);
                 var format_lotes3 = new ol.format.GeoJSON();
                 var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
@@ -2669,12 +2749,11 @@ function traer_lote_by_hab(id)
                 var jsonSource_lotes3 = new ol.source.Vector({
                     attributions: [new ol.Attribution({html: '<a href=""></a>'})],
                 });
-                //vectorSource.addFeatures(features_manzanas2);
                 jsonSource_lotes3.addFeatures(features_lotes3);
                 lyr_lotes3 = new ol.layer.Vector({
                     source:jsonSource_lotes3,
                     style: label_lotes,
-                    title: "lotes"
+                    title: nombre
                 });
                 map.addLayer(lyr_lotes3);
                 MensajeDialogLoadAjaxFinish('dlg_map');
