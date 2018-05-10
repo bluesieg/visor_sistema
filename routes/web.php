@@ -144,11 +144,39 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_asignacion','AsignacionController@get_asignacion');
         Route::get('buscar_expdiente_asignacion','AsignacionController@buscar_expdiente_asignacion');
         
+        
         Route::resource('verificacion_administrativa','VerAdministrativaController');
         Route::get('get_verif_administrativa','VerAdministrativaController@get_verif_administrativa');
         Route::get('buscar_codigo_interno','VerAdministrativaController@buscar_codigo_interno');
         Route::get('buscar_requisitos','VerAdministrativaController@buscar_requisitos');
         Route::get('recuperar_requisitos','VerAdministrativaController@recuperar_requisitos');
+        Route::get('cambiar_estado','VerAdministrativaController@cambiar_estado');
+        Route::get('estado_verif_admin','VerAdministrativaController@estado_verif_admin');
+        Route::get('improcedente_verif_admin','VerAdministrativaController@improcedente_verif_admin');
+        Route::get('notificacion_verif_admin','VerAdministrativaController@notificacion_verif_admin');
+        Route::get('rep_notificacion_verif_admin/{id_reg_exp}','VerAdministrativaController@rep_notificacion_verif_admin');
+        Route::get('notificacion_estado','VerAdministrativaController@notificacion_estado');
+        Route::get('agregar_observacion','VerAdministrativaController@agregar_observacion');
+        
+        Route::resource('verificacion_tecnica','VerTecnicaController');
+        Route::get('get_verif_tecnica','VerTecnicaController@get_verif_tecnica');
+        Route::get('get_revision_expediente','VerTecnicaController@get_revision_expediente');
+        Route::post('guardar_fotos/{id_reg_exp}/{id_rev_enc}', 'VerTecnicaController@guardar_fotos');
+        Route::get('improcedente_verif_tecnica','VerTecnicaController@improcedente_verif_tecnica');
+        Route::get('cambiar_estado_verif_tecnica','VerTecnicaController@cambiar_estado_verif_tecnica');
+        Route::post('guardar_f', 'VerTecnicaController@guardar_f');
+        Route::post('actualizar_f', 'VerTecnicaController@actualizar_f');
+        Route::get('recuperar_revisiones','VerTecnicaController@recuperar_revisiones');
+        Route::get('ver_documentos_adjuntos/{id_rev}/{id_expediente}/{id_encargado}','VerTecnicaController@ver_documentos_adjuntos');
+        Route::get('ver_notificaciones_adjuntos/{id_rev}/{id_expediente}/{id_encargado}','VerTecnicaController@ver_notificaciones_adjuntos');
+        
+        
+        Route::resource('emitir_resolucion','EmitirResolucionController');
+        Route::get('get_expedientes_resolucion','EmitirResolucionController@get_expedientes_resolucion');
+        Route::get('get_docs','EmitirResolucionController@get_docs');
+        Route::post('subir_escaneo', 'EmitirResolucionController@create');
+        Route::post('callpdf_resolucion', 'EmitirResolucionController@get_pdf');
+        Route::get('ver_documentos/{id}','EmitirResolucionController@ver_documentos');
         
     });
 

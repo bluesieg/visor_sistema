@@ -251,7 +251,7 @@
         
 
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.0/jquery-confirm.min.js"></script>-->
-     
+        <script src="{{ asset('js/plugin/ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('archivos_js/global_function.js') }}"></script>
         <script src="{{ asset('js/moment.js') }}"></script>
         <script src="{{ asset('js/app.config.js') }}"></script>

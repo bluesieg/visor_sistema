@@ -87,8 +87,20 @@ class AsignacionController extends Controller
                 $val->cod_interno = $request['codigo_interno'];
                 $val->save();
             }
-            return $id_reg_exp;
+            $this->actualizar_expediente($id_reg_exp);
         }     
+    }
+    
+    public function actualizar_expediente($id_reg_exp)
+    {
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$id_reg_exp)->first();
+        if(count($val)>=1)
+        {
+            $val->fase = 2;
+            $val->save();
+        }
+        return $id_reg_exp;
     }
 
     /**
@@ -122,8 +134,10 @@ class AsignacionController extends Controller
     
     public function get_asignacion(Request $request){
         header('Content-type: application/json');
+        $fecha_inicio = $request['fecha_inicio'];
+        $fecha_fin = $request['fecha_fin'];
         
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_asignac");
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_asignac where fecha_registro between '$fecha_inicio' and '$fecha_fin'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -147,7 +161,7 @@ class AsignacionController extends Controller
 
      
 
-        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_asignac')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_asignac')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;

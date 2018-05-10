@@ -194,3 +194,14 @@ function eliminar_exp(){
     }
     
 }
+
+function seleccionafecha_asignacion(){
+
+    fecha_inicio_asignacion = $('#fec_ini_asignacion').val();
+    fecha_fin_asignacion = $('#fec_fin_asignacion').val(); 
+
+    jQuery("#table_asignacion").jqGrid('setGridParam', {
+         url: 'get_asignacion?fecha_inicio='+fecha_inicio_asignacion+'&fecha_fin='+fecha_fin_asignacion
+    }).trigger('reloadGrid');
+
+}

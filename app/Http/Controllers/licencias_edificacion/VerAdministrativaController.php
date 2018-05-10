@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\licencias_edificacion\RecDocumentos;
 use App\Models\licencias_edificacion\ExpedienteRequisitos;
+use App\Models\licencias_edificacion\Notificaciones;
+use App\Models\licencias_edificacion\Observaciones;
 
 
 class VerAdministrativaController extends Controller
@@ -25,6 +27,15 @@ class VerAdministrativaController extends Controller
         $ExpedienteRequisitos->estado = $request['estado'];
         $ExpedienteRequisitos->id_expediente = $request['id_reg_exp'];
         $ExpedienteRequisitos->save();
+    }
+    
+    public function agregar_observacion(Request $request)
+    {
+        $Observaciones = new Observaciones;
+        $Observaciones->id_exp = $request['id_reg_exp'];
+        $Observaciones->fch_verif = date('d-m-Y');
+        $Observaciones->observacion = $request['observaciones'];
+        $Observaciones->save();
     }
     
     public function buscar_codigo_interno(Request $request){
@@ -117,8 +128,10 @@ class VerAdministrativaController extends Controller
     
     public function get_verif_administrativa(Request $request){
         header('Content-type: application/json');
+        $fecha_inicio = $request['fecha_inicio'];
+        $fecha_fin = $request['fecha_fin'];
         
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_verif_admin");
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_verif_admin where fecha_registro between '$fecha_inicio' and '$fecha_fin'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -142,7 +155,7 @@ class VerAdministrativaController extends Controller
 
      
 
-        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_admin')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_admin')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -286,4 +299,77 @@ class VerAdministrativaController extends Controller
         return response()->json($Lista);
 
     }
+    
+    public function cambiar_estado(Request $request){
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->fase = 4;
+            $val->save();
+        }
+        return $request['id_reg_exp'];
+    }
+    
+    public function estado_verif_admin(Request $request){
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->fase = 3;
+            $val->save();
+        }
+        return $request['id_reg_exp'];
+    }
+    
+    public function improcedente_verif_admin(Request $request){
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->fase = 7;
+            $val->save();
+        }
+        return $request['id_reg_exp'];
+    }
+    
+    public function notificacion_verif_admin(Request $request)
+    {
+        $Notificaciones = new Notificaciones;
+        $Notificaciones->id_reg_exp = $request['id_reg_exp'];
+        $Notificaciones->notificacion = $request['notificacion'];
+        $Notificaciones->save();
+    }
+    
+    public function rep_notificacion_verif_admin($id_reg_exp){
+            
+        $sql=DB::connection('gerencia_catastro')->table('soft_lic_edificacion.notificaciones')->where('id_reg_exp',$id_reg_exp)->first();   
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
+
+        if(count($sql)>=1)
+        {
+            $parametros = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('id_reg_exp',$sql->id_reg_exp)->first();
+            
+            $view =  \View::make('licencias_edificacion.reportes.notificaciones', compact('sql','institucion','parametros'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Notificacion Verificacion Administrativa".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
+    }
+    
+    public function notificacion_estado(Request $request){
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->fase = 5;
+            $val->save();
+        }
+        return $request['id_reg_exp'];
+    }
+    
 }

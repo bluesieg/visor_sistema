@@ -5,6 +5,7 @@
         $('#dlg_cod_interno').val("");
         $('#dlg_hidden_id_procedimiento').val("");
         $('#dlg_hidden_id_reg_exp').val("");
+        $('#dlg_observaciones').val("");
         jQuery("#table_requisito_admin").jqGrid('setGridParam', {url: 'buscar_requisitos?indice='+0 }).trigger('reloadGrid');
 }
 
@@ -15,23 +16,13 @@ function crear_nueva_verif_administrativa()
         autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  NUEVA VERIFICACION ADMINISTRATIVA :.</h4></div>",
         buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Notificar",
-            "class": "btn btn-success bg-color-red",
-            click: function () {
-                    notificar();
-            }
-        },{
-            html: "<i class='fa fa-save'></i>&nbsp; Enviar a Revision Tecnica",
-            "class": "btn btn-success bg-color-purple",
-            click: function () {
-                    revision_tecnica();
-            }
-        },{
             html: "<i class='fa fa-save'></i>&nbsp; Guardar",
             "class": "btn btn-success bg-color-green",
             click: function () {
                     agregar_verificacion();
                     MensajeExito('Verificacion del Expediente','La operacion fue Exitosa');
+                    cambiar_estado_verif_admin($('#dlg_hidden_id_reg_exp').val());
+                    agregar_observacion($('#dlg_hidden_id_reg_exp').val());
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -44,6 +35,68 @@ function crear_nueva_verif_administrativa()
     $("#dlg_verif_administrativa").dialog('open');
 }
 
+function cambiar_estado_verif_admin(id_reg_exp){
+    $.ajax({
+        url: 'estado_verif_admin',
+        type: 'GET',
+        data: {
+            id_reg_exp :id_reg_exp,
+        },
+        success: function (data) {
+            return true;
+        },
+        error: function (data) {
+            return false;
+        }
+    });
+}
+
+function agregar_observacion(id_reg_exp){
+    observaciones = $('#dlg_observaciones').val();
+    $.ajax({
+        url: 'agregar_observacion',
+        type: 'GET',
+        data: {
+            id_reg_exp :id_reg_exp,
+            observaciones:observaciones
+        },
+        success: function (data) {
+            return true;
+        },
+        error: function (data) {
+            return false;
+        }
+    });
+}
+
+function improcedente_verif_admin(){
+    Id=$('#table_verif_administrativa').jqGrid ('getGridParam', 'selrow');
+    
+    fecha_inicio_verif_admin = $('#fec_ini_verif_administrativa').val();
+    fecha_fin_verif_admin = $('#fec_fin_verif_administrativa').val();
+
+    if(Id)
+    {
+        $.ajax({
+            url: 'improcedente_verif_admin',
+            type: 'GET',
+            data: {
+                id_reg_exp :Id,
+            },
+            success: function (data) {
+                jQuery("#table_verif_administrativa").jqGrid('setGridParam', {
+                        url: 'get_verif_administrativa?fecha_inicio='+fecha_inicio_verif_admin+'&fecha_fin='+fecha_fin_verif_admin
+                   }).trigger('reloadGrid');
+                MensajeExito('Expediente', 'Se Declaro Improcedente.');
+            },
+            error: function (data) {
+                return false;
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_control_calidad");
+    }
+}
 
 function fn_obtener_exp_cod()
 {
@@ -94,11 +147,15 @@ function agregar_verificacion(){
     id_reg_exp = $("#dlg_hidden_id_reg_exp").val();
     
     $('input[type=checkbox][name=id_requisito_check]').each(function() {
-        insertar_datos($(this).attr('id_requisito'),$(this).is(':checked')?1:0,id_reg_exp);
+        insertar_datos_administrativa($(this).attr('id_requisito'),$(this).is(':checked')?1:0,id_reg_exp);
     });  
 }
 
-function insertar_datos(id_requisito,estado,id_reg_exp) {
+function insertar_datos_administrativa(id_requisito,estado,id_reg_exp) {
+   
+    fecha_inicio_verif_admin = $('#fec_ini_verif_administrativa').val();
+    fecha_fin_verif_admin = $('#fec_fin_verif_administrativa').val();
+
     
     MensajeDialogLoadAjax('dlg_verif_administrativa', '.:: Cargando ...');
     
@@ -113,7 +170,9 @@ function insertar_datos(id_requisito,estado,id_reg_exp) {
         success: function (data) {
             MensajeDialogLoadAjaxFinish('dlg_verif_administrativa');
             dialog_close('dlg_verif_administrativa');
-            fn_actualizar_grilla('table_verif_administrativa');
+            jQuery("#table_verif_administrativa").jqGrid('setGridParam', {
+             url: 'get_verif_administrativa?fecha_inicio='+fecha_inicio_verif_admin+'&fecha_fin='+fecha_fin_verif_admin
+            }).trigger('reloadGrid');
         },
         error: function (data) {
             return false;
@@ -211,25 +270,144 @@ function actualizar_datos(id_requisito,estado,id_reg_exp) {
 }
 
 function revision_tecnica() {
+    id=$('#table_verif_administrativa').jqGrid ('getGridParam', 'selrow');
+    id_reg_exp = $('#table_verif_administrativa').jqGrid ('getCell', id, 'id_reg_exp');
+    if (id) {
+        MensajeDialogLoadAjax('table_verif_administrativa', '.:: Cargando ...');
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'cambiar_estado',
+            type: 'GET',
+            data: {
+                id_reg_exp :id_reg_exp
+            },
+            success: function (data) {
+                MensajeDialogLoadAjaxFinish('table_verif_administrativa');
+                fn_actualizar_grilla('table_verif_administrativa');
+                MensajeExito('Actualizacion de Verificacion del Expediente','Expediente fue enviado a Revision Tecnica');
+            },
+            error: function (data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('table_verif_administrativa');
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_verif_administrativa");
+    }
+}
+
+
+function seleccionafecha_verif_adm(){
+
+    fecha_inicio_verif_admin = $('#fec_ini_verif_administrativa').val();
+    fecha_fin_verif_admin = $('#fec_fin_verif_administrativa').val();
+
+    jQuery("#table_verif_administrativa").jqGrid('setGridParam', {
+         url: 'get_verif_administrativa?fecha_inicio='+fecha_inicio_verif_admin+'&fecha_fin='+fecha_fin_verif_admin
+    }).trigger('reloadGrid');
+
+}
+
+iniciar=0;
+function limpiar_notificacion()
+{
+    if(iniciar==0)
+    {
+        iniciar=1;
+        CKEDITOR.replace('ckeditor', {height: '320px'});
+    }
+    CKEDITOR.instances['ckeditor'].setData('');
+}
+
+function notificar(){
     
-    MensajeDialogLoadAjax('dlg_verif_administrativa', '.:: Cargando ...');
+    Id=$('#table_verif_administrativa').jqGrid ('getGridParam', 'selrow');
+    id_reg_exp = $('#table_verif_administrativa').jqGrid ('getCell', Id, 'id_reg_exp');
+    if(Id)
+    {
+        limpiar_notificacion();
+        $("#dlg_editor").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: EDITAR RESOLUCION :.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    guardar_notificacion();
+            }
+            },{
+            html: "<i class='fa fa-print'></i>&nbsp; Imprimir",
+            "class": "btn btn-success bg-color-purple",
+            click: function () {
+                    imprimir_notificacion(id_reg_exp);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }else{
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_control_calidad");
+    }
+}
+
+function guardar_notificacion(){
+    
+    id=$('#table_verif_administrativa').jqGrid ('getGridParam', 'selrow');
+    id_reg_exp = $('#table_verif_administrativa').jqGrid ('getCell', id, 'id_reg_exp');
+    var contenido = CKEDITOR.instances['ckeditor'].getData();
+    MensajeDialogLoadAjax('dlg_editor', '.:: Cargando ...');
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'notificacion_verif_admin',
+        type: 'GET',
+        data: {
+            id_reg_exp :id_reg_exp,
+            notificacion:contenido
+        },
+        success: function (data) {
+            MensajeDialogLoadAjaxFinish('dlg_editor');
+            MensajeExito('Actualizacion de Verificacion del Expediente','La Notificacion fue Guardada con exito');
+        },
+        error: function (data) {
+            mostraralertas("Hubo un Error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('table_verif_administrativa');
+        }
+    });
+    
+}
+
+function imprimir_notificacion(id_reg_exp){
+    window.open('rep_notificacion_verif_admin/'+id_reg_exp);
+   
+    fecha_inicio_verif_admin = $('#fec_ini_verif_administrativa').val();
+    fecha_fin_verif_admin = $('#fec_fin_verif_administrativa').val();
     
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'verificacion_administrativa/'+id_requisito+'/edit',
+        url: 'notificacion_estado',
         type: 'GET',
         data: {
-            id_requisito :id_requisito,
-            id_reg_exp   :id_reg_exp,
-            estado       :estado
+            id_reg_exp :id_reg_exp,
         },
         success: function (data) {
-            MensajeDialogLoadAjaxFinish('dlg_verif_administrativa');
-            dialog_close('dlg_verif_administrativa');
-            fn_actualizar_grilla('table_verif_administrativa');
+            dialog_close('dlg_editor');
+            jQuery("#table_verif_administrativa").jqGrid('setGridParam', {
+                 url: 'get_verif_administrativa?fecha_inicio='+fecha_inicio_verif_admin+'&fecha_fin='+fecha_fin_verif_admin
+            }).trigger('reloadGrid');
         },
         error: function (data) {
-            return false;
+            mostraralertas("Hubo un Error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('table_verif_administrativa');
         }
     });
 }
