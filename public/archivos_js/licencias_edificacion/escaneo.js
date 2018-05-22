@@ -65,14 +65,15 @@ function verfile(id)
 
 function delfile(id)
 {
-   $.ajax({
-        url: 'emitir_resolucion',
-        type: 'GET',
-        data: {
-            id_reg_exp :id,
-        },
+    id_escaneo=$('#table_escaneos').jqGrid ('getGridParam', 'selrow');
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'emitir_resolucion/destroy',
+        type: 'POST',
+        data: {_method: 'delete', id_doc_adj: id},
         success: function (data) {
-            return true;
+            MensajeExito("Operacion Correcta","Se eliminio Correctamente el Archivo...",4000);
+            jQuery("#table_doc").jqGrid('setGridParam', {url: 'get_docs?id='+id_escaneo}).trigger('reloadGrid');
         },
         error: function (data) {
             return false;

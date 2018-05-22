@@ -15,9 +15,11 @@ class RecDocumentosController extends Controller
     public function index()
     {
         $encargados = DB::connection('gerencia_catastro')->select('select * from soft_lic_edificacion.encargado order by id_encargado asc');
-        $modalidad = DB::connection('gerencia_catastro')->select('select * from soft_lic_edificacion.procedimiento order by descr_procedimiento desc');
+        $modalidad = DB::connection('gerencia_catastro')->select('select * from soft_lic_edificacion.procedimiento order by descr_procedimiento asc');
+        $multas = DB::connection('gerencia_catastro')->select("select * from soft_lic_edificacion.procedimiento where descr_procedimiento = 'Multas' ");
         $tip_doc = DB::connection('gerencia_catastro')->select('select * from soft_const_posesion.tipo_documento order by 1');
-        return view('licencias_edificacion/wv_recdocumentos',  compact('modalidad','encargados','tip_doc'));
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('licencias_edificacion/wv_recdocumentos',  compact('modalidad','encargados','tip_doc','multas','anio_tra'));
     }
 
     public function create(Request $request)

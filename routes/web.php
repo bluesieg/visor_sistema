@@ -144,6 +144,7 @@ Route::group(['middleware' => 'auth'], function() {
         
         Route::resource('asignacion','AsignacionController');
         Route::get('get_asignacion','AsignacionController@get_asignacion');
+        Route::get('modificar_asignacion','AsignacionController@modificar_asignacion');
         Route::get('buscar_expdiente_asignacion','AsignacionController@buscar_expdiente_asignacion');
         
         
@@ -159,6 +160,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('rep_notificacion_verif_admin/{id_reg_exp}','VerAdministrativaController@rep_notificacion_verif_admin');
         Route::get('notificacion_estado','VerAdministrativaController@notificacion_estado');
         Route::get('agregar_observacion','VerAdministrativaController@agregar_observacion');
+        Route::get('actualizar_observaciones','VerAdministrativaController@actualizar_observaciones');
+        Route::get('recuperar_multas','VerAdministrativaController@recuperar_multas');
+        Route::get('actualizar_expediente_verif_admin','VerAdministrativaController@actualizar_expediente_verif_admin');
+        Route::get('agregar_lote_verif_admin','VerAdministrativaController@agregar_lote_verif_admin');
         
         Route::resource('licencias_verificacion_tecnica','VerTecnicaController');
         Route::get('get_verif_tecnica','VerTecnicaController@get_verif_tecnica');
@@ -179,6 +184,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('subir_escaneo', 'EmitirResolucionController@create');
         Route::post('callpdf_resolucion', 'EmitirResolucionController@get_pdf');
         Route::get('ver_documentos/{id}','EmitirResolucionController@ver_documentos');
+        
+        
+        Route::resource('mapa_licencias','MapaLicenciasController');
+        Route::get('get_mapa_licencias_eficiacion/{color}/{hab_urb}', 'MapaLicenciasController@get_mapa_licencias_eficiacion');
         
     });
 

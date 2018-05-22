@@ -60,7 +60,7 @@ class AsignacionController extends Controller
      */
     public function show($id,Request $request)
     {
-        $expedientes = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.vw_registro_expediente')->where('id_reg_exp',$id)->get();
+        $expedientes = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.registro_expediente')->where('id_reg_exp',$id)->get();
         return $expedientes; 
     }
 
@@ -110,9 +110,29 @@ class AsignacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id_reg_exp,Request $request)
     {
-        //
+        
+    }
+    
+    public function modificar_asignacion(Request $request){
+        $select=DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('cod_interno',$request['codigo_interno'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
+
+        if (count($select)>= 1) {
+            return response()->json([
+                'msg' => 'repetido',
+                ]);
+        }else{
+            $RecDocumentos = new  RecDocumentos;
+            $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+            if(count($val)>=1)
+            {
+                $val->id_procedimiento = $request['modalidad'];
+                $val->cod_interno = $request['codigo_interno'];
+                $val->nro_exp = $request['asignacion'];
+                $val->save();
+            }
+        }
     }
 
     /**

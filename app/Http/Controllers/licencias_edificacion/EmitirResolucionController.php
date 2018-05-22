@@ -106,12 +106,12 @@ class EmitirResolucionController extends Controller
     public function destroy(Request $request)
     {
         $Documentos_Ajuntos = new  Documentos_Ajuntos;
-        $val=  $Documentos_Ajuntos::where("id_reg_exp","=",$request['id_reg_exp'] )->first();
+        $val=  $Documentos_Ajuntos::where("id_doc_adj","=",$request['id_doc_adj'] )->first();
         if(count($val)>=1)
         {
             $val->delete();
         }
-        return "destroy ".$request['id_reg_exp'];
+        return "destroy ".$request['id_doc_adj'];
     }
     
     public function get_expedientes_resolucion(Request $request){

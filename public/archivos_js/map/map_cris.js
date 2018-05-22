@@ -2,6 +2,11 @@ var lyr_map_cons_2015;
 var lyr_map_cons_2016;
 var lyr_map_cons_2017;
 var lyr_map_cons_2018;
+
+var lyr_map_edificaciones_amarillo;
+var lyr_map_edificaciones_verde;
+var lyr_map_edificaciones_rojo;
+
 var aux_constancias=0;
 map.on('singleclick', function(evt) {
 //    map.getLayers().forEach(function(el) {
@@ -601,6 +606,22 @@ function valida_capa(check)
         {
             crea_mapa_constancias(2018);
         }
+        if(check=='chk_map_licencias')
+        {
+            crear_mapa_licencias();
+        }
+        if(check=='chk_amarillo')
+        {
+            crear_semaforo_mapa_licencias(1);
+        }
+        if(check=='chk_verde')
+        {
+            crear_semaforo_mapa_licencias(2);
+        }
+        if(check=='chk_rojo')
+        {
+            crear_semaforo_mapa_licencias(3);
+        }
     }
     else
     {
@@ -743,6 +764,27 @@ function valida_capa(check)
         {
          
            map.removeLayer(lyr_map_cons_2018);
+        }
+        if(check=='chk_map_licencias')
+        {
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            map.removeLayer(lyr_map_edificaciones_amarillo);
+            map.removeLayer(lyr_map_edificaciones_verde);
+            map.removeLayer(lyr_map_edificaciones_rojo);
+            $("#inp_habilitacion,#legend").hide();
+        }
+        if(check=='chk_amarillo')
+        {
+            map.removeLayer(lyr_map_edificaciones_amarillo);
+        }
+        if(check=='chk_verde')
+        {
+            map.removeLayer(lyr_map_edificaciones_verde);
+        }
+        if(check=='chk_rojo')
+        {
+            map.removeLayer(lyr_map_edificaciones_rojo);
         }
     }
 }
@@ -2763,4 +2805,168 @@ function traer_lote_by_hab(id,tip)
                 MensajeAlerta('Predios','No se encontró ningún predio.');
             }
         });
+}
+
+//LICENCIAS EDIFICACION
+aux_haburb_licencias=0;
+function crear_mapa_licencias()
+{
+    $("#inp_habilitacion").show();
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_amarillo" onchange="valida_capa('+"'chk_amarillo'"+')">\n\
+                                    <i></i>\n\
+                                    Amarillo\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_verde" onchange="valida_capa('+"'chk_verde'"+')">\n\
+                                    <i></i>\n\
+                                    Verde\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_rojo" onchange="valida_capa('+"'chk_rojo'"+')">\n\
+                                    <i></i>\n\
+                                    Rojo\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+    
+    if(aux_haburb_licencias==0)
+    {
+        aux_haburb_licencias=1;
+        autocompletar_haburb('inp_habilitacion');
+    }
+    MensajeDialogLoadAjaxFinish('map');
+    
+    
+}
+
+function crear_semaforo_mapa_licencias(color)
+{
+    if($("#hidden_inp_habilitacion").val()==0)
+    {
+        mostraralertasconfoco("Seleccione Hablitacion","#inp_habilitacion");
+        MensajeDialogLoadAjaxFinish('map');
+        $("#chk_rojo,#chk_amarillo,#chk_verde").prop("checked", false);
+        return false;
+    }
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_mapa_licencias_eficiacion/'+color+'/'+$("#hidden_inp_habilitacion").val(),
+            type: 'get',
+            success: function (data) {
+                if(data==0)
+                {
+                    MensajeAlerta('Licencias','No Se Encontró Licencias en esta Habilitación.');
+                }
+                else
+                {
+                    var format = new ol.format.GeoJSON();
+                    var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource.addFeatures(features);
+                    if(color == 1)
+                    {
+                        lyr_map_edificaciones_amarillo = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: semaforo_amarillo,
+                            title: "Verificacion Administrativa"
+                        });
+                        map.addLayer(lyr_map_edificaciones_amarillo);
+                        var extent = lyr_map_edificaciones_amarillo.getSource().getExtent();
+                    }
+                    if(color == 2)
+                    {
+                        lyr_map_edificaciones_verde = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: semaforo_verde,
+                            title: "Verificacion Tecnica"
+                        });
+                        map.addLayer(lyr_map_edificaciones_verde);
+                        var extent = lyr_map_edificaciones_verde.getSource().getExtent();
+                    }
+                    if(color == 3)
+                    {
+                        lyr_map_edificaciones_rojo = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: semaforo_rojo,
+                            title: "Emitir Resolucion"
+                        });
+                        map.addLayer(lyr_map_edificaciones_rojo);
+                        var extent = lyr_map_edificaciones_rojo.getSource().getExtent();
+                    }
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+
+function semaforo_amarillo(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(243, 156, 18 , 0.5)',
+        })
+    });
+    
+}
+
+function semaforo_rojo(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(169, 50, 38, 0.5)',
+        })
+    });
+    
+}
+
+function semaforo_verde(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(25, 111, 61, 0.5)',
+        })
+    });
+    
 }

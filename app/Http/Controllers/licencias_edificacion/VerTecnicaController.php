@@ -34,12 +34,12 @@ class VerTecnicaController extends Controller
         $documento5 = $request->file('file5');
         $documento6 = $request->file('file6');
         
-        $notificacion1 = $request->file('notificacion1');
-        $notificacion2 = $request->file('notificacion2');
-        $notificacion3 = $request->file('notificacion3');
-        $notificacion4 = $request->file('notificacion4');
-        $notificacion5 = $request->file('notificacion5');
-        $notificacion6 = $request->file('notificacion6');
+        $notificacion1 = $request['notificacion1'];
+        $notificacion2 = $request['notificacion2'];
+        $notificacion3 = $request['notificacion3'];
+        $notificacion4 = $request['notificacion4'];
+        $notificacion5 = $request['notificacion5'];
+        $notificacion6 = $request['notificacion6'];
         
         $id_expediente = $request['dlg_hidden_verif_tecnica_id_reg_exp'];
         $id_encargado = $request['dlg_encargado'];
@@ -66,13 +66,7 @@ class VerTecnicaController extends Controller
                 $documentos_1 = "";
             }
             
-            if ($notificacion1) {
-                $notificaciones_1 = \File::get($notificacion1);
-            }else{
-                $notificaciones_1 = "";
-            }
-            
-            $this->foto_insert($documentos_1,$id_expediente,$revision1,$check1,$id_encargado,$notificaciones_1);
+            $this->agregar_docmuentos($documentos_1,$id_expediente,$revision1,$check1,$id_encargado,$notificacion1);
         }
         if($revision2)
         {
@@ -82,13 +76,7 @@ class VerTecnicaController extends Controller
                 $documentos_2 = "";
             }
             
-            if ($notificacion2) {
-                $notificaciones_2 = \File::get($notificacion2);
-            }else{
-                $notificaciones_2 = "";
-            }
-            
-            $this->foto_insert($documentos_2,$id_expediente,$revision2,$check2,$id_encargado,$notificaciones_2);
+            $this->agregar_docmuentos($documentos_2,$id_expediente,$revision2,$check2,$id_encargado,$notificacion2);
         }
         if($revision3)
         {
@@ -98,13 +86,7 @@ class VerTecnicaController extends Controller
                 $documentos_3 = "";
             }
             
-            if ($notificacion3) {
-                $notificaciones_3 = \File::get($notificacion3);
-            }else{
-                $notificaciones_3 = "";
-            }
-            
-            $this->foto_insert($documentos_3,$id_expediente,$revision3,$check3,$id_encargado,$notificaciones_3);
+            $this->agregar_docmuentos($documentos_3,$id_expediente,$revision3,$check3,$id_encargado,$notificacion3);
         }
         if($revision4)
         {
@@ -113,14 +95,8 @@ class VerTecnicaController extends Controller
             }else{
                 $documentos_4 = "";
             }
-            
-            if ($notificacion4) {
-                $notificaciones_4 = \File::get($notificacion4);
-            }else{
-                $notificaciones_4 = "";
-            }
-            
-            $this->foto_insert($documentos_4,$id_expediente,$revision4,$check4,$id_encargado,$notificaciones_4);
+
+            $this->agregar_docmuentos($documentos_4,$id_expediente,$revision4,$check4,$id_encargado,$notificacion4);
         }
         if($revision5)
         {
@@ -130,13 +106,7 @@ class VerTecnicaController extends Controller
                 $documentos_5 = "";
             }
             
-            if ($notificacion5) {
-                $notificaciones_5 = \File::get($notificacion5);
-            }else{
-                $notificaciones_5 = "";
-            }
-            
-            $this->foto_insert($documentos_5,$id_expediente,$revision5,$check5,$id_encargado,$notificaciones_5);
+            $this->agregar_docmuentos($documentos_5,$id_expediente,$revision5,$check5,$id_encargado,$notificacion5);
         }
         if($revision6)
         {
@@ -145,24 +115,18 @@ class VerTecnicaController extends Controller
             }else{
                 $documentos_6 = "";
             }
-            
-            if ($notificacion6) {
-                $notificaciones_6 = \File::get($notificacion6);
-            }else{
-                $notificaciones_6 = "";
-            }
-            
-            $this->foto_insert($documentos_6,$id_expediente,$revision6,$check6,$id_encargado,$notificaciones_6);
+          
+            $this->agregar_docmuentos($documentos_6,$id_expediente,$revision6,$check6,$id_encargado,$notificacion6);
         }
     }
     
-    public function foto_insert($documento,$id_expediente,$num,$estado,$id_encargado,$notificacion)
+    public function agregar_docmuentos($documento,$id_expediente,$num,$estado,$id_encargado,$notificacion)
     {  
         $RevisionesEncargado = new RevisionesEncargado;
         $RevisionesEncargado->id_rev = $num;
         $RevisionesEncargado->id_encargado = $id_encargado;
         $RevisionesEncargado->documento = base64_encode($documento);
-        $RevisionesEncargado->notificacion = base64_encode($notificacion);
+        $RevisionesEncargado->notificacion = $notificacion;
         $RevisionesEncargado->estado = $estado;
         $RevisionesEncargado->id_expediente = $id_expediente;
         $RevisionesEncargado->save();  
@@ -318,7 +282,8 @@ class VerTecnicaController extends Controller
                 "<input type='checkbox' class='check".$Datos->id_rev."' onclick='cambiar_estado()'><input type='hidden' class='estado".$Datos->id_rev."' name='value".$Datos->id_rev."' value='0'>",
                 "<input type='file' name='file".$indice."'>",
                 "<input type='text' name='revision".$Datos->id_rev."' value='$Datos->id_rev'>",
-                "<input type='file' name='notificacion".$indice."'>",
+                '<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="notificaciones_tecnicas('.trim($indice).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR DOC.</button>'
+                //"<input type='file' name='notificacion".$indice."'>",
             );
         }
 
@@ -382,23 +347,26 @@ class VerTecnicaController extends Controller
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        
+        $indice_1=0;
         foreach ($sql as $Index => $Datos) {
+            $indice_1++;
             $Lista->rows[$Index]['id'] = $Datos->id_rev;
             if ($Datos->estado == 1) {
-              $nuevo = "<input type='checkbox' name='estado' checked='true' class='check".$Datos->id_rev."' onclick='cambiar_estado_1()'><input type='hidden' class='estado_".$Datos->id_rev."' name='value_".$Datos->id_rev."' value='1'>";
+              $nuevo = "<input type='checkbox' name='estado' checked='true' class='check_".$Datos->id_rev."' onclick='cambiar_estado_1()'><input type='hidden' class='estado_".$Datos->id_rev."' name='value_".$Datos->id_rev."' value='1'>";
             }else{
-              $nuevo = "<input type='checkbox' name='estado' class='check".$Datos->id_rev."' onclick='cambiar_estado_1()'><input type='hidden' class='estado_".$Datos->id_rev."' name='value_".$Datos->id_rev."' value='0'>";
+              $nuevo = "<input type='checkbox' name='estado' class='check_".$Datos->id_rev."' onclick='cambiar_estado_1()'><input type='hidden' class='estado_".$Datos->id_rev."' name='value_".$Datos->id_rev."' value='0'>";
             }
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_rev),
                 trim($Datos->descripcion),
                 $nuevo,
-                "<input type='file' name='file_".$indice."'>",
+                "<input type='file' name='file_".$indice_1."'>",
                 '<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="ver_documentos('.trim($Datos->id_rev).','.trim($Datos->id_expediente).','.trim($Datos->id_encargado).')"><span class="btn-label"><i class="fa fa-print"></i></span> VER DOC.</button>',
                 "<input type='text' name='revision_".$Datos->id_rev."' value='$Datos->id_rev'>",
-                "<input type='file' name='notificacion_".$indice."'>",
-                '<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="ver_notificaciones('.trim($Datos->id_rev).','.trim($Datos->id_expediente).','.trim($Datos->id_encargado).')"><span class="btn-label"><i class="fa fa-print"></i></span> VER NOT.</button>'
+                '<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="notificaciones_tecnicas('.trim($indice_1).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR DOC.</button>',
+                //"<input type='file' name='notificacion_".$indice_1."'>",
+                '<button class="btn btn-labeled bg-color-purple txt-color-white" type="button" onclick="ver_notificaciones('.trim($Datos->id_rev).','.trim($Datos->id_expediente).','.trim($Datos->id_encargado).')"><span class="btn-label"><i class="fa fa-print"></i></span> VER NOT.</button>'
             );
         }
 
@@ -424,160 +392,225 @@ class VerTecnicaController extends Controller
     
     public function ver_notificaciones_adjuntos($id_rev,$id_expediente,$id_encargado)
     {
-        $sql = DB::connection('gerencia_catastro')->select("select * from soft_lic_edificacion.vw_revisiones_encargado where id_rev='$id_rev' and id_expediente = '$id_expediente' and id_encargado='$id_encargado' ");
+        $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.vw_revisiones_encargado")->where('id_rev',$id_rev)->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->get();
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
         
-        if($sql)
+        if(count($sql)>0)
         {
-            return Response::make(base64_decode($sql[0]->notificacion), 200, [
-                    'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="files"'
-                ]);
+            $view =  \View::make('licencias_edificacion.reportes.notificaciones_tecnica', compact('sql','institucion'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Notificacion Verificacion Tecnica".".pdf");
         }
         else
         {
-            return "No hay Archivos";
+            return "No hay Datos";
         }
     }
     
     function actualizar_f(Request $request)
     {   
-        $documento1 = $request->file('file_1');
-        $documento2 = $request->file('file_2');
-        $documento3 = $request->file('file_3');
-        $documento4 = $request->file('file_4');
-        $documento5 = $request->file('file_5');
-        $documento6 = $request->file('file_6');
+        $documento_1 = $request->file('file_1');
+        $documento_2 = $request->file('file_2');
+        $documento_3 = $request->file('file_3');
+        $documento_4 = $request->file('file_4');
+        $documento_5 = $request->file('file_5');
+        $documento_6 = $request->file('file_6');
         
-        $notificacion1 = $request->file('notificacion_1');
-        $notificacion2 = $request->file('notificacion_2');
-        $notificacion3 = $request->file('notificacion_3');
-        $notificacion4 = $request->file('notificacion_4');
-        $notificacion5 = $request->file('notificacion_5');
-        $notificacion6 = $request->file('notificacion_6');
+        $notificacion1 = $request['notificacion1'];
+        $notificacion2 = $request['notificacion2'];
+        $notificacion3 = $request['notificacion3'];
+        $notificacion4 = $request['notificacion4'];
+        $notificacion5 = $request['notificacion5'];
+        $notificacion6 = $request['notificacion6'];
         
         $id_expediente = $request['dlg_hidden_verif_tecnica_id_reg_exp'];
         $id_encargado = $request['dlg_encargado'];
         
-        $revision1 = $request['revision_1'];
-        $revision2 = $request['revision_2'];
-        $revision3 = $request['revision_3'];
-        $revision4 = $request['revision_4'];
-        $revision5 = $request['revision_5'];
-        $revision6 = $request['revision_6'];
+        $revision_1 = $request['revision_1'];
+        $revision_2 = $request['revision_2'];
+        $revision_3 = $request['revision_3'];
+        $revision_4 = $request['revision_4'];
+        $revision_5 = $request['revision_5'];
+        $revision_6 = $request['revision_6'];
         
-        $check1 = $request['value_1'];
-        $check2 = $request['value_2'];
-        $check3 = $request['value_3'];
-        $check4 = $request['value_4'];
-        $check5 = $request['value_5'];
-        $check6 = $request['value_6'];
+        $check_1 = $request['value_1'];
+        $check_2 = $request['value_2'];
+        $check_3 = $request['value_3'];
+        $check_4 = $request['value_4'];
+        $check_5 = $request['value_5'];
+        $check_6 = $request['value_6'];
         
-        if($revision1)
+        if($revision_1)
         {
-            if ($documento1) {
-                $documentos_1 = \File::get($documento1);
+            if ($documento_1) {
+                $documentos_1 = \File::get($documento_1);
             }else{
-                $documentos_1 = "";
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_1)->first();
+                if($sql) {
+                    $documentos_1 = $sql->documento;
+                }else{
+                    $documentos_1 = "";
+                }
             }
             
-            if ($notificacion1) {
-                $notificaciones_1 = \File::get($notificacion1);
+            if ($notificacion1 == '') {
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_1)->first();
+                if($sql) {
+                    $notificaciones_1 = $sql->notificacion;
+                }else{
+                    $notificaciones_1 = "";
+                }
             }else{
-                $notificaciones_1 = "";
+                $notificaciones_1 = $notificacion1;
             }
             
-            $this->file_actualizar($documentos_1,$id_expediente,$revision1,$check1,$id_encargado,$notificaciones_1);
+            $this->file_actualizar($documentos_1,$id_expediente,$revision_1,$check_1,$id_encargado,$notificaciones_1);
         }
-        if($revision2)
+        if($revision_2)
         {
-            if ($documento2) {
-                $documentos_2 = \File::get($documento2);
+            if ($documento_2) {
+                $documentos_2 = \File::get($documento_2);
             }else{
-                $documentos_2 = "";
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_2)->first();
+                if($sql) {
+                    $documentos_2 = $sql->documento;
+                }else{
+                    $documentos_2 = "";
+                } 
             }
             
-            if ($notificacion2) {
-                $notificaciones_2 = \File::get($notificacion2);
+            if ($notificacion2 == '') {
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_2)->first();
+                if($sql) {
+                    $notificaciones_2 = $sql->notificacion;
+                }else{
+                    $notificaciones_2 = "";
+                }
             }else{
-                $notificaciones_2 = "";
+                $notificaciones_2 = $notificacion2;
             }
             
-            $this->file_actualizar($documentos_2,$id_expediente,$revision2,$check2,$id_encargado,$notificaciones_2);
+            $this->file_actualizar($documentos_2,$id_expediente,$revision_2,$check_2,$id_encargado,$notificaciones_2);
         }
-        if($revision3)
+        if($revision_3)
         {
-            if ($documento3) {
-                $documentos_3 = \File::get($documento3);
+            if ($documento_3) {
+                $documentos_3 = \File::get($documento_3);
             }else{
-                $documentos_3 = "";
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_3)->first();
+                if($sql) {
+                    $documentos_3 = $sql->documento;
+                }else{
+                    $documentos_3 = "";
+                } 
             }
             
-            if ($notificacion3) {
-                $notificaciones_3 = \File::get($notificacion3);
+            if ($notificacion3 == '') {
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_3)->first();
+                if($sql) {
+                    $notificaciones_3 = $sql->notificacion;
+                }else{
+                    $notificaciones_3 = "";
+                }
             }else{
-                $notificaciones_3 = "";
+                $notificaciones_3 = $notificacion3;
             }
             
-            $this->file_actualizar($documentos_3,$id_expediente,$revision3,$check3,$id_encargado,$notificaciones_3);
+            $this->file_actualizar($documentos_3,$id_expediente,$revision_3,$check_3,$id_encargado,$notificaciones_3);
         }
-        if($revision4)
+        if($revision_4)
         {
-             if ($documento4) {
-                $documentos_4 = \File::get($documento4);
+             if ($documento_4) {
+                $documentos_4 = \File::get($documento_4);
             }else{
-                $documentos_4 = "";
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_4)->first();
+                if($sql) {
+                    $documentos_4 = $sql->documento;
+                }else{
+                    $documentos_4 = "";
+                } 
             }
             
-            if ($notificacion4) {
-                $notificaciones_4 = \File::get($notificacion4);
+            if ($notificacion4 == '') {
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_4)->first();
+                if($sql) {
+                    $notificaciones_4 = $sql->notificacion;
+                }else{
+                    $notificaciones_4 = "";
+                }
             }else{
-                $notificaciones_4 = "";
+                $notificaciones_4 = $notificacion4;
             }
-            
-            $this->file_actualizar($documentos_4,$id_expediente,$revision4,$check4,$id_encargado,$notificaciones_4);
+
+            $this->file_actualizar($documentos_4,$id_expediente,$revision_4,$check_4,$id_encargado,$notificaciones_4);
         }
-        if($revision5)
+        if($revision_5)
         {
-            if ($documento5) {
-                $documentos_5 = \File::get($documento5);
+            if ($documento_5) {
+                $documentos_5 = \File::get($documento_5);
             }else{
-                $documentos_5 = "";
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_5)->first();
+                if($sql) {
+                    $documentos_5 = $sql->documento;
+                }else{
+                    $documentos_5 = "";
+                } 
             }
             
-            if ($notificacion5) {
-                $notificaciones_5 = \File::get($notificacion5);
+            if ($notificacion5 == '') {
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_5)->first();
+                if($sql) {
+                    $notificaciones_5 = $sql->notificacion;
+                }else{
+                    $notificaciones_5 = "";
+                }
             }else{
-                $notificaciones_5 = "";
+                $notificaciones_5 = $notificacion5;
             }
             
-            $this->file_actualizar($documentos_5,$id_expediente,$revision5,$check5,$id_encargado,$notificaciones_5);
+            $this->file_actualizar($documentos_5,$id_expediente,$revision_5,$check_5,$id_encargado,$notificaciones_5);
         }
-        if($revision6)
+        if($revision_6)
         {
-            if ($documento6) {
-                $documentos_6 = \File::get($documento6);
+            if ($documento_6) {
+                $documentos_6 = \File::get($documento_6);
             }else{
-                $documentos_6 = "";
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_6)->first();
+                if($sql) {
+                    $documentos_6 = $sql->documento;
+                }else{
+                    $documentos_6 = "";
+                }
             }
             
-            if ($notificacion6) {
-                $notificaciones_6 = \File::get($notificacion6);
+            if ($notificacion6 == '') {
+                $sql = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.revisiones_encargado")->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->where('id_rev',$revision_6)->first();
+                if($sql) {
+                    $notificaciones_6 = $sql->notificacion;
+                }else{
+                    $notificaciones_6 = "";
+                }
             }else{
-                $notificaciones_6 = "";
+                $notificaciones_6 = $notificacion6;
             }
             
-            $this->file_actualizar($documentos_6,$id_expediente,$revision6,$check6,$id_encargado,$notificaciones_6);
+            $this->file_actualizar($documentos_6,$id_expediente,$revision_6,$check_6,$id_encargado,$notificaciones_6);
         }
     }
     
     public function file_actualizar($documento,$id_expediente,$num,$estado,$id_encargado,$notificacion)
     {   
         $RevisionesEncargado = new RevisionesEncargado;
-        $datos=  $RevisionesEncargado::where("id_expediente","=",$id_expediente)->where("id_encargado","=",$id_encargado)->first();
+        $datos=  $RevisionesEncargado::where("id_expediente","=",$id_expediente)->where("id_encargado","=",$id_encargado)->where("id_rev","=",$num)->first();
         if(count($datos)>=1)
         {
-            $datos->documento = base64_encode($documento);
-            $datos->notificacion = base64_encode($notificacion);
+            if ($datos->documento != "") {
+                $datos->documento = $documento;
+            }else{
+                $datos->documento = base64_encode($documento); 
+            }
+            $datos->notificacion = $notificacion;
             $datos->estado = $estado;
             $datos->save();
         }

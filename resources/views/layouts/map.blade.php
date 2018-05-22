@@ -687,6 +687,22 @@
                                                                     </div>
                                                                 </div>
                                                                 
+                                                                <div class="widget-body">
+                                                                    <div class="tree smart-form" style="color:white !important">
+                                                                        <ul >
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_licencias" onchange="valida_capa('chk_map_licencias')" ><i></i>
+                                                                                    <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Mapa Licencias Edificacion
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                
                                                                 
                                                             </div>
                                                         </div>

@@ -2,6 +2,12 @@ function limpiar_datos_grilla(){
     jQuery("#table_revision_expediente").jqGrid('setGridParam', {url: 'get_revision_expediente' }).trigger('reloadGrid');
     $('#tabla2').hide();
     $('#tabla1').show();
+    $('#notificacion_1').val('');
+    $('#notificacion_2').val('');
+    $('#notificacion_3').val('');
+    $('#notificacion_4').val('');
+    $('#notificacion_5').val('');
+    $('#notificacion_6').val('');
 }
 
 
@@ -195,6 +201,12 @@ function modificar_verif_tecnica()
     if (id) {
         $('#tabla1').hide();
         $('#tabla2').show();
+        $('#notificacion_1').val('');
+        $('#notificacion_2').val('');
+        $('#notificacion_3').val('');
+        $('#notificacion_4').val('');
+        $('#notificacion_5').val('');
+        $('#notificacion_6').val('');
         $("#dlg_verif_tecnica").dialog({
             autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
             title: "<div class='widget-header'><h4>.: VERIFICACION ADMINISTRATIVA :.</h4></div>",
@@ -317,4 +329,227 @@ function cambiar_estado_1(value){
     }else{
        $('.estado_6').val("0");
     }
+}
+
+
+
+function notificaciones_tecnicas(indice){
+    if (indice == 1) {
+        llamar_editor(indice);
+    }
+    if (indice == 2) {
+        llamar_editor(indice);
+    }
+    if (indice == 3) {
+        llamar_editor(indice);
+    }
+    if (indice == 4) {
+        llamar_editor(indice);
+    }
+    if (indice == 5) {
+        llamar_editor(indice);
+    }
+    if (indice == 6) {
+        llamar_editor(indice);
+    }
+}
+
+function llamar_editor(indice){
+    
+    if (indice == 1) {
+        limpiar_notificacion(indice);
+        $("#dlg_editor_1").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: NOTIFICACION TECNICA 1:.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    extraer_datos(indice);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }
+    if (indice == 2) {
+        limpiar_notificacion(indice);
+        $("#dlg_editor_2").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: NOTIFICACION TECNICA 2:.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    extraer_datos(indice);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }
+    if (indice == 3) {
+        limpiar_notificacion(indice);
+        $("#dlg_editor_3").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: NOTIFICACION TECNICA 3:.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    extraer_datos(indice);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }
+    if (indice == 4) {
+        limpiar_notificacion(indice);
+        $("#dlg_editor_4").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: NOTIFICACION TECNICA 4:.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    extraer_datos(indice);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }
+    if (indice == 5) {
+        limpiar_notificacion(indice);
+        $("#dlg_editor_5").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: NOTIFICACION TECNICA 5:.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    extraer_datos(indice);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }
+    if (indice == 6) {
+        limpiar_notificacion(indice);
+        $("#dlg_editor_6").dialog({
+            autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: NOTIFICACION TECNICA 6:.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    extraer_datos(indice);
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }
+    
+}
+
+editor_1=0;
+editor_2=0;
+editor_3=0;
+editor_4=0;
+editor_5=0;
+editor_6=0;
+function limpiar_notificacion(indice)
+{
+    if (indice == 1) {
+        if(editor_1==0)
+        {
+            editor_1=1;
+            CKEDITOR.replace('ckeditor_1', {height: '320px'});
+        }
+        CKEDITOR.instances['ckeditor_1'].setData('');
+    }
+    if (indice == 2) {
+        if(editor_2==0)
+        {
+            editor_2=1;
+            CKEDITOR.replace('ckeditor_2', {height: '320px'});
+        }
+        CKEDITOR.instances['ckeditor_2'].setData('');
+    }
+    if (indice == 3) {
+        if(editor_3==0)
+        {
+            editor_3=1;
+            CKEDITOR.replace('ckeditor_3', {height: '320px'});
+        }
+        CKEDITOR.instances['ckeditor_3'].setData('');
+    }
+    if (indice == 4) {
+        if(editor_4==0)
+        {
+            editor_4=1;
+            CKEDITOR.replace('ckeditor_4', {height: '320px'});
+        }
+        CKEDITOR.instances['ckeditor_4'].setData('');
+    }
+    if (indice == 5) {
+        if(editor_5==0)
+        {
+            editor_5=1;
+            CKEDITOR.replace('ckeditor_5', {height: '320px'});
+        }
+        CKEDITOR.instances['ckeditor_5'].setData('');
+    }
+    if (indice == 6) {
+        if(editor_6==0)
+        {
+            editor_6=1;
+            CKEDITOR.replace('ckeditor_6', {height: '320px'});
+        }
+        CKEDITOR.instances['ckeditor_6'].setData('');
+    }
+    
+}
+
+function extraer_datos(indice){
+    if (indice == 1) {
+        $('#notificacion_1').val(CKEDITOR.instances['ckeditor_1'].getData());
+        MensajeExito('Notificacion de Seguridad fue Creada','La operacion fue Exitosa');
+    }
+    if (indice == 2) {
+        $('#notificacion_2').val(CKEDITOR.instances['ckeditor_2'].getData());
+        MensajeExito('Notificacion de Arquitectura fue Creada','La operacion fue Exitosa');
+    }
+    if (indice == 3) {
+        $('#notificacion_3').val(CKEDITOR.instances['ckeditor_3'].getData());
+        MensajeExito('Notificacion de Estructuras fue Creada','La operacion fue Exitosa');
+    }
+    if (indice == 4) {
+        $('#notificacion_4').val(CKEDITOR.instances['ckeditor_4'].getData());
+        MensajeExito('Notificacion de Sanitarias fue Creada','La operacion fue Exitosa');
+    }
+    if (indice == 5) {
+        $('#notificacion_5').val(CKEDITOR.instances['ckeditor_5'].getData());
+        MensajeExito('Notificacion de Electricas fue Creada','La operacion fue Exitosa');
+    }
+    if (indice == 6) {
+        $('#notificacion_6').val(CKEDITOR.instances['ckeditor_6'].getData());
+        MensajeExito('Notificacion de Otros fue Creada','La operacion fue Exitosa');
+    }
+    
 }

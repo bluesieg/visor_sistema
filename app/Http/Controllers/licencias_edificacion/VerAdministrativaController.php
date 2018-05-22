@@ -38,6 +38,19 @@ class VerAdministrativaController extends Controller
         $Observaciones->save();
     }
     
+    public function actualizar_observaciones(Request $request)
+    {   
+        $Observaciones = new Observaciones;
+        $val=  $Observaciones::where("id_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->fch_verif = date('d-m-Y');
+            $val->observacion = $request['observaciones'];
+            $val->save();
+        }
+        return $request['id_reg_exp'];
+    }
+    
     public function buscar_codigo_interno(Request $request){
         $codigo = $request['codigo'];
         $expedientes = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.registro_expediente')->where('cod_interno',$codigo)->first();
@@ -75,7 +88,7 @@ class VerAdministrativaController extends Controller
      */
     public function show($id,Request $request)
     {
-        $expedientes = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.vw_verif_admin')->where('id_reg_exp',$id)->get();
+        $expedientes = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.vw_expediente_observacion')->where('id_expediente',$id)->get();
         return $expedientes; 
     }
 
@@ -95,6 +108,27 @@ class VerAdministrativaController extends Controller
             $val->save();
         }
         return $request['id_requisito'];       
+    }
+    
+    public function actualizar_expediente_verif_admin(Request $request){
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->fase = 3;
+            $val->save();
+        }
+        $this->eliminar_notificacion($request['id_reg_exp']);
+    }
+    
+    public function eliminar_notificacion($id_reg_exp){
+        $Notificaciones = new  Notificaciones;
+        $val=  $Notificaciones::where("id_reg_exp","=",$id_reg_exp)->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$id_reg_exp;
     }
 
     /**
@@ -131,7 +165,13 @@ class VerAdministrativaController extends Controller
         $fecha_inicio = $request['fecha_inicio'];
         $fecha_fin = $request['fecha_fin'];
         
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_verif_admin where fecha_registro between '$fecha_inicio' and '$fecha_fin'");
+        $check = $request['check'];
+        if ($check == '1') {
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_verif_admin where fecha_registro between '$fecha_inicio' and '$fecha_fin' and fase = 5");
+        }
+        else{
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.vw_verif_admin where fecha_registro between '$fecha_inicio' and '$fecha_fin' and fase = 3");
+        }
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -153,15 +193,18 @@ class VerAdministrativaController extends Controller
             $start = 0;
         }
 
-     
+        if ($check == '1') {
+            $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_admin')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->where('fase',5)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
+        else{
+            $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_admin')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->where('fase',3)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
 
-        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_admin')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-        
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
-
+        
         foreach ($sql as $Index => $Datos) {
             $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;
             $Lista->rows[$Index]['cell'] = array(
@@ -170,7 +213,8 @@ class VerAdministrativaController extends Controller
                 trim($Datos->fecha_registro),
                 trim($Datos->nro_doc_gestor),
                 trim($Datos->gestor),
-                trim($Datos->descr_procedimiento)
+                trim($Datos->descr_procedimiento),
+                trim($Datos->fase)
             );
         }
 
@@ -338,6 +382,7 @@ class VerAdministrativaController extends Controller
         $Notificaciones = new Notificaciones;
         $Notificaciones->id_reg_exp = $request['id_reg_exp'];
         $Notificaciones->notificacion = $request['notificacion'];
+        $Notificaciones->fecha_notificacion = date('d-m-Y');
         $Notificaciones->save();
     }
     
@@ -370,6 +415,64 @@ class VerAdministrativaController extends Controller
             $val->save();
         }
         return $request['id_reg_exp'];
+    }
+    
+    public function recuperar_multas(Request $request){
+        header('Content-type: application/json');
+        $id_modalidad = $request['id_modalidad'];
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.requisitos where id_proced = '$id_modalidad'");
+        
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; 
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.requisitos')->where('id_proced',$id_modalidad)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+         
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_requisito;
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_requisito),
+                trim($Datos->desc_requisito),
+                "<input type='checkbox' name='multa_check' id_requisito = '$Datos->id_requisito'>",
+            );
+        }
+       
+        return response()->json($Lista);
+
+    }
+    
+    public function agregar_lote_verif_admin(Request $request){
+        $RecDocumentos = new RecDocumentos;
+        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        if(count($val)>=1)
+        {
+            $val->id_lote = $request['id_lote'];
+            $val->save();
+        }
+        $this->eliminar_notificacion($request['id_reg_exp']);
     }
     
 }

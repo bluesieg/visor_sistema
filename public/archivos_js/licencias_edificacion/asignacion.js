@@ -16,7 +16,7 @@ function crear_nueva_asignacion()
             html: "<i class='fa fa-save'></i>&nbsp; Guardar",
             "class": "btn btn-success bg-color-green",
             click: function () {
-                    modificar_exp();
+                    actualizar_exp_asignacion();
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -68,19 +68,20 @@ function fn_obtener_exp()
         }); 
 }
 
-function modificar_documento()
+function actualizar_asignacion()
 {
-    //limpiar_dl_ipm(1);
-    id=$('#table_recdocumentos').jqGrid ('getGridParam', 'selrow');
+    id=$('#table_asignacion').jqGrid ('getGridParam', 'selrow');
     if (id) {
-        $("#dlg_nuevo_exp_edit").dialog({
-            autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        $('#dlg_modalidad').attr("disabled",false); 
+        $('#dlg_codigo_interno').attr("disabled",false);
+        $("#dlg_nueva_asignacion").dialog({
+            autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
             title: "<div class='widget-header'><h4>.:  EDITAR EXPEDIENTE :.</h4></div>",
             buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
                 click: function () {
-                    modificar_exp();
+                    actualizar_asignacion_expediente();
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -90,36 +91,36 @@ function modificar_documento()
                 }
             }],
         });
-        $("#dlg_nuevo_exp_edit").dialog('open');
+        $("#dlg_nueva_asignacion").dialog('open');
 
 
-        MensajeDialogLoadAjax('dlg_nuevo_exp_edit', '.:: Cargando ...');
+        MensajeDialogLoadAjax('dlg_nueva_asignacion', '.:: Cargando ...');
 
-        id = $('#table_recdocumentos').jqGrid ('getGridParam', 'selrow');
-        $.ajax({url: 'recepcion_documentos/'+id,
+        id = $('#table_asignacion').jqGrid ('getGridParam', 'selrow');
+        $.ajax({url: 'asignacion/'+id,
             type: 'GET',
             success: function(r)
             {
-                $("#nro_expediente").val(r[0].nro_exp);
-                $("#gestor_tramite").val(r[0].gestor);
-                $("#fecha_inicio").val(r[0].fecha_inicio_tramite);
-                $("#fecha_registro").val(r[0].fecha_registro);
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_exp_edit');
+                $("#id_asignacion").val(r[0].id_reg_exp);
+                $("#dlg_asignacion").val(r[0].nro_exp);
+                $("#dlg_modalidad").val(r[0].id_procedimiento);
+                $("#dlg_codigo_interno").val(r[0].cod_interno);
+                MensajeDialogLoadAjaxFinish('dlg_nueva_asignacion');
 
             },
             error: function(data) {
                 mostraralertas("Hubo un Error, Comunicar al Administrador");
                 console.log('error');
                 console.log(data);
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_exp_edit');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_asignacion');
             }
         });
     }else{
-        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_recdocumentos");
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_asignacion");
     }
 }
 
-function modificar_exp(){
+function actualizar_exp_asignacion(){
     
     id_reg_exp = $("#id_asignacion").val();
     modalidad = $("#dlg_modalidad").val();
@@ -160,8 +161,56 @@ function modificar_exp(){
         });         
 }
 
-function eliminar_exp(){
-    id = $('#table_recdocumentos').jqGrid ('getGridParam', 'selrow');
+
+function actualizar_asignacion_expediente(){
+    
+    id_reg_exp = $("#id_asignacion").val();
+    modalidad = $("#dlg_modalidad").val();
+    codigo_interno = $("#dlg_codigo_interno").val();
+    asignacion = $("#dlg_asignacion").val();
+
+    if (id_reg_exp == '') {
+        mostraralertasconfoco('* El campo Numero de Expediente es obligatorio...', '#dlg_asignacion');
+        return false;
+    }
+
+    if (codigo_interno == '') {
+        mostraralertasconfoco('* El campo Codigo Interno es obligatorio...', '#dlg_codigo_interno');
+        return false;
+    }
+    
+    if (asignacion == '') {
+        mostraralertasconfoco('* El campo Codigo Codigo Expediente es obligatorio...', '#dlg_asignacion');
+        return false;
+    }
+  
+    MensajeDialogLoadAjax('dlg_nueva_asignacion', '.:: CARGANDO ...');
+    
+    $.ajax({url: 'modificar_asignacion',
+            type: 'GET',
+            data:{id_reg_exp:id_reg_exp,modalidad:modalidad,codigo_interno:codigo_interno,asignacion:asignacion},
+            success: function (data) {
+                if (data.msg === 'repetido'){
+                    mostraralertasconfoco("Mensaje del Sistema, EL CODIGO INTERNO YA FUE REGISTRADO");
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_asignacion');
+                }else{
+                    MensajeExito('El Expediente ha sido registrado');
+                    dialog_close('dlg_nueva_asignacion');
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_asignacion');
+                    fn_actualizar_grilla('table_asignacion');
+                }
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                dialog_close('dlg_nueva_asignacion');
+            }
+    });
+}
+
+function eliminar_exp_asignacion(){
+    id = $('#table_asignacion').jqGrid ('getGridParam', 'selrow');
     if (id) {
        
         $.confirm({
@@ -171,11 +220,11 @@ function eliminar_exp(){
                 Confirmar: function () {
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        url: 'recepcion_documentos/destroy',
+                        url: 'asignacion/destroy',
                         type: 'POST',
                         data: {_method: 'delete', id_reg_exp: id},
                         success: function (data) {
-                            fn_actualizar_grilla('table_recdocumentos');
+                            fn_actualizar_grilla('table_asignacion');
                             MensajeExito('Eliminar Registro Expediente', id + ' - Ha sido Eliminado');
                         },
                         error: function (data) {
@@ -190,7 +239,7 @@ function eliminar_exp(){
             }
         });
     }else{
-        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_recdocumentos");
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_asignacion");
     }
     
 }
@@ -204,4 +253,10 @@ function seleccionafecha_asignacion(){
          url: 'get_asignacion?fecha_inicio='+fecha_inicio_asignacion+'&fecha_fin='+fecha_fin_asignacion
     }).trigger('reloadGrid');
 
+}
+
+function actualizar_grilla(){
+    jQuery("#table_recdocumentos").jqGrid('setGridParam', {
+         url: 'get_documentos'
+    }).trigger('reloadGrid');
 }
