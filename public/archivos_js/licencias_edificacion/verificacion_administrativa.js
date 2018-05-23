@@ -21,7 +21,7 @@ function crear_nueva_verif_administrativa()
             click: function () {
                     agregar_verificacion();
                     cambiar_estado_verif_admin($('#dlg_hidden_id_reg_exp').val());
-                    //MensajeExito('Verificacion del Expediente','La operacion fue Exitosa');
+                    MensajeExito('Verificacion del Expediente','La operacion fue Exitosa');
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -127,6 +127,14 @@ function fn_obtener_exp_cod()
                     jQuery("#table_requisito_admin").jqGrid('setGridParam', {url: 'buscar_requisitos?indice='+$('#dlg_hidden_id_procedimiento').val() }).trigger('reloadGrid');
                 }
                 
+            }else if (data.msg === 'requisitos'){
+                mostraralertasconfoco("Mensaje del Sistema, EL EXPEDIENTE YA TIENE ASOCIADO REQUISITOS");
+                limpiar_datos_verif_administrativa();
+                MensajeDialogLoadAjaxFinish('dlg_verif_administrativa');
+            }else if (data.msg === 'fase'){
+                mostraralertasconfoco("Mensaje del Sistema, EL EXPEDIENTE YA PASO POR VERIFICACION ADMINISTRATIVA");
+                limpiar_datos_verif_administrativa();
+                MensajeDialogLoadAjaxFinish('dlg_verif_administrativa');
             }else{
                 mostraralertasconfoco("Mensaje del Sistema, NO EXISTE EL NUMERO DE CODIGO INTERNO");
                 limpiar_datos_verif_administrativa();
@@ -354,15 +362,15 @@ function seleccionafecha_verif_adm(){
 
 }
 
-iniciar=0;
-function limpiar_notificacion()
+iniciar_not=0;
+function limpiar_notificacion_verificacion_administrativa()
 {
-    if(iniciar==0)
+    if(iniciar_not==0)
     {
-        iniciar=1;
-        CKEDITOR.replace('ckeditor', {height: '320px'});
+        iniciar_not=1;
+        CKEDITOR.replace('ckeditor_notificacion', {height: '320px'});
     }
-    CKEDITOR.instances['ckeditor'].setData('');
+    CKEDITOR.instances['ckeditor_notificacion'].setData('');
 }
 
 function notificar(){
@@ -371,8 +379,8 @@ function notificar(){
     id_reg_exp = $('#table_verif_administrativa').jqGrid ('getCell', Id, 'id_reg_exp');
     if(Id)
     {
-        limpiar_notificacion();
-        $("#dlg_editor").dialog({
+        limpiar_notificacion_verificacion_administrativa();
+        $("#dlg_editor_notificacion_va").dialog({
             autoOpen: false, modal: true, width: 800,height:620, show: {effect: "fade", duration: 300}, resizable: false,
             title: "<div class='widget-header'><h4>.: EDITAR RESOLUCION :.</h4></div>",
             buttons: [{
@@ -402,8 +410,8 @@ function guardar_notificacion(){
     
     id=$('#table_verif_administrativa').jqGrid ('getGridParam', 'selrow');
     id_reg_exp = $('#table_verif_administrativa').jqGrid ('getCell', id, 'id_reg_exp');
-    var contenido = CKEDITOR.instances['ckeditor'].getData();
-    MensajeDialogLoadAjax('dlg_editor', '.:: Cargando ...');
+    var contenido = CKEDITOR.instances['ckeditor_notificacion'].getData();
+    MensajeDialogLoadAjax('dlg_editor_notificacion_va', '.:: Cargando ...');
 
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -414,7 +422,7 @@ function guardar_notificacion(){
             notificacion:contenido
         },
         success: function (data) {
-            MensajeDialogLoadAjaxFinish('dlg_editor');
+            MensajeDialogLoadAjaxFinish('dlg_editor_notificacion_va');
             MensajeExito('Actualizacion de Verificacion del Expediente','La Notificacion fue Guardada con exito');
         },
         error: function (data) {
@@ -441,7 +449,7 @@ function imprimir_notificacion(id_reg_exp){
             id_reg_exp :id_reg_exp,
         },
         success: function (data) {
-            dialog_close('dlg_editor');
+            dialog_close('dlg_editor_notificacion_va');
             jQuery("#table_verif_administrativa").jqGrid('setGridParam', {
                  url: 'get_verif_administrativa?fecha_inicio='+fecha_inicio_verif_admin+'&fecha_fin='+fecha_fin_verif_admin
             }).trigger('reloadGrid');

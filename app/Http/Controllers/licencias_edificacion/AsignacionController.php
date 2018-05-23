@@ -28,7 +28,7 @@ class AsignacionController extends Controller
         
         if(count($expedientes)>=1)
         {
-            if ($expedientes->cod_interno == 0) {
+            if ($expedientes->cod_interno == '0') {
                 return response()->json([
                     'msg' => 'si',
                     'id_reg_exp' => $expedientes->id_reg_exp,

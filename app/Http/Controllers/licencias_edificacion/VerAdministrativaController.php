@@ -57,15 +57,29 @@ class VerAdministrativaController extends Controller
         
         if(count($expedientes)>=1)
         {
-            $procedimiento = DB::connection("gerencia_catastro")->table("soft_lic_edificacion.procedimiento")->where('id_procedimiento',$expedientes->id_procedimiento)->first();
-            return response()->json([
-                'msg' => 'si',
-                'nro_exp' => $expedientes->nro_exp,
-                'gestor' => $expedientes->gestor,
-                'id_procedimiento' => $procedimiento->id_procedimiento,
-                'procedimiento' => $procedimiento->descr_procedimiento,
-                'id_reg_exp' => $expedientes->id_reg_exp,
-            ]);    
+            $expedientes_requisitos = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.expediente_requisitos')->where('id_expediente',$expedientes->id_reg_exp)->get();
+            if (count($expedientes_requisitos) >= 1) {
+                return response()->json([
+                'msg' => 'requisitos',
+                ]);
+            }else{
+                
+                if ($expedientes->fase == 2 || $expedientes->fase == 3) {
+                    $procedimiento = DB::connection("gerencia_catastro")->table("soft_lic_edificacion.procedimiento")->where('id_procedimiento',$expedientes->id_procedimiento)->first();
+                    return response()->json([
+                    'msg' => 'si',
+                    'nro_exp' => $expedientes->nro_exp,
+                    'gestor' => $expedientes->gestor,
+                    'id_procedimiento' => $procedimiento->id_procedimiento,
+                    'procedimiento' => $procedimiento->descr_procedimiento,
+                    'id_reg_exp' => $expedientes->id_reg_exp,
+                    ]);
+                }else{
+                    return response()->json([
+                    'msg' => 'fase',
+                    ]);
+                }  
+            }
         }else{
             return response()->json([
                 'msg' => 'no',

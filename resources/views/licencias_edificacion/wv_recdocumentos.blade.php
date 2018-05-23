@@ -956,12 +956,12 @@
     </div>
 </div>
 
-<div id="dlg_editor" style="display: none;">
+<div id="dlg_editor_notificacion_va" style="display: none;">
     <div class="widget-body no-padding">
-                <textarea id="ckeditor" name="ckeditor">
-                    
-                </textarea>
-            </div>
+        <textarea id="ckeditor_notificacion" name="ckeditor_notificacion">
+            Escribir Notificacion Administrativa
+        </textarea>
+    </div>
 </div>
 
 <div id="dlg_subir_escaneo" style="display: none;">

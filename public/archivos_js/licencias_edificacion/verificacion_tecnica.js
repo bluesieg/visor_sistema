@@ -26,8 +26,7 @@ function crear_nueva_verif_tecnica()
                 "class": "btn btn-success bg-color-green",
                 click: function () {
                     agregar_revision();
-                    MensajeExito('La Actualizacion de Verificacion del Expediente','La operacion fue Exitosa');
-                    dialog_close('dlg_verif_tecnica');
+                    
                     jQuery("#table_verif_tecnica").jqGrid('setGridParam', {
                         url: 'get_verif_tecnica?fecha_inicio='+fecha_inicio_verif_tec+'&fecha_fin='+fecha_fin_verif_tec
                    }).trigger('reloadGrid');
@@ -82,7 +81,14 @@ function agregar_revision(){
         processData: false,
         contentType: false,
         success: function (data) {
-            
+            if (data.msg === 'existe_revisiones'){
+                
+               mostraralertasconfoco("Mensaje del Sistema, EL EXPEDIENTE YA TIENE ASOCIADO REVISIONES PARA ESTE ENCARGADO");
+                
+            }else{
+                MensajeExito('La Actualizacion de Verificacion del Expediente','La operacion fue Exitosa');
+                dialog_close('dlg_verif_tecnica');
+            }
         },
         error: function (data) {
             return false;

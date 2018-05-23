@@ -26,97 +26,107 @@ class VerTecnicaController extends Controller
     
     
     function guardar_f(Request $request)
-    {   
-        $documento1 = $request->file('file1');
-        $documento2 = $request->file('file2');
-        $documento3 = $request->file('file3');
-        $documento4 = $request->file('file4');
-        $documento5 = $request->file('file5');
-        $documento6 = $request->file('file6');
-        
-        $notificacion1 = $request['notificacion1'];
-        $notificacion2 = $request['notificacion2'];
-        $notificacion3 = $request['notificacion3'];
-        $notificacion4 = $request['notificacion4'];
-        $notificacion5 = $request['notificacion5'];
-        $notificacion6 = $request['notificacion6'];
-        
+    {  
         $id_expediente = $request['dlg_hidden_verif_tecnica_id_reg_exp'];
         $id_encargado = $request['dlg_encargado'];
         
-        $revision1 = $request['revision1'];
-        $revision2 = $request['revision2'];
-        $revision3 = $request['revision3'];
-        $revision4 = $request['revision4'];
-        $revision5 = $request['revision5'];
-        $revision6 = $request['revision6'];
+        $revisiones_encargado = DB::connection("gerencia_catastro")->table('soft_lic_edificacion.revisiones_encargado')->where('id_expediente',$id_expediente)->where('id_encargado',$id_encargado)->get();
         
-        $check1 = $request['value1'];
-        $check2 = $request['value2'];
-        $check3 = $request['value3'];
-        $check4 = $request['value4'];
-        $check5 = $request['value5'];
-        $check6 = $request['value6'];
-        
-        if($revision1)
-        {
-            if ($documento1) {
-                $documentos_1 = \File::get($documento1);
-            }else{
-                $documentos_1 = "";
-            }
-            
-            $this->agregar_docmuentos($documentos_1,$id_expediente,$revision1,$check1,$id_encargado,$notificacion1);
-        }
-        if($revision2)
-        {
-            if ($documento2) {
-                $documentos_2 = \File::get($documento2);
-            }else{
-                $documentos_2 = "";
-            }
-            
-            $this->agregar_docmuentos($documentos_2,$id_expediente,$revision2,$check2,$id_encargado,$notificacion2);
-        }
-        if($revision3)
-        {
-            if ($documento3) {
-                $documentos_3 = \File::get($documento3);
-            }else{
-                $documentos_3 = "";
-            }
-            
-            $this->agregar_docmuentos($documentos_3,$id_expediente,$revision3,$check3,$id_encargado,$notificacion3);
-        }
-        if($revision4)
-        {
-             if ($documento4) {
-                $documentos_4 = \File::get($documento4);
-            }else{
-                $documentos_4 = "";
-            }
+        if (count($revisiones_encargado) >= 1) {
+            return response()->json([
+                'msg' => 'existe_revisiones',
+            ]);
+        }else{
+            $documento1 = $request->file('file1');
+            $documento2 = $request->file('file2');
+            $documento3 = $request->file('file3');
+            $documento4 = $request->file('file4');
+            $documento5 = $request->file('file5');
+            $documento6 = $request->file('file6');
 
-            $this->agregar_docmuentos($documentos_4,$id_expediente,$revision4,$check4,$id_encargado,$notificacion4);
-        }
-        if($revision5)
-        {
-            if ($documento5) {
-                $documentos_5 = \File::get($documento5);
-            }else{
-                $documentos_5 = "";
+            $notificacion1 = $request['notificacion1'];
+            $notificacion2 = $request['notificacion2'];
+            $notificacion3 = $request['notificacion3'];
+            $notificacion4 = $request['notificacion4'];
+            $notificacion5 = $request['notificacion5'];
+            $notificacion6 = $request['notificacion6'];
+
+            $revision1 = $request['revision1'];
+            $revision2 = $request['revision2'];
+            $revision3 = $request['revision3'];
+            $revision4 = $request['revision4'];
+            $revision5 = $request['revision5'];
+            $revision6 = $request['revision6'];
+
+            $check1 = $request['value1'];
+            $check2 = $request['value2'];
+            $check3 = $request['value3'];
+            $check4 = $request['value4'];
+            $check5 = $request['value5'];
+            $check6 = $request['value6'];
+
+            if($revision1)
+            {
+                if ($documento1) {
+                    $documentos_1 = \File::get($documento1);
+                }else{
+                    $documentos_1 = "";
+                }
+
+                $this->agregar_docmuentos($documentos_1,$id_expediente,$revision1,$check1,$id_encargado,$notificacion1);
+            }
+            if($revision2)
+            {
+                if ($documento2) {
+                    $documentos_2 = \File::get($documento2);
+                }else{
+                    $documentos_2 = "";
+                }
+
+                $this->agregar_docmuentos($documentos_2,$id_expediente,$revision2,$check2,$id_encargado,$notificacion2);
+            }
+            if($revision3)
+            {
+                if ($documento3) {
+                    $documentos_3 = \File::get($documento3);
+                }else{
+                    $documentos_3 = "";
+                }
+
+                $this->agregar_docmuentos($documentos_3,$id_expediente,$revision3,$check3,$id_encargado,$notificacion3);
+            }
+            if($revision4)
+            {
+                 if ($documento4) {
+                    $documentos_4 = \File::get($documento4);
+                }else{
+                    $documentos_4 = "";
+                }
+
+                $this->agregar_docmuentos($documentos_4,$id_expediente,$revision4,$check4,$id_encargado,$notificacion4);
+            }
+            if($revision5)
+            {
+                if ($documento5) {
+                    $documentos_5 = \File::get($documento5);
+                }else{
+                    $documentos_5 = "";
+                }
+
+                $this->agregar_docmuentos($documentos_5,$id_expediente,$revision5,$check5,$id_encargado,$notificacion5);
+            }
+            if($revision6)
+            {
+                if ($documento6) {
+                    $documentos_6 = \File::get($documento6);
+                }else{
+                    $documentos_6 = "";
+                }
+
+                $this->agregar_docmuentos($documentos_6,$id_expediente,$revision6,$check6,$id_encargado,$notificacion6);
             }
             
-            $this->agregar_docmuentos($documentos_5,$id_expediente,$revision5,$check5,$id_encargado,$notificacion5);
-        }
-        if($revision6)
-        {
-            if ($documento6) {
-                $documentos_6 = \File::get($documento6);
-            }else{
-                $documentos_6 = "";
-            }
-          
-            $this->agregar_docmuentos($documentos_6,$id_expediente,$revision6,$check6,$id_encargado,$notificacion6);
+            return 1;
         }
     }
     
