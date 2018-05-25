@@ -1,13 +1,13 @@
 function llamarsubmitscan()
 {
-    MensajeDialogLoadAjax('dlg_subir_escaneo', '.:: CARGANDO ...');
-    $("#FormularioScans").submit();
-    $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_subir_escaneo');}).show();
+    MensajeDialogLoadAjax('dlg_subir_escaneo_licencias', '.:: CARGANDO ...');
+    $("#FormularioScans_licencias").submit();
+    $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_licencias');}).show();
 }
-function subir_scan(id)
+function subir_scan_licencias(id)
 {
-    $("#id_scan").val(id);
-    $("#dlg_subir_escaneo").dialog({
+    $("#id_scan_licencias").val(id);
+    $("#dlg_subir_escaneo_licencias").dialog({
     autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
     title: "<div class='widget-header'><h4>.: Subir Archivos :.</h4></div>",
     buttons: [
@@ -25,8 +25,8 @@ function subir_scan(id)
 }
 function grabarfinal()
 {
-    MensajeDialogLoadAjax('dlg_subir_escaneo', '.:: CARGANDO ...');
-    var form= new FormData($("#FormularioScans")[0]);
+    MensajeDialogLoadAjax('dlg_subir_escaneo_licencias', '.:: CARGANDO ...');
+    var form= new FormData($("#FormularioScans_licencias")[0]);
         $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         url: 'subir_escaneo',
@@ -39,20 +39,20 @@ function grabarfinal()
         {
             if(r==0)
             {
-                mostraralertasconfoco("Subir Archivo de lo contrario no se podra Grabar","#dlg_documento_file");
+                mostraralertasconfoco("Subir Archivo de lo contrario no se podra Grabar","#dlg_documento_file_licencias");
             }
             else
             {
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-                $("#dlg_subir_escaneo").dialog("close");
+                $("#dlg_subir_escaneo_licencias").dialog("close");
             }
-            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo');
-            jQuery("#table_doc").jqGrid('setGridParam', {url: 'get_expedientes_resolucion?id='+$("#id_scan").val()}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_licencias');
+            jQuery("#table_doc").jqGrid('setGridParam', {url: 'get_expedientes_resolucion?id='+$("#id_scan_licencias").val()}).trigger('reloadGrid');
             
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
-            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo');
+            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_licencias');
             console.log('error');
             console.log(data);
         }
@@ -60,7 +60,7 @@ function grabarfinal()
 }
 function verfile(id)
 {
-    window.open('ver_documentos/'+id);
+    window.open('ver_documentos_licencias/'+id);
 }
 
 function delfile(id)

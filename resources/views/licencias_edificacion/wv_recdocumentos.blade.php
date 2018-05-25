@@ -687,7 +687,7 @@
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/licencias_edificacion/asignacion.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/licencias_edificacion/verificacion_administrativa.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/licencias_edificacion/verificacion_tecnica.js') }}"></script>
-<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/licencias_edificacion/escaneo.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/licencias_edificacion/escaneo_licencias.js') }}"></script>
 
 <div id="dlg_nuevo_exp" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
@@ -964,17 +964,17 @@
     </div>
 </div>
 
-<div id="dlg_subir_escaneo" style="display: none;">
+<div id="dlg_subir_escaneo_licencias" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
-            <form id="FormularioScans" name="FormularioScans" method="post" enctype="multipart/form-data" action="callpdf_resolucion"  target="ifrafile">
+            <form id="FormularioScans_licencias" name="FormularioScans_licencias" method="post" enctype="multipart/form-data" action="callpdf_resolucion_licencias"  target="ifrafile">
                 <input type="hidden" name="_token" id="_token2" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
-                <input type="hidden" value='0' id='id_scan' name="id_scan"/>
+                <input type="hidden" value='0' id='id_scan_licencias' name="id_scan_licencias"/>
                 <div class="col-xs-12" style="padding: 0px;">
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon"  style="width: 165px" >Tipo Documento &nbsp;<i class="fa fa-file"></i></span>
                         <div class="icon-addon addon-md">
-                            <select id='seltipdoc' name="seltipdoc" class="form-control col-lg-8" style="height: 32px;">
+                            <select id='tipo_documento_licencias' name="tipo_documento_licencias" class="form-control col-lg-8" style="height: 32px;">
                             @foreach ($tip_doc as $docs)
                             <option value='{{$docs->id_tip_doc}}' >{{$docs->t_documento}}</option>
                             @endforeach
@@ -986,7 +986,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Documento &nbsp;<i class="fa fa-file-archive-o"></i></span>
                         <div>
-                            <input name="dlg_documento_file" id="dlg_documento_file" type="file"  class="form-control" style="height: 32px; width: 100%" onchange="llamarsubmitscan();">
+                            <input name="dlg_documento_file_licencias" id="dlg_documento_file_licencias" type="file"  class="form-control" style="height: 32px; width: 100%" onchange="llamarsubmitscan();">
                         </div>
                     </div>
                 </div>
@@ -994,7 +994,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Descripción &nbsp;<i class="fa fa-text-height"></i></span>
                         <div>
-                            <input name="dlg_documento_des" id="dlg_documento_des" type="text"  class="form-control" style="height: 32px; width: 100%">
+                            <input name="dlg_documento_des_licencias" id="dlg_documento_des_licencias" type="text"  class="form-control" style="height: 32px; width: 100%">
                         </div>
                     </div>
                 </div>

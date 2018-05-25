@@ -4,7 +4,7 @@ namespace App\Models\licencias_edificacion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Documentos_Ajuntos extends Model
+class Documentos_Adjuntos extends Model
 {
     protected $connection = 'gerencia_catastro';
     public $timestamps = false;

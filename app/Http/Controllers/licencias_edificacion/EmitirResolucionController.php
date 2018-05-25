@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\licencias_edificacion\RecDocumentos;
 use App\Models\licencias_edificacion\RevisionesEncargado;
 use Illuminate\Support\Facades\Response;
-use App\Models\licencias_edificacion\Documentos_Ajuntos;
+use App\Models\licencias_edificacion\Documentos_Adjuntos;
 
 
 class EmitirResolucionController extends Controller
@@ -22,16 +22,16 @@ class EmitirResolucionController extends Controller
 
     public function create(Request $request)
     {
-        $file = $request->file('dlg_documento_file');
+        $file = $request->file('dlg_documento_file_licencias');
         
         if($file)
         {
             $file2 = \File::get($file);
-            $dig=new Documentos_Ajuntos;
-            $dig->id_tip_doc=$request['seltipdoc'];
+            $dig=new Documentos_Adjuntos;
+            $dig->id_tip_doc=$request['tipo_documento_licencias'];
             $dig->archivo = base64_encode($file2);
-            $dig->id_reg_exp = $request['id_scan'];
-            $dig->descripcion = $request['dlg_documento_des'];
+            $dig->id_reg_exp = $request['id_scan_licencias'];
+            $dig->descripcion = $request['dlg_documento_des_licencias'];
             $dig->save();
             return $dig->id_doc_adj;
         }
@@ -43,8 +43,8 @@ class EmitirResolucionController extends Controller
     
     function get_pdf()
     {   
-           $file = file_get_contents($_FILES['dlg_documento_file']['tmp_name']);
-            if($_FILES["dlg_documento_file"]["type"]=='application/pdf')
+           $file = file_get_contents($_FILES['dlg_documento_file_licencias']['tmp_name']);
+            if($_FILES["dlg_documento_file_licencias"]["type"]=='application/pdf')
             {  
                 return Response::make($file, 200, [
                     'Content-Type' => 'application/pdf',
@@ -105,8 +105,8 @@ class EmitirResolucionController extends Controller
      */
     public function destroy(Request $request)
     {
-        $Documentos_Ajuntos = new  Documentos_Ajuntos;
-        $val=  $Documentos_Ajuntos::where("id_doc_adj","=",$request['id_doc_adj'] )->first();
+        $Documentos_Adjuntos = new  Documentos_Adjuntos;
+        $val=  $Documentos_Adjuntos::where("id_doc_adj","=",$request['id_doc_adj'] )->first();
         if(count($val)>=1)
         {
             $val->delete();
@@ -150,7 +150,7 @@ class EmitirResolucionController extends Controller
                 trim($Datos->nro_exp),
                 trim($Datos->gestor),
                 trim($Datos->fecha_registro),
-                '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="subir_scan('.trim($Datos->id_reg_exp).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR ESCANEO</button>'
+                '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="subir_scan_licencias('.trim($Datos->id_reg_exp).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR ESCANEO</button>'
             );
         }
         return response()->json($Lista);

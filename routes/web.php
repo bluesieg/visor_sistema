@@ -168,7 +168,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('licencias_verificacion_tecnica','VerTecnicaController');
         Route::get('get_verif_tecnica','VerTecnicaController@get_verif_tecnica');
         Route::get('get_revision_expediente','VerTecnicaController@get_revision_expediente');
-        Route::post('guardar_fotos/{id_reg_exp}/{id_rev_enc}', 'VerTecnicaController@guardar_fotos');
         Route::get('improcedente_verif_tecnica','VerTecnicaController@improcedente_verif_tecnica');
         Route::get('cambiar_estado_verif_tecnica','VerTecnicaController@cambiar_estado_verif_tecnica');
         Route::post('guardar_f', 'VerTecnicaController@guardar_f');
@@ -182,8 +181,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_expedientes_resolucion','EmitirResolucionController@get_expedientes_resolucion');
         Route::get('get_docs','EmitirResolucionController@get_docs');
         Route::post('subir_escaneo', 'EmitirResolucionController@create');
-        Route::post('callpdf_resolucion', 'EmitirResolucionController@get_pdf');
-        Route::get('ver_documentos/{id}','EmitirResolucionController@ver_documentos');
+        Route::post('callpdf_resolucion_licencias', 'EmitirResolucionController@get_pdf');
+        Route::get('ver_documentos_licencias/{id}','EmitirResolucionController@ver_documentos');
         
         
         Route::resource('mapa_licencias','MapaLicenciasController');
