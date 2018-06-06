@@ -66,19 +66,8 @@ class CrearPoligonoController extends Controller
      */
     public function show($id,Request $request)
     {
-        if($id==0)
-            {
-                $expe=new RegistroExpedientesHabUrb;
-                $val=  $expe::where("nro_exp","=",$request['cod'] )->first();
-                if(count($val)>=1)
-                {
-                    return $val;
-    }
-                else
-                {
-                    return 0;
-                }
-            }
+        $exp_poligono = DB::connection("gerencia_catastro")->table('soft_hab_urbana.registro_expediente_hab_urb')->where('id_reg_exp',$id)->get();
+        return $exp_poligono;
        
     }
 
@@ -90,7 +79,22 @@ class CrearPoligonoController extends Controller
      */
     public function edit($id,Request $request)
     {
-        
+        $select=DB::connection('gerencia_catastro')->table('soft_hab_urbana.registro_expediente_hab_urb')->where('id_hab_urb',$request['id_hab_urb'])->where('id_reg_exp','<>',$request['id_reg_exp'])->get();
+
+            if (count($select)>= 1) {
+                return response()->json([
+                    'msg' => 'repetido',
+                    ]);
+            }else{
+                $RegistroExpedientesHabUrb = new  RegistroExpedientesHabUrb;
+                $val=  $RegistroExpedientesHabUrb::where("id_reg_exp","=",$id )->first();
+                if(count($val)>=1)
+                {
+                    $val->id_hab_urb = $request['id_hab_urb'];
+                    $val->save();
+                }
+                return $id;
+            }
         
     }
 

@@ -48,9 +48,15 @@ class NotificacionesTecnicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id,Request $request)
-    {
-       
-        
+    {       
+          $NotificacionesTecnica = new  NotificacionesTecnica;
+         $val= $NotificacionesTecnica::where("id_expediente","=",$id )->first();
+         if(count($val)>=1)
+         {
+             $val->fec_notificacion = date('d-m-Y');
+             $val->save();
+         }
+         return $val->id_notificacion_admin;
     }
 
     /**

@@ -12,9 +12,11 @@ function selecciona_fecha2(){
 
 }
 
-function crear_verificacion_admin()
+function crear_verificacion_admin(tipo)
 {
-    $("#dlg_nuevo_verificacion_admin").dialog({
+    if(tipo==0)
+    {
+        $("#dlg_nuevo_verificacion_admin").dialog({
         autoOpen: false, modal: true, width: 850, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  VERIFICACIÓN ADMINISTRATIVA :.</h4></div>",
         buttons: [{
@@ -33,8 +35,32 @@ function crear_verificacion_admin()
             }
         }],
     });
+        $("#dlg_nuevo_verificacion_admin").dialog('open');
+    }
+     if(tipo==1)
+    {
+        $("#dlg_nuevo_verificacion_admin").dialog({
+        autoOpen: false, modal: true, width: 850, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  REGULARIZACIÓN :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+
+                guardar_verificacion_admin();
+                MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+        $("#dlg_nuevo_verificacion_admin").dialog('open');
+    }
     
-    $("#dlg_nuevo_verificacion_admin").dialog('open');
     
     MensajeDialogLoadAjax('dlg_nuevo_verificacion_admin', '.:: Cargando ...');
 

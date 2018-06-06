@@ -90,18 +90,18 @@ function guardar_verificacion_tecnica()
 
 function enviar_a_aprobados()
 {
-    Id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
+    Id=$('#table_escaneos').jqGrid ('getGridParam', 'selrow');
     if(Id)
     {
             $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     url: 'hab_urbana/'+Id+'/edit',
                     type: 'GET',
-                    data:{estado:5},
+                    data:{estado:9},
                     success: function(data) 
                     {
                         MensajeExito('Expediente', 'Expediente APROBADO');
-                        fn_actualizar_grilla('table_verif_tecnica');
+                        fn_actualizar_grilla('table_escaneos');
                     },
                     error: function(data) {
                         mostraralertas("hubo un error, Comunicar al Administrador");
@@ -120,6 +120,8 @@ function notificar_verif_tecnica()
 {
     Id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
     crear_editor()
+    if(Id)
+    {
     $("#dlg_notificacion_tecnica").dialog({
         autoOpen: false, modal: true, width: 850, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  CREAR NOTIFICACIÓN :.</h4></div>",
@@ -140,6 +142,11 @@ function notificar_verif_tecnica()
         }],
     });
     $("#dlg_notificacion_tecnica").dialog('open');
+    }
+     else
+    {
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_verif_tecnica");
+    }
    
 }
 
@@ -166,7 +173,7 @@ function guargar_notificacion(id_expediente)
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             $("#dlg_notificacion_tecnica").dialog("close");
             imprimir_notificacion(id_expediente);
-            enviar_a_notificados_tecnica(id_expediente);
+            
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -180,8 +187,10 @@ function imprimir_notificacion(id)
 {
     window.open('rep_notificacion_verif_tecnica_hab_urb/'+id+'');
 }
+
 function enviar_a_notificados_tecnica(id)
 {
+    guardar_fec_notificacion_tecnica(id);
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: 'hab_urbana/'+id+'/edit',
@@ -189,7 +198,7 @@ function enviar_a_notificados_tecnica(id)
             data:{estado:8},
             success: function(data) 
             {
-                MensajeExito('Expediente', 'Expediente Enviado a NOTIFICADOS TECNICO.');
+                MensajeExito('Expediente', 'Expediente Enviado a CREAR RESOLUCIÓN.');
                 fn_actualizar_grilla('table_verif_tecnica');
             },
             error: function(data) {
@@ -199,6 +208,26 @@ function enviar_a_notificados_tecnica(id)
             }
     });
 }
+function guardar_fec_notificacion_tecnica(id)
+{
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'notificaciones_tecnica/'+id+'/edit',
+            type: 'GET',
+            data:{},
+            success: function(data) 
+            {
+                MensajeExito('Expediente', 'FECHA DE NOTIFICACION GUARDADA');
+                
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+            }
+    });
+}
+//////////////
 function enviar_a_improcedente()
 {
     Id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');

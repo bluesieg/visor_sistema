@@ -595,4 +595,30 @@ class MapaController extends Controller
             return 0;
         }
     }
+    public function get_map_mod_hab_urb(Request $req, $color){
+
+       
+        $lotes = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',
+                            'Feature',
+                            'geometry',
+                            ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'id_hab_urb',id_hab_urb,
+                                'fase',fase,
+                                'id_reg_exp',id_reg_exp,
+                                'color',color
+                                
+                             )
+                          ) AS feature
+                          FROM (select * from soft_hab_urbana.vw_habilit_$color ) row) features ;");
+        return response()->json($lotes);
+        
+    }
 }

@@ -140,6 +140,23 @@
                                         <div class="col-xs-12">
                                             
                                     <h1 ><b>VERIFICACIÓN ADMINISTRATIVA</b></h1>
+                                    <div class="text-right" style=" padding-top: 20px">
+                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_verificacion_admin(0);">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                            </button>
+                                            <button type="button" class="btn btn-labeled bg-color-purple txt-color-white" onclick="notificar_verif_admin();">
+                                                <span class="btn-label"><i class="glyphicon glyphicon-file"></i></span>Notificar
+                                            </button>
+                                            <button type="button" class="btn btn-labeled bg-color-orange txt-color-white" onclick="enviar_a_crear_poligono();">
+                                               <span class="btn-label"><i class="glyphicon glyphicon-send"></i></span>Enviar
+                                            </button>
+                                            <button  type="button" class="btn btn-labeled btn-danger" onclick="enviar_a_improcedente_admin();">
+                                                <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Improcedente
+                                            </button>  
+                                            <button  type="button" class="btn btn-labeled btn-primary" onclick="crear_verificacion_admin(1);">
+                                               <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Regularizar
+                                            </button> 
+                                       </div>
                                         <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
@@ -157,19 +174,7 @@
                                             </div>
                                         </div>
                                         
-                                       <div class="text-right" style=" padding-top: 20px">
-                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_verificacion_admin();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                            </button>
-                                            <button type="button" class="btn btn-labeled bg-color-purple txt-color-white" onclick="notificar_verif_admin();">
-                                                <span class="btn-label"><i class="glyphicon glyphicon-file"></i></span>Notificar                                            </button>
-                                            <button type="button" class="btn btn-labeled bg-color-orange txt-color-white" onclick="enviar_a_crear_poligono();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-send"></i></span>Enviar
-                                            </button>
-                                            <button  type="button" class="btn btn-labeled btn-danger" onclick="enviar_a_improcedente_admin();">
-                                                <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Improcedente
-                                            </button>  
-                                       </div>
+                                       
                                         </div>
                                         
                                     </section>
@@ -212,7 +217,7 @@
                                         </div>
                                         
                                        <div class="text-right" style=" padding-top: 20px">
-                                                <button type="button" class="btn btn-labeled bg-color-orange txt-color-white" onclick="enviar_a_verif_tecnica();">
+                                                <button type="button" class="btn btn-labeled bg-color-orange txt-color-white" onclick="aprobar_poligono();">
                                                    <span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>Aprobar
                                                 </button>
                                                 
@@ -270,7 +275,8 @@
                                             </button>
                                             <button  type="button" class="btn btn-labeled btn-danger" onclick="enviar_a_improcedente();">
                                                <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Improcedente
-                                            </button>  
+                                            </button> 
+                                           
                                        </div>
                                        </div>
                                         
@@ -423,7 +429,7 @@
             rowNum: 200, sortname: 'id_requisito', sortorder: 'desc', viewrecords: true, caption: 'REQUISITOS', align: "center",
             colModel: [
                 {name: 'id_requisito', index: 'id_requisito', align: 'left', width: 50},
-                {name: 'desc_requisito', index: 'desc_requisito', align: 'left', width: 600},
+                {name: 'desc_requisito', index: 'desc_requisito', align: 'left', width: 500},
                 {name: 'estado', index: 'estado', align: 'left', width: 100},
             ],
             pager: '#pager_table_requisitos',
@@ -478,15 +484,16 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_reg_exp', 'NRO. EXPEDIENTE', 'FASE', 'GESTOR DEL TRAMITE','FECHA INICIO','FECHA REGISTRO'],
+            colNames: ['id_reg_exp', 'NRO. EXPEDIENTE', 'FASE', 'GESTOR DEL TRAMITE','FECHA INICIO','FECHA REGISTRO','NOTIFICAR'],
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO EXPEDIENTES', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 100},
                 {name: 'fase', index: 'fase', align: 'left', width: 100},
                 {name: 'gestor', index: 'gestor', align: 'left', width: 400},
-                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 200},
-                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 150}
+                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 120},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 120},
+                {name: 'btn', index: 'btn', align: 'left', width: 150}
             ],
             pager: '#pager_table_verif_tecnica',
             rowList: [20, 50],
@@ -564,6 +571,30 @@
         
        
     });
+function autocompletar_haburb(textbox){
+    $.ajax({
+        type: 'GET',
+        url: 'autocomplete_hab_urba',
+        success: function (data) {
+            var $datos = data;
+            $("#"+ textbox).autocomplete({
+                source: $datos,
+                focus: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hidden_"+ textbox).val(ui.item.value);
+                    $("#" + textbox).attr('maxlength', ui.item.label.length);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hidden_"+ textbox).val(ui.item.value);
+                    
+                    return false;
+                }
+            });
+        }
+    });
+}
 </script>
 
 @stop
@@ -588,7 +619,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 <div id="dlg_nuevo_exp_edit" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >
@@ -779,6 +810,33 @@
                 <iframe name="ifrafile" id="ifrafile" class="form-control col-xs-12"  style=" height: 400px; padding: 0px"></iframe>
             </div>
     </div>
+    </div>
+</div>
+<div id="dlg_aprobar_poligono" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="inp_cod_exp_poli" type="text" class="form-control" style="height: 30px;" maxlength="20">
+                        </div>
+                    </div> 
+                    <div class="input-group input-group-md" style="width: 100% ;padding-top: 10px;">
+                        <span class="input-group-addon" style="width: 150px">Habilitación Urbana &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <input type="hidden" id="hidden_inp_hab_urb_poligono" value="0">
+                        <div>
+                            <input id="inp_hab_urb_poligono" type="text" class="form-control" style="height: 30px;" placeholder="Escriba una Habilitación Urbana">
+                        </div>
+                    </div>
+                     
+                </div>
+                <div class="col-xs-12" style="padding-top: 10px; ">
+                                  
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

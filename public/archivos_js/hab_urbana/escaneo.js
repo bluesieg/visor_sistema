@@ -25,6 +25,7 @@ function subir_scan(id)
 }
 function grabarfinal()
 {
+   
     MensajeDialogLoadAjax('dlg_subir_escaneo', '.:: CARGANDO ...');
     var form= new FormData($("#FormularioScans")[0]);
         $.ajax({
@@ -48,7 +49,7 @@ function grabarfinal()
             }
             MensajeDialogLoadAjaxFinish('dlg_subir_escaneo');
             jQuery("#table_doc").jqGrid('setGridParam', {url: 'cargar_documetos?id='+$("#id_scan").val()}).trigger('reloadGrid');
-            
+             enviar_a_final_hab_urb();
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -65,4 +66,31 @@ function verfile(id)
 function busqueda_escaneo()
 {
     jQuery("#table_escaneos").jqGrid('setGridParam', {url: 'datos_predio?grid=9&fecini='+$("#fec_ini_escaneo").val()+'&fecfin='+$("#fec_fin_escaneo").val()}).trigger('reloadGrid');
+}
+function enviar_a_final_hab_urb()
+{
+    Id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
+    if(Id)
+    {
+            $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: 'hab_urbana/'+Id+'/edit',
+                    type: 'GET',
+                    data:{estado:9},
+                    success: function(data) 
+                    {
+                        MensajeExito('Expediente', 'Expediente APROBADO');
+                        fn_actualizar_grilla('table_verif_tecnica');
+                    },
+                    error: function(data) {
+                        mostraralertas("hubo un error, Comunicar al Administrador");
+                        console.log('error');
+                        console.log(data);
+                    }
+            });
+    }
+     else
+    {
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_verif_tecnica");
+    }
 }

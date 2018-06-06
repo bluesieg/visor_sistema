@@ -162,7 +162,9 @@ class VerificacionTecnicaController extends Controller
                 trim($Datos->fase),
                 trim($Datos->gestor),
                 trim($Datos->fecha_inicio_tramite),
-                trim($Datos->fecha_registro)
+                trim($Datos->fecha_registro),
+                '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="enviar_a_notificados_tecnica('.trim($Datos->id_reg_exp).')"><span class="btn-label"><i class="fa fa-print"></i></span> Fec. Notificación</button>'
+
             );
         }
 

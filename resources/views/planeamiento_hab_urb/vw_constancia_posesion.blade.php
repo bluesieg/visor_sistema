@@ -1465,27 +1465,12 @@
                                                          </div>
                                                 </div>  
                                               </div>
-                                              <div class='cr_content col-xs-12 ' style="margin-top:0px;padding-bottom:10px">
-                                                      <div class="col-xs-12 cr-body panel-success" >
-                                                         <div class="panel-heading bg-color-success">Ocupación del Predio</div>
-                                                         <div class="col-xs-12" >
-                                                                        <form style="padding-left:20px" class="col-xs-12">
-                                                                                <div class="form-check">
-                                                                                        <label class="toggle">
-                                                                                            <input id="inp_habita_pred"type="checkbox" name="toggle" checked> <span class="label-text" >Habita el Predio</span>
-                                                                                        </label>
-                                                                                </div>
-                                                                                
-                                                                        </form>
-                                                             
-                                                         </div>
-                                                     </div>  
-                                              </div>
+                                              
                                          </section>
-                                        <section class="col-xs-4"style="margin-top:5px;padding-bottom:70px">
+                                        <section class="col-xs-4"style="margin-top:5px;padding-bottom:10px">
                                               <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
                                                       <div class="col-xs-12 cr-body panel-success" >
-                                                         <div class="panel-heading bg-color-success" >Condición del predio</div>
+                                                         <div class="panel-heading bg-color-success" >Ocupación del Predio</div>
                                                          <div class="col-xs-12" >
                                                                 <div class="col col-xs-12">
                                                                 <label class="label">N°Personas:</label>
@@ -1500,11 +1485,20 @@
                                                                     </label>
 
                                                                 </div>
+                                                                <form style="padding-left:20px; padding-top: 5px" class="col-xs-12">
+                                                                                <div class="form-check">
+                                                                                        <label class="toggle">
+                                                                                            <input id="inp_habita_pred"type="checkbox" name="toggle" checked> <span class="label-text" >Habita el Predio</span>
+                                                                                        </label>
+                                                                                </div>
+                                                                                
+                                                                </form>
                                                          </div>
                                                      </div>  
                                               </div>
+                                            
                                          </section>
-                                         <section class="col-xs-4"style="margin-top:5px;padding-bottom:70px">
+                                         <section class="col-xs-4"style="margin-top:5px;padding-bottom:40px">
                                               <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-top:  0px">
                                                       <div class="col-xs-12 cr-body panel-success" >
                                                          <div class="panel-heading bg-color-success" >Servicios</div>
