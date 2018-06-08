@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('gethab_urb_by_id/{id}', 'MapaController@get_hab_urb');
         Route::get('get_lotes_x_hab_urb', 'MapaController@get_lotes_x_hab_urb');
         Route::get('get_map_constancias/{anio}/{hab_urb}', 'MapaController@get_constancias');
+         Route::get('get_map_mod_hab_urb/{color}', 'MapaController@get_map_mod_hab_urb');
 
     });
     Route::group(['namespace' => 'adm_tributaria'], function() {
@@ -225,7 +226,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('create_scaneo_hab_urb', 'CrearResolucionController@create');
         Route::get('ver_file_hab_urb/{id}','CrearResolucionController@ver_file_hab_urb'); 
 
-
+        ///// mapa mod hab urbbbbbbb
+        Route::resource('mapa_lice','MapaLicenciasController');
+        Route::get('get_mapa_licencias_eficiacion/{color}', 'MapaLicenciasController@get_mapa_licencias_eficiacion');
+        
         
     });
     

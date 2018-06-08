@@ -7,6 +7,10 @@ var lyr_map_edificaciones_amarillo;
 var lyr_map_edificaciones_verde;
 var lyr_map_edificaciones_rojo;
 
+var lyr_map_mod_hab_urb_amarillo;
+var lyr_map_mod_hab_urb_verde;
+var lyr_map_mod_hab_urb_rojo;
+
 var aux_constancias=0;
 map.on('singleclick', function(evt) {
 //    map.getLayers().forEach(function(el) {
@@ -622,6 +626,22 @@ function valida_capa(check)
         {
             crear_semaforo_mapa_licencias(3);
         }
+        if(check=='chk_map_mod_hab_urb')
+        {
+            crear_mapa_mod_hab_urb();
+        }
+        if(check=='chk_amarillo_mod_hab_urb')
+        {
+            crear_semaforo_mapa_mod_hab_urb('amarillo');
+        }
+        if(check=='chk_verde_mod_hab_urb')
+        {
+            crear_semaforo_mapa_mod_hab_urb('verde');
+        }
+        if(check=='chk_rojo_mod_hab_urb')
+        {
+            crear_semaforo_mapa_mod_hab_urb('rojo');
+        }
     }
     else
     {
@@ -785,6 +805,26 @@ function valida_capa(check)
         if(check=='chk_rojo')
         {
             map.removeLayer(lyr_map_edificaciones_rojo);
+        }
+         if(check=='chk_map_mod_hab_urb')
+        {
+            
+            map.removeLayer(lyr_map_mod_hab_urb_amarillo);
+            map.removeLayer(lyr_map_mod_hab_urb_verde);
+            map.removeLayer(lyr_map_mod_hab_urb_rojo);
+            $("#legend").hide();
+        }
+        if(check=='chk_amarillo_mod_hab_urb')
+        {
+            map.removeLayer(lyr_map_mod_hab_urb_amarillo);
+        }
+        if(check=='chk_verde_mod_hab_urb')
+        {
+            map.removeLayer(lyr_map_mod_hab_urb_verde);
+        }
+        if(check=='chk_rojo_mod_hab_urb')
+        {
+            map.removeLayer(lyr_map_mod_hab_urb_rojo);
         }
     }
 }
@@ -2970,3 +3010,111 @@ function semaforo_verde(feature, resolution) {
     });
     
 }
+
+//HABILITACIONES URBBBBBBBBBBB
+function crear_mapa_mod_hab_urb()
+{
+
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_amarillo_mod_hab_urb" onchange="valida_capa('+"'chk_amarillo_mod_hab_urb'"+')">\n\
+                                    <i></i>\n\
+                                    Amarillo\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_verde_mod_hab_urb" onchange="valida_capa('+"'chk_verde_mod_hab_urb'"+')">\n\
+                                    <i></i>\n\
+                                    Verde\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_rojo_mod_hab_urb" onchange="valida_capa('+"'chk_rojo_mod_hab_urb'"+')">\n\
+                                    <i></i>\n\
+                                    Rojo\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+    
+    
+    MensajeDialogLoadAjaxFinish('map');
+    
+    
+}
+
+function crear_semaforo_mapa_mod_hab_urb(color)
+{
+    
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_map_mod_hab_urb/'+color,
+            type: 'get',
+            success: function (data) {
+                if(data==0)
+                {
+                    MensajeAlerta('Habilitaciones','No Se Encontró  Habilitación.');
+                }
+                else
+                {
+                    var format = new ol.format.GeoJSON();
+                    var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource.addFeatures(features);
+                    if(color == 'amarillo')
+                    {
+                        lyr_map_mod_hab_urb_amarillo = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: semaforo_amarillo,
+                            title: "Verificacion Administrativa"
+                        });
+                        map.addLayer(lyr_map_mod_hab_urb_amarillo);
+                        var extent = lyr_map_mod_hab_urb_amarillo.getSource().getExtent();
+                    }
+                    if(color == 'verde')
+                    {
+                        lyr_map_mod_hab_urb_verde = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: semaforo_verde,
+                            title: "Verificacion Tecnica"
+                        });
+                        map.addLayer(lyr_map_mod_hab_urb_verde);
+                        var extent = lyr_map_mod_hab_urb_verde.getSource().getExtent();
+                    }
+                    if(color == 'rojo')
+                    {
+                        lyr_map_mod_hab_urb_rojo = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: semaforo_rojo,
+                            title: "Emitir Resolucion"
+                        });
+                        map.addLayer(lyr_map_mod_hab_urb_rojo);
+                        var extent = lyr_map_mod_hab_urb_rojo.getSource().getExtent();
+                    }
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Error','Tiempo de espera agotado, actualizar.');
+            }
+        });
+}
+
