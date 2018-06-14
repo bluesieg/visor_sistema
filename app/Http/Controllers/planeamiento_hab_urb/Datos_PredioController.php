@@ -307,45 +307,47 @@ class Datos_PredioController extends Controller
     }
     public function cargar_documetos(Request $request)
     {
-            header('Content-type: application/json');
-            $page = $_GET['page'];
-            $limit = $_GET['rows'];
-            $sidx = $_GET['sidx'];
-            $sord = $_GET['sord'];
-            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
-            if ($start < 0) {
-                $start = 0;
-            }
-
-             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_doc_adjuntos where id_reg_exp=".$request['id']);
-             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_doc_adjuntos')->where('id_reg_exp',$request['id'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-                    
-            $total_pages = 0;
-            if (!$sidx) {
-                $sidx = 1;
-            }
-            $count = $totalg[0]->total;
-            if ($count > 0) {
-                $total_pages = ceil($count / $limit);
-            }
-            if ($page > $total_pages) {
-                $page = $total_pages;
-            }
-            $Lista = new \stdClass();
-            $Lista->page = $page;
-            $Lista->total = $total_pages;
-            $Lista->records = $count;
-            foreach ($sql as $Index => $Datos) {                
-                $Lista->rows[$Index]['id'] = $Datos->id_doc_adj;            
-                $Lista->rows[$Index]['cell'] = array(
-                    trim($Datos->id_doc_adj),
-                    trim($Datos->t_documento),
-                    trim($Datos->descripcion),
-                    '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
-                    '<button class="btn btn-labeled btn-danger" type="button" onclick="delfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-trash"></i></span> Borrar</button>',
-                );
-            }
-            return response()->json($Lista);
+             return DB::connection('gerencia_catastro')->select("select * from plan_constancias.vw_constancias_2015 where id_const=".$request['id']);
+        
+//            header('Content-type: application/json');
+//            $page = $_GET['page'];
+//            $limit = $_GET['rows'];
+//            $sidx = $_GET['sidx'];
+//            $sord = $_GET['sord'];
+//            $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+//            if ($start < 0) {
+//                $start = 0;
+//            }
+//
+//             $totalg = DB::connection('gerencia_catastro')->select("select count(id_reg_exp) as total from soft_const_posesion.vw_doc_adjuntos where id_reg_exp=".$request['id']);
+//             $sql = DB::connection('gerencia_catastro')->table('soft_const_posesion.vw_doc_adjuntos')->where('id_reg_exp',$request['id'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+//                    
+//            $total_pages = 0;
+//            if (!$sidx) {
+//                $sidx = 1;
+//            }
+//            $count = $totalg[0]->total;
+//            if ($count > 0) {
+//                $total_pages = ceil($count / $limit);
+//            }
+//            if ($page > $total_pages) {
+//                $page = $total_pages;
+//            }
+//            $Lista = new \stdClass();
+//            $Lista->page = $page;
+//            $Lista->total = $total_pages;
+//            $Lista->records = $count;
+//            foreach ($sql as $Index => $Datos) {                
+//                $Lista->rows[$Index]['id'] = $Datos->id_doc_adj;            
+//                $Lista->rows[$Index]['cell'] = array(
+//                    trim($Datos->id_doc_adj),
+//                    trim($Datos->t_documento),
+//                    trim($Datos->descripcion),
+//                    '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
+//                    '<button class="btn btn-labeled btn-danger" type="button" onclick="delfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-trash"></i></span> Borrar</button>',
+//                );
+//            }
+//            return response()->json($Lista);
     }
 
 

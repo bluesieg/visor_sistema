@@ -233,9 +233,6 @@ Route::group(['middleware' => 'auth'], function() {
         
     });
     
-    
-    
-    
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
     Route::get('/usuarios', 'Usuarios@vw_usuarios_show')->name('usuarios'); //vw_usuarios
@@ -247,4 +244,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
     Route::post('cambiar_foto_user','Usuarios@cambiar_foto_usuario');
     Route::post('cambiar_pass_user','Usuarios@cambiar_pass_user');
+    
+    ///////////////////////proceso administrativo sancionador
+    Route::group(['namespace' => 'pas'], function() {
+        Route::resource('pas','Proceso_sancionadorController');
+    });
+    
 });

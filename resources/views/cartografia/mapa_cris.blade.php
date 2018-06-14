@@ -868,11 +868,11 @@
     </iframe>
 </div> 
 <div id="dlg_constancias_anios" style="display: none;">
-    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
-        <article class="col-xs-12" style=" padding: 0px !important">
+    <div id="div_gduc_constacias" class="col-xs-12" style="padding: 0px; margin-top: 10px;">
+<!--        <article class="col-xs-12" style=" padding: 0px !important">
             <table id="table_doc_constancias"></table>
             <div id="pager_table_doc_constancias"></div>
-        </article>
+        </article>-->
     </div>
 </div> 
 @endsection

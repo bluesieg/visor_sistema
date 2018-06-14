@@ -341,10 +341,42 @@ function viewlong_lote(id)
     type: 'GET',
     success: function(r) 
     {
+        texto1='';
+        texto2='';
         $("#dlg_img_view_big").html("");
         if(r!=0)
         {
-            $("#dlg_img_view_big").html('<center><img src="data:image/png;base64,'+r+'" width="85%"/></center>');
+            $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r[0].foto+'" width="85%"/></center>');
+
+            for(i=0;i<r.length;i++)
+            {
+                if(i==0)
+                {
+                    texto1=texto1+'<li data-target="#myCarousel" data-slide-to="'+i+'" class="active"></li>';            
+                    texto2=texto2+'<div class="item active"><center><img src="data:image/png;base64,'+r[i].foto+'" alt=""></center></div>\n\
+                                   '
+
+                }
+                else
+                {
+                    texto1=texto1+'<li data-target="#myCarousel" data-slide-to="'+i+'"></li>';            
+                    texto2=texto2+'<div class="item"><center><img src="data:image/png;base64,'+r[i].foto+'" alt=""></center></div>\n\
+                                  '
+                }
+            }
+
+
+            final='<div id="myCarousel" class="carousel fade" style="margin-bottom: 20px;">\n\
+                  <ol class="carousel-indicators">\n\
+                  '+texto1+'\n\
+                  </ol>\n\
+                  <div class="carousel-inner">\n\
+                    '+texto2+'\n\
+                  </div>\n\
+                <a class="left carousel-control" href="#myCarousel" data-slide="next"> <span class="glyphicon glyphicon-chevron-left"></span> </a>\n\
+                <a class="right carousel-control" href="#myCarousel" data-slide="prev"> <span class="glyphicon glyphicon-chevron-right"></span> </a>\n\
+                </div>';
+            $("#dlg_img_view_big").html(final);
         }
         else
         {
