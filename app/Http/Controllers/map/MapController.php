@@ -148,11 +148,15 @@ class MapController extends Controller
                                 'id_mzna', id_mzna,
                                 'codi_lote', codi_lote,
                                 'id_hab_urb', id_hab_urb,
-                                'id_sect',id_sect
+                                'id_sect',id_sect,
+                                'codi_mzna',codi_mzna,
+                                'sector',sector,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'codi_hab_urba',codi_hab_urba,
+                                'st_perimeter',st_perimeter
                              )
                           ) AS feature
-                          FROM (select l.id_lote, l.id_mzna, l.codi_lote, l.id_hab_urb, l.geom, m.id_sect from  catastro.lotes l
-                                join catastro.manzanas m on m.id_mzna = l.id_mzna $where) row) features ;");
+                          FROM (select * from catastro.vw_lotes $where) row) features ;");
 
         return response()->json($lotes);
        

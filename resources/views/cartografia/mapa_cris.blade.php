@@ -640,7 +640,7 @@
                 <div class="col-xs-9" style="padding: 0px;">
                     <div class="col-xs-12" style="padding: 0px;">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 40%">Año de consulta &nbsp;<i class="fa fa-power-off"></i></span>
+                            <span class="input-group-addon" style="width: 20%">Año de consulta &nbsp;<i class="fa fa-power-off"></i></span>
                             <div >
                                 <label id="anio_consulta_lote"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -649,7 +649,7 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0px;margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 40%">Codigo Referencial Catastral &nbsp;<i class="fa fa-power-off"></i></span>
+                            <span class="input-group-addon" style="width: 20%">Codigo Catastral &nbsp;<i class="fa fa-power-off"></i></span>
                             <div >
                                 <label id="input_pred_cod_cat"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -658,7 +658,7 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 40%">Habilitación &nbsp;<i class="fa fa-map"></i></span>
+                            <span class="input-group-addon" style="width: 20%">Habilitación &nbsp;<i class="fa fa-map"></i></span>
                             <div >
                                 <label id="input_pred_habilitacion"  class="form-control" style="height: 32px; overflow-y: scroll"></label>
                             </div>
@@ -667,9 +667,63 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 40%">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
+                            <span class="input-group-addon" style="width: 20%">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
                             <div >
                                 <label id="input_pred_propietario"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 40%">Mzna Urb. &nbsp;<i class="fa fa-apple"></i></span>
+                            <div >
+                                <label id="input_pred_mzna_urb"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 40%">Lote Urb. &nbsp;<i class="fa fa-home"></i></span>
+                            <div >
+                                <label id="input_pred_lote_urb"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 20%">Partida Registral &nbsp;<i class="fa fa-file"></i></span>
+                            <div >
+                                <label id="input_pred_par_reg"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 40%">Area Titulo &nbsp;<i class="fa fa-area-chart"></i></span>
+                            <div >
+                                <label id="input_pred_are_tit"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 40%">Area Verificada &nbsp;<i class="fa fa-area-chart"></i></span>
+                            <div >
+                                <label id="input_pred_are_veri"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 40%">Perímetro &nbsp;<i class="fa fa-circle-o-notch"></i></span>
+                            <div >
+                                <label id="input_pred_perimetro_lote"  class="form-control" style="height: 32px;"></label>
                             </div>
 
                         </div>
@@ -683,6 +737,36 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 100%">Linderos De Lote (ML)</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 100%">Medida en Campo</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 100%">Medida Según Título</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 100%">Colindancias en Campo</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 100%">Colindancias Según Título</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px" id="div_colindancias">
+                        
+                    </div>
+                </div>  
             </div>
           
         </div>

@@ -79,6 +79,18 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'cerro_aportes' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_APORTES_HOST', '127.0.0.1'),
+            'port' => env('DB_APORTES_PORT', '5432'),
+            'database' => env('DB_APORTES_DATABASE', 'forge'),
+            'username' => env('DB_APORTES_USERNAME', 'forge'),
+            'password' => env('DB_APORTES_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
         
         'fotos' => [
             'driver' => 'pgsql',

@@ -56,8 +56,14 @@ map.on('singleclick', function(evt) {
                 }
                 if(layer.get('title')=='lotes'&&mostrar==0)
                 {
+                    $("#dlg_predio_lote label").text("");
+                    $("#div_colindancias").html("");
                     mostrar=1;
-                    verlote(feature.get('id_lote'));
+                    codlote=feature.get('sector')+feature.get('codi_mzna')+feature.get('codi_lote');
+                    $("#input_pred_cod_cat").text(codlote);
+                    $("#input_pred_habilitacion").text(feature.get('nomb_hab_urba'));
+                    $("#input_pred_perimetro_lote").text(feature.get('st_perimeter'));
+                    verlote(feature.get('id_lote'),codlote);
                     return false;
                     
                 }
@@ -149,10 +155,11 @@ function crear_grilla_constancias()
             ondblClickRow: function (Id){}
         });
 }
-function verlote(id)
+function verlote(id,codlote)
 {
-    crear_dlg("dlg_predio_lote",900,"Informacion Referencia del Lote");
-    traerpredionuevo(id);
+    
+    crear_dlg("dlg_predio_lote",1000,"Informacion Referencia del Lote");
+    traerpredionuevo(id,codlote);
     traerfoto(id);
 }
 function verexp_urb()
@@ -318,23 +325,88 @@ function label_lotes(feature) {
         })
     });
 }
-function traerpredionuevo(id)
+function traerpredionuevo(id,codlote)
 {
-    $("#input_pred_cod_cat").text("");
-    $("#input_pred_habilitacion").text("");
     $("#input_pred_propietario").text("");
     MensajeDialogLoadAjax('dlg_predio_lote', '.:: Cargando ...');
     $.ajax({url: 'traerlote/'+id+'/'+$("#anio_pred").val(),
+    data:{tipo_consulta:1},
     type: 'GET',
     success: function(r) 
     {
         $("#anio_consulta_lote").text($("#anio_pred").val());
         if(r.length>0)
         {
-            
-            $("#input_pred_cod_cat").text(r[0].cod_cat);
-            $("#input_pred_habilitacion").text(r[0].habilitacion);
             $("#input_pred_propietario").text(r[0].contribuyente);
+            $("#input_pred_mzna_urb").text(r[0].mzna_dist);
+            $("#input_pred_lote_urb").text(r[0].lote_dist);
+        }
+        traer_info_predio_aportes(codlote);
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_predio_lote');
+    }
+    }); 
+}
+function traer_info_predio_aportes(id)
+{
+   
+    $("#input_pred_propietario").text("");
+    $.ajax({url: 'traerlote/'+id+'/'+$("#anio_pred").val(),
+    data:{tipo_consulta:2},
+    type: 'GET',
+    success: function(r) 
+    {
+        if(r.length>0)
+        {
+            $("#input_pred_par_reg").text(r[0].nume_partida);
+            $("#input_pred_are_tit").text(r[0].area_titulo);
+            $("#input_pred_are_veri").text(r[0].area_verificada);
+            $("#div_colindancias").html('\
+                    <div class="col-xs-4" style="padding: 0px;">\n\
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">\n\
+                            <span class="input-group-addon" style="width: 100%;height:40px">Frente</span>\n\
+                        </div>\n\
+                    </div>\n\
+                   <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fren_campo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fren_titulo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fren_colinda_campo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fren_colinda_titulo+'</div>\n\
+                    <div class="col-xs-12"></div>\n\
+                    <div class="col-xs-4" style="padding: 0px;">\n\
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">\n\
+                            <span class="input-group-addon" style="width: 100%;height:40px">Derecha</span>\n\
+                        </div>\n\
+                    </div>\n\
+                   <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].dere_campo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].dere_titulo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].dere_colinda_campo  +'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].dere_colinda_titulo+'</div>\n\
+                    <div class="col-xs-12"></div>\n\
+                    <div class="col-xs-4" style="padding: 0px;">\n\
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">\n\
+                            <span class="input-group-addon" style="width: 100%;height:40px">Izquierda</span>\n\
+                        </div>\n\
+                    </div>\n\
+                   <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].izqu_campo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].izqu_titulo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].izqu_colinda_campo  +'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].izqu_colinda_titulo+'</div>\n\
+                    <div class="col-xs-12"></div>\n\
+                    <div class="col-xs-4" style="padding: 0px;">\n\
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">\n\
+                            <span class="input-group-addon" style="width: 100%;height:40px">Fondo</span>\n\
+                        </div>\n\
+                    </div>\n\
+                   <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fond_titulo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fond_campo+'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fond_colinda_campo  +'</div>\n\
+                    <div class="col-xs-2" style="padding:0px; text-align:center;border:1px #ccc solid; min-height:40px">'+r[0].fond_colinda_titulo+'</div>\n\
+                    '
+                    );
         }
         MensajeDialogLoadAjaxFinish('dlg_predio_lote');
     },

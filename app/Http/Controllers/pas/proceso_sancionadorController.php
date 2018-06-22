@@ -54,6 +54,10 @@ class proceso_sancionadorController extends Controller
         {
             return $this->grid_registro_expe_sancionador($request);
         }
+        if($id==0&&$request['grid']=="autocompleta_sancion")
+        {
+            return $this->autocompletar_sancion();
+        }
     }
 
     public function edit($id)
@@ -127,5 +131,23 @@ class proceso_sancionadorController extends Controller
 
         return response()->json($Lista);
 
+    }
+    public function autocompletar_sancion(){
+        $Consulta = DB::connection("gerencia_catastro")->table('soft_pas.infracciones')->get();  
+        $uit = DB::select("select * from adm_tri.uit where anio='".date('Y')."'");
+        $todo=array();
+        foreach($Consulta as $Datos)
+        {
+            $Lista=new \stdClass();           
+            $Lista->value=$Datos->id_infraccion;
+            $Lista->label=  trim($Datos->cod_infraccion)."-".trim($Datos->des_infraccion);           
+            $Lista->codi=  trim($Datos->cod_infraccion);           
+            $Lista->sancion=  trim($Datos->accion_infraccion);           
+            $Lista->tipo=  trim($Datos->tipo_cobro);           
+            $Lista->porcentaje_cobro=  trim($Datos->porcentaje_cobro); 
+            $Lista->uit=  $uit[0]->uit;           
+            array_push($todo,$Lista);
+        }        
+        return response()->json($todo);
     }
 }

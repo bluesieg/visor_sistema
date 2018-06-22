@@ -33,9 +33,15 @@
                     <section class="col col-lg-12">
                         
                     <ul id="tabs1" class="nav nav-tabs bordered">
-                        <li class="active">
+                        <li class="active" onclick="valida_pestana(1)">
                             <a href="#s1" data-toggle="tab" aria-expanded="true">
                                 Inspección
+                                <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                            </a>
+                        </li>
+                        <li onclick="valida_pestana(2)">
+                            <a href="#s1" data-toggle="tab" aria-expanded="true">
+                                Verificación
                                 <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                             </a>
                         </li>
@@ -45,7 +51,8 @@
                         
                         <div id="s1" class="tab-pane fade active in">
                             <div class="col-xs-12" style="padding: 5px">
-                                <h1><b>Inspección</b></h1>
+                                <h1 id="titulo_1"><b>Inspección</b></h1>
+                                <h1 id="titulo_2" style="display: none;"><b>Verificación</b></h1>
                                 <div class="col-lg-2" style="padding-left: 0px; padding-top: 10px; ">
                                    <div class="input-group input-group-md">
                                        <span class="input-group-addon">Desde:</span>
@@ -67,7 +74,7 @@
                                         <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                                     </button>
                                 </div>
-                                <div class="text-right" style=" padding-top: 10px">
+                                <div id="botones_1" class="text-right" style=" padding-top: 10px">
 
                                         <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nuevo_exp();">
                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
@@ -76,6 +83,13 @@
                                        <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_exp();">
                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                        </button>
+                                </div>
+                                <div id="botones_2" class="text-right" style=" padding-top: 10px; display: none">
+                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_verific();">
+                                           <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Ingresar Verificación
+                                       </button>
+                                </div>
+                                <div  class="text-right" style=" padding-top: 10px">
                                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                         <article class="col-xs-12" style=" padding: 0px !important">
                                                 <table id="table_expedientes"></table>
@@ -84,12 +98,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                <article class="col-xs-11" style=" padding: 0px !important">
-                                        <table id="table_expedientes"></table>
-                                        <div id="pager_table_expedientes"></div>
-                                </article>
-                            </div>
+                            
                         </div>
                     </div> 
                     </section>
@@ -216,7 +225,6 @@
             </div>
             <div class="col-xs-12" style="padding-left: 0px; margin-top: 10px">
                 <div class="input-group input-group-md">
-                    <input type="hidden" id="dlg_idpre" value="0">
                     <span class="input-group-addon">Nro. Documento &nbsp;&nbsp;<i class="fa fa-inbox"></i></span>
                     <div class="icon-addon addon-md">
                         <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="inp_nro_doc" type="text" onkeypress="return soloDNI(event);">
@@ -226,7 +234,6 @@
             <div class="col-xs-12" style="padding: 0px; margin-top: 10px" id="div_per_natural">
                 <div class="col-xs-4" style="padding-left: 0px;">
                     <div class="input-group input-group-md">
-                        <input type="hidden" id="dlg_idpre" value="0">
                         <span class="input-group-addon">Ape. Paterno &nbsp;&nbsp;<i class="fa fa-male"></i></span>
                         <div class="icon-addon addon-md">
                             <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_ape_pat" type="text" maxlength="20" >
@@ -235,7 +242,6 @@
                 </div>
                 <div class="col-xs-4" style="padding-left: 0px;">
                     <div class="input-group input-group-md">
-                        <input type="hidden" id="dlg_idpre" value="0">
                         <span class="input-group-addon">Ape. Materno &nbsp;&nbsp;<i class="fa fa-male"></i></span>
                         <div class="icon-addon addon-md">
                             <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_ape_mat" type="text" maxlength="20" >
@@ -244,7 +250,6 @@
                 </div>
                 <div class="col-xs-4" style="padding-right: 0px;">
                     <div class="input-group input-group-md">
-                        <input type="hidden" id="dlg_idpre" value="0">
                         <span class="input-group-addon">Nombres &nbsp;&nbsp;<i class="fa fa-male"></i></span>
                         <div class="icon-addon addon-md">
                             <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_nom_per" type="text" maxlength="50" >
@@ -255,7 +260,6 @@
             <div class="col-xs-12" style="padding: 0px; margin-top: 10px" id="div_per_juridica">
                 <div class="col-xs-12" style="padding: 0px;">
                     <div class="input-group input-group-md">
-                        <input type="hidden" id="dlg_idpre" value="0">
                         <span class="input-group-addon">Razon Social &nbsp;&nbsp;<i class="fa fa-cog"></i></span>
                         <div class="icon-addon addon-md">
                             <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_raz_soc" type="text" maxlength="200" >
@@ -265,7 +269,6 @@
             </div>
             <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                 <div class="input-group input-group-md">
-                    <input type="hidden" id="dlg_idpre" value="0">
                     <span class="input-group-addon">Dom. Fiscal &nbsp;&nbsp;<i class="fa fa-map"></i></span>
                     <div class="icon-addon addon-md">
                         <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_dom_fis" type="text" maxlength="200" >
@@ -329,5 +332,134 @@
         </div>
     </div>
 </div> 
+
+<div id="dlg_verificación" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" >
+            
+            <section class="col-xs-12" style="padding: 0px">
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-user"></i> </span>
+                            <h2>Seleccione Infracción ::..</h2>
+                    </header>
+                </div>
+            </section>
+           
+            <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md">
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon">N° Expediente &nbsp;&nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div class="icon-addon addon-md">
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_veri_cod_exp_san" type="text" disabled="" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md">
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon">Gestor &nbsp;&nbsp;<i class="fa fa-male"></i></span>
+                    <div class="icon-addon addon-md">
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="inp_veri_gestor" type="text" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md col-xs-12">
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">Sanción &nbsp;&nbsp;<i class="fa fa-cog"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input id="hidden_ipn_sancion" type="hidden" value="0" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_sancion" type="text" maxlength="500" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">Accion &nbsp;&nbsp;<i class="fa fa-cog"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_accion_san" type="text" disabled="" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-7" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">Tipo Cobro &nbsp;&nbsp;<i class="fa fa-cog"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_tipo_cobro" type="text" disabled="" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">Porcentaje &nbsp;&nbsp;<i class="fa fa-cog"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_tipo_cobro_porcentaje" type="text" disabled="" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6" style="padding: 0px; margin-top: 10px" id="sobreobra">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">Monto de Obra &nbsp;&nbsp;<i class="fa fa-dollar"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_monto_obra" type="text" onkeypress="return soloNumeroTab(event);" onkeyup="validartotal();">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6" style="padding: 0px; margin-top: 10px; display: none" id="sobreuit">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">Monto de UIT &nbsp;&nbsp;<i class="fa fa-dollar"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_monto_uit" type="text" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 120px">TOTAL &nbsp;&nbsp;<i class="fa fa-dollar"></i></span>
+                    <div class="icon-addon addon-md" >
+                        <input class=" col-xs-12 form-control"  style="height: 32px;" id="ipn_san_total" type="text" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md col-xs-12" >
+                    <input type="hidden" id="dlg_idpre" value="0">
+                    <span class="input-group-addon" style="width: 100%">Descripcion de la Inpseccion verificando &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                </div>
+                <textarea class="col-xs-12" id="txt_obs_sancion" style="height: 80px">
+                    
+                </textarea>
+            </div>
+            <div class="col-xs-12 text-right" style="margin-top: 10px;">
+                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="confirmar_sancion();">
+                    <span class="btn-label"><i class="glyphicon glyphicon-check"></i></span>Agregar Sanción
+                </button>
+            </div>
+            <div id="div_table_sanciones" class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
+
+                <table class="table " id="table_san_reg" >
+                        <thead>
+                                <tr>
+                                    <th class="text-center" style="border: 1px solid #bbb; width: 10%; height: 30px">Codigo</th>
+                                    <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Documento</th>
+                                    <th class="text-center"  style="border: 1px solid #bbb; width: 70%;height: 30px">Nombre Fiscalizador</th>
+                                    <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Borrar</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 

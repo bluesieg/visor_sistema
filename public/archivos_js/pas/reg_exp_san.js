@@ -1,8 +1,11 @@
-function limpiar_exp_san()
+function limpiar_exp_san(dialogo)
 {
-    $("#dlg_nuevo_exp input[type='text']").val("");
-    $("#dlg_nuevo_exp input[type='hidden']").val(0);
-    validatipopersona();
+    $("#"+dialogo+" input[type='text']").val("");
+    $("#"+dialogo+" input[type='hidden']").val(0);
+    if(dialogo=='dlg_nuevo_exp')
+    {
+        validatipopersona();
+    }
 }
 function validatipopersona()
 {
@@ -23,7 +26,7 @@ function validatipopersona()
 }
 function crear_nuevo_exp()
 {
-    limpiar_exp_san();
+    limpiar_exp_san('dlg_nuevo_exp');
     $("#dlg_nuevo_exp").dialog({
         autoOpen: false, modal: true, width: 900, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  NUEVO EXPEDIENTE :.</h4></div>",
@@ -406,8 +409,6 @@ function viewlong_lote(id)
                                   '
                 }
             }
-
-
             final='<div id="myCarousel" class="carousel fade" style="margin-bottom: 20px;">\n\
                   <ol class="carousel-indicators">\n\
                   '+texto1+'\n\
@@ -527,4 +528,172 @@ function selecciona_fecha()
     jQuery("#table_expedientes").jqGrid('setGridParam', {
          url: 'pas/0?grid=registro_expe_sancionador&fecha_desde='+fecha_desde +'&fecha_hasta='+fecha_hasta
     }).trigger('reloadGrid');
+}
+function valida_pestana(tip)
+{
+    if(tip==1)
+    {
+        $("#titulo_1, #botones_1").show();
+        $("#titulo_2, #botones_2").hide();
+    }
+    if(tip==2)
+    {
+        $("#titulo_2, #botones_2").show();
+        $("#titulo_1, #botones_1").hide();
+    }
+}
+var autocomplete=0;
+function crear_verific()
+{
+    Id=$('#table_expedientes').jqGrid ('getGridParam', 'selrow');
+    if(Id==null)
+    {
+        MensajeAlerta("No hay Expediente Seleccionado","Seleccione un Expediente",4000);
+        return false;
+    } 
+    else
+    {
+        limpiar_exp_san('dlg_verificación');
+        $("#inp_veri_cod_exp_san").val($('#table_expedientes').jqGrid ('getCell', Id, 'nro_exp_san'));
+        $("#inp_veri_gestor").val($('#table_expedientes').jqGrid ('getCell', Id, 'gestor'));
+        if(autocomplete==0)
+        {
+            autocomplete=1;
+            auto_input("ipn_sancion","pas/0?grid=autocompleta_sancion",1);
+        }
+        $("#dlg_verificación").dialog({
+            autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  VERIFICAR EXPEDIENTE :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                        //grabar_exp_san();
+                }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_verificación").dialog('open');
+    }
+}
+function auto_input(textbox,url,extra){
+    $.ajax({
+           type: 'GET',
+           url: url,
+           success: function(data){               
+                var $local_todo=data;          
+                 $("#"+textbox).autocomplete({
+                      source: $local_todo,
+                      focus: function(event, ui) {
+                             $("#"+textbox).val(ui.item.label);                             
+                             return false;
+                      },
+                      select: function(event, ui) {
+                             $("#"+textbox).val(ui.item.label);
+                             $("#hidden_"+textbox).val(ui.item.value);
+                             if(extra==1)
+                             {
+                                $("#ipn_accion_san").val(ui.item.sancion);
+                                $("#ipn_tipo_cobro_porcentaje").val(ui.item.porcentaje_cobro);
+                                if(ui.item.tipo==1)
+                                {   
+                                    $("#ipn_tipo_cobro").val('SOBRE MONTO DE OBRA');
+                                    $("#ipn_monto_obra").val(0);
+                                    validartotal();
+                                    $("#sobreobra").show();
+                                    $("#sobreuit").hide();
+                                }
+                                if(ui.item.tipo==2)
+                                {    
+                                    $("#sobreobra").hide();
+                                    $("#sobreuit").show();
+                                    $("#ipn_tipo_cobro").val('SOBRE UIT');
+                                    $("#ipn_monto_uit").val(ui.item.uit);
+                                    $("#ipn_san_total").val(parseFloat(ui.item.uit)*(parseFloat(ui.item.porcentaje_cobro)/100));
+                                }
+                                
+                             }
+                              return false;
+                      }   
+                  });  
+
+            }
+    });
+}
+
+function validartotal()
+{
+    $("#ipn_san_total").val(parseFloat($("#ipn_monto_obra").val())*(parseFloat($("#ipn_tipo_cobro_porcentaje").val())/100));
+}
+
+function confirmar_sancion()
+{
+    if($("#hidden_ipn_sancion").val()==0||$("#hidden_ipn_sancion").val()=='')
+    {
+        mostraralertasconfoco('Seleccione Sanción', "#ipn_sancion");
+        return false;
+    }
+    if($("#ipn_san_total").val()==0)
+    {
+        mostraralertasconfoco('Ingrese Monto', "#ipn_monto_obra");
+        return false;
+    }
+    $.SmartMessageBox({
+            title : "Confirmación Final!",
+            content : "Está por Agregar una Sancion a este Expediente, Seguro que deseea Grabar la información?...",
+            buttons : '[Cancelar][Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+
+                    save_verifica_sancion();
+            }
+            if (ButtonPressed === "Cancelar") {
+                    $.smallBox({
+                            title : "No se Guardo",
+                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                            color : "#C46A69",
+                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                            timeout : 3000
+                    });
+            }
+    });
+}
+function save_verifica_sancion()
+{
+    MensajeDialogLoadAjax('dlg_verificación', '.:: CARGANDO ...');
+    $.ajax({url: 'pas/create',
+    type: 'GET',
+    data:{
+        tip_doc:$("#seltipdoc").val(),
+        id_lote:$("#hidden_dlg_lot").val(),
+        tip_per:$("#seltipper").val(),
+        ape_pat:$("#inp_ape_pat").val(),
+        ape_mat:$("#inp_ape_mat").val(),
+        nombres:$("#inp_nom_per").val(),
+        raz_soc:$("#inp_raz_soc").val(),
+        dom_fis:$("#inp_dom_fis").val(),
+        nro_doc:$("#inp_nro_doc").val(),
+        tipo_create:'registro_expe_sancionador'
+    },
+    success: function(r) 
+    {
+        MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
+        selecciona_fecha();
+        MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+        
+        $("#dlg_nuevo_exp").dialog("close");
+        
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
+        console.log('error');
+        console.log(data);
+    }
+    });
 }

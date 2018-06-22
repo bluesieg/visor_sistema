@@ -380,9 +380,16 @@ class PredioController extends Controller
             return 0; 
         }
     }
-    public function getloteid($lote,$anio)
+    public function getloteid($lote,$anio,Request $request)
     {
-        $lote = DB::select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");
+        if($request['tipo_consulta']==1)
+        {
+            $lote = DB::select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");
+        }
+        if($request['tipo_consulta']==2)
+        {
+            $lote = DB::connection('cerro_aportes')->select("select * from public.vw_aportes_union where cod_lote='$lote'");
+        }
         return $lote;
        
     }
