@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\pas\registro_expe_sancionador;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\DatesTranslator;
+use App\Models\pas\infracciones_verificadas;
 
 class proceso_sancionadorController extends Controller
 {
@@ -22,6 +23,10 @@ class proceso_sancionadorController extends Controller
         if($request['tipo_create']=='registro_expe_sancionador')
         {
             return $this->create_exp_sancionador($request);
+        }
+        if($request['tipo_create']=='infracciones_verificadas')
+        {
+            return $this->create_infracciones_verificadas($request);
         }
     }
     public function create_exp_sancionador(Request $request)
@@ -42,6 +47,20 @@ class proceso_sancionadorController extends Controller
         $pas->save();
         return $pas->id_exp_san;
     }
+    public function create_infracciones_verificadas(Request $request)
+    {
+        $pas=new infracciones_verificadas;
+        $pas->id_exp_san = $request['id_exp_san'];
+        $pas->id_infraccion = $request['id_infraccion'];
+        $pas->monto = $request['monto'];
+        $pas->porcentaje = $request['porcentaje'];
+        $pas->total = $request['total'];
+        $pas->infra_veric_obs = $request['observaciones'];
+        $pas->fec_reg = date("d/m/Y");
+        $pas->usu_reg = Auth::user()->id;
+        $pas->save();
+        return $pas->id_infra_veric;
+    }
 
     public function store(Request $request)
     {
@@ -57,6 +76,11 @@ class proceso_sancionadorController extends Controller
         if($id==0&&$request['grid']=="autocompleta_sancion")
         {
             return $this->autocompletar_sancion();
+        }
+        if($id==0&&$request['grid']=="infracciones_verificadas")
+        {
+            $infracciones=DB::connection('gerencia_catastro')->table('soft_pas.infracciones_verificadas')->where('id_exp_san',$request['id_exp_san'])->get();
+            return $infracciones;
         }
     }
 

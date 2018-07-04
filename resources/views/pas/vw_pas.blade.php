@@ -444,12 +444,13 @@
             </div>
             <div id="div_table_sanciones" class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
 
-                <table class="table " id="table_san_reg" >
+                <table class="table " id="table_infrac_reg" >
                         <thead>
                                 <tr>
-                                    <th class="text-center" style="border: 1px solid #bbb; width: 10%; height: 30px">Codigo</th>
-                                    <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Documento</th>
-                                    <th class="text-center"  style="border: 1px solid #bbb; width: 70%;height: 30px">Nombre Fiscalizador</th>
+                                    <th class="text-center" style="border: 1px solid #bbb; width: 10%; height: 30px">Infracción</th>
+                                    <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">monto</th>
+                                    <th class="text-center"  style="border: 1px solid #bbb; width: 70%;height: 30px">porcentaje</th>
+                                    <th class="text-center"  style="border: 1px solid #bbb; width: 70%;height: 30px">total</th>
                                     <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Borrar</th>
                                 </tr>
                         </thead>

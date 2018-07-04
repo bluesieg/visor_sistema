@@ -2,6 +2,7 @@ function limpiar_exp_san(dialogo)
 {
     $("#"+dialogo+" input[type='text']").val("");
     $("#"+dialogo+" input[type='hidden']").val(0);
+    $("#"+dialogo+" textarea").val("");
     if(dialogo=='dlg_nuevo_exp')
     {
         validatipopersona();
@@ -546,6 +547,7 @@ var autocomplete=0;
 function crear_verific()
 {
     Id=$('#table_expedientes').jqGrid ('getGridParam', 'selrow');
+    llamar_get_infracciones();
     if(Id==null)
     {
         MensajeAlerta("No hay Expediente Seleccionado","Seleccione un Expediente",4000);
@@ -561,24 +563,7 @@ function crear_verific()
             autocomplete=1;
             auto_input("ipn_sancion","pas/0?grid=autocompleta_sancion",1);
         }
-        $("#dlg_verificación").dialog({
-            autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
-            title: "<div class='widget-header'><h4>.:  VERIFICAR EXPEDIENTE :.</h4></div>",
-            buttons: [{
-                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-success bg-color-green",
-                click: function () {
-                        //grabar_exp_san();
-                }
-            }, {
-                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-                "class": "btn btn-danger",
-                click: function () {
-                    $(this).dialog("close");
-                }
-            }],
-        });
-        $("#dlg_verificación").dialog('open');
+        crear_dlg("dlg_verificación",1000,"VERIFICAR EXPEDIENTE");
     }
 }
 function auto_input(textbox,url,extra){
@@ -614,7 +599,7 @@ function auto_input(textbox,url,extra){
                                     $("#sobreuit").show();
                                     $("#ipn_tipo_cobro").val('SOBRE UIT');
                                     $("#ipn_monto_uit").val(ui.item.uit);
-                                    $("#ipn_san_total").val(parseFloat(ui.item.uit)*(parseFloat(ui.item.porcentaje_cobro)/100));
+                                    $("#ipn_san_total").val(formato_numero(parseFloat(ui.item.uit)*(parseFloat(ui.item.porcentaje_cobro)/100),2,".",","));
                                 }
                                 
                              }
@@ -628,7 +613,8 @@ function auto_input(textbox,url,extra){
 
 function validartotal()
 {
-    $("#ipn_san_total").val(parseFloat($("#ipn_monto_obra").val())*(parseFloat($("#ipn_tipo_cobro_porcentaje").val())/100));
+    total=parseFloat($("#ipn_monto_obra").val())*(parseFloat($("#ipn_tipo_cobro_porcentaje").val())/100);
+    $("#ipn_san_total").val(formato_numero(total,2,".",","));
 }
 
 function confirmar_sancion()
@@ -641,6 +627,11 @@ function confirmar_sancion()
     if($("#ipn_san_total").val()==0)
     {
         mostraralertasconfoco('Ingrese Monto', "#ipn_monto_obra");
+        return false;
+    }
+    if($("#txt_obs_sancion").val()==0)
+    {
+        mostraralertasconfoco('Ingrese Descripción Verificada', "#txt_obs_sancion");
         return false;
     }
     $.SmartMessageBox({
@@ -665,28 +656,34 @@ function confirmar_sancion()
 }
 function save_verifica_sancion()
 {
+    if($("#ipn_tipo_cobro").val()=="SOBRE UIT")
+    {
+        monto=$("#ipn_monto_uit").val();
+    }
+    else
+    {
+        monto=$("#ipn_san_total").val();
+    }
     MensajeDialogLoadAjax('dlg_verificación', '.:: CARGANDO ...');
     $.ajax({url: 'pas/create',
     type: 'GET',
     data:{
-        tip_doc:$("#seltipdoc").val(),
-        id_lote:$("#hidden_dlg_lot").val(),
-        tip_per:$("#seltipper").val(),
-        ape_pat:$("#inp_ape_pat").val(),
-        ape_mat:$("#inp_ape_mat").val(),
-        nombres:$("#inp_nom_per").val(),
-        raz_soc:$("#inp_raz_soc").val(),
-        dom_fis:$("#inp_dom_fis").val(),
-        nro_doc:$("#inp_nro_doc").val(),
-        tipo_create:'registro_expe_sancionador'
+        id_infraccion:$("#hidden_ipn_sancion").val(),
+        id_exp_san:$('#table_expedientes').jqGrid ('getGridParam', 'selrow'),
+        porcentaje:$("#ipn_tipo_cobro_porcentaje").val().replace(",",""),
+        monto:monto.replace(",",""),
+        total:$("#ipn_san_total").val().replace(",",""),
+        observaciones:$("#txt_obs_sancion").val(),
+        tipo_create:'infracciones_verificadas'
     },
     success: function(r) 
     {
-        MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
-        selecciona_fecha();
+        llamar_get_infracciones();
+        limpiar_exp_san('dlg_verificación');
+        $("#inp_veri_cod_exp_san").val($('#table_expedientes').jqGrid ('getCell', Id, 'nro_exp_san'));
+        $("#inp_veri_gestor").val($('#table_expedientes').jqGrid ('getCell', Id, 'gestor'));
+        MensajeDialogLoadAjaxFinish('dlg_verificación');
         MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-        
-        $("#dlg_nuevo_exp").dialog("close");
         
     },
     error: function(data) {
@@ -696,4 +693,33 @@ function save_verifica_sancion()
         console.log(data);
     }
     });
+}
+
+function llamar_get_infracciones()
+{
+    id=$('#table_expedientes').jqGrid ('getGridParam', 'selrow');
+    
+   $('#table_infrac_reg tbody tr').each(function() {$(this).remove();});
+   MensajeDialogLoadAjax('table_infrac_reg', '.:: CARGANDO ...');
+    $.ajax({url: 'pas/0?grid=infracciones_verificadas&id_exp_san='+id,
+        type: 'GET',
+        success: function(r) 
+        {
+            for(i=0;i<(r.length);i++)
+            {
+                $('#table_infrac_reg > tbody').append('<tr id="'+r[i].id_infra_veric+'"><td style="border: 1px solid #bbb">'+r[i].id_infraccion+'</td>\n\
+                                                           <td style="border: 1px solid #bbb">'+r[i].monto+'</td>\n\
+                                                           <td style="border: 1px solid #bbb">'+r[i].porcentaje+'</td>\n\
+                                                           <td style="border: 1px solid #bbb">'+r[i].total+'</td>\n\
+                                                           <td class="text-center" style="border: 1px solid #bbb"><i class="fa fa-close" style="color:red; cursor:pointer" onclick="del_fis_bd('+r[i].id_fis_env+','+id+')"></i></td></tr>');
+            }
+            MensajeDialogLoadAjaxFinish('table_infrac_reg');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('table_infrac_reg');
+        }
+        }); 
 }
