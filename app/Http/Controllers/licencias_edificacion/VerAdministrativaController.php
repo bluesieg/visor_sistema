@@ -407,7 +407,7 @@ class VerAdministrativaController extends Controller
 
         if(count($sql)>=1)
         {
-            $parametros = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('id_reg_exp',$sql->id_reg_exp)->first();
+            $parametros = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_admin')->where('id_reg_exp',$sql->id_reg_exp)->first();
             
             $view =  \View::make('licencias_edificacion.reportes.notificaciones', compact('sql','institucion','parametros'))->render();
             $pdf = \App::make('dompdf.wrapper');

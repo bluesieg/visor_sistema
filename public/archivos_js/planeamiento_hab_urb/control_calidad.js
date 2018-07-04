@@ -148,7 +148,7 @@ function actualizar_inspeccion(){
 }
 
 
-function selecciona_fecha_cc(){
+function cambiar_tipo(){
 
     fecha_desde = $("#dlg_fecha_desde_cc").val(); 
     fecha_hasta = $("#dlg_fecha_hasta_cc").val(); 

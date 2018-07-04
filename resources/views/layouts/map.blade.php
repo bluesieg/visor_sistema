@@ -773,47 +773,6 @@
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
                                                     <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_pas" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Proceso Administrativo Sancionador
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_pas" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                    <div class="panel panel-default" style="background: transparent">
-                                                                        <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                            <h4 class="panel-title"><a href="pas"> 
-                                                                                    <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                    <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                    Modulo P.A.S.
-                                                                                </a>
-                                                                            </h4>
-                                                                        </div>
-                                                                    </div>
-                                                              </div>
-                                                           </div>
-                                                        <!--end widget content -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- fin option-->
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
                                                         <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-espa_publi" class="collapsed"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
@@ -1615,6 +1574,108 @@
                                                         <!--end widget content -->
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin option-->
+                                            
+                                            <!--option-->
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-operaciones_vig_int" class="collapsed"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub Ge. Operaciones y Vigilancia Interna
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo_sub-operaciones_vig_int" class="panel-collapse collapse cr_toogle">
+                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                            <div class="widget-body no-padding">
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="comisarias"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Matenimiento Comisarias
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="mapas_delito"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Matenimiento Map. Delito
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="rutas_serenazgo"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mantenimiento Rutas Serenazgo
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                      
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_comisarias" onchange="valida_capa_gerencia_seg_ciud('chk_geren_seg_ciud_comisarias')">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/comisaria.png" height="20px" />
+                                                                                    Comisarias
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_plan_riesgo" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Mapa del Delito
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span style="width: 200px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_plan_riesgo" onchange="">
+                                                                                    <i></i>
+                                                                                    <img src="img/recursos/camara-md.png" height="20px" />
+                                                                                    Rutas de Serenazgo
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                             <!-- fin option-->
@@ -2645,7 +2706,7 @@
         </div>
 
 
-       
+        <script src="{{ asset('archivos_js/gerencia_seg_ciud/comisarias.js') }}"></script>
         <script src="{{ asset('js/libs/jquery-ui-1.10.3.min.js') }}"></script>
         
 

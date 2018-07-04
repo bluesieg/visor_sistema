@@ -137,36 +137,6 @@ function improcedente_verif_tecnica(){
     }
 }
 
-function emitir_resolucion() {
-    id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
-    id_reg_exp = $('#table_verif_tecnica').jqGrid ('getCell', id, 'id_reg_exp');
-    if (id) {
-        MensajeDialogLoadAjax('table_verif_tecnica', '.:: Cargando ...');
-
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'cambiar_estado_verif_tecnica',
-            type: 'GET',
-            data: {
-                id_reg_exp :id_reg_exp
-            },
-            success: function (data) {
-                MensajeDialogLoadAjaxFinish('table_verif_tecnica');
-                fn_actualizar_grilla('table_verif_tecnica');
-                MensajeExito('Actualizacion de Verificacion del Expediente','Expediente fue enviado a Emitir Resolucion');
-            },
-            error: function (data) {
-                mostraralertas("Hubo un Error, Comunicar al Administrador");
-                console.log('error');
-                console.log(data);
-                MensajeDialogLoadAjaxFinish('table_verif_tecnica');
-            }
-        });
-    }else{
-        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_verif_tecnica");
-    }
-}
-
 function cambiar_estado(value){
     if( $('.check1').is(':checked') ){
        $('.estado1').val("1");
@@ -558,4 +528,291 @@ function extraer_datos(indice){
         MensajeExito('Notificacion de Otros fue Creada','La operacion fue Exitosa');
     }
     
+}
+
+
+//RESOLUCION
+
+resolucion_tecnica=0;
+function limpiar_resolucion_verificacion_tecnica()
+{
+    if(resolucion_tecnica==0)
+    {
+        resolucion_tecnica=1;
+        CKEDITOR.replace('ckeditor_resolucion_vtecnica', {height: '220px'});
+    }
+    CKEDITOR.instances['ckeditor_resolucion_vtecnica'].setData('');
+}
+
+
+function emitir_resolucion(){
+    
+    Id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
+    if(Id)
+    {
+        $("#hidden_dlg_id_expediente").val($('#table_verif_tecnica').jqGrid ('getCell', Id, 'id_reg_exp'));
+        
+        jQuery("#table_especificaciones").jqGrid('setGridParam', {
+                        url: 'getEspecificaciones?id_reg_exp='+$("#hidden_dlg_id_expediente").val()
+                   }).trigger('reloadGrid');
+        
+        limpiar_resolucion_verificacion_tecnica();
+        $("#dlg_resolucion_verificacion_tecnica").dialog({
+            autoOpen: false, modal: true, width: 800,height:700, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.: CREAR RESOLUCION TECNICA :.</h4></div>",
+            buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    grabar_resolucion();
+            }
+            },{
+                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }]        
+        }).dialog('open');
+    }else{
+        mostraralertasconfoco("No Hay Expediente Seleccionado","#table_verif_tecnica");
+    }
+}
+
+function grabar_resolucion() {
+    id_reg_exp = $("#hidden_dlg_id_expediente").val();
+    var contenido_resolucion = CKEDITOR.instances['ckeditor_resolucion_vtecnica'].getData();
+    
+    if (contenido_resolucion == '') {
+        mostraralertasconfoco("Debes Completar el Cuerpo de La Resolucion","#ckeditor_resolucion_vtecnica");
+        return false;
+    }
+    
+    MensajeDialogLoadAjax('table_verif_tecnica', '.:: Cargando ...');
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'guardar_resolucion_verificacion_tecnica',
+        type: 'GET',
+        data: {
+            id_reg_exp :id_reg_exp,
+            contenido:contenido_resolucion
+        },
+        success: function (data) {
+            MensajeDialogLoadAjaxFinish('table_verif_tecnica');
+            fn_actualizar_grilla('table_verif_tecnica');
+            MensajeExito('Actualizacion de Verificacion del Expediente','Expediente fue enviado a Emitir Resolucion');
+            dialog_close('dlg_resolucion_verificacion_tecnica');
+            imprimir_resolucion(id_reg_exp);
+        },
+        error: function (data) {
+            mostraralertas("Hubo un Error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('table_verif_tecnica');
+        }
+    });
+}
+
+
+function agregar_especificaciones()
+{
+    limpiar_datos_especificaciones();
+    $("#dlg_nuevas_especificaciones").dialog({
+        autoOpen: false, modal: true, width: 400, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  NUEVAS ESPECIFICACIONES :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    guardar_especificaciones();
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+    $("#dlg_nuevas_especificaciones").dialog('open');
+}
+
+function limpiar_datos_especificaciones(){
+    $('#dlg_nro_piso').val('');
+    $('#dlg_existente').val('');
+    $('#dlg_demolicion').val('');
+    $('#dlg_remodelacion').val('');
+    $('#dlg_ampliacion').val('');
+}
+
+
+function guardar_especificaciones(){
+    
+    id_reg_exp = $('#hidden_dlg_id_expediente').val();
+    nro_piso = $('#dlg_nro_piso').val();
+    existente = $('#dlg_existente').val();
+    demolicion = $('#dlg_demolicion').val();
+    remodelacion = $('#dlg_remodelacion').val();
+    ampliacion = $('#dlg_ampliacion').val();
+    
+    if (nro_piso == '') {
+        mostraralertasconfoco('* El Nombre del Piso es Obligatorio...', '#dlg_nro_piso');
+        return false;
+    }
+    if (existente == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_existente');
+        return false;
+    }
+    if (demolicion == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_demolicion');
+        return false;
+    }
+    if (remodelacion == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_remodelacion');
+        return false;
+    }
+    if (ampliacion == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_ampliacion');
+        return false;
+    }
+ 
+    $.ajax({
+        url: 'agregar_especificaciones_vt',
+        type: 'GET',
+        data: {
+            id_reg_exp:id_reg_exp,
+            nro_piso :nro_piso,
+            existente:existente,
+            demolicion:demolicion,
+            remodelacion:remodelacion,
+            ampliacion:ampliacion
+        },
+        success: function (data) {
+            MensajeExito('La Especificacion fue Agregada Correctamente al Expediente', 'Operacion Ejecutada Correctamente.');
+             jQuery("#table_especificaciones").jqGrid('setGridParam', {
+                        url: 'getEspecificaciones?id_reg_exp='+$("#hidden_dlg_id_expediente").val()
+                   }).trigger('reloadGrid');
+            limpiar_datos_especificaciones();
+        },
+        error: function (data) {
+            return false;
+        }
+    });
+}
+
+function editar_especificaciones()
+{
+    id_especificaciones=$('#table_especificaciones').jqGrid ('getGridParam', 'selrow');
+    if (id_especificaciones) {
+        
+        id_especificacion = $('#table_especificaciones').jqGrid ('getCell', id_especificaciones, 'id_especificacion');
+        $('#dlg_nro_piso').val($('#table_especificaciones').jqGrid ('getCell', id_especificaciones, 'nro_piso'));
+        $('#dlg_existente').val($('#table_especificaciones').jqGrid ('getCell', id_especificaciones, 'existente'));
+        $('#dlg_demolicion').val($('#table_especificaciones').jqGrid ('getCell', id_especificaciones, 'demolicion'));
+        $('#dlg_remodelacion').val($('#table_especificaciones').jqGrid ('getCell', id_especificaciones, 'remodelacion'));
+        $('#dlg_ampliacion').val($('#table_especificaciones').jqGrid ('getCell', id_especificaciones, 'ampliacion'));
+        
+        $("#dlg_nuevas_especificaciones").dialog({
+            autoOpen: false, modal: true, width: 400, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR ESPECIFICACIONES :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                     actualizar_especificaciones(id_especificacion);    
+                }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_nuevas_especificaciones").dialog('open');
+    }else{
+        mostraralertasconfoco("No Hay Especificaciones Seleccionadas","#table_especificaciones");
+    }
+}
+
+function actualizar_especificaciones(id_especificacion){
+    
+    nro_piso = $('#dlg_nro_piso').val();
+    existente = $('#dlg_existente').val();
+    demolicion = $('#dlg_demolicion').val();
+    remodelacion = $('#dlg_remodelacion').val();
+    ampliacion = $('#dlg_ampliacion').val();
+    
+    if (nro_piso == '') {
+        mostraralertasconfoco('* El Nombre del Piso es Obligatorio...', '#dlg_nro_piso');
+        return false;
+    }
+    if (existente == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_existente');
+        return false;
+    }
+    if (demolicion == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_demolicion');
+        return false;
+    }
+    if (remodelacion == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_remodelacion');
+        return false;
+    }
+    if (ampliacion == '') {
+        mostraralertasconfoco('* El Campo Existente no debe ir vacio...', '#dlg_ampliacion');
+        return false;
+    }
+ 
+    $.ajax({
+        url: 'actualizar_especificaciones_vt',
+        type: 'GET',
+        data: {
+            id_especificacion:id_especificacion,
+            nro_piso :nro_piso,
+            existente:existente,
+            demolicion:demolicion,
+            remodelacion:remodelacion,
+            ampliacion:ampliacion
+        },
+        success: function (data) {
+            MensajeExito('La Especificacion fue Actualizada Correctamente', 'Operacion Ejecutada Correctamente.');
+             jQuery("#table_especificaciones").jqGrid('setGridParam', {
+                        url: 'getEspecificaciones?id_reg_exp='+$("#hidden_dlg_id_expediente").val()
+                   }).trigger('reloadGrid');
+            dialog_close('dlg_nuevas_especificaciones');
+        },
+        error: function (data) {
+            return false;
+        }
+    });
+}
+
+function eliminar_especificaciones(){
+    id_especificaciones = $('#table_especificaciones').jqGrid ('getGridParam', 'selrow');
+    if (id_especificaciones) {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'licencias_verificacion_tecnica/destroy',
+            type: 'POST',
+            data: {
+                _method: 'delete',id_especificaciones:id_especificaciones,
+            },
+            success: function (data) {
+                MensajeExito('La Especificacion fue Eliminada', 'Operacion Ejecutada Correctamente.');
+                 jQuery("#table_especificaciones").jqGrid('setGridParam', {
+                            url: 'getEspecificaciones?id_reg_exp='+$("#hidden_dlg_id_expediente").val()
+                       }).trigger('reloadGrid');
+            },
+            error: function (data) {
+                return false;
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Especificaciones Seleccionadas","#table_especificaciones");
+    }
+}
+
+function imprimir_resolucion(id_reg_exp)
+{
+    window.open('imprimir_resolucion_vt/'+id_reg_exp);
 }

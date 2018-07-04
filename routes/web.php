@@ -170,12 +170,16 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_verif_tecnica','VerTecnicaController@get_verif_tecnica');
         Route::get('get_revision_expediente','VerTecnicaController@get_revision_expediente');
         Route::get('improcedente_verif_tecnica','VerTecnicaController@improcedente_verif_tecnica');
-        Route::get('cambiar_estado_verif_tecnica','VerTecnicaController@cambiar_estado_verif_tecnica');
+        Route::get('guardar_resolucion_verificacion_tecnica','VerTecnicaController@guardar_resolucion_verificacion_tecnica');
         Route::post('guardar_f', 'VerTecnicaController@guardar_f');
         Route::post('actualizar_f', 'VerTecnicaController@actualizar_f');
         Route::get('recuperar_revisiones','VerTecnicaController@recuperar_revisiones');
         Route::get('ver_documentos_adjuntos/{id_rev}/{id_expediente}/{id_encargado}','VerTecnicaController@ver_documentos_adjuntos');
         Route::get('ver_notificaciones_adjuntos/{id_rev}/{id_expediente}/{id_encargado}','VerTecnicaController@ver_notificaciones_adjuntos');
+        Route::get('agregar_especificaciones_vt','VerTecnicaController@agregar_especificaciones_vt');
+        Route::get('actualizar_especificaciones_vt','VerTecnicaController@actualizar_especificaciones_vt');
+        Route::get('getEspecificaciones','VerTecnicaController@getEspecificaciones');
+        Route::get('imprimir_resolucion_vt/{id_reg_exp}','VerTecnicaController@imprimir_resolucion_vt');
         
         
         Route::resource('emitir_resolucion','EmitirResolucionController');
@@ -188,6 +192,8 @@ Route::group(['middleware' => 'auth'], function() {
         
         Route::resource('mapa_licencias','MapaLicenciasController');
         Route::get('get_mapa_licencias_eficiacion/{color}/{hab_urb}', 'MapaLicenciasController@get_mapa_licencias_eficiacion');
+        
+        Route::resource('joselin', 'JoselinController');
         
     });
 
@@ -248,6 +254,11 @@ Route::group(['middleware' => 'auth'], function() {
     ///////////////////////proceso administrativo sancionador
     Route::group(['namespace' => 'pas'], function() {
         Route::resource('pas','Proceso_sancionadorController');
+    });
+    
+    /******************************      GERENCIA DE SEGURIDAD CIUDADANA ********************************************************/
+    Route::group(['namespace' => 'gerencia_seg_ciud'], function() {
+        Route::resource('comisarias','ComisariasController');
     });
     
 });

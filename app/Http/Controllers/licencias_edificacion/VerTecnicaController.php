@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\licencias_edificacion\RecDocumentos;
 use App\Models\licencias_edificacion\RevisionesEncargado;
+use App\Models\licencias_edificacion\Especificaciones;
+use App\Models\licencias_edificacion\Resolucion;
 use Illuminate\Support\Facades\Response;
 
 
@@ -193,7 +195,13 @@ class VerTecnicaController extends Controller
      */
     public function destroy(Request $request)
     {
-        
+        $Especificaciones = new Especificaciones;
+        $val=  $Especificaciones::where("id_especificacion","=",$request['id_especificaciones'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id_especificaciones'];   
     }
     
     public function get_verif_tecnica(Request $request){
@@ -312,15 +320,25 @@ class VerTecnicaController extends Controller
         return $request['id_reg_exp'];
     }
     
-    public function cambiar_estado_verif_tecnica(Request $request){
+    public function guardar_resolucion_verificacion_tecnica(Request $request){
+        
+        $Resolucion = new Resolucion;
+        $Resolucion->id_reg_exp = $request['id_reg_exp'];
+        $Resolucion->cuerpo = $request['contenido'];
+        $Resolucion->save(); 
+        $this->cambiar_estado_verif_tecnica($request['id_reg_exp']);
+    }
+    
+    public function cambiar_estado_verif_tecnica($id_reg_exp)
+    {
         $RecDocumentos = new RecDocumentos;
-        $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
+        $val=  $RecDocumentos::where("id_reg_exp","=",$id_reg_exp)->first();
         if(count($val)>=1)
         {
             $val->fase = 8;
             $val->save();
         }
-        return $request['id_reg_exp'];
+        return $id_reg_exp;
     }
     
     public function recuperar_revisiones(Request $request){
@@ -407,7 +425,9 @@ class VerTecnicaController extends Controller
         
         if(count($sql)>0)
         {
-            $view =  \View::make('licencias_edificacion.reportes.notificaciones_tecnica', compact('sql','institucion'))->render();
+            $parametros = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.vw_verif_tecnica')->where('id_reg_exp',$id_expediente)->first();
+            
+            $view =  \View::make('licencias_edificacion.reportes.notificaciones_tecnica', compact('sql','institucion','parametros'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Notificacion Verificacion Tecnica".".pdf");
@@ -623,6 +643,102 @@ class VerTecnicaController extends Controller
             $datos->notificacion = $notificacion;
             $datos->estado = $estado;
             $datos->save();
+        }
+    }
+    
+    public function agregar_especificaciones_vt(Request $request)
+    {  
+        $Especificaciones = new Especificaciones;
+        $Especificaciones->nro_piso = $request['nro_piso'];
+        $Especificaciones->existente = $request['existente'];
+        $Especificaciones->demolicion = $request['demolicion'];
+        $Especificaciones->remodelacion = $request['remodelacion'];
+        $Especificaciones->ampliacion = $request['ampliacion'];
+        $Especificaciones->id_reg_exp = $request['id_reg_exp'];
+        $Especificaciones->save();  
+    }
+    
+    public function actualizar_especificaciones_vt(Request $request)
+    {
+        $Especificaciones = new Especificaciones;
+        $val=  $Especificaciones::where("id_especificacion","=",$request['id_especificacion'])->first();
+        if(count($val)>=1)
+        {
+            $val->nro_piso = $request['nro_piso'];
+            $val->existente = $request['existente'];
+            $val->demolicion = $request['demolicion'];
+            $val->remodelacion = $request['remodelacion'];
+            $val->ampliacion = $request['ampliacion'];
+            $val->save();
+        }
+        return $request['id_especificacion'];
+    }
+    
+    public function getEspecificaciones(Request $request){
+        header('Content-type: application/json');
+        $id_reg_exp = $request['id_reg_exp'];
+        
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_lic_edificacion.especificaciones where id_reg_exp = '$id_reg_exp'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; 
+        if ($start < 0) {
+            $start = 0;
+        }
+        $sql = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.especificaciones')->where('id_reg_exp',$id_reg_exp)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_especificacion;
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_especificacion),
+                trim($Datos->nro_piso),
+                trim($Datos->existente),
+                trim($Datos->demolicion),
+                trim($Datos->remodelacion),
+                trim($Datos->ampliacion)
+            );
+        }
+
+        return response()->json($Lista);
+
+    }
+    
+    public function imprimir_resolucion_vt($id_reg_exp)
+    {
+        $resolucion = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.resolucion")->where('id_reg_exp',$id_reg_exp)->first();
+        $especificaciones = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.especificaciones")->where('id_reg_exp',$id_reg_exp)->get();
+        //$institucion = DB::select('SELECT * FROM maysa.institucion');
+        
+        if(count($resolucion) && count($especificaciones) >= 0)
+        {
+            $parametros = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('id_reg_exp',$id_reg_exp)->first();
+            
+            $view =  \View::make('licencias_edificacion.reportes.resolucion', compact('resolucion','especificaciones','parametros'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("RESOLUCION".".pdf");
+        }
+        else
+        {
+            return "No hay Datos";
         }
     }
 }

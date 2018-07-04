@@ -959,4 +959,88 @@
         </article>-->
     </div>
 </div> 
+
+<div id="dlg_get_comisarias" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
+                
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">NOMBRE COMISARIA &nbsp;<i class="fa fa-home"></i></span>
+                        <div >
+                            <label id="seg_ciudadana_nombre_comisaria"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">UBICACION &nbsp;<i class="fa fa-area-chart"></i></span>
+                        <div >
+                            <label id="seg_ciudadana_ubicacion"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">COMISARIO &nbsp;<i class="fa fa-map"></i></span>
+                        <div >
+                            <label id="seg_ciudadana_comisario" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">NRO. EFECTIVOS &nbsp;<i class="fa fa-phone"></i></span>
+                        <div >
+                            <label id="seg_ciudadana_nro_efectivos" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">NRO. VEHICULOS &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <label id="seg_ciudadana_nro_vehiculos"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">TEL. COMISARIO &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <label id="seg_ciudadana_tel_comisario"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">TEL. COMISARIA &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <label id="seg_ciudadana_tel_comisaria"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div id="seg_ciudadana_foto_comisario" class="col-xs-12 text-align-center" style="padding: 0px; margin-top: 10px">
+                    
+                </div>
+                
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
 @endsection

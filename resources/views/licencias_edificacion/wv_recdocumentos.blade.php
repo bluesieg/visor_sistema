@@ -40,19 +40,19 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="false" onclick="seleccionafecha_asignacion();">
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
                                    ASIGNACION
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s3" data-toggle="tab" aria-expanded="false" onclick="seleccionafecha_verif_adm();">
+                                <a href="#s3" data-toggle="tab" aria-expanded="false">
                                    VERIFICACION ADMINISTRATIVA
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s4" data-toggle="tab" aria-expanded="false" onclick="seleccionafecha_verif_tec();">
+                                <a href="#s4" data-toggle="tab" aria-expanded="false">
                                    VERIFICACION TECNICA
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -128,7 +128,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                                   <input  id="fec_ini_asignacion" type="text" onchange="seleccionafecha_asignacion();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                                   <input  id="fec_ini_asignacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -136,10 +136,17 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                    <input id="fec_fin_asignacion" type="text" onchange="seleccionafecha_asignacion();" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_asignacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
                                         </div>
+                                    
+                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
+                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="seleccionafecha_asignacion();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span> BUSCAR
+                                            </button>
+                                        </div>
+                                    
                                        <div class="text-right" style=" padding-top: 20px">
 
                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nueva_asignacion();">
@@ -184,7 +191,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                                   <input  id="fec_ini_verif_administrativa" onchange="seleccionafecha_verif_adm();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                                   <input  id="fec_ini_verif_administrativa" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                         </div>
@@ -192,9 +199,15 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                    <input id="fec_fin_verif_administrativa" onchange="seleccionafecha_verif_adm();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_verif_administrativa" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
+                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="seleccionafecha_verif_adm();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span> BUSCAR
+                                            </button>
                                         </div>
                                     
                                         <div class="col-lg-2" style="padding-right: 5px; padding-top: 20px; ">
@@ -274,7 +287,7 @@
                                            <div class="input-group input-group-md">
                                                <span class="input-group-addon">Desde:</span>
                                                <div class="icon-addon addon-md">
-                                                   <input  id="fec_ini_verif_tecnica" onchange="seleccionafecha_verif_tec();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                                   <input  id="fec_ini_verif_tecnica" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                                                </div>
                                            </div>
                                        </div>
@@ -282,9 +295,15 @@
                                             <div class="input-group input-group-md">
                                                 <span class="input-group-addon">Hasta:</span>
                                                 <div class="icon-addon addon-md">
-                                                    <input id="fec_fin_verif_tecnica" onchange="seleccionafecha_verif_tec();" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                    <input id="fec_fin_verif_tecnica" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                 </div>
                                             </div>
+                                        </div>
+                                    
+                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
+                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="seleccionafecha_verif_tec();">
+                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span> BUSCAR
+                                            </button>
                                         </div>
                                        <div class="text-right" style=" padding-top: 20px">
 
@@ -676,6 +695,33 @@
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){}
+        });
+        
+        
+        jQuery("#table_especificaciones").jqGrid({
+            url: 'getEspecificaciones?id_reg_exp='+0,
+            datatype: 'json', mtype: 'GET',
+            height: '120px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['COD.', 'NRO. PISO','EXISTENTE','DEMOLICION','REMODELACION','AMPLIACION'],
+            rowNum: 5, sortname: 'id_especificacion', sortorder: 'asc', viewrecords: true, caption: 'ESPECIFICACIONES', align: "center",
+            colModel: [
+                {name: 'id_especificacion', index: 'id_especificacion', align: 'left',width: 50, hidden:true},
+                {name: 'nro_piso', index: 'nro_piso', align: 'center', width: 150},
+                {name: 'existente', index: 'existente', align: 'center', width: 120},
+                {name: 'demolicion', index: 'demolicion', align: 'center', width: 120},
+                {name: 'remodelacion', index: 'remodelacion', align: 'center', width: 120},
+                {name: 'ampliacion', index: 'ampliacion', align: 'center', width: 120}  
+            ],
+            pager: '#pager_table_especificaciones',
+            rowList: [10, 20, 30, 40, 50],
+            gridComplete: function () {
+                  
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){
+                editar_especificaciones();
+            }
         });
         
         
@@ -1174,5 +1220,82 @@
     </form>
 </div>
 
+
+
+<div id="dlg_resolucion_verificacion_tecnica" style="display: none;">
+    <div class="widget-body no-padding">
+        <textarea id="ckeditor_resolucion_vtecnica" name="ckeditor_resolucion_vtecnica">
+            Escribir Resolucion de Verificacion Tecnica
+        </textarea>
+    </div>
+    <div style="padding-top: 10px;">
+        
+        <input type="hidden" id="hidden_dlg_id_expediente">
+        <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="agregar_especificaciones();">
+            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Agregar Especificaciones
+        </button>
+        
+        <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="editar_especificaciones();">
+            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Editar
+        </button>
+        
+        <button  type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="eliminar_especificaciones();">
+            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+        </button>
+    </div>
+    
+    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;padding-left: 72px;">
+        <article class="col-xs-12" style=" padding: 0px !important">
+                <table id="table_especificaciones"></table>
+                <div id="pager_table_especificaciones"></div>
+        </article>
+    </div>
+</div>
+
+
+<div id="dlg_nuevas_especificaciones" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 150px">Nro. Piso: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="dlg_nro_piso" type="text" class="form-control" style="height: 30px;" maxlength="50">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px;">
+                        <span class="input-group-addon" style="width: 150px">Existente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="dlg_existente" type="text" class="form-control" style="height: 30px;" maxlength="15" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px;">
+                        <span class="input-group-addon" style="width: 150px">Demolicion: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="dlg_demolicion" type="text" class="form-control" style="height: 30px;" maxlength="15" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px;">
+                        <span class="input-group-addon" style="width: 150px;">Remodelacion: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="dlg_remodelacion" type="text" class="form-control" style="height: 30px;" maxlength="15" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group input-group-md" style="width: 100%; padding-top: 10px;">
+                        <span class="input-group-addon" style="width: 150px;">Ampliacion: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="dlg_ampliacion" type="text" class="form-control" style="height: 30px;" maxlength="15" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 

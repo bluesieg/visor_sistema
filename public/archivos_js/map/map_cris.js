@@ -122,6 +122,23 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
+                if(layer.get('title')=='Geren_seg_ciudadana'&&mostrar==0)
+                {
+                    $("#seg_ciudadana_foto_comisario").html("");
+                    mostrar=1;
+                    $("#seg_ciudadana_nombre_comisaria").text(feature.get('nombre'));
+                    $("#seg_ciudadana_ubicacion").text(feature.get('ubicacion'));
+                    $("#seg_ciudadana_comisario").text(feature.get('comisario'));
+                    $("#seg_ciudadana_nro_efectivos").text(feature.get('nro_efectivos'));
+                    $("#seg_ciudadana_nro_vehiculos").text(feature.get('nro_vehiculos'));
+                    $("#seg_ciudadana_tel_comisario").text(feature.get('tlefno_comisario'));
+                    $("#seg_ciudadana_tel_comisaria").text(feature.get('tlfno_comsaria'));
+                    $("#seg_ciudadana_foto_comisario").attr("src","data:image/jpg;base64,"+feature.get('foto_comisario'));
+                    //$("#seg_ciudadana_foto_comisario").html('<img src="data:image/png;base64,'+feature.get('foto_comisario')+'" style="max-height:250px; max-width:400px"')
+                    crear_dlg("dlg_get_comisarias",1100,"Cerro Colorado - COMISARIAS");
+                    return false;
+                }
+                
                 
             });
     

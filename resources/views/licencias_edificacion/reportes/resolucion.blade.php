@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Notificación</title>
+    <title>RESOLUCION</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
@@ -34,7 +34,7 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 0px;"><b>NOTIFICACIÓN N° 012--2018-SGPHU-GDUC-MDCC</b></div></center>
+        <center><div Class="asunto" style="margin-top: 0px;"><b>RESOLUCION N° 012--2018-SGPHU-GDUC-MDCC</b></div></center>
         <div class="subasunto" style="text-align: right; padding-left: 30px; margin-top: 20px;">Cerro Colorado </div>
 
         <table style="margin-top: 10px; margin-bottom: 5px !important; border-bottom: 1px solid black">
@@ -76,14 +76,6 @@
                 </td>
             </tr>
             <tr>
-                <td style="border:0px; padding-left:18px; width: 35%">
-                    <b> Modalidad</b>
-                </td>
-                <td style="border:0px;">
-                    : {{$parametros->descr_procedimiento}}
-                </td>
-            </tr>
-            <tr>
                 <td style="border:0px; padding-left:18px;">
                     <b> Ubicacion del Predio</b>
                 </td>
@@ -98,6 +90,7 @@
             Tengo el agrado de dirigirme a Usted en atención al documento de referencia
             en la que solicita : xxxxxx , al respecto le comunico que su tramite adolece de observaciones
         </div>
+        
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
             <tr>
                 <td colspan="2" style="border:0px;">
@@ -105,8 +98,45 @@
                 </td>
             </tr>
          </table>
+        
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
-            @php echo $sql[0]->notificacion @endphp
+            Tengo el agrado de dirigirme a Usted en atención al documento de referencia
+            en la que solicita : xxxxxx , al respecto le comunico que su tramite adolece de observaciones
+        </div>
+        
+        <input type="hidden" value=" {{$num= 1}}">
+        
+        <div class="lado3" style="height: 435px; margin-bottom: 20px;">
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top: 0px;  font-size: 1.4em;">
+            <thead>
+            <tr >
+                <th style="width: 5%;">N°</th>
+                <th style="width: 20%">Nº PISO</th>
+                <th style="width: 20%;">EXISTENTE</th>
+                <th style="width: 20%;">DEMOLICION</th>
+                <th style="width: 20%">REMODELACION</th>
+                <th style="width: 20%">AMPLIACION</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach ($especificaciones as $especificacion)
+                <tr>
+                    <td style="text-align: center;">{{ $num++ }}</td>
+                    <td style="text-align: center;">{{$especificacion->nro_piso}}</td>
+                    <td style="text-align: center;">{{$especificacion->existente}}m2</td>
+                    <td style="text-align: center;">{{$especificacion->demolicion}}m2</td>
+                    <td style="text-align: center;">{{$especificacion->remodelacion}}m2</td>
+                    <td style="text-align: center;">{{$especificacion->ampliacion}}m2</td>
+                </tr>
+                
+            @endforeach
+
+            </tbody>
+        </table>
+    </div>
+        <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
+            @php echo $resolucion->cuerpo @endphp
         </div>
         
   </body>
