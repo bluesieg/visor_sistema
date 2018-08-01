@@ -40,30 +40,45 @@
                                             
                                         <h1 ><b>MANTENIMIENTO DE COMISARIAS</b></h1>
                                         
-                                       <div class="text-right" style=" padding-top: 20px">
+                                        <div class="row" style="padding: 0px; margin-top: 30px">
+                                            <div class="col-xs-5">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon">COMISARIA:. &nbsp;<i class="fa fa-male"></i></span>
+                                                    <div>
+                                                        <input id="dlg_buscar_comisaria" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR NOMBRE COMISARIA">
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                           <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nueva_comisaria();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nueva Comisaria
-                                           </button>
+                                            <div class="col-xs-2">
+                                                <div class="text-left">
+                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_comisaria();">
+                                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                        </button>
+                                                </div>
+                                            </div>
+                                            
+                                           <div class="col-xs-5">
 
-                                           <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_comisarias();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Comisaria
-                                           </button>
+                                                <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nueva_comisaria();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nueva Comisaria
+                                                </button>
 
-                                          
-                                           <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_comisarias();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Comisaria
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                            <div class="col-xs-12" style="padding: 0px; margin-top: 30px">
                                                 <article class="col-xs-12" style=" padding: 0px !important">
                                                         <table id="table_comisarias"></table>
                                                         <div id="pager_table_comisarias"></div>
                                                 </article>
                                             </div>
-
-
-                                       </div>
-                                        </div>
                                         
-                                    </section>
-                                    
+                                        </div> 
+                                    </section> 
                                 </div>
                             </div>
                            </div>
@@ -81,20 +96,20 @@
         jQuery("#table_comisarias").jqGrid({
             url: 'comisarias/0?grid=comisarias',
             datatype: 'json', mtype: 'GET',
-            height: '280px', autowidth: true,
+            height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_inspector', 'COMISARIA', 'UBICACION', 'TEL.COMISARIA','COMISARIO','TEL. COMISARIO'],
-            rowNum: 10, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE COMISARIAS REGISTRADAS - CERRO COLORADO', align: "center",
+            colNames: ['id_inspector', 'NOMBRE COMISARIA', 'TELEFONO', 'NRO VEHICULOS','NRO EFECTIVOS','UBICACION'],
+            rowNum: 50, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE COMISARIAS REGISTRADAS - CERRO COLORADO', align: "center",
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'nombre', index: 'nombre', align: 'left', width: 30},
-                {name: 'ubicacion', index: 'ubicacion', align: 'left', width: 50},
-                {name: 'tlfno_comsaria', index: 'tlfno_comsaria', align: 'left', width: 14},
-                {name: 'comisario', index: 'ubicacion', align: 'left', width: 20},
-                {name: 'tlefno_comisario', index: 'tlfno_comsaria', align: 'left', width: 15}
+                {name: 'nombre', index: 'nombre', align: 'left', width: 60},
+                {name: 'telefono', index: 'telefono', align: 'center', width: 15},
+                {name: 'nro_vehiculos', index: 'nro_vehiculos', align: 'center', width: 12},
+                {name: 'nro_efectivos', index: 'nro_efectivos', align: 'center', width: 12},
+                {name: 'ubicacion', index: 'ubicacion', hidden: true}
             ],
             pager: '#pager_table_comisarias',
-            rowList: [20, 50],
+            rowList: [50, 100],
             gridComplete: function () {
                     var idarray = jQuery('#table_comisarias').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
@@ -106,7 +121,14 @@
             ondblClickRow: function (Id){modificar_comisarias();}
         });
         
-        
+        $("#dlg_buscar_comisaria").keypress(function (e) {
+            if (e.which == 13) {
+
+                   fn_buscar_comisaria();
+
+            }
+        });
+         
     });
 </script>
 
@@ -114,29 +136,13 @@
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/gerencia_seg_ciud/comisarias.js') }}"></script>
 
 <div id="dlg_nuevo_comisarias" style="display: none;">
-    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-    <div class="col-xs-12 cr-body" >
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">DATOS COMISARIA</div>
         <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
             <form id="FormularioComisarias" name="FormularioComisarias" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
-            <div class="col-xs-8" style="padding: 0px; ">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 175px">NOMBRE COMISARIA: &nbsp;<i class="fa fa-home"></i></span>
-                    <div>
-                        <input id="dlg_nombre_comisaria" name="dlg_nombre_comisaria" type="text" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
-                    </div>
-                </div>
-            </div>
+            <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}">
             
-            <div class="col-xs-4" style="padding: 0px; ">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 165px">TEL. COMISARIA: &nbsp;<i class="fa fa-phone"></i></span>
-                    <div> 
-                        <input id="dlg_telefono_comisaria" name="dlg_telefono_comisaria" type="text" class="form-control" style="height: 30px;" maxlength="20" onkeypress="return soloNumeroTab(event);">
-                    </div>
-                </div>
-            </div>
-                
             <div class="col-xs-12" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 180px">UBICACION: &nbsp;<i class="fa fa-location-arrow"></i></span>
@@ -145,21 +151,20 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-xs-8" style="padding: 0px; margin-top:10px">
+            <div class="col-xs-8" style="padding: 0px; margin-top:10px;">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 180px">NOMBRE COMISARIO: &nbsp;<i class="fa fa-user-secret"></i></span>
+                    <span class="input-group-addon" style="width: 175px">NOMBRE COMISARIA: &nbsp;<i class="fa fa-home"></i></span>
                     <div>
-                        <input id="dlg_nombre_comisario" type="text" name="dlg_nombre_comisario" maxlength="150" class="form-control text-uppercase" style="height: 30px;"  >
+                        <input id="dlg_nombre_comisaria" name="dlg_nombre_comisaria" type="text" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
                     </div>
                 </div>
             </div>
             
-            <div class="col-xs-4" style="margin-top: 10px;padding: 0px; ">
+            <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 165px">TEL. COMISARIO: &nbsp;<i class="fa fa-phone"></i></span>
-                    <div>
-                        <input id="dlg_telefono_comisario" type="text" name="dlg_telefono_comisario" maxlength="20" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
+                    <span class="input-group-addon" style="width: 165px">TEL. COMISARIA: &nbsp;<i class="fa fa-phone"></i></span>
+                    <div> 
+                        <input id="dlg_telefono_comisaria" name="dlg_telefono_comisaria" type="text" class="form-control" style="height: 30px;" maxlength="20" onkeypress="return soloNumeroTab(event);">
                     </div>
                 </div>
             </div>
@@ -181,37 +186,82 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; ">
+                
+            <div class="col-xs-10" style="margin-top: 10px;padding: 0px; ">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 180px">FOTO: &nbsp;<i class="fa fa-user"></i></span>
+                    <span class="input-group-addon" style="width: 180px">FOTO COMISARIA: &nbsp;<i class="fa fa-user"></i></span>
+                    <div>
+                        <input id="dlg_foto_comisaria" name="dlg_foto_comisaria" type="file" class="form-control" style="height: 30px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-2 text-right" style="margin-top: 10px;padding: 0px; ">
+                <button type="button" id="actualizar_comisaria" class="btn btn-labeled bg-color-green txt-color-white" onclick="modificar_comisaria();">
+                    <span class="btn-label"><i class="glyphicon glyphicon-saved"></i></span>Guardar
+                </button>
+            </div>
+
+            </form>        
+        </div>
+    </div>
+    </div>
+    
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">DATOS COMISARIO</div>
+        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            
+            <form id="FormularioComisarios" name="FormularioComisarios" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token1" id="_token1" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}">
+            
+            <input type="hidden" id="id_comisaria" name="id_comisaria">
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">NOMBRE COMISARIO: &nbsp;<i class="fa fa-user-secret"></i></span>
+                    <div>
+                        <input id="dlg_nombre_comisario" type="text" name="dlg_nombre_comisario" maxlength="150" class="form-control text-uppercase" style="height: 30px;"  >
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-6" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DNI: &nbsp;<i class="fa fa-user-secret"></i></span>
+                    <div>
+                        <input id="dlg_dni_comisario" type="text" name="dlg_dni_comisario" maxlength="8" class="form-control text-uppercase" style="height: 30px;"  onkeypress="return soloNumeroTab(event);">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-6" style="margin-top: 10px;padding: 0px; ">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 165px">TEL. COMISARIO: &nbsp;<i class="fa fa-phone"></i></span>
+                    <div>
+                        <input id="dlg_telefono_comisario" type="text" name="dlg_telefono_comisario" maxlength="9" class="form-control" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-6" style="margin-top: 10px;padding: 0px; ">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">FECHA INICIO &nbsp;<i class="fa fa-calendar"></i></span>
+                    <div>
+                        <input id="dlg_fecha_inicio" name="dlg_fecha_inicio" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 30px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-6" style="margin-top: 10px;padding: 0px; ">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">FOTO COMISARIO: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
                         <input id="dlg_foto_comisario" name="dlg_foto_comisario" type="file" class="form-control" style="height: 30px;">
                     </div>
                 </div>
             </div>
 
-            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; ">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 180px">OBSERVACIONES: &nbsp;<i class="fa fa-search"></i></span>
-                    <div>
-                        <textarea id="dlg_observaciones" name="dlg_observaciones" type="text" class="form-control text-uppercase" style="height: 60px;" row="4"></textarea>
-                    </div>
-                </div> 
-            </div>
-            
-            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; ">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 180px">OBSERVACIONES: &nbsp;<i class="fa fa-search"></i></span>
-                    <div id="imagen">
-                        <img id="foto_comisario" style="max-height:250px; max-width:400px">
-                    </div>
-                </div> 
-            </div>
-            
-            
-            
-            </form>        
+            </form>
         </div>
     </div>
     </div>

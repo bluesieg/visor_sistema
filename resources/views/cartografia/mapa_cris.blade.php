@@ -1043,4 +1043,51 @@
         </div>
     </div>
 </div> 
+
+<div id="dlg_get_mapa_delito" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
+                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">NRO. EFECTIVOS &nbsp;<i class="fa fa-phone"></i></span>
+                        <div >
+                            <label id="mapa_delito_utm_x" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">NRO. VEHICULOS &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <label id="mapa_delito_utm_y"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">TEL. COMISARIO &nbsp;<i class="fa fa-users"></i></span>
+                        <div>
+                            <label id="mapa_delito_observaciones"  class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                </div>
+              
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <center><img id="seg_ciudadana_foto_mapa_detito" class="col-xs-12 text-align-center" style="max-height:250px; max-width:400px;"></center>
+                    
+                </div>
+                
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
 @endsection

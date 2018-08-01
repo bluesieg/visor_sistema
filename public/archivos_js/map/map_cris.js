@@ -139,6 +139,24 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
+                if(layer.get('title')=='Geren_seg_ciudadana1'&&mostrar==0)
+                {
+                    $("#seg_ciudadana_foto_mapa_detito").html("");
+                    mostrar=1;
+                    $("#mapa_delito_utm_x").text(feature.get('x_utm'));
+                    $("#mapa_delito_utm_y").text(feature.get('y_utm'));
+                    
+                    var var2= feature.get('imagen');
+                    var sin_salto = var2.split("\n").join("");
+                    console.log(sin_salto);
+                    
+                    $("#mapa_delito_observaciones").text(feature.get('observacion'));
+                    $("#seg_ciudadana_foto_mapa_detito").attr("src","data:image/jpg;base64,"+sin_salto);
+                    //$("#seg_ciudadana_foto_mapa_detito").html('<img src="data:image/jpg;base64,'+sin_salto+'" style="max-height:250px; max-width:400px"')
+                    crear_dlg("dlg_get_mapa_delito",1100,"Cerro Colorado - MAPA DELITO");
+                    return false;
+                }
+                
                 
             });
     

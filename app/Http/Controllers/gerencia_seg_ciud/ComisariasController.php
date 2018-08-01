@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\gerencia_seg_ciud\Comisarias;
+use App\Models\gerencia_seg_ciud\PersonalComisaria;
 
 
 class ComisariasController extends Controller
@@ -21,68 +22,81 @@ class ComisariasController extends Controller
     {
         if ($id_comisaria > 0) 
         {
-            $comisarias= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisarias')->where('id',$id_comisaria)->get();
+            $comisarias= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisaria_personal')->where('id',$id_comisaria)->get();
             return $comisarias;
         }
         if($request['grid']=='comisarias')
         {
-            return $this->cargar_datos_comisarias($request);
+            return $this->cargar_datos_comisarias($request['nombre']);
         }
         if($request['mapa']=='comisarias')
         {
             return $this->cargar_mapa_comisarias($request);
         }
+        
+        if($request['mapa']=='delitos')
+        {
+            return $this->cargar_mapa_delitos($request);
+        }
     }
     
     public function store(Request $request)
     {
-        if ($request['id_comisaria'] == '0') 
+        if ($request['id_comisario'] == '0') 
         {
             $file = $request->file('dlg_foto_comisario');
-            $Comisarias = new Comisarias;
-            $Comisarias->nombre         = strtoupper($request['dlg_nombre_comisaria']);
-            $Comisarias->ubicacion      = strtoupper($request['dlg_ubicacion']);
-            $Comisarias->comisario      = strtoupper($request['dlg_nombre_comisario']);
-            $Comisarias->nro_efectivos  = $request['dlg_nro_efectivos'];
-            $Comisarias->nro_vehiculos  = $request['dlg_nro_vehiculos'];
-            $Comisarias->tlefno_comisario = $request['dlg_telefono_comisario'];
-            $Comisarias->tlfno_comsaria = $request['dlg_telefono_comisaria'];
-            $Comisarias->observaciones  = strtoupper($request['dlg_observaciones']);
+            $PersonalComisaria = new PersonalComisaria;
+            $PersonalComisaria->dni           = $request['dlg_dni_comisario'];
+            $PersonalComisaria->nombre        = strtoupper($request['dlg_nombre_comisario']);
+            $PersonalComisaria->telefono      = $request['dlg_telefono_comisario'];
+            $PersonalComisaria->fecha_inicio  = $request['dlg_fecha_inicio'];
+            $PersonalComisaria->tipo_per = 1;
+            
             if ($file) {
                 $file_1 = \File::get($file);
-                $Comisarias->foto_comisario = base64_encode($file_1);
+                $PersonalComisaria->foto = base64_encode($file_1);
             }else{
-                $Comisarias->foto_comisario = "";
+                $PersonalComisaria->foto = "";
             }
-            $Comisarias->save();
+            
+            $PersonalComisaria->id_usuario = Auth::user()->id;
+            $PersonalComisaria->estado  = 1;
+            $PersonalComisaria->id_comisaria  = $request['id_comisaria'];
+            $PersonalComisaria->fecha_registro = date('d-m-Y');
+            $PersonalComisaria->save();
 
-            return $Comisarias->id;
+            return $PersonalComisaria->id_personal_comisaria;
         }
-        else
+        if ($request['id_comisario'] > 0)
         {
             $file = $request->file('dlg_foto_comisario');
-            $Comisarias = new Comisarias;
-            $val=  $Comisarias::where("id","=",$request['id_comisaria'])->first();
-            $datos = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisarias')->where('id',$request['id_comisaria'])->get();
+            $PersonalComisaria = new PersonalComisaria;
+            $val=  $PersonalComisaria::where("id_comisaria","=",$request['id_comisario'])->first();
+            $datos = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.personal_comisaria')->where('id_comisaria',$request['id_comisario'])->get();
             if(count($val)>=1)
             {
-                $val->nombre = strtoupper($request['dlg_nombre_comisaria']);
-                $val->ubicacion = strtoupper($request['dlg_ubicacion']);
-                $val->comisario = strtoupper($request['dlg_nombre_comisario']);
-                $val->nro_efectivos = $request['dlg_nro_efectivos'];
-                $val->nro_vehiculos = $request['dlg_nro_vehiculos'];
-                $val->tlefno_comisario = $request['dlg_telefono_comisario'];
-                $val->tlfno_comsaria = $request['dlg_telefono_comisaria'];
-                $val->observaciones = strtoupper($request['dlg_observaciones']);
+                $val->dni = $request['dlg_dni_comisario'];
+                $val->nombre = strtoupper($request['dlg_nombre_comisario']);
+                $val->telefono = $request['dlg_telefono_comisario'];
+                $val->fecha_inicio = $request['dlg_fecha_inicio'];
+                $val->tipo_per = 1;
+                
+                
                 if ($file) {
                     $file_1 = \File::get($file);
-                    $val->foto_comisario = base64_encode($file_1);
+                    $val->foto = base64_encode($file_1);
                 }else{
-                    $val->foto_comisario = $datos[0]->foto_comisario;
+                    $val->foto = $datos[0]->foto;
                 }
+                
+                $val->id_usuario = Auth::user()->id;
+                $val->estado = 1;
+                $val->id_comisaria = $request['id_comisario'];
+                $val->fecha_registro = $datos[0]->fecha_registro;
+                
                 $val->save();
             }
-            return $val->id;    
+            return $val->id_personal_comisaria;    
         }
        
     }
@@ -107,7 +121,7 @@ class ComisariasController extends Controller
       
     }
     
-    public function cargar_datos_comisarias(Request $request)
+    public function cargar_datos_comisarias($nombre)
     {
         header('Content-type: application/json');
         $page = $_GET['page'];
@@ -119,8 +133,8 @@ class ComisariasController extends Controller
             $start = 0;
         }
 
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.vw_comisarias");
-        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisarias')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.vw_comisarias where nombre like '%".strtoupper($nombre)."%'");
+        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisarias')->where('nombre','like', '%'.strtoupper($nombre).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
 
         $total_pages = 0;
         if (!$sidx) {
@@ -142,10 +156,10 @@ class ComisariasController extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id),
                 trim($Datos->nombre),
+                trim($Datos->telefono),
+                trim($Datos->nro_vehiculos),
+                trim($Datos->nro_efectivos),
                 trim($Datos->ubicacion),
-                trim($Datos->tlfno_comsaria),
-                trim($Datos->comisario),
-                trim($Datos->tlefno_comisario),
             );
         }
         return response()->json($Lista);
@@ -179,6 +193,30 @@ class ComisariasController extends Controller
                           FROM (SELECT * FROM geren_seg_ciudadana.comisarias) row) features;");
 
         return response()->json($comisarias);
+      
+    }
+    
+    public function cargar_mapa_delitos(){
+
+        $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       
+                            'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'x_utm',x_utm,
+                                'y_utm',y_utm,
+                                'imagen',imagen,
+                                'observacion',observacion
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM public.coordenadas) row) features;");
+
+        return response()->json($delitos);
       
     }
     

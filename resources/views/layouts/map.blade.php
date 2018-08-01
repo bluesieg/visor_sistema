@@ -1650,7 +1650,7 @@
                                                                         <li>
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_plan_riesgo" onchange="">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_delitos" onchange="valida_capa_gerencia_seg_ciud('chk_geren_seg_ciud_delitos')">
                                                                                     <i></i>
                                                                                     <img src="img/recursos/camara-md.png" height="20px" />
                                                                                     Mapa del Delito
