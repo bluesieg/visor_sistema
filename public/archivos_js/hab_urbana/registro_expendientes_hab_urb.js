@@ -48,7 +48,7 @@ function obtener_exp()
                     MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
                 }else{
                     MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
-                    fn_actualizar_grilla('table_expedientes');
+                    fn_actualizar_grilla('table_expedientes_hab_urb');
                     dialog_close('dlg_nuevo_exp');
                     MensajeExito('Nuevo Expediente Creado', 'El Expediente se ha creado correctamente.');
                 }

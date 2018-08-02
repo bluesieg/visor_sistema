@@ -40,19 +40,19 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#s2" data-toggle="tab" aria-expanded="true" >
+                                <a href="#s2" data-toggle="tab" aria-expanded="true" onclick="selecciona_fecha2();" >
                                   Verif. Administrativa
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s3" data-toggle="tab" aria-expanded="true" >
+                                <a href="#s3" data-toggle="tab" aria-expanded="true" onclick="selecciona_fecha3();" >
                                   Crear Poligono
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#s4" data-toggle="tab" aria-expanded="true" >
+                                <a href="#s4" data-toggle="tab" aria-expanded="true" onclick="selecciona_fecha4();" >
                                   Verif. Técnica
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -305,7 +305,7 @@
                                                        <div class="input-group input-group-md">
                                                            <span class="input-group-addon">Desde:</span>
                                                            <div class="icon-addon addon-md">
-                                                                <input  id="fec_ini_escaneo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                                <input  id="dlg_fec_desde5" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                            </div> 
                                                        </div>
                                                     </div>
@@ -313,12 +313,12 @@
                                                         <div class="input-group input-group-md">
                                                             <span class="input-group-addon">Hasta:</span>
                                                             <div class="icon-addon addon-md">
-                                                                <input id="fec_fin_escaneo" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                                <input id="dlg_fec_hasta5" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
-                                                        <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="busqueda_escaneo();">
+                                                        <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="busqueda_escaneo_hab_urb();">
                                                             <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                                                         </button>
                                                     </div>
@@ -428,9 +428,9 @@
             colNames: ['ID', 'REQUISITOS', 'ESTADO'],
             rowNum: 200, sortname: 'id_requisito', sortorder: 'desc', viewrecords: true, caption: 'REQUISITOS', align: "center",
             colModel: [
-                {name: 'id_requisito', index: 'id_requisito', align: 'left', width: 50},
-                {name: 'desc_requisito', index: 'desc_requisito', align: 'left', width: 500},
-                {name: 'estado', index: 'estado', align: 'left', width: 100},
+                {name: 'id_requisito', index: 'id_requisito', align: 'left', width: 40},
+                {name: 'desc_requisito', index: 'desc_requisito', align: 'left', width: 620},
+                {name: 'estado', index: 'estado', align: 'left', width: 80},
             ],
             pager: '#pager_table_requisitos',
             rowList: [20, 50],
@@ -507,18 +507,19 @@
             onSelectRow: function (Id){},
             
         });
-        
+        fecha_desde = $("#dlg_fec_desde5").val(); 
+        fecha_hasta = $("#dlg_fec_hasta5").val(); 
         jQuery("#table_escaneos").jqGrid({
-            url: 'get_crear_resolucion?fecha_desde='+fecha_desde +'&fecha_hasta='+fecha_hasta,
+            url: 'get_expedientes_resolucion_hab_urb?fecha_desde='+fecha_desde +'&fecha_hasta='+fecha_hasta,
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_reg_exp', 'NRO. EXPEDIENTE', 'FASE', 'GESTOR DEL TRAMITE','FECHA INICIO','SUBIR'],
+            colNames: ['id_reg_exp', 'NRO. EXPEDIENTE',  'GESTOR DEL TRAMITE','FECHA INICIO','SUBIR'],
             rowNum: 200, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO EXPEDIENTES', align: "center",
             colModel: [
                 {name: 'id_reg_exp', index: 'id_reg_exp', hidden: true},
                 {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 100},
-                {name: 'fase', index: 'fase', align: 'left', width: 100},
+                
                 {name: 'gestor', index: 'gestor', align: 'left', width: 400},
                 {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 200},
                 {name: 'btn', index: 'btn', align: 'left', width: 160},
@@ -601,7 +602,7 @@ function autocompletar_haburb(textbox){
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/hab_urbana/registro_expendientes_hab_urb.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/hab_urbana/verificacion_admin.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/hab_urbana/crear_poligono.js') }}"></script>
-<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/hab_urbana/escaneo.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/hab_urbana/escaneo_hab_urb.js') }}"></script>
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/hab_urbana/verificacion_tecnica.js') }}"></script>
 
 <div id="dlg_nuevo_exp" style="display: none;">
@@ -820,7 +821,7 @@ function autocompletar_haburb(textbox){
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_cod_exp_poli" type="text" class="form-control" style="height: 30px;" maxlength="20">
+                            <input id="inp_cod_exp_poli" type="text" class="form-control" style="height: 30px;" disabled="">
                         </div>
                     </div> 
                     <div class="input-group input-group-md" style="width: 100% ;padding-top: 10px;">

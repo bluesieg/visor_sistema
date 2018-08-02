@@ -110,6 +110,7 @@ function guardar_verificacion_admin()
             MensajeDialogLoadAjaxFinish('dlg_nuevo_verificacion_admin');
             $("#dlg_nuevo_verificacion_admin").dialog('close');
             agregar_requisitos(id_reg_exp);
+            fn_actualizar_grilla('table_verificacion_admin');
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");

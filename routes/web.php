@@ -261,4 +261,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('comisarias','ComisariasController');
     });
     
+    /*******************************  PROCURADURIA **********************************************************/
+    
+     Route::group(['namespace' => 'procuraduria'], function() {
+        Route::resource('procuraduria','ProcuraduriaController');
+    });
 });

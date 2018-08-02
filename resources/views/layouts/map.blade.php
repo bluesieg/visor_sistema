@@ -1147,21 +1147,93 @@
                         <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
                             <div class="panel-heading" style="background: #2471A3; color: white">
-                                
-                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapsefive-1">
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapse-procuraduria">
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
                                         <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
                                         Procuraduria
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapsefive-1" class="panel-collapse collapse cr_toogle">
+                            <div id="collapse-procuraduria" class="panel-collapse collapse cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
                                     <div>
+                                          <div class="widget-body no-padding">
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="procuraduria"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Procuraduria 
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="reportes"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Reportes
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mant. Abogados
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                 <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mant. Casos
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                 <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mant. Tipos
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="widget-body">
+                                                                    <div class="tree smart-form" style="color:white !important">
+                                                                        <ul >
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_licencias" onchange="valida_capa('chk_map_licencias')" ><i></i>
+                                                                                    <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                    Mapa Procuraduria
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                        </div>
 
                                    </div>
                                 </div>
-                            </div>
+                            </div>                         
                         </div>
                         <!--fin option-->
                         <!--option-->

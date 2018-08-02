@@ -168,6 +168,49 @@ class CrearResolucionController extends Controller
         return response()->json($Lista);
 
     }
+    
+      public function get_expedientes_resolucion(Request $request){
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+         $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from soft_hab_urbana.vw_expedientes where fase=5 ");
+         $sql = DB::connection('gerencia_catastro')->table('soft_hab_urbana.vw_expedientes')->whereBetween('fecha_registro',[$request['fecini'], $request['fecfin']])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_reg_exp;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_reg_exp),
+                trim($Datos->nro_exp),
+                trim($Datos->gestor),
+                trim($Datos->fecha_registro),
+                '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="subir_scan('.trim($Datos->id_reg_exp).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR ESCANEO</button>'
+            );
+        }
+        return response()->json($Lista);
+    }
+    
      public function cargar_documetos(Request $request)
     {
             header('Content-type: application/json');

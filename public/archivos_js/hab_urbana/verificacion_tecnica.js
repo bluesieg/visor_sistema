@@ -90,7 +90,7 @@ function guardar_verificacion_tecnica()
 
 function enviar_a_aprobados()
 {
-    Id=$('#table_escaneos').jqGrid ('getGridParam', 'selrow');
+    Id=$('#table_verif_tecnica').jqGrid ('getGridParam', 'selrow');
     if(Id)
     {
             $.ajax({
@@ -101,7 +101,7 @@ function enviar_a_aprobados()
                     success: function(data) 
                     {
                         MensajeExito('Expediente', 'Expediente APROBADO');
-                        fn_actualizar_grilla('table_escaneos');
+                        fn_actualizar_grilla('table_verif_tecnica');
                     },
                     error: function(data) {
                         mostraralertas("hubo un error, Comunicar al Administrador");

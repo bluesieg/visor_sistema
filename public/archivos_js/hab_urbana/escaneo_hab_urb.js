@@ -63,9 +63,12 @@ function verfile(id)
 {
     window.open('ver_file_hab_urb/'+id);
 }
-function busqueda_escaneo()
+function busqueda_escaneo_hab_urb()
+
 {
-    jQuery("#table_escaneos").jqGrid('setGridParam', {url: 'datos_predio?grid=9&fecini='+$("#fec_ini_escaneo").val()+'&fecfin='+$("#fec_fin_escaneo").val()}).trigger('reloadGrid');
+     fecha_desde = $("#dlg_fec_desde5").val(); 
+     fecha_hasta = $("#dlg_fec_hasta5").val(); 
+    jQuery("#table_escaneos").jqGrid('setGridParam', {url: 'get_expedientes_resolucion_hab_urb?fecini='+fecha_desde+'&fecfin='+fecha_hasta}).trigger('reloadGrid');
 }
 function enviar_a_final_hab_urb()
 {
