@@ -141,7 +141,6 @@ map.on('singleclick', function(evt) {
                 
                 if(layer.get('title')=='Geren_seg_ciudadana1'&&mostrar==0)
                 {
-                    $("#seg_ciudadana_foto_mapa_detito").html("");
                     mostrar=1;
                     $("#mapa_delito_utm_x").text(feature.get('x_utm'));
                     $("#mapa_delito_utm_y").text(feature.get('y_utm'));
@@ -154,6 +153,13 @@ map.on('singleclick', function(evt) {
                     $("#seg_ciudadana_foto_mapa_detito").attr("src","data:image/jpg;base64,"+sin_salto);
                     //$("#seg_ciudadana_foto_mapa_detito").html('<img src="data:image/jpg;base64,'+sin_salto+'" style="max-height:250px; max-width:400px"')
                     crear_dlg("dlg_get_mapa_delito",1100,"Cerro Colorado - MAPA DELITO");
+                    return false;
+                }
+                
+                if(layer.get('title')=='gerencia_administracion_tributaria'&&mostrar==0)
+                {
+                    mostrar=1;
+                    crear_dlg("dlg_gerencia_adm_tributaria",800,"INFORMACION DE HABILITACION");
                     return false;
                 }
                 
@@ -749,6 +755,10 @@ function valida_capa(check)
         {
             crear_semaforo_mapa_mod_hab_urb('rojo');
         }
+        if(check=='chk_map_gerencia_adm_trib')
+        {
+            crear_mapa_adm_tributaria();
+        }
     }
     else
     {
@@ -932,6 +942,12 @@ function valida_capa(check)
         if(check=='chk_rojo_mod_hab_urb')
         {
             map.removeLayer(lyr_map_mod_hab_urb_rojo);
+        }
+        if (check== 'chk_map_gerencia_adm_trib') {
+            map.removeLayer(lyr_gerencia_adm_tributaria);
+            $("#inp_habilitacion_adm_tributaria").hide();
+            $("#btn_busqueda").hide();
+            $("#anio_pred").show();
         }
     }
 }
@@ -3225,3 +3241,55 @@ function crear_semaforo_mapa_mod_hab_urb(color)
         });
 }
 
+//ADMINISTRACION TRIBUTARIA
+aux_adm_tributaria=0;
+function crear_mapa_adm_tributaria()
+{
+    $("#inp_habilitacion_adm_tributaria").show();
+    $("#btn_busqueda").show();
+    $("#anio_pred").hide();
+    
+    if(aux_adm_tributaria==0)
+    {
+       aux_adm_tributaria=1;
+       autocompletar_haburb('inp_habilitacion_adm_tributaria');
+    }
+    MensajeDialogLoadAjaxFinish('map'); 
+}
+
+var lyr_gerencia_adm_tributaria;
+function cargar_habilitacion()
+{
+    if($("#hidden_inp_habilitacion_adm_tributaria").val()==0)
+    {
+        mostraralertasconfoco("DEBE ESCRIBIR EL NOMBRE DE UNA HABILITACION URBANA","#inp_habilitacion_adm_tributaria");
+        MensajeDialogLoadAjaxFinish('map');
+        return false;
+    }
+    MensajeDialogLoadAjax('map', '.:: Cargando ...');
+        $.ajax({url: 'gethab_urb_by_id/'+$("#hidden_inp_habilitacion_adm_tributaria").val(),
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_adm_tributaria = JSON.parse(r[0].json_build_object);
+                var format_adm_tributaria = new ol.format.GeoJSON();
+                var features_adm_tributaria = format_adm_tributaria.readFeatures(geojson_adm_tributaria,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_adm_tributaria = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_adm_tributaria.addFeatures(features_adm_tributaria);
+                lyr_gerencia_adm_tributaria = new ol.layer.Vector({
+                    source:jsonSource_adm_tributaria,
+                    style: estilos_adm_tributaria,
+                    title: "gerencia_administracion_tributaria"
+                });
+                map.addLayer(lyr_gerencia_adm_tributaria);
+                var extent = lyr_gerencia_adm_tributaria.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+              
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+    //alert($('#hidden_inp_habilitacion_adm_tributaria').val());
+}

@@ -34,6 +34,9 @@
     <form class="smart-form">
 
     <input type="hidden" id="hidden_inp_habilitacion" value="0"/>
+    
+    <input type="hidden" id="hidden_inp_habilitacion_adm_tributaria" value="0"/>
+    
     <div id="map" style="background: white; height: 100% !important">
         <div id="popup" class="ol-popup">
             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
@@ -83,7 +86,24 @@
             var selectList_anio = document.createElement("select");
             selectList_anio.id = "anio_pred";
             selectList_anio.className = "input-sm col-xs-2";
-
+            
+            
+            var selectList_adm_tributaria = document.createElement("input");
+            selectList_adm_tributaria.id = "inp_habilitacion_adm_tributaria";
+            selectList_adm_tributaria.className = "input-sm col-xs-9";
+            selectList_adm_tributaria.type = "text";
+            selectList_adm_tributaria.style = "height:18px;display:none";
+            selectList_adm_tributaria.placeholder = "ESCRIBIR NOMBRE DE UNA HABILITACION";
+            
+            var boton_busqueda = document.createElement("button");
+            boton_busqueda.id = "btn_busqueda";
+            boton_busqueda.className = "input-sm col-xs-1";
+            boton_busqueda.type = "button";
+            boton_busqueda.style = "color:green;display:none";
+            boton_busqueda.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda.onclick = function(e){
+                cargar_habilitacion();
+            }
 
 //            var sectores = {!! json_encode($sectores) !!};
 //            var option = document.createElement("option");
@@ -132,6 +152,8 @@
             
             element.appendChild(selectList_anio);
             element.appendChild(selectList);
+            element.appendChild(selectList_adm_tributaria);
+            element.appendChild(boton_busqueda);
             //element.appendChild(div2);
             //element.appendChild(label);
             ol.control.Control.call(this, {
@@ -329,6 +351,23 @@
                 text: new ol.style.Text({
                 //font: '12px Roboto',
                 text: feature.get('area_km2')+'km2'
+                })
+            });
+        }
+        
+        function estilos_adm_tributaria(feature, resolution) {
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#626C0E',
+                    width: 2,
+                    lineCap: 'butt',
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 255, 0.3)',
+                }),
+                text: new ol.style.Text({
+                font: '12px Roboto',
+                text: feature.get('nomb_hab_urba')
                 })
             });
         }
@@ -1082,6 +1121,84 @@
                 <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                     <center><img id="seg_ciudadana_foto_mapa_detito" class="col-xs-12 text-align-center" style="max-height:250px; max-width:400px;"></center>
                     
+                </div>
+                
+           
+            </div>
+          
+        </div>
+    </div>
+</div> 
+
+<div id="dlg_gerencia_adm_tributaria" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
+                <div class="row">
+                   <div class="col-xs-6" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <span class="input-group-addon" style="width: 35%">NOMBRE LOTES EXISTENTES&nbsp;<i class="fa fa-phone"></i></span>
+                        <div >
+                            <label id="dlg_geren_adm_tri_1" class="form-control" style="height: 32px;"></label>
+                        </div>
+
+                    </div>
+                    </div>
+                
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 35%">LOTES DECLARADOS &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_2"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div> 
+                </div>                
+                
+                <div class="row">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 35%">% DE MOROSIDAD IMP. PREDIAL &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_3"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 35%">% DE MOROSIDAD ARBITRIOS &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_4"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 35%">RECAUDACION IMP. PREDIAL &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_5"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 35%">RECAUDACION IMP. ARBITRIOS &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_5"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 
            

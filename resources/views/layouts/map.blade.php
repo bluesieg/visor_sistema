@@ -1117,9 +1117,22 @@
                             </div>
                             <div id="collapsetree-1" class="panel-collapse collapse cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
-                                    <div>
-
-                                   </div>
+                                    <div class="widget-body">
+                                        <div class="tree smart-form" style="color:white !important">
+                                            <ul >
+                                                <li >
+                                                <span style="width: 200px;">
+                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                        <input type="checkbox" name="checkbox-inline" id="chk_map_gerencia_adm_trib" onchange="valida_capa('chk_map_gerencia_adm_trib')" >
+                                                                                           <i></i>
+                                                            <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                        Ver Mapa Reportes
+                                                    </label> 
+                                                </span> 
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1195,17 +1208,47 @@
                                                                         <h4 class="panel-title"><a href="recepcion_documentos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Casos
+                                                                                Mant. Tipos
                                                                             </a>
                                                                         </h4>
                                                                     </div>
                                                                 </div>
-                                                                 <div class="panel panel-default" style="background: transparent">
+                                                                <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
                                                                         <h4 class="panel-title"><a href="recepcion_documentos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Tipos
+                                                                                Mant. Tipo Sancion
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mant. Proceso
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mant. Materia
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="recepcion_documentos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mant. Casos
                                                                             </a>
                                                                         </h4>
                                                                     </div>
