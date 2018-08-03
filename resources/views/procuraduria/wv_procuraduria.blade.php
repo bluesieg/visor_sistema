@@ -270,21 +270,90 @@
                                    <div  class="smart-form">
                                       <div>
                                            <section class="col-xs-12">
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-bottom:  1px;padding-top:  0px">
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                   <div class="panel-heading bg-color-success">Expediente</div>
-                                                      <div class="col col-xs-8" >
-                                                       <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">                                                                         
-                                                                 <div class="input-group input-group-md" style="width: 100%">
-                                                                    <span class="input-group-addon" style="width: 150px">Usuario: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                    <div>
-                                                                        <input id="inp_nombre_entregar" type="text" class="form-control" style="height: 30px;" maxlength="30">
-                                                                    </div>
-                                                                </div>                                                            
-                                                        </div>
-                                                      </div>
-                                                </div>  
-                                              </div>
+                                               <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;margin-right: 15px;">
+                                                   <div class="col-xs-12 cr-body" style="padding-left:10px" >
+                                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                                                                                                                         
+                                                            <div class="col-xs-7" style="padding-left: 0px;">
+                                                                <div class="input-group input-group-md">
+                                                                   <span class="input-group-addon" style="width: 180px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                       </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-3" style="padding-left: 0px;">
+                                                                <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="map_reg_lote();">
+                                                                    <span class="btn-label"><i class="glyphicon glyphicon-globe"></i></span>Buscar 
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-xs-12" style="padding: 0px; ">
+                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                                       <span class="input-group-addon" style="width: 180px">DNI/RUC: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                       </div>
+                                                                       <span class="input-group-addon" style="width: 180px">Fecha Inicio: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                       </div>
+                                                                   </div>
+                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                                       <span class="input-group-addon" style="width: 180px">Gestor: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;"  disabled="">
+                                                                       </div>
+                                                                   </div>                                                                
+                                                               </div>
+                                                           </div>    
+
+                                               </div> 
+    </div>
+                                           </section>
+                                          <section class="col-xs-12">
+                                               <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;margin-right: 15px;">
+                                                   <div class="col-xs-12 cr-body" style="padding-left:10px" >
+                                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                                                              
+                                                            <div class="col-xs-12" style="padding: 0px; ">
+                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                                       <span class="input-group-addon" style="width: 180px">Responsable: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                       </div>
+                                                                       <span class="input-group-addon" style="width: 180px">Tipo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                       </div>
+                                                                   </div>
+                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                                       <span class="input-group-addon" style="width: 180px">Habilitación: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                       <div>
+                                                                           <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;"  >
+                                                                       </div>
+                                                                   </div> 
+                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
+                                                                      <span class="input-group-addon" style="width: 180px">Codigo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                      <div>
+                                                                          <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                          <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                      </div>
+                                                                      <span class="input-group-addon" style="width: 180px">Codigo: &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                                      <div>
+                                                                          <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
+                                                                          <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
+                                                                      </div>
+                                                                  </div>
+                                                               </div>
+                                                           </div>    
+
+                                               </div> 
+    </div>
                                            </section>
                                      </div>
                                    </div>
