@@ -38,14 +38,39 @@ class AbogadosController extends Controller
     }
     public function show($id_abogado, Request $request)
     {
+        if ($id_abogado > 0) 
+        {
+            $abogados= DB::connection('gerencia_catastro')->table('procuraduria.vw_abogados')->where('id_abogado',$id_abogado)->get();
+            return $abogados;
+        }
+        
         if($request['grid']=='abogados')
         {
-            return $this->cargar_datos_abogados();
+            return $this->cargar_datos_abogados($request['nombre']);
         }
     }
-    public function edit($id)
+    public function edit($id_abogado,Request $request)
     {
-        //
+        $select=DB::connection('gerencia_catastro')->table('procuraduria.vw_abogados')->where('dni',strtoupper($request['dni']))->where('id_abogado','<>',$id_abogado)->get();
+        if (count($select)>0) {
+
+             return response()->json([
+                'msg' => 'repetido',
+                ]);
+
+        }else{
+
+            $Abogados = new Abogados;
+            $val=  $Abogados::where("id_abogado","=",$id_abogado )->first();
+            if($val)
+            {
+                $val->dni = $request['dni'];
+                $val->nombre = strtoupper($request['nombre']);
+                $val->save();
+            }
+            return $id_abogado;
+
+        }  
     }
     public function update(Request $request, $id)
     {
@@ -56,7 +81,7 @@ class AbogadosController extends Controller
         //
     }
     
-    public function cargar_datos_abogados()
+    public function cargar_datos_abogados($nombre)
     {
         header('Content-type: application/json');
         $page = $_GET['page'];
@@ -68,8 +93,8 @@ class AbogadosController extends Controller
             $start = 0;
         }
 
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_abogados");
-        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_abogados')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_abogados where nombre like '%".strtoupper($nombre)."%'");
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_abogados')->where('nombre','like', '%'.strtoupper($nombre).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
 
         $total_pages = 0;
         if (!$sidx) {

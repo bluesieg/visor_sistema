@@ -3,9 +3,9 @@
     $("#dlg_nombre").val("");
 }
 
-function fn_buscar_comisaria(){
-    nombre = $("#dlg_buscar_comisaria").val();
-    fn_actualizar_grilla('table_comisarias','comisarias/0?grid=comisarias&nombre='+nombre);
+function fn_buscar_abogados(){
+    nombre = $("#dlg_buscar_abogado").val();
+    fn_actualizar_grilla('table_abogados','procuraduria_mant_abogados/0?grid=abogados&nombre='+nombre);
 }
 
 function crear_nuevo_abogado()
@@ -81,30 +81,33 @@ function guardar_editar_datos(tipo) {
     }
     else if (tipo == 2) {
 
-        id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
+        id_abogado = $('#table_abogados').jqGrid ('getGridParam', 'selrow');
 
-        MensajeDialogLoadAjax('table_comisarias', '.:: Cargando ...');
-        var form= new FormData($("#FormularioComisarios")[0]);
+        MensajeDialogLoadAjax('dlg_nuevo_abogado', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'comisarias?id_comisario='+id_comisaria,
-            type: 'POST',
-            dataType: 'json',
-            data: form,
-            processData: false,
-            contentType: false,
+            url: 'procuraduria_mant_abogados/'+id_abogado+'/edit',
+            type: 'GET',
+            data: {
+        	dni:dni,
+                nombre:nombre
+            },
             success: function(data) 
             {
-                if (data > 0) {
-                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');   
-                MensajeDialogLoadAjaxFinish('table_comisarias');
-                fn_actualizar_grilla('table_comisarias');
-                $("#dlg_nuevo_comisarias").dialog("close");
-                }
+                if(data.msg === 'repetido'){
+                    mostraralertasconfoco("* El Campo DNI ya Fue Registrado en el Sistema");
+                    MensajeDialogLoadAjaxFinish('dlg_nuevo_abogado');
+                    return false;
+                }else{
+                    MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                    MensajeDialogLoadAjaxFinish('dlg_nuevo_abogado');
+                    fn_actualizar_grilla('table_abogados');
+                    $("#dlg_nuevo_abogado").dialog("close");
+	        }
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
-                MensajeDialogLoadAjaxFinish('table_comisarias');
+                MensajeDialogLoadAjaxFinish('table_abogados');
                 console.log('error');
                 console.log(data);
             }
@@ -113,7 +116,7 @@ function guardar_editar_datos(tipo) {
  
 }
 
-function modificar_comisarias()
+function modificar_abogado()
 {
     id_abogado = $('#table_abogados').jqGrid ('getGridParam', 'selrow');
     
@@ -145,22 +148,15 @@ function modificar_comisarias()
             type: 'GET',
             success: function(data)
             {          
-                $("#dlg_ubicacion").val(data[0].ubicacion);
-                $("#dlg_nombre_comisaria").val(data[0].nombre_comisaria);
-                $("#dlg_telefono_comisaria").val(data[0].telefono_comisaria);
-                $("#dlg_nro_efectivos").val(data[0].nro_efectivos);
-                $("#dlg_nro_vehiculos").val(data[0].nro_vehiculos);
-                $("#dlg_nombre_comisario").val(data[0].nombre_comisario);
-                $("#dlg_dni_comisario").val(data[0].dni);
-                $("#dlg_telefono_comisario").val(data[0].telefono_comisario);
-                $("#dlg_fecha_inicio").val(data[0].fecha_inicio);
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
+                $("#dlg_dni").val(data[0].dni);
+                $("#dlg_nombre").val(data[0].nombre);
+                MensajeDialogLoadAjaxFinish('dlg_nuevo_abogado');
             },
             error: function(data) {
                 mostraralertas("Hubo un Error, Comunicar al Administrador");
                 console.log('error');
                 console.log(data);
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
+                MensajeDialogLoadAjaxFinish('dlg_nuevo_abogado');
             }
         });
     }else{

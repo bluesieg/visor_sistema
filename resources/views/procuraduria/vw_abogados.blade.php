@@ -43,16 +43,16 @@
                                         <div class="row" style="padding: 0px; margin-top: 30px">
                                             <div class="col-xs-5">
                                                 <div class="input-group input-group-md">
-                                                    <span class="input-group-addon">COMISARIA:. &nbsp;<i class="fa fa-male"></i></span>
+                                                    <span class="input-group-addon">NOMBRE ABOGADO:. &nbsp;<i class="fa fa-male"></i></span>
                                                     <div>
-                                                        <input id="dlg_buscar_comisaria" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR NOMBRE COMISARIA">
+                                                        <input id="dlg_buscar_abogado" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR NOMBRE ABOGADOS">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-xs-2">
                                                 <div class="text-left">
-                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_comisaria();">
+                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_abogados();">
                                                             <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
                                                         </button>
                                                 </div>
@@ -64,7 +64,7 @@
                                                     <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo Abogado
                                                 </button>
 
-                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_comisarias();">
+                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_abogado();">
                                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Abogado
                                                 </button>
                                             </div>
@@ -115,13 +115,13 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_comisarias();}
+            ondblClickRow: function (Id){modificar_abogado();}
         });
         
-        $("#dlg_buscar_comisaria").keypress(function (e) {
+        $("#dlg_buscar_abogado").keypress(function (e) {
             if (e.which == 13) {
 
-                   fn_buscar_comisaria();
+                   fn_buscar_abogados();
 
             }
         });
