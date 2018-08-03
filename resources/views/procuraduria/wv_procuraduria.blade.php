@@ -222,7 +222,30 @@
             ondblClickRow: function (Id){modificar_verif_tecnica()}
         });
         
-        
+         jQuery("#table_pisos").jqGrid({
+            url: 'gridpisos/0',
+            datatype: 'json', mtype: 'GET',
+            height: '100px', width: '700',
+            toolbarfilter: true,
+            colNames: ['id_pi','Piso', 'Fecha'],
+            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Pisos del Predio', align: "center",
+            colModel: [
+                {name: 'id_pi', index: 'id_pi', hidden: true},
+                {name: 'piso', index: 'piso', align: 'center', width: 400},
+                {name: 'fech', index: 'fech', align: 'center', width: 500}
+                
+            ],
+            pager: '#pager_table_pisos',
+            rowList: [13, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_pisos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_pisos').jqGrid('getDataIDs')[0];
+                            $("#table_pisos").setSelection(firstid);    
+                        }
+                },
+            ondblClickRow: function (Id){clickmodpiso();}
+        });
     });
 </script>
 
@@ -237,7 +260,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
-                            <input id="inp_cod_exp" type="text" class="form-control" style="height: 30px;" maxlength="20">
+                            <input id="inp_codf_exp" type="text" class="form-control" style="height: 30px;" maxlength="20">
                         </div>
                     </div>
                 </div>
@@ -245,341 +268,227 @@
         </div>
     </div>
 </div>
+
 <div id="dlg_new_exp_procuraduria" style="display: none;">
-     <section class="col col-lg-12">
-                        <ul id="tab_insp1" class="nav nav-tabs bordered">
-                            <li class="active">
-                                <a href="#insp1" data-toggle="tab" aria-expanded="true">
-                                    Datos Expedientes
-                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#insp2" data-toggle="tab" aria-expanded="false">
-                                   Datos mapa
-                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
-                                </a>
-                            </li>
-                        </ul>
-        
-                        <div id="myTabContent1" class="tab-content padding-1"> 
-                            <input type="hidden" id="hidden_ide_inps" value="0">
-                            <div id="insp1" class="tab-pane fade active in">
-                                <section class="col col-lg-12">
-                                  <div class="widget-body">
-                                   <div  class="smart-form">
-                                      <div>
-                                           <section class="col-xs-12">
-                                               <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;margin-right: 15px;">
-                                                   <div class="col-xs-12 cr-body" style="padding-left:10px" >
-                                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                                                                                                                         
-                                                            <div class="col-xs-7" style="padding-left: 0px;">
-                                                                <div class="input-group input-group-md">
-                                                                   <span class="input-group-addon" style="width: 180px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                       </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xs-3" style="padding-left: 0px;">
-                                                                <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="map_reg_lote();">
-                                                                    <span class="btn-label"><i class="glyphicon glyphicon-globe"></i></span>Buscar 
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-xs-12" style="padding: 0px; ">
-                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                                                                       <span class="input-group-addon" style="width: 180px">DNI/RUC: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                       </div>
-                                                                       <span class="input-group-addon" style="width: 180px">Fecha Inicio: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                       </div>
-                                                                   </div>
-                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                                                                       <span class="input-group-addon" style="width: 180px">Gestor: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;"  disabled="">
-                                                                       </div>
-                                                                   </div>                                                                
-                                                               </div>
-                                                           </div>    
-
-                                               </div> 
+    <input type="hidden" id="hidden_id_carta" value="0"/>
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Buscar Expediente::..</h2>
+                        </header>
+                    </div>
+                </section>                
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Nro. Expediente. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="inp_nro_exp" type="text"  class="form-control" style="height: 32px; ">
+                        </div>
+                    </div>
+                </div>
+                <button id="btn_bus_exp" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="poner_fisca()">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
+                </button>              
+            </div>
+            
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                                <h2>Información del Expediente::..</h2>
+                        </header>
+                    </div>
+                </section>     
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Gestor. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="inp_gestor" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                        </div>
+                    </div>
+                </div>                               
+                <div class="col-xs-8" style="padding: 0px; margin-top: 10px ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">DNI / RUC &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div>
+                            <input id="inp_dni" type="text"  class="form-control" style="height: 32px; " disabled="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4" style="padding: 0px; margin-top: 10px ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Fecha Inicio &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div>
+                            <input id="inp_fec_ini" type="text"  class="form-control" style="height: 32px; " disabled="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                                <h2>Llenado de Información::..</h2>
+                        </header>
+                    </div>
+                </section>     
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Responsable &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_responsable' class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione--</option>
+                                
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-9" style="padding: 0px;margin-top: 10px;margin-bottom: 10px ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Tipo &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_tipo' class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione--</option>                                
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="" style="padding: 0px;margin-top: 10px ">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Ubicar Mapa
+                </button>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Datos del Mapa::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-8" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Habilitación Hurbana. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="inp_hab_urb" type="text"  class="form-control" style="height: 32px; ">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Cod. Catastral.&nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="inp_cod_catastral" type="text"  class="form-control" style="height: 32px; ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+               <section>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Llenado de información del Proceso::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Tipo sanción &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_tipo_san' class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione--</option>
+                                
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Materia &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_materia' class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione--</option>
+                                
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Proceso &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_proceso' class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione--</option>
+                                
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Caso &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_caso' class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione--</option>
+                                
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px;margin-top: 10px">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Refencia. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="inp_referencia" type="text"  class="form-control" style="height: 32px; ">
+                        </div>
+                    </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Procedimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="inp_procedimiento" type="text"  class="form-control" style="height: 32px; ">
+                        </div>
+                    </div>
+            </div>
+            
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-users"></i> </span>
+                                <h2>Observaciones ::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-10">
+                    <table id="table_pisos" ></table>
+                    <div id="pager_table_pisos"></div>
+                </div>
+                <div class="col-xs-2">
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="" >
+                       <i class="glyphicon glyphicon-plus-sign"></i>
+                    </button>
+                    <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
+                       <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button class="btn bg-color-red txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
+                       <i class="glyphicon glyphicon-trash"></i
+                    </button>                    
+                </div>
+            </div>
+            
+        </div>
     </div>
-                                           </section>
-                                          <section class="col-xs-12">
-                                               <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;margin-right: 15px;">
-                                                   <div class="col-xs-12 cr-body" style="padding-left:10px" >
-                                                        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                                                              
-                                                            <div class="col-xs-12" style="padding: 0px; ">
-                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                                                                       <span class="input-group-addon" style="width: 180px">Responsable: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                       </div>
-                                                                       <span class="input-group-addon" style="width: 180px">Tipo: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                           <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                       </div>
-                                                                   </div>
-                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                                                                       <span class="input-group-addon" style="width: 180px">Habilitación: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                       <div>
-                                                                           <input id="inp_posesionario_exp_lote" type="text" class="form-control" style="height: 30px;"  >
-                                                                       </div>
-                                                                   </div> 
-                                                                   <div class="input-group input-group-md" style="width: 100%; padding-top: 10px">
-                                                                      <span class="input-group-addon" style="width: 180px">Codigo: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                      <div>
-                                                                          <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                          <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                      </div>
-                                                                      <span class="input-group-addon" style="width: 180px">Codigo: &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                      <div>
-                                                                          <input type="hidden"id="hidden_inp_cod_exp_lote" value="0"/>
-                                                                          <input id="inp_cod_exp_lote" type="text" class="form-control" style="height: 30px;" maxlength="20" >
-                                                                      </div>
-                                                                  </div>
-                                                               </div>
-                                                           </div>    
-
-                                               </div> 
-    </div>
-                                           </section>
-                                     </div>
-                                   </div>
-
-
-
-                            </div>
-                                </section>
-                            </div>
-                            <div id="insp2" class="tab-pane fade" style="height: auto">
-                                <section class="col col-lg-12">
-                                  <div class="widget-body">
-                                   <div  class="smart-form">
-                                    
-                                     <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-bottom:  1px;">
-                                         <section class="col-xs-12">
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-bottom:  1px;padding-top:  0px">
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                   <div class="panel-heading bg-color-success">Vecino 01</div>
-                                                        <div class="col col-xs-2">
-                                                            <label class="label">DNI:</label>
-                                                            <label class="input">
-                                                                <input id="inp_dni_vec1" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col col-xs-10">
-                                                            <label class="label">Nombre y Apellidos:</label>
-                                                            <label class="input">
-                                                                <input id="inp_nom_vec1" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col col-xs-12">
-                                                            <label class="label">Dirección:</label>
-                                                            <label class="input">
-                                                                <input id="inp_dir_vec1" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                </div>  
-                                               
-                                              </div>  
-                                         </section>
-                                          <section class="col-xs-12">
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-bottom:  1px;padding-top:  0px">
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                   <div class="panel-heading bg-color-success">Vecino 02</div>
-                                                        <div class="col col-xs-2">
-                                                            <label class="label">DNI:</label>
-                                                            <label class="input">
-                                                                <input id="inp_dni_vec2" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col col-xs-10">
-                                                            <label class="label">Nombre y Apellidos:</label>
-                                                            <label class="input">
-                                                                <input id="inp_nom_vec2" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col col-xs-12">
-                                                            <label class="label">Dirección:</label>
-                                                            <label class="input">
-                                                                <input id="inp_dir_vec2" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                </div>  
-                                               
-                                              </div>  
-                                         </section>
-                                          <section class="col-xs-12">
-                                              <div class='cr_content col-xs-12 ' style="margin-top:5px; padding-bottom:  1px;padding-top:  0px">
-                                                <div class="col-xs-12 cr-body panel-success" >
-                                                   <div class="panel-heading bg-color-success">Vecino 03</div>
-                                                        <div class="col col-xs-2">
-                                                            <label class="label">DNI:</label>
-                                                            <label class="input">
-                                                                <input id="inp_dni_vec3" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col col-xs-10">
-                                                            <label class="label">Nombre y Apellidos:</label>
-                                                            <label class="input">
-                                                                <input id="inp_nom_vec3" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="col col-xs-12">
-                                                            <label class="label">Dirección:</label>
-                                                            <label class="input">
-                                                                <input id="inp_dir_vec3" type="text"  class="input-sm" autofocus="">
-                                                            </label>
-                                                        </div>
-                                                </div>  
-                                               
-                                              </div>  
-                                         </section>
-                                     </div>
-                                    <form id="FormularioFiles" name="FormularioFiles" method="post" enctype="multipart/form-data">
-                                        <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
-                                        <div class='cr_content col-xs-12 ' style="padding-bottom:  1px;padding-bottom:  1px;">
-                                           <section class="col-xs-4 ">
-                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                      <div class="panel-heading bg-color-success">Foto del Predio 1</div>
-                                                         <div class="col col-xs-12">
-                                                                  <div class="panel-body cr-body">
-                                                                      <input type="hidden" id="hidden_inp_foto_pred1" name="hidden_inp_foto_pred1" value="0">
-                                                                      <div id="inp_foto_pred1" style="padding: 5px; ">
-
-                                                                      </div>
-                                                                   </div>
-                                                          </div>
-                                                   </div>  
-                                                   <div class="col-xs-12 cr-body panel-success" >
-                                                       <div class="col col-xs-12" >
-                                                           <section>
-                                                               <div class="input input-file col-xs-10" style="padding: 0px">
-                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file1" name="file1">Subir imagen</span><input id="textfile1" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
-                                                               </div>
-                                                               <div class="col-xs-2"  style="padding: 0px">
-                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(1);">
-                                                                       <span class="glyphicon glyphicon-trash"></span> 
-                                                                   </button>
-                                                               </div>
-                                                           </section>
-
-                                                          </div>  
-
-                                                   </div> 
-                                            </section>
-
-                                           <section class="col-xs-4 ">
-                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                      <div class="panel-heading bg-color-success">Foto del Predio 2</div>
-                                                         <div class="col col-xs-12">
-                                                                      <input type="hidden" id="hidden_inp_foto_pred2" name="hidden_inp_foto_pred2" value="0">
-                                                                  <div class="panel-body cr-body">
-                                                                      <div id="inp_foto_pred2" style="padding: 5px; ">
-
-                                                                      </div>
-                                                                   </div>
-                                                          </div>
-                                                   </div>  
-                                                   <div class="col-xs-12 cr-body panel-success" >
-                                                       <div class="col col-xs-12" >
-                                                           <section>
-                                                               <div class="input input-file col-xs-10" style="padding: 0px">
-                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file2" name="file2">Subir imagen</span><input id="textfile2" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
-                                                               </div>
-                                                               <div class="col-xs-2"  style="padding: 0px">
-                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(2);">
-                                                                       <span class="glyphicon glyphicon-trash"></span> 
-                                                                   </button>
-                                                               </div>
-                                                           </section>
-
-                                                          </div>  
-
-                                                   </div> 
-                                            </section>
-
-                                           <section class="col-xs-4 ">
-                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                      <div class="panel-heading bg-color-success">Foto del Predio 3</div>
-                                                         <div class="col col-xs-12">
-                                                                      <input type="hidden" id="hidden_inp_foto_pred3" name="hidden_inp_foto_pred3" value="0">
-                                                                  <div class="panel-body cr-body">
-                                                                      <div id="inp_foto_pred3" style="padding: 5px;  ">
-
-                                                                      </div>
-                                                                   </div>
-                                                          </div>
-                                                   </div>  
-                                                   <div class="col-xs-12 cr-body panel-success" >
-                                                       <div class="col col-xs-12" >
-                                                           <section>
-                                                               <div class="input input-file col-xs-10" style="padding: 0px">
-                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file3" name="file3">Subir imagen</span><input id="textfile3" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
-                                                               </div>
-                                                               <div class="col-xs-2"  style="padding: 0px">
-                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(3);">
-                                                                       <span class="glyphicon glyphicon-trash"></span> 
-                                                                   </button>
-                                                               </div>
-                                                           </section>
-                                                          </div>  
-                                                   </div> 
-                                            </section>
-
-                                           <section class="col-xs-12 ">
-                                                   <div class="col-xs-12 cr-body panel-success"style="height: 161px;overflow-y: scroll;" >
-                                                      <div class="panel-heading bg-color-success">Subir Firma (.jpg)</div>
-                                                         <div class="col col-xs-12">
-                                                                      <input type="hidden" id="hidden_inp_foto_pred4" name="hidden_inp_foto_pred4" value="0">
-                                                                  <div class="panel-body cr-body">
-                                                                      <div id="inp_foto_pred4" style="padding: 5px;  ">
-
-                                                                      </div>
-                                                                   </div>
-                                                          </div>
-                                                   </div>  
-                                                   <div class="col-xs-12 cr-body panel-success" >
-                                                       <div class="col col-xs-12" >
-                                                           <section>
-                                                               <div class="input input-file col-xs-4" style="padding: 0px">
-                                                                   <span class="button " style="padding-top: 5px;padding-bottom: 5px"><input type="file" id="file4" name="file4">Subir imagen</span><input id="textfile4" type="text" placeholder="Incluir Archivo" readonly="" style="height: 39px">
-                                                               </div>
-                                                               <div class="col-xs-1"  style="padding: 0px">
-                                                                   <button type="button" class="btn btn-danger btn-lg"style="margin-left:10px;"onclick="borrar_foto(4);">
-                                                                       <span class="glyphicon glyphicon-trash"></span> 
-                                                                   </button>
-                                                               </div>
-                                                           </section>
-                                                          </div>  
-                                                   </div> 
-                                            </section>
-                                        </div>
-                                    </form>
-                                        
-                                </div>
-
-
-
-                            </div>
-                                </section>
-                            </div> 
-                        </div>            
-    </section>
 </div>
-
 
 
 
