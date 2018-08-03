@@ -271,6 +271,5 @@ Route::group(['middleware' => 'auth'], function() {
     
      Route::group(['namespace' => 'asesoria_legal'], function() {
         Route::resource('asesoria_legal','AsesorialegalController');
-        Route::resource('procuraduria_mant_abogados','AbogadosController');
     });
 });
