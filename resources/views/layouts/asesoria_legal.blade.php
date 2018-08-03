@@ -110,7 +110,7 @@
                         <div class="panel panel-default" style="background:  transparent;">
                             <div class="panel-heading" style="background: #2471A3; color: white">
                                 
-                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-1"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> Procuraduria  </a></h4>
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-1"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> Asesoria Legal  </a></h4>
                             </div>
                             <div id="collapseOne-1" class="panel-collapse collapse in cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
@@ -129,17 +129,17 @@
 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Procuraduria
+                                                                                Asesoria Legal
                                                                             </a>
                                                                         </h4>
                                                                     </div>
                                                                </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_reportes"> 
+                                                                        <h4 class="panel-title"><a href="legal_reportes"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Reportes
@@ -150,7 +150,7 @@
                                                                 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_abogados"> 
+                                                                        <h4 class="panel-title"><a href="legal_abogados"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Abogados
@@ -160,7 +160,7 @@
                                                                 </div>
                                                                  <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_tipos"> 
+                                                                        <h4 class="panel-title"><a href="legal_tipos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Tipos
@@ -170,7 +170,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_tipo_san"> 
+                                                                        <h4 class="panel-title"><a href="legal_tipo_san"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Tipo Sancion
@@ -180,7 +180,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_proceso"> 
+                                                                        <h4 class="panel-title"><a href="legal_proceso"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Proceso
@@ -190,7 +190,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_materia"> 
+                                                                        <h4 class="panel-title"><a href="legal_materia"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Materia
@@ -200,7 +200,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procu_casos"> 
+                                                                        <h4 class="panel-title"><a href="legal_casos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Casos

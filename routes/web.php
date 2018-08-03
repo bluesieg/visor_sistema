@@ -267,4 +267,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('procuraduria','ProcuraduriaController');
         Route::resource('procuraduria_mant_abogados','AbogadosController');
     });
+     /*******************************  ASESORIA LEGAL **********************************************************/
+    
+     Route::group(['namespace' => 'asesoria_legal'], function() {
+        Route::resource('asesoria_legal','AsesorialegalController');
+        Route::resource('procuraduria_mant_abogados','AbogadosController');
+    });
 });
