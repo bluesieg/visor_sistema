@@ -4,6 +4,7 @@ namespace App\Http\Controllers\procuraduria;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ProcuraduriaController extends Controller
 {
@@ -13,7 +14,8 @@ class ProcuraduriaController extends Controller
     }
     public function create()
     {
-        //
+        $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite','151124M3')->first();
+        dd($expedientes);
     }
     public function store(Request $request)
     {

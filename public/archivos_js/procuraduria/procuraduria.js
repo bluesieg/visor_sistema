@@ -19,3 +19,8 @@ function new_exp_procuraduria()
     });
     $("#dlg_new_exp_procuraduria").dialog('open');
 }
+
+function fn_obtener_exp()
+{
+    alert('me presionaste');
+}

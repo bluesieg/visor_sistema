@@ -266,6 +266,11 @@ Route::group(['middleware' => 'auth'], function() {
      Route::group(['namespace' => 'procuraduria'], function() {
         Route::resource('procuraduria','ProcuraduriaController');
         Route::resource('procuraduria_mant_abogados','AbogadosController');
+        Route::resource('procuraduria_mant_tipo','TipoController');
+        Route::resource('procuraduria_mant_tipo_sancion','TipoSancionController');
+        Route::resource('procuraduria_mant_proceso','ProcesoController');
+        Route::resource('procuraduria_mant_materia','MateriaController');
+        Route::resource('procuraduria_mant_casos','CasoController');
     });
      /*******************************  ASESORIA LEGAL **********************************************************/
     

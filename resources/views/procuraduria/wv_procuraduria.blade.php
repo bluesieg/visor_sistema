@@ -246,28 +246,20 @@
                 },
             ondblClickRow: function (Id){clickmodpiso();}
         });
+        
+        $("#inp_nro_exp").keypress(function (e) {
+            if (e.which == 13) {
+
+                   fn_obtener_exp();
+
+            }
+        });
+        
     });
 </script>
 
 @stop
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/procuraduria/procuraduria.js') }}"></script>
-
-<div id="dlg_nuevo_exp" style="display: none;">
-    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-    <div class="col-xs-12 cr-body" >
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                <div class="col-xs-12" style="padding: 0px; ">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="inp_codf_exp" type="text" class="form-control" style="height: 30px;" maxlength="20">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div id="dlg_new_exp_procuraduria" style="display: none;">
     <input type="hidden" id="hidden_id_carta" value="0"/>
@@ -286,7 +278,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Nro. Expediente. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_nro_exp" type="text"  class="form-control" style="height: 32px; ">
+                            <input id="inp_nro_exp" type="text"  class="form-control text-uppercase text-center" style="height: 32px; ">
                         </div>
                     </div>
                 </div>
