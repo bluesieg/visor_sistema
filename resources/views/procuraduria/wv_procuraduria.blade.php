@@ -163,7 +163,7 @@
 @section('page-js-script')
 <script type="text/javascript">
     $(document).ready(function (){
-        
+        $('#btn_modificar_expediente').hide();
         jQuery("#table_recdocumentos").jqGrid({
             url: 'get_documentos',
             datatype: 'json', mtype: 'GET',
@@ -278,11 +278,12 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Nro. Expediente. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
+                            <input type="hidden" id="inp_id_procuraduria" value="0">
                             <input id="inp_nro_exp" type="text"  class="form-control text-uppercase text-center" style="height: 32px; ">
                         </div>
                     </div>
                 </div>
-                <button id="btn_bus_exp" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="poner_fisca()">
+                <button id="btn_bus_exp" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="fn_obtener_exp()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                 </button>              
             </div>
@@ -300,11 +301,12 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Gestor. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
+                            <input type="hidden" id="inp_id_gestor" value="0">
                             <input id="inp_gestor" type="text"  class="form-control" style="height: 32px; " disabled="" >
                         </div>
                     </div>
                 </div>                               
-                <div class="col-xs-8" style="padding: 0px; margin-top: 10px ">
+                <div class="col-xs-7" style="padding: 0px; margin-top: 10px ">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">DNI / RUC &nbsp;<i class="fa fa-calendar"></i></span>
                         <div>
@@ -312,7 +314,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4" style="padding: 0px; margin-top: 10px ">
+                <div class="col-xs-5" style="padding: 0px; margin-top: 10px ">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Fecha Inicio &nbsp;<i class="fa fa-calendar"></i></span>
                         <div>
@@ -335,8 +337,10 @@
                         <span class="input-group-addon">Responsable &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_responsable' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Responsable--</option>
+                                @foreach($abogados as $abogado)
+                                    <option value="{{ $abogado->id_abogado }}">{{ $abogado->nombre }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
@@ -345,13 +349,16 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Tipo &nbsp;<i class="fa fa-list"></i></span>
                         <div>
-                            <select id='sel_tipo' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>                                
+                            <select id='sel_tipo' onchange="seleccion_tipo();" class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione Tipo--</option>
+                                @foreach($tipos as $tipo)
+                                    <option value="{{ $tipo->id_tipo }}">{{ $tipo->descripcion }}</option>
+                                @endforeach                                
                             </select>                       
                         </div>
                     </div>
                 </div>
-                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="" style="padding: 0px;margin-top: 10px ">
+                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="cargar_mapa_procuraduria();" style="padding: 0px;margin-top: 10px " disabled="">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Ubicar Mapa
                 </button>
             </div>
@@ -368,7 +375,8 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Habilitación Hurbana. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_hab_urb" type="text"  class="form-control" style="height: 32px; ">
+                            <input type="hidden" id="hidden_inp_hab_urb" value="0">
+                            <input id="inp_hab_urb" type="text"  class="form-control" style="height: 32px; " disabled="">
                         </div>
                     </div>
                 </div>
@@ -376,7 +384,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Cod. Catastral.&nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_cod_catastral" type="text"  class="form-control" style="height: 32px; ">
+                            <input id="inp_cod_catastral" type="text"  class="form-control" style="height: 32px; " disabled="">
                         </div>
                     </div>
                 </div>
@@ -395,8 +403,10 @@
                         <span class="input-group-addon">Tipo sanción &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_tipo_san' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Tipo Sancion--</option>
+                                @foreach($tipos_sanciones as $tipo_sancion)
+                                    <option value="{{ $tipo_sancion->id_tipo_sancion }}">{{ $tipo_sancion->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
@@ -406,30 +416,36 @@
                         <span class="input-group-addon">Materia &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_materia' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Materia--</option>
+                                @foreach($materias as $materia)
+                                    <option value="{{ $materia->id_materia }}">{{ $materia->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Proceso &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_proceso' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Proceso--</option>
+                                @foreach($procesos as $proceso)
+                                    <option value="{{ $proceso->id_proceso }}">{{ $proceso->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Caso &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_caso' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Caso--</option>
+                                @foreach($casos as $caso)
+                                    <option value="{{ $caso->id_caso }}">{{ $caso->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
@@ -444,12 +460,24 @@
                     </div>
             </div>
             <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Procedimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div class=""  >
-                            <input id="inp_procedimiento" type="text"  class="form-control" style="height: 32px; ">
-                        </div>
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">Procedimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div class=""  >
+                        <input id="inp_procedimiento" type="text"  class="form-control" style="height: 32px; ">
                     </div>
+                </div>
+            </div>
+            
+            <div id="btn_agregar_expediente">
+            <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-5" onclick="guardar_editar_datos(1);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>Guardar Datos
+            </button>
+            </div>
+            
+            <div id="btn_modificar_expediente">
+            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="guardar_editar_datos(2);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span>Modificar Datos
+            </button>
             </div>
             
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
@@ -466,7 +494,7 @@
                     <div id="pager_table_pisos"></div>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="" >
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion();" >
                        <i class="glyphicon glyphicon-plus-sign"></i>
                     </button>
                     <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
@@ -483,9 +511,39 @@
 </div>
 
 
+<div id="dlg_mapa_procuraduria" >
+    <input type="hidden" id="hidden_input_habilitacion_procuraduria" value="0"/>
+    <form class="smart-form">
+        <div id="id_map_reg_lote_procuraduria" style="background: white; height: 100% !important">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+    </form>
+</div>
 
-
-
+<div id="dlg_nueva_observacion" style="display: none;">
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">DATOS OBSERVACION</div>
+        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">OBSERVACIONES: &nbsp;<i class="fa fa-location-arrow"></i></span>
+                    <div>
+                        <textarea id="dlg_observacion" rows="8" type="text" class="form-control text-uppercase" style="height: 120px;"></textarea>
+                       
+                    </div>
+                </div>
+            </div> 
+      
+        </div>
+    </div>
+    </div>
+    
+</div>
 
 @endsection
 

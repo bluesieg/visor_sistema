@@ -142,16 +142,25 @@ map.on('singleclick', function(evt) {
                 if(layer.get('title')=='Geren_seg_ciudadana1'&&mostrar==0)
                 {
                     mostrar=1;
-                    $("#mapa_delito_utm_x").text(feature.get('x_utm'));
-                    $("#mapa_delito_utm_y").text(feature.get('y_utm'));
-                    
-                    var var2= feature.get('imagen');
-                    var sin_salto = var2.split("\n").join("");
-                    console.log(sin_salto);
-                    
-                    $("#mapa_delito_observaciones").text(feature.get('observacion'));
-                    $("#seg_ciudadana_foto_mapa_detito").attr("src","data:image/jpg;base64,"+sin_salto);
-                    //$("#seg_ciudadana_foto_mapa_detito").html('<img src="data:image/jpg;base64,'+sin_salto+'" style="max-height:250px; max-width:400px"')
+                    $.ajax({url: 'comisarias/0?mapa=fotos',
+                    type: 'GET',
+                    data:{id_mapa:feature.get('id')},
+                    success: function(data) 
+                    {
+                        if (data.msg === 'si'){
+                            
+                            $("#mapa_delito_observaciones").text(data.observacion);
+                            $("#seg_ciudadana_foto_mapa_detito").attr("src","data:image/png;base64,"+data.foto);
+                           //$("#seg_ciudad_imagen_prueba").html('<img src="data:image/jpg;base64,'+data[0].foto+'" style="max-height:250px; max-width:400px"')
+                        }
+                    },
+                        error: function(data) {
+                            mostraralertas("hubo un error, Comunicar al Administrador");
+                            console.log('error');
+                            console.log(data);
+                            MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
+                        }
+                    });
                     crear_dlg("dlg_get_mapa_delito",1100,"Cerro Colorado - MAPA DELITO");
                     return false;
                 }
@@ -167,6 +176,8 @@ map.on('singleclick', function(evt) {
             });
     
 });
+
+
 function crear_grilla_constancias()
 {
     jQuery("#table_doc_constancias").jqGrid({
@@ -219,6 +230,8 @@ function crear_dlg(dlg,ancho,titulo)
                 click: function () {$(this).dialog("close");}
             }]
     }).dialog('open');
+    $("#mapa_delito_observaciones").text('');
+    $("#seg_ciudadana_foto_mapa_detito").removeAttr("src");
 }
 
 var layerSwitcher = new ol.control.LayerSwitcher({

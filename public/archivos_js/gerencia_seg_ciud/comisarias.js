@@ -370,7 +370,7 @@ function estilos_lotes(feature, resolution){
         return  new ol.style.Style({
         image: new ol.style.Icon({
           scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
-          src: 'img/recursos/patricio.png',
+          src: 'img/recursos/contenedores_sev_ciud.png',
         }),
         text: new ol.style.Text({
             text: map.getView().getZoom() > 14 ? feature.get('x_utm') : '',
@@ -383,3 +383,4 @@ function estilos_lotes(feature, resolution){
         })
       });
 }
+

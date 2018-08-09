@@ -1088,7 +1088,9 @@
         <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
                 
-                <div class="col-xs-12" style="padding: 0px;  margin-top: 10px">
+                
+                <div class="row">
+                <div class="col-xs-6" style="padding: 0px;  margin-top: 10px">
                     <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                         <span class="input-group-addon" style="width: 35%">NRO. EFECTIVOS &nbsp;<i class="fa fa-phone"></i></span>
                         <div >
@@ -1098,7 +1100,7 @@
                     </div>
                 </div>
                 
-                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                     <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                         <span class="input-group-addon" style="width: 35%">NRO. VEHICULOS &nbsp;<i class="fa fa-users"></i></span>
                         <div>
@@ -1108,7 +1110,7 @@
                     </div>
                 </div>
                 
-                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                     <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                         <span class="input-group-addon" style="width: 35%">TEL. COMISARIO &nbsp;<i class="fa fa-users"></i></span>
                         <div>
@@ -1117,9 +1119,15 @@
 
                     </div>
                 </div>
+                </div>
               
                 <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                     <center><img id="seg_ciudadana_foto_mapa_detito" class="col-xs-12 text-align-center" style="max-height:250px; max-width:400px;"></center>
+                    
+                </div>
+                
+                <div class="col-xs-12" id="seg_ciudad_imagen_prueba" style="padding: 0px; margin-top: 10px">
+                    
                     
                 </div>
                 

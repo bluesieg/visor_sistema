@@ -38,6 +38,11 @@ class ComisariasController extends Controller
         {
             return $this->cargar_mapa_delitos($request);
         }
+        
+        if($request['mapa']=='fotos')
+        {
+            return $this->cargar_fotos($request['id_mapa']);
+        }
     }
     
     public function store(Request $request)
@@ -197,6 +202,30 @@ class ComisariasController extends Controller
     }
     
     public function cargar_mapa_delitos(){
+        ini_set('memory_limit', '1G');
+        $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       
+                            'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id',id,
+                                'x_utm',x_utm,
+                                'y_utm',y_utm,
+                                'observacion',observacion
+                             )
+                          ) AS feature
+                          FROM (SELECT id,geom,x_utm,y_utm,observacion FROM limpieza_publica.contenedores) row) features;");
+
+        return response()->json($delitos);
+      
+    }
+    
+    public function cargar_mapa_basureros(){
 
         $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
@@ -214,10 +243,19 @@ class ComisariasController extends Controller
                                 'observacion',observacion
                              )
                           ) AS feature
-                          FROM (SELECT * FROM public.coordenadas) row) features;");
+                          FROM (SELECT * FROM limpieza_publica.contenedores) row) features;");
 
         return response()->json($delitos);
       
+    }
+    
+    public function cargar_fotos($id_mapa){
+        $var = DB::connection('gerencia_catastro')->table('limpieza_publica.contenedores')->where('id',$id_mapa)->first();
+        return response()->json([
+                'msg' => 'si',
+                'foto'=> $var->imagen,
+                'observacion'=> $var->observacion,
+            ]);
     }
     
 }
