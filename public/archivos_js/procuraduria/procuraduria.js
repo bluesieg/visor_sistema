@@ -44,6 +44,7 @@ function limpiar_datos(){
     $('#btn_modificar_expediente').hide();
     $('#btn_agregar_expediente').show();
     $('#inp_id_procuraduria').val(0);
+    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'procuraduria/0?grid=observaciones&indice='+0 }).trigger('reloadGrid');
 }
 aux_procuraduria=0;
 function new_exp_procuraduria()
@@ -88,10 +89,10 @@ function fn_obtener_exp()
             MensajeDialogLoadAjaxFinish('inp_nro_exp');
             $('#inp_nro_exp').val('');
         }
-        //else if(data.msg === 'repetido'){
-        //    mostraralertasconfoco("Mensaje del Sistema, EL NUMERO DE EXPEDIENTE YA FUE REGISTRADO");
-        //    MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
-        //}
+        else if(data.msg === 'repetido'){
+            mostraralertasconfoco("Mensaje del Sistema, EL NUMERO DE EXPEDIENTE YA FUE REGISTRADO");
+            MensajeDialogLoadAjaxFinish('inp_nro_exp');
+        }
         else{
             MensajeDialogLoadAjaxFinish('inp_nro_exp');
             MensajeExito('Numero de Expediente Encontrado', 'La Operacion fue realizada con Exito.');
@@ -115,6 +116,9 @@ function seleccion_tipo()
     tipo = $('#sel_tipo').val();
     if (tipo == 1) {
         $('#inp_hab_urb').removeAttr('disabled');
+        $('#hidden_inp_hab_urb').val('0');
+        $('#inp_hab_urb').val('');
+        $('#inp_cod_catastral').val('');
     }else
     {
         $('#inp_hab_urb').attr('disabled',true);
@@ -122,6 +126,9 @@ function seleccion_tipo()
     
     if (tipo == 2) {
         $('#btn_bus_mapa').removeAttr('disabled');
+        $('#hidden_inp_hab_urb').val('0');
+        $('#inp_hab_urb').val('');
+        $('#inp_cod_catastral').val('');
     }else
     {
         $('#btn_bus_mapa').attr('disabled',true);
@@ -593,7 +600,8 @@ function guardar_editar_datos(variable)
                 $('#inp_id_procuraduria').val(data.id_procuraduria);
                 $('#btn_agregar_expediente').hide();
                 $('#btn_modificar_expediente').show();
-                //fn_actualizar_grilla('table_proceso');
+                fn_actualizar_grilla('table_expedientes');
+                fn_actualizar_grilla('table_escaneos');
                 //$("#dlg_new_exp_procuraduria").dialog("close");
             },
             error: function(data) {
@@ -606,6 +614,12 @@ function guardar_editar_datos(variable)
     }
     else if(variable == 2){
         
+        observacion = $('#dlg_observacion').val();
+        if(observacion == "")
+        {
+            mostraralertasconfoco("* El Campo Observacion es Obligatorio","#dlg_observacion");
+            return false;
+        }
         MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
         
         $.ajax({
@@ -621,12 +635,92 @@ function guardar_editar_datos(variable)
             {   
                 MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
                 MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+                jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'procuraduria/0?grid=observaciones&indice='+$('#inp_id_procuraduria').val() }).trigger('reloadGrid');
                 $("#dlg_nueva_observacion").dialog("close");
 
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
-                MensajeDialogLoadAjaxFinish('table_comisarias');
+                MensajeDialogLoadAjaxFinish('table_observaciones');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
+    else if(variable == 3){
+        
+        observacion = $('#dlg_observacion').val();
+        if(observacion == "")
+        {
+            mostraralertasconfoco("* El Campo Observacion es Obligatorio","#dlg_observacion");
+            return false;
+        }
+        
+        id_det_procuraduria = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
+        
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
+        
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'procuraduria/'+id_det_procuraduria+'/edit',
+            type: 'GET',
+            data: {
+                observacion : $('#dlg_observacion').val(),
+                tipo : 2
+            },
+            success: function(data) 
+            {     
+                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+                fn_actualizar_grilla('table_observaciones');
+                $("#dlg_nueva_observacion").dialog("close");
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_observaciones');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
+    else if(variable == 4){
+        
+        id_procuraduria = $('#table_expedientes').jqGrid ('getGridParam', 'selrow');
+        
+        MensajeDialogLoadAjax('dlg_new_exp_procuraduria', '.:: Cargando ...');
+        
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'procuraduria/'+id_procuraduria+'/edit',
+            type: 'GET',
+            data: {
+                nro_expediente : nro_expediente,
+                id_gestor : id_gestor,
+                gestor : gestor,
+                dni : dni,
+                fecha_ini : fecha_ini,
+                id_responsable : id_responsable,
+                id_tipo : id_tipo,
+                id_hab_urba : id_hab_urba,
+                hab_urba : hab_urba,
+                codigo_catastral : codigo_catastral,
+                id_tipo_sancion : id_tipo_sancion,
+                id_materia : id_materia,
+                id_proceso : id_proceso,
+                id_caso : id_caso,
+                referencia : referencia,
+                procedimiento : procedimiento,
+                tipo : 1
+            },
+            success: function(data) 
+            {     
+                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                MensajeDialogLoadAjaxFinish('dlg_new_exp_procuraduria');
+                fn_actualizar_grilla('table_expedientes');
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_expedientes');
                 console.log('error');
                 console.log(data);
             }
@@ -667,3 +761,152 @@ function nueva_observacion()
     }
 }
 
+function modificar_observacion()
+{
+    id_det_procuraduria = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_det_procuraduria) {
+        
+        $("#dlg_nueva_observacion").dialog({
+            autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION OBSERVACION :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                    guardar_editar_datos(3);
+                }
+            },{
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_nueva_observacion").dialog('open');
+
+
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
+
+        $.ajax({url: 'procuraduria/'+id_det_procuraduria+'?show=observaciones',
+            type: 'GET',
+            success: function(data)
+            {          
+                $("#dlg_observacion").val(data[0].observaciones);
+                
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+            },
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_observaciones");
+    }
+}
+
+function eliminar_observacion()
+{
+    id_det_procuraduria = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_det_procuraduria) {
+
+        $.confirm({
+            title: '.:Cuidado... !',
+            content: 'Los Cambios no se podran revertir...',
+            buttons: {
+                Confirmar: function () {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: 'procuraduria/destroy',
+                        type: 'POST',
+                        data: {_method: 'delete', id_det_procuraduria: id_det_procuraduria, tipo: 1},
+                        success: function (data) {
+                            fn_actualizar_grilla('table_observaciones');
+                            MensajeExito('Eliminar Tributo', id_det_procuraduria + ' - Ha sido Eliminado');
+                        },
+                        error: function (data) {
+                            MensajeAlerta('Eliminar Tributo', id_det_procuraduria + ' - No se pudo Eliminar.');
+                        }
+                    });
+                },
+                Cancelar: function () {
+                    MensajeAlerta('Eliminar Observacion','Operacion Cancelada.');
+                }
+
+            }
+        });
+        
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_observaciones");
+    }   
+}
+
+function edit_exp_procuraduria()
+{
+    id_procuraduria = $('#table_expedientes').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_procuraduria) {
+        
+        $('#btn_agregar_expediente').hide();
+        $('#btn_modificar_expediente').show();
+        $("#dlg_new_exp_procuraduria").dialog({
+            autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION EXPEDIENTE PROCURADURIA :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_new_exp_procuraduria").dialog('open');
+
+
+        MensajeDialogLoadAjax('dlg_new_exp_procuraduria', '.:: Cargando ...');
+
+        $.ajax({url: 'procuraduria/'+id_procuraduria+'?show=procuraduria',
+            type: 'GET',
+            success: function(data)
+            {          
+                $("#inp_nro_exp").val(data[0].nro_expediente);
+                $("#inp_id_gestor").val(data[0].id_gestor);
+                $("#inp_gestor").val(data[0].gestor);
+                $("#inp_dni").val(data[0].nro_doc_gestor);
+                $("#inp_fec_ini").val(data[0].fecha_inicio_tramite);
+                $("#sel_responsable").val(data[0].id_responsable);
+                $("#sel_tipo").val(data[0].id_tipo);
+                $("#hidden_inp_hab_urb").val(data[0].id_hab_urb);
+                $("#inp_hab_urb").val(data[0].nomb_hab_urb);
+                $("#inp_cod_catastral").val(data[0].cod_catastral);
+                $("#sel_tipo_san").val(data[0].id_tipo_sancion);
+                $("#sel_materia").val(data[0].id_materia);
+                $("#sel_proceso").val(data[0].id_proceso);
+                $("#sel_caso").val(data[0].id_caso);
+                $("#inp_referencia").val(data[0].referencia);
+                $("#inp_procedimiento").val(data[0].procedimiento);
+                
+                id_procuraduria = $("#inp_id_procuraduria").val(data[0].id_procuraduria);
+                if (id_procuraduria == null) {
+                    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'procuraduria/0?grid=observaciones&indice='+0 }).trigger('reloadGrid');
+                }else{
+                    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'procuraduria/0?grid=observaciones&indice='+$('#inp_id_procuraduria').val() }).trigger('reloadGrid');
+                }
+                MensajeDialogLoadAjaxFinish('dlg_new_exp_procuraduria');
+            },
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_new_exp_procuraduria');
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_expedientes");
+    }
+}

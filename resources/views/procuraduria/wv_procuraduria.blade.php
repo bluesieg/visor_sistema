@@ -32,7 +32,7 @@
                     <section class="col col-lg-12">                        
                         <ul id="tabs1" class="nav nav-tabs bordered">
                             <li class="active">
-                                <a href="#s1" data-toggle="tab" aria-expanded="true" onclick="actualizar_grilla();">
+                                <a href="#s1" data-toggle="tab" aria-expanded="true">
                                     EXPEDIENTES
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
@@ -53,7 +53,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <section style="padding-right: 0px">
                                         <div class="col-xs-12">                                            
-                                        <h1 ><b>MANTENIMIENTO DE EXPEDIENTES</b></h1>
+                                        <h1 ><b>EXPEDIENTES - PROCURADURIA</b></h1>
                                         <div class="text-right" style=" padding-top: 20px">
 
                                              <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="new_exp_procuraduria();">
@@ -61,9 +61,6 @@
                                              </button>
                                              <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="edit_exp_procuraduria();">
                                                  <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                             </button>
-                                             <button  type="button" class="btn btn-labeled btn-danger" onclick="del_exp_procuraduria();">
-                                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                              </button>
                                              <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                                  <article class="col-xs-12" style=" padding: 0px !important">
@@ -98,56 +95,44 @@
                                     <section style="padding-right: 10px">
                                         <div class="col-xs-12">
                                             
-                                    <h1 ><b>ADJUNTAR DOCUMENTOS</b></h1>
-                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
-                                           <div class="input-group input-group-md">
-                                               <span class="input-group-addon">Desde:</span>
-                                               <div class="icon-addon addon-md">
-                                                   <input  id="fec_ini_asignacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                    <h1><b>ADJUNTAR DOCUMENTOS</b></h1>
+                                        <div class="col-xs-5">
                                             <div class="input-group input-group-md">
-                                                <span class="input-group-addon">Hasta:</span>
-                                                <div class="icon-addon addon-md">
-                                                    <input id="fec_fin_asignacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                <span class="input-group-addon">Nº EXPEDIENTE:. &nbsp;<i class="fa fa-male"></i></span>
+                                                <div>
+                                                    <input id="dlg_buscar_nro_expediente" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR Nº EXPEDIENTE">
                                                 </div>
                                             </div>
                                         </div>
-                                    
-                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
-                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="seleccionafecha_asignacion();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span> BUSCAR
-                                            </button>
+
+                                        <div class="col-xs-2">
+                                            <div class="text-left">
+                                                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="busqueda_escaneo();">
+                                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                    </button>
+                                            </div>
                                         </div>
                                     
-                                       <div class="text-right" style=" padding-top: 20px">
-
-                                           <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nueva_asignacion();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                           </button>
-
-                                           <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_asignacion();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                           </button>
-
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_exp_asignacion();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                           </button>
-                                           
-                                       </div>
                                         </div>
                                         
                                     </section>
                                     
                                     </div>
-                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                            <article class="col-xs-11" style=" padding: 0px !important">
-                                                    <table id="table_asignacion"></table>
-                                                    <div id="pager_table_asignacion"></div>
+                                
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 35px;">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_escaneos"></table>
+                                                    <div id="pager_table_escaneos"></div>
                                             </article>
                                         </div>
+                                
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 150px;">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_doc"></table>
+                                                    <div id="pager_table_doc"></div>
+                                            </article>
+                                        </div>
+                                
                                     </div>
                                 </div>
                         </section>
@@ -164,87 +149,114 @@
 <script type="text/javascript">
     $(document).ready(function (){
         $('#btn_modificar_expediente').hide();
-        jQuery("#table_recdocumentos").jqGrid({
-            url: 'get_documentos',
+        
+        jQuery("#table_expedientes").jqGrid({
+            url: 'procuraduria/0?grid=expedientes',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'NUMERO EXPEDIENTE','FASE','GESTOR','FECHA INICIO TRAMITE','FECHA REGISTRO'],
-            rowNum: 50, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'RECEPCION DE DOCUMENTOS', align: "center",
+            colNames: ['ID', 'NUMERO EXPEDIENTE','Nº DOCUMENTO','GESTOR','FECHA INICIO TRAMITE','FECHA REGISTRO'],
+            rowNum: 50, sortname: 'id_procuraduria', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE EXPEDIENTES', align: "center",
             colModel: [
-                {name: 'id_reg_exp', index: 'id_reg_exp', align: 'left',width: 20, hidden: true},
-                {name: 'nro_exp', index: 'nro_exp', align: 'left', width: 20},
-                {name: 'fase', index: 'fase', align: 'left', width: 10},
+                {name: 'id_procuraduria', index: 'id_procuraduria', align: 'left',width: 20, hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 20},
+                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'left', width: 20},
                 {name: 'gestor', index: 'gestor', align: 'left', width: 40},
-                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 20},
-                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 20}
+                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 25},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 25}
             ],
-            pager: '#pager_table_table_recdocumentos',
+            pager: '#pager_table_expedientes',
             rowList: [10, 20, 30, 40, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_recdocumentos').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_expedientes').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_recdocumentos').jqGrid('getDataIDs')[0];
-                            $("#table_recdocumentos").setSelection(firstid);    
+                    var firstid = jQuery('#table_expedientes').jqGrid('getDataIDs')[0];
+                            $("#table_expedientes").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_documento();}
+            ondblClickRow: function (Id){edit_exp_procuraduria();}
         });
         
-        fecha_inicio_verif_tec = $('#fec_ini_verif_tecnica').val();
-        fecha_fin_verif_tec = $('#fec_fin_verif_tecnica').val();
-        jQuery("#table_verif_tecnica").jqGrid({
-            url: 'get_verif_tecnica?fecha_inicio='+fecha_inicio_verif_tec+'&fecha_fin='+fecha_fin_verif_tec,
+        jQuery("#table_observaciones").jqGrid({
+            url: 'procuraduria/0?grid=observaciones&indice=0',
             datatype: 'json', mtype: 'GET',
-            height: '280px', autowidth: true,
+            height: '150px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'CODIGO INTERNO','FECHA REGISTRO','DOC. GESTOR','GESTOR','MODALIDAD'],
-            rowNum: 50, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'VERIFICACION TECNICA', align: "center",
+            colNames: ['ID', 'FECHA DE REGISTRO','OBSERVACION'],
+            rowNum: 50, sortname: 'id_det_procuraduria', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE OBSERVACIONES', align: "center",
             colModel: [
-                {name: 'id_reg_exp', index: 'id_reg_exp', align: 'left',width: 20, hidden: true},
-                {name: 'cod_interno', index: 'nro_exp', align: 'left', width: 150},
-                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 120},
-                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'left', width: 100},
-                {name: 'gestor', index: 'gestor', align: 'left', width: 150},
-                {name: 'descr_procedimiento', index: 'descr_procedimiento', align: 'left', width: 480}
+                {name: 'id_det_procuraduria', index: 'id_det_procuraduria', align: 'left',width: 20, hidden: true},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 200},
+                {name: 'observaciones', index: 'observaciones', align: 'left', width: 500}
             ],
-            pager: '#pager_table_verif_tecnica',
+            pager: '#pager_table_observaciones',
             rowList: [10, 20, 30, 40, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_verif_tecnica').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_observaciones').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_verif_tecnica').jqGrid('getDataIDs')[0];
-                            $("#table_verif_tecnica").setSelection(firstid);    
+                    var firstid = jQuery('#table_observaciones').jqGrid('getDataIDs')[0];
+                            $("#table_observaciones").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_verif_tecnica()}
+            ondblClickRow: function (Id){modificar_observacion()}
         });
         
-         jQuery("#table_pisos").jqGrid({
-            url: 'gridpisos/0',
+        jQuery("#table_escaneos").jqGrid({
+            url: 'procuraduria/0?grid=escaneos',
             datatype: 'json', mtype: 'GET',
-            height: '100px', width: '700',
+            height: '150px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pi','Piso', 'Fecha'],
-            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Pisos del Predio', align: "center",
+            colNames: ['ID', 'NUMERO EXPEDIENTE','Nº DOCUMENTO','GESTOR','SUBIR'],
+            rowNum: 50, sortname: 'id_procuraduria', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE EXPEDIENTES', align: "center",
             colModel: [
-                {name: 'id_pi', index: 'id_pi', hidden: true},
-                {name: 'piso', index: 'piso', align: 'center', width: 400},
-                {name: 'fech', index: 'fech', align: 'center', width: 500}
-                
+                {name: 'id_procuraduria', index: 'id_procuraduria', align: 'left',width: 20, hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 150},
+                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'left', width: 120},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 500},
+                {name: 'archivo', index: 'archivo', align: 'center', width: 170}
             ],
-            pager: '#pager_table_pisos',
-            rowList: [13, 20],
+            pager: '#pager_table_escaneos',
+            rowList: [10, 20, 30, 40, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_pisos').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_escaneos').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_pisos').jqGrid('getDataIDs')[0];
-                            $("#table_pisos").setSelection(firstid);    
+                    var firstid = jQuery('#table_escaneos').jqGrid('getDataIDs')[0];
+                            $("#table_escaneos").setSelection(firstid);    
                         }
                 },
-            ondblClickRow: function (Id){clickmodpiso();}
+            onSelectRow: function (Id)
+            {
+                jQuery("#table_doc").jqGrid('setGridParam', {url: 'procuraduria/0?grid=doc_adjuntos&id='+Id}).trigger('reloadGrid');
+            },
+            ondblClickRow: function (Id){}
+        });
+        
+        jQuery("#table_doc").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_doc_adj', 'DESCRIPCION','VER','ELIMINAR'],
+            rowNum: 200, sortname: 'id_doc_adj', sortorder: 'desc', viewrecords: true, caption: 'DOCUMENTOS ESCANEADOS', align: "center",
+            colModel: [
+                {name: 'id_doc_adj', index: 'id_doc_adj', hidden: true},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 400},
+                {name: 'ver', index: 'ver', align: 'center', width: 160},
+                {name: 'del', index: 'del', align: 'center', width: 150},
+            ],
+            pager: '#pager_table_doc',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_doc').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                        var firstid = jQuery('#table_doc').jqGrid('getDataIDs')[0];
+                            $("#table_doc").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
         });
         
         $("#inp_nro_exp").keypress(function (e) {
@@ -255,11 +267,21 @@
             }
         });
         
+        $("#dlg_buscar_nro_expediente").keypress(function (e) {
+            if (e.which == 13) {
+
+                   busqueda_escaneo();
+
+            }
+        });
+        
+        
     });
 </script>
 
 @stop
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/procuraduria/procuraduria.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/procuraduria/escaneo_documentos.js') }}"></script>
 
 <div id="dlg_new_exp_procuraduria" style="display: none;">
     <input type="hidden" id="hidden_id_carta" value="0"/>
@@ -455,7 +477,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Refencia. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_referencia" type="text"  class="form-control" style="height: 32px; ">
+                            <input id="inp_referencia" type="text"  class="form-control text-uppercase" style="height: 32px; ">
                         </div>
                     </div>
             </div>
@@ -463,7 +485,7 @@
                 <div class="input-group input-group-md">
                     <span class="input-group-addon">Procedimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
                     <div class=""  >
-                        <input id="inp_procedimiento" type="text"  class="form-control" style="height: 32px; ">
+                        <input id="inp_procedimiento" type="text"  class="form-control text-uppercase" style="height: 32px; ">
                     </div>
                 </div>
             </div>
@@ -475,7 +497,7 @@
             </div>
             
             <div id="btn_modificar_expediente">
-            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="guardar_editar_datos(2);" style="padding: 0px;margin-top: 10px ">
+            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="guardar_editar_datos(4);" style="padding: 0px;margin-top: 10px ">
                 <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span>Modificar Datos
             </button>
             </div>
@@ -490,17 +512,17 @@
                     </div>
                 </section>
                 <div class="col-xs-10">
-                    <table id="table_pisos" ></table>
-                    <div id="pager_table_pisos"></div>
+                    <table id="table_observaciones" ></table>
+                    <div id="pager_table_observaciones"></div>
                 </div>
                 <div class="col-xs-2">
                     <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion();" >
                        <i class="glyphicon glyphicon-plus-sign"></i>
                     </button>
-                    <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
+                    <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="modificar_observacion();" >
                        <i class="glyphicon glyphicon-edit"></i>
                     </button>
-                    <button class="btn bg-color-red txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
+                    <button class="btn bg-color-red txt-color-white cr-btn-big"style="width: 120px;" onclick="eliminar_observacion();" >
                        <i class="glyphicon glyphicon-trash"></i
                     </button>                    
                 </div>
@@ -543,6 +565,49 @@
     </div>
     </div>
     
+</div>
+
+<div id="dlg_subir_escaneo_procuraduria" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <form id="FormularioScans_procuraduria" name="FormularioScans_procuraduria" method="post" enctype="multipart/form-data" action="procuraduria?tipo=1"  target="ifrafile">
+                <input type="hidden" name="_token" id="_token2" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
+                <input type="hidden" value='0' id='id_scan_procuraduria' name="id_scan_procuraduria"/>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon"  style="width: 165px" >Tipo Documento &nbsp;<i class="fa fa-file"></i></span>
+                        <div class="icon-addon addon-md">
+                            <select id='tipo_documento_procuraduria' name="tipo_documento_procuraduria" class="form-control col-lg-8" style="height: 32px;">
+                            @foreach ($tip_doc as $docs)
+                            <option value='{{$docs->id_tip_doc}}' >{{$docs->t_documento}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; padding-top: 10px ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Documento &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                        <div>
+                            <input name="dlg_documento_file_procuraduria" id="dlg_documento_file_procuraduria" type="file"  class="form-control" style="height: 32px; width: 100%" onchange="llamarsubmitscan();">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; padding-top: 10px ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Descripción &nbsp;<i class="fa fa-text-height"></i></span>
+                        <div>
+                            <input name="dlg_documento_des_procuraduria" id="dlg_documento_des_procuraduria" type="text"  class="form-control text-uppercase" style="height: 32px; width: 100%">
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+            <div id="dlg_sub_frame" class='cr_content col-xs-12 ' style="margin-bottom: 10px; padding-top: 10px ">
+                <iframe name="ifrafile" id="ifrafile" class="form-control col-xs-12"  style=" height: 400px; padding: 0px"></iframe>
+            </div>
+    </div>
+    </div>
 </div>
 
 @endsection
