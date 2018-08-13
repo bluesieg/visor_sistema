@@ -1156,7 +1156,7 @@
 
                                                                  <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="asesoria_legal"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=legal"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Asesoria Legal
@@ -1166,7 +1166,7 @@
                                                                </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_reportes"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=reportes"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Reportes
@@ -1177,7 +1177,7 @@
                                                                 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_abogados"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=abogados"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Abogados
@@ -1187,7 +1187,7 @@
                                                                 </div>
                                                                  <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_tipos"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=tipos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Tipos
@@ -1197,7 +1197,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_tipo_san"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=t_sanción"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Tipo Sancion
@@ -1207,7 +1207,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_proceso"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=proceso"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Proceso
@@ -1217,7 +1217,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_materia"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=materia"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Materia
@@ -1227,7 +1227,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="legal_casos"> 
+                                                                        <h4 class="panel-title"><a href="asesoria_legal?tipo=legal"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Casos

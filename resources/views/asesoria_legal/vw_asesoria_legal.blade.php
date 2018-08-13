@@ -1,29 +1,6 @@
 @extends('layouts.asesoria_legal')
 @section('content')
-<style>
-        
-        .ol-touch .rotate-north {
-            top: 80px;
-        }
-        .ol-mycontrol {
-            background-color: rgba(255, 255, 255, 0.4);
-            border-radius: 4px;
-            padding: 2px;
-            position: absolute;
-            width:300px;
-            top: 5px;
-            left:40px;
-        }
-        #legend{
-        right:10px; 
-        top:20px; 
-        z-index:10000; 
-        width:130px; 
-        height:370px; 
-        background-color:#FFFFFF;
-        display: none;
-        }
-    </style>
+
 <section id="widget-grid" class="">    
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
@@ -33,7 +10,7 @@
                         <ul id="tabs1" class="nav nav-tabs bordered">
                             <li class="active">
                                 <a href="#s1" data-toggle="tab" aria-expanded="true" onclick="actualizar_grilla();">
-                                    EXPEDIENTESdd
+                                    EXPEDIENTES
                                     <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                                 </a>
                             </li>
@@ -53,16 +30,16 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <section style="padding-right: 0px">
                                         <div class="col-xs-12">                                            
-                                        <h1 ><b>MANTENIMIENTO DE EXPEDIENTES</b></h1>
+                                        <h1 ><b>MANTENIMIENTO DE EXPEDIENTES ASESORIA LEGAL</b></h1>
                                         <div class="text-right" style=" padding-top: 20px">
 
-                                             <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="new_exp_procuraduria();">
+                                             <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="new_exp_asesoria();">
                                                      <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                                              </button>
-                                             <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="edit_exp_procuraduria();">
+                                             <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="edit_exp_asesoria();">
                                                  <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                              </button>
-                                             <button  type="button" class="btn btn-labeled btn-danger" onclick="del_exp_procuraduria();">
+                                             <button  type="button" class="btn btn-labeled btn-danger" onclick="del_exp_asesoria();">
                                                  <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                                              </button>
                                              <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
@@ -162,19 +139,18 @@
 </section>
 @section('page-js-script')
 <script type="text/javascript">
-    $(document).ready(function (){
-        
+  $(document).ready(function (){
+        $('#btn_modificar_expediente').hide();
         jQuery("#table_recdocumentos").jqGrid({
-            url: 'get_documentos',
+            url: 'asesoria_legal/0?grid=legal',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'NUMERO EXPEDIENTE','FASE','GESTOR','FECHA INICIO TRAMITE','FECHA REGISTRO'],
-            rowNum: 50, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'RECEPCION DE DOCUMENTOS', align: "center",
+            colNames: ['ID', 'NUMERO EXPEDIENTE','GESTOR','FECHA INICIO TRAMITE','FECHA REGISTRO'],
+            rowNum: 50, sortname: 'id_asesoria_legal', sortorder: 'desc', viewrecords: true, caption: 'RECEPCION DE DOCUMENTOS', align: "center",
             colModel: [
-                {name: 'id_reg_exp', index: 'id_reg_exp', align: 'left',width: 20, hidden: true},
-                {name: 'nro_exp', index: 'nro_exp', align: 'left', width: 20},
-                {name: 'fase', index: 'fase', align: 'left', width: 10},
+                {name: 'id_asesoria_legal', index: 'id_reg_exp', align: 'left',width: 20, hidden: true},
+                {name: 'nro_expediente', index: 'nro_exp', align: 'left', width: 20},               
                 {name: 'gestor', index: 'gestor', align: 'left', width: 40},
                 {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 20},
                 {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 20}
@@ -222,54 +198,47 @@
             ondblClickRow: function (Id){modificar_verif_tecnica()}
         });
         
-         jQuery("#table_pisos").jqGrid({
+         jQuery("#table_asesoria_obs").jqGrid({
             url: 'gridpisos/0',
             datatype: 'json', mtype: 'GET',
             height: '100px', width: '700',
             toolbarfilter: true,
             colNames: ['id_pi','Piso', 'Fecha'],
-            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Pisos del Predio', align: "center",
+            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Observaciones', align: "center",
             colModel: [
                 {name: 'id_pi', index: 'id_pi', hidden: true},
                 {name: 'piso', index: 'piso', align: 'center', width: 400},
                 {name: 'fech', index: 'fech', align: 'center', width: 500}
                 
             ],
-            pager: '#pager_table_pisos',
+            pager: '#pager_table_asesoria_obs',
             rowList: [13, 20],
             gridComplete: function () {
-                    var idarray = jQuery('#table_pisos').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_asesoria_obs').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_pisos').jqGrid('getDataIDs')[0];
-                            $("#table_pisos").setSelection(firstid);    
+                    var firstid = jQuery('#table_asesoria_obs').jqGrid('getDataIDs')[0];
+                            $("#table_asesoria_obs").setSelection(firstid);    
                         }
                 },
             ondblClickRow: function (Id){clickmodpiso();}
         });
+        
+        $("#inp_nro_exp").keypress(function (e) {
+            if (e.which == 13) {
+
+                   fn_obtener_exp_a();
+
+            }
+        });
+        
     });
 </script>
 
 @stop
-<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/procuraduria/procuraduria.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/asesoria_legal/asesoria_legal.js') }}"></script>
 
-<div id="dlg_nuevo_exp" style="display: none;">
-    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-    <div class="col-xs-12 cr-body" >
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                <div class="col-xs-12" style="padding: 0px; ">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 150px">Cod. Expediente: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="inp_codf_exp" type="text" class="form-control" style="height: 30px;" maxlength="20">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div id="dlg_new_exp_procuraduria" style="display: none;">
+<div id="dlg_new_exp_asesoria" style="display: none;">
     <input type="hidden" id="hidden_id_carta" value="0"/>
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div id="div_adquiere" class="col-xs-12 cr-body" >
@@ -286,11 +255,12 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Nro. Expediente. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_nro_exp" type="text"  class="form-control" style="height: 32px; ">
+                            <input type="hidden" id="inp_id_asesoria_legal" value="0">
+                            <input id="inp_nro_exp" type="text"  class="form-control text-uppercase text-center" style="height: 32px; ">
                         </div>
                     </div>
                 </div>
-                <button id="btn_bus_exp" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="poner_fisca()">
+                <button id="btn_bus_exp" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="fn_obtener_exp_a()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                 </button>              
             </div>
@@ -308,19 +278,20 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Gestor. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
+                            <input type="hidden" id="inp_id_gestor" value="0">
                             <input id="inp_gestor" type="text"  class="form-control" style="height: 32px; " disabled="" >
                         </div>
                     </div>
                 </div>                               
-                <div class="col-xs-8" style="padding: 0px; margin-top: 10px ">
+                <div class="col-xs-7" style="padding: 0px; margin-top: 10px ">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon">DNI / RUC &nbsp;<i class="fa fa-calendar"></i></span>
+                        <span class="input-group-addon">DNI / RUC &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input id="inp_dni" type="text"  class="form-control" style="height: 32px; " disabled="">
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4" style="padding: 0px; margin-top: 10px ">
+                <div class="col-xs-5" style="padding: 0px; margin-top: 10px ">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Fecha Inicio &nbsp;<i class="fa fa-calendar"></i></span>
                         <div>
@@ -343,8 +314,10 @@
                         <span class="input-group-addon">Responsable &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_responsable' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Responsable--</option>
+                                @foreach($abogados as $abogado)
+                                    <option value="{{ $abogado->id_abogado }}">{{ $abogado->nombre }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
@@ -353,13 +326,16 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Tipo &nbsp;<i class="fa fa-list"></i></span>
                         <div>
-                            <select id='sel_tipo' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>                                
+                            <select id='sel_tipo' onchange="seleccion_tipo();" class="form-control col-lg-8" style="height: 32px;">
+                                <option value="0">--Seleccione Tipo--</option>
+                                @foreach($tipos as $tipo)
+                                    <option value="{{ $tipo->id_tipo }}">{{ $tipo->descripcion }}</option>
+                                @endforeach                                
                             </select>                       
                         </div>
                     </div>
                 </div>
-                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="" style="padding: 0px;margin-top: 10px ">
+                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="cargar_mapa_procuraduria();" style="padding: 0px;margin-top: 10px " disabled="">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Ubicar Mapa
                 </button>
             </div>
@@ -376,7 +352,8 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Habilitación Hurbana. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_hab_urb" type="text"  class="form-control" style="height: 32px; ">
+                            <input type="hidden" id="hidden_inp_hab_urb" value="0">
+                            <input id="inp_hab_urb" type="text"  class="form-control" style="height: 32px; " disabled="">
                         </div>
                     </div>
                 </div>
@@ -384,7 +361,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Cod. Catastral.&nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
-                            <input id="inp_cod_catastral" type="text"  class="form-control" style="height: 32px; ">
+                            <input id="inp_cod_catastral" type="text"  class="form-control" style="height: 32px; " disabled="">
                         </div>
                     </div>
                 </div>
@@ -403,8 +380,10 @@
                         <span class="input-group-addon">Tipo sanción &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_tipo_san' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Tipo Sancion--</option>
+                                @foreach($tipos_sanciones as $tipo_sancion)
+                                    <option value="{{ $tipo_sancion->id_tipo_sancion }}">{{ $tipo_sancion->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
@@ -414,30 +393,36 @@
                         <span class="input-group-addon">Materia &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_materia' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Materia--</option>
+                                @foreach($materias as $materia)
+                                    <option value="{{ $materia->id_materia }}">{{ $materia->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Proceso &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_proceso' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Proceso--</option>
+                                @foreach($procesos as $proceso)
+                                    <option value="{{ $proceso->id_proceso }}">{{ $proceso->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Caso &nbsp;<i class="fa fa-list"></i></span>
                         <div>
                             <select id='sel_caso' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione--</option>
-                                
+                                <option value="0">--Seleccione Caso--</option>
+                                @foreach($casos as $caso)
+                                    <option value="{{ $caso->id_caso }}">{{ $caso->descripcion }}</option>
+                                @endforeach
                             </select>                       
                         </div>
                     </div>
@@ -452,12 +437,24 @@
                     </div>
             </div>
             <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Procedimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div class=""  >
-                            <input id="inp_procedimiento" type="text"  class="form-control" style="height: 32px; ">
-                        </div>
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">Procedimiento. &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div class=""  >
+                        <input id="inp_procedimiento" type="text"  class="form-control" style="height: 32px; ">
                     </div>
+                </div>
+            </div>
+            
+            <div id="btn_agregar_expediente">
+            <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-5" onclick="save_datos(1);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>Guardar Datos
+            </button>
+            </div>
+            
+            <div id="btn_modificar_expediente">
+            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="save_datos(2);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span>Modificar Datos
+            </button>
             </div>
             
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
@@ -470,11 +467,11 @@
                     </div>
                 </section>
                 <div class="col-xs-10">
-                    <table id="table_pisos" ></table>
-                    <div id="pager_table_pisos"></div>
+                    <table id="table_asesoria_obs" ></table>
+                    <div id="pager_table_asesoria_obs"></div>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="" >
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion();" >
                        <i class="glyphicon glyphicon-plus-sign"></i>
                     </button>
                     <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
@@ -491,6 +488,39 @@
 </div>
 
 
+<div id="dlg_mapa_procuraduria" >
+    <input type="hidden" id="hidden_input_habilitacion_procuraduria" value="0"/>
+    <form class="smart-form">
+        <div id="id_map_reg_lote_procuraduria" style="background: white; height: 100% !important">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="dlg_nueva_observacion" style="display: none;">
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">DATOS OBSERVACION</div>
+        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">OBSERVACIONES: &nbsp;<i class="fa fa-location-arrow"></i></span>
+                    <div>
+                        <textarea id="dlg_observacion" rows="8" type="text" class="form-control text-uppercase" style="height: 120px;"></textarea>
+                       
+                    </div>
+                </div>
+            </div> 
+      
+        </div>
+    </div>
+    </div>
+    
+</div>
 
 
 
