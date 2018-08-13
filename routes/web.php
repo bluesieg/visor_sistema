@@ -255,6 +255,11 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'pas'], function() {
         Route::resource('pas','Proceso_sancionadorController');
     });
+    ///////////////////////limpieza´publica
+    Route::group(['namespace' => 'limpieza_publica'], function() {
+        Route::resource('rutas_barrido_calles','Barrido_Calles_Controller');
+        Route::resource('rutas_recojo_residuos','Recojo_Residuos_Controller');
+    });
     
     /******************************      GERENCIA DE SEGURIDAD CIUDADANA ********************************************************/
     Route::group(['namespace' => 'gerencia_seg_ciud'], function() {

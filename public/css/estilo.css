@@ -382,3 +382,11 @@ input[type="checkbox"], input[type="radio"]{
   float: right;
 }
 
+.cuerpo_li_observacion
+{
+    border: 1px solid gray;
+    min-height: 30px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+

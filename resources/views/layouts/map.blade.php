@@ -1415,6 +1415,52 @@
                                             
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-limpieza_publica"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Limpieza Pública
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-limpieza_publica" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding: 0px;padding-left: 20px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="rutas_barrido_calles"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Mod. Rutas Barrido Calles
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="rutas_recojo_residuos"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Mod. Rutas Recojo Residuos
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
                                                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-plan_tema_admini"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
