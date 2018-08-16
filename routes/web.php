@@ -282,4 +282,5 @@ Route::group(['middleware' => 'auth'], function() {
      Route::group(['namespace' => 'asesoria_legal'], function() {
         Route::resource('asesoria_legal','AsesorialegalController');
     });
+        
 });

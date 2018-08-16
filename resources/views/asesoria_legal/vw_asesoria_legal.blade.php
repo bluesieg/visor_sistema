@@ -168,60 +168,31 @@
             ondblClickRow: function (Id){modificar_documento();}
         });
         
-        fecha_inicio_verif_tec = $('#fec_ini_verif_tecnica').val();
-        fecha_fin_verif_tec = $('#fec_fin_verif_tecnica').val();
-        jQuery("#table_verif_tecnica").jqGrid({
-            url: 'get_verif_tecnica?fecha_inicio='+fecha_inicio_verif_tec+'&fecha_fin='+fecha_fin_verif_tec,
+        jQuery("#table_observaciones").jqGrid({
+            url: 'asesoria_legal/0?grid=observaciones&indice=0',
             datatype: 'json', mtype: 'GET',
-            height: '280px', autowidth: true,
+            height: '150px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'CODIGO INTERNO','FECHA REGISTRO','DOC. GESTOR','GESTOR','MODALIDAD'],
-            rowNum: 50, sortname: 'id_reg_exp', sortorder: 'desc', viewrecords: true, caption: 'VERIFICACION TECNICA', align: "center",
+            colNames: ['ID', 'FECHA DE REGISTRO','OBSERVACION'],
+            rowNum: 50, sortname: 'id_det_asesoria_legal', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE OBSERVACIONES', align: "center",
             colModel: [
-                {name: 'id_reg_exp', index: 'id_reg_exp', align: 'left',width: 20, hidden: true},
-                {name: 'cod_interno', index: 'nro_exp', align: 'left', width: 150},
-                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 120},
-                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'left', width: 100},
-                {name: 'gestor', index: 'gestor', align: 'left', width: 150},
-                {name: 'descr_procedimiento', index: 'descr_procedimiento', align: 'left', width: 480}
+                {name: 'id_det_asesoria_legal', index: 'id_det_asesoria_legal', align: 'left',width: 20, hidden: true},
+                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 200},
+                {name: 'observaciones', index: 'observaciones', align: 'left', width: 500}
             ],
-            pager: '#pager_table_verif_tecnica',
+            pager: '#pager_table_observaciones',
             rowList: [10, 20, 30, 40, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_verif_tecnica').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_observaciones').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_verif_tecnica').jqGrid('getDataIDs')[0];
-                            $("#table_verif_tecnica").setSelection(firstid);    
+                    var firstid = jQuery('#table_observaciones').jqGrid('getDataIDs')[0];
+                            $("#table_observaciones").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_verif_tecnica()}
+            ondblClickRow: function (Id){modificar_observacion()}
         });
         
-         jQuery("#table_asesoria_obs").jqGrid({
-            url: 'gridpisos/0',
-            datatype: 'json', mtype: 'GET',
-            height: '100px', width: '700',
-            toolbarfilter: true,
-            colNames: ['id_pi','Piso', 'Fecha'],
-            rowNum: 20, sortname: 'id_pi', sortorder: 'desc', viewrecords: true, caption: 'Observaciones', align: "center",
-            colModel: [
-                {name: 'id_pi', index: 'id_pi', hidden: true},
-                {name: 'piso', index: 'piso', align: 'center', width: 400},
-                {name: 'fech', index: 'fech', align: 'center', width: 500}
-                
-            ],
-            pager: '#pager_table_asesoria_obs',
-            rowList: [13, 20],
-            gridComplete: function () {
-                    var idarray = jQuery('#table_asesoria_obs').jqGrid('getDataIDs');
-                    if (idarray.length > 0) {
-                    var firstid = jQuery('#table_asesoria_obs').jqGrid('getDataIDs')[0];
-                            $("#table_asesoria_obs").setSelection(firstid);    
-                        }
-                },
-            ondblClickRow: function (Id){clickmodpiso();}
-        });
         
         $("#inp_nro_exp").keypress(function (e) {
             if (e.which == 13) {
@@ -467,11 +438,11 @@
                     </div>
                 </section>
                 <div class="col-xs-10">
-                    <table id="table_asesoria_obs" ></table>
-                    <div id="pager_table_asesoria_obs"></div>
+                    <table id="table_observaciones" ></table>
+                    <div id="pager_table_observaciones"></div>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion();" >
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion_asesoria();" >
                        <i class="glyphicon glyphicon-plus-sign"></i>
                     </button>
                     <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="" >

@@ -1142,33 +1142,57 @@
     <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
         <div class="col-xs-12 cr-body" >
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                
+                <div>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                                <h2>Información de Lotes::..</h2>
+                        </header>
+                    </div>
+                </div> 
                 <div class="row">
-                   <div class="col-xs-6" style="padding: 0px;  margin-top: 10px">
+                   <div class="col-xs-4" style="padding: 0px;  margin-top: 10px">
                     <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                        <span class="input-group-addon" style="width: 35%">NOMBRE LOTES EXISTENTES&nbsp;<i class="fa fa-phone"></i></span>
+                        <span class="input-group-addon" style="width: 30%">LOTES EXISTENTES&nbsp;<i class="fa fa-hashtag"></i></span>
                         <div >
-                            <label id="dlg_geren_adm_tri_1" class="form-control" style="height: 32px;"></label>
+                            <label id="dlg_geren_adm_tri_0" class="form-control" style="height: 32px;"></label>
                         </div>
 
                     </div>
                     </div>
                 
-                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                    <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 35%">LOTES DECLARADOS &nbsp;<i class="fa fa-users"></i></span>
+                            <span class="input-group-addon" style="width: 30%">LOTES DECLARADOS &nbsp;<i class="fa fa-hashtag"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_1"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div> 
+                    <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 30%">LOTES OMISOS&nbsp;<i class="fa fa-hashtag"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_2"  class="form-control" style="height: 32px;"></label>
                             </div>
 
                         </div>
                     </div> 
+                    
                 </div>                
-                
+                <div>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                                <h2>Información de Recaudación::..</h2>
+                        </header>
+                    </div>
+                </div> 
                 <div class="row">
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 35%">% DE MOROSIDAD IMP. PREDIAL &nbsp;<i class="fa fa-users"></i></span>
+                            <span class="input-group-addon" style="width: 250px;">% DE MOROSIDAD AUTOVALÚO &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_3"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -1178,7 +1202,7 @@
 
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 35%">% DE MOROSIDAD ARBITRIOS &nbsp;<i class="fa fa-users"></i></span>
+                            <span class="input-group-addon" style="width: 250px;">% DE MOROSIDAD ARBITRIOS &nbsp;<i class="fa fa-p"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_4"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -1190,7 +1214,7 @@
                 <div class="row">
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 35%">RECAUDACION IMP. PREDIAL &nbsp;<i class="fa fa-users"></i></span>
+                            <span class="input-group-addon" style="width: 250px;">OP, RD ENVIADAS A COACTIVA &nbsp;<i class="fa fa-hashtag"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_5"  class="form-control" style="height: 32px;"></label>
                             </div>
@@ -1200,9 +1224,38 @@
 
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
-                            <span class="input-group-addon" style="width: 35%">RECAUDACION IMP. ARBITRIOS &nbsp;<i class="fa fa-users"></i></span>
+                            <span class="input-group-addon" style="width: 250px;">OP, RD ENVIADAS A COACTIVA &nbsp;<i class="fa fa-dollar"></i></span>
                             <div>
-                                <label id="dlg_geren_adm_tri_5"  class="form-control" style="height: 32px;"></label>
+                                <label id="dlg_geren_adm_tri_6"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                                <h2>Información de recaudación general::..</h2>
+                        </header>
+                    </div>
+                </div> 
+                 <div class="row">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 250px;">MONTO RECAUDACIÓN GENERAL &nbsp;<i class="fa fa-"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_7"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 250px;">% RECAUDACIÓN GENERAL &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label id="dlg_geren_adm_tri_8"  class="form-control" style="height: 32px;"></label>
                             </div>
 
                         </div>

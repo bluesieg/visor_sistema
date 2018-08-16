@@ -604,6 +604,12 @@ function save_datos(variable)
     }
     else if(variable == 2){
         
+        observacion = $('#dlg_observacion').val();
+        if(observacion == "")
+        {
+            mostraralertasconfoco("* El Campo Observacion es Obligatorio","#dlg_observacion");
+            return false;
+        }
         MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
         
         $.ajax({
@@ -618,6 +624,7 @@ function save_datos(variable)
             {   
                 MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
                 MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+                jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'asesoria_legal/0?grid=observaciones&indice='+$('#inp_id_asesoria_legal').val() }).trigger('reloadGrid');
                 $("#dlg_nueva_observacion").dialog("close");
 
             },
@@ -632,10 +639,10 @@ function save_datos(variable)
     
 }
 
-function nueva_observacion()
+function nueva_observacion_asesoria()
 {   
-    id_procuraduria = $('#inp_id_asesoria_legal').val();
-    if (id_procuraduria != '0') 
+    id_asesoria = $('#inp_id_asesoria_legal').val();
+    if (id_asesoria != '0') 
     {
         $('#dlg_observacion').val(''),
         $("#dlg_nueva_observacion").dialog({

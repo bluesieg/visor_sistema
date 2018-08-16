@@ -85,6 +85,9 @@ class AsesorialegalController extends Controller
         if($id==0 && $request['grid']=='legal' ){
            return $this->grid_asesoria_legal($request['exp']);
         }
+        if($id==0 && $request['grid']=='observaciones' ){
+           return $this->grid_asesoria_observaciones($request);
+        }
         if($id==0 && $request['grid']=='abogados' ){
            return $this->grid_asesoria_abogados($request['nombre']);
         }
@@ -199,6 +202,54 @@ class AsesorialegalController extends Controller
                 trim($Datos->gestor),   
                 trim($Datos->fecha_inicio_tramite),   
                 trim($Datos->fecha_registro),   
+            );
+        }
+        return response()->json($Lista);
+    }
+     public function grid_asesoria_observaciones(Request $request)
+   {
+        header('Content-type: application/json');
+        $indice = $request['indice'];
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        
+        if ($indice == 0) {
+            $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from asesoria_legal.vw_dte_asesoria_legal where id_mtr_asesoria_legal = 0");
+            $sql = DB::connection('gerencia_catastro')->table('asesoria_legal.vw_dte_asesoria_legal')->where('id_mtr_asesoria_legal',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
+        else
+        {
+            $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from asesoria_legal.vw_dte_asesoria_legal where id_mtr_asesoria_legal = '$indice'");
+            $sql = DB::connection('gerencia_catastro')->table('asesoria_legal.vw_dte_asesoria_legal')->where('id_mtr_asesoria_legal',$indice)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
+        
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_det_asesoria_legal;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_det_asesoria_legal),
+                trim($Datos->fecha_registro),
+                trim($Datos->observaciones),  
             );
         }
         return response()->json($Lista);

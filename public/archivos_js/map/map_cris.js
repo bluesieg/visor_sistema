@@ -168,7 +168,34 @@ map.on('singleclick', function(evt) {
                 if(layer.get('title')=='gerencia_administracion_tributaria'&&mostrar==0)
                 {
                     mostrar=1;
-                    crear_dlg("dlg_gerencia_adm_tributaria",800,"INFORMACION DE HABILITACION");
+                    id_hab_urb = $('#hidden_inp_habilitacion_adm_tributaria').val();    
+                                      
+//                    $.ajax({url: 'asesoria_legal/'+id_hab_urb,
+//                        type: 'GET',
+//                        success: function(data)
+//                        {          
+//                            $("#dlg_descripcion").val(data[0].descripcion);
+//                            MensajeDialogLoadAjaxFinish('dlg_nuevo_caso');
+//                        },
+//                        error: function(data) {
+//                            mostraralertas("Hubo un Error, Comunicar al Administrador");
+//                            console.log('error');
+//                            console.log(data);
+//                            MensajeDialogLoadAjaxFinish('dlg_nuevo_caso');
+//                        }
+//                    });
+                    $('#dlg_geren_adm_tri_0').text(Math.round(Math.random()* (100-50) + 180));   
+                    $('#dlg_geren_adm_tri_1').text(Math.round(Math.random()* (100-50) + 180));  
+                    $('#dlg_geren_adm_tri_2').text(Math.round(Math.random()* (100-50) + 180)); 
+                    $('#dlg_geren_adm_tri_3').text(Math.round(Math.random()* (20-6) + 15)); 
+                    $('#dlg_geren_adm_tri_4').text(Math.round(Math.random()* (20-6) + 15)); 
+                    $('#dlg_geren_adm_tri_5').text(Math.round(Math.random()* (100-50) + 180)); 
+                    $('#dlg_geren_adm_tri_6').text(Math.round(Math.random()* (100-50) + 180)); 
+                    $('#dlg_geren_adm_tri_7').text(Math.round(Math.random()* (100-50) + 180)); 
+                    $('#dlg_geren_adm_tri_8').text(Math.round(Math.random()* (20-6) + 15)); 
+                    
+                    
+                    crear_dlg("dlg_gerencia_adm_tributaria",1000,"INFORMACION DE HABILITACION");
                     return false;
                 }
                 
