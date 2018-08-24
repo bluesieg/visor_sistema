@@ -85,7 +85,7 @@
         
         @if (!Auth::guest())
         <aside id="left-panel" style="background: #231918 !important; border-right: 2px #bfbfbf dashed; overflow-y: scroll; width: 250px; padding-bottom: 50px">        
-                <div class="login-info" style="background: #2471A3;border-bottom: 3px solid #f2f2f2;">
+            <div class="login-info" style="background: #2471A3;border-bottom: 3px solid #f2f2f2;">
                 <span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
                     <a>
                         @if (Auth::user()->foto)
@@ -129,7 +129,7 @@
 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="comisarias"> 
+                                                                        <h4 class="panel-title"><a href="comisarias?tipo=comisarias"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Matenimiento Comisarias
@@ -139,7 +139,7 @@
                                                                </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="mapas_delito"> 
+                                                                        <h4 class="panel-title"><a href="comisarias?tipo=mapa_delito"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Matenimiento Map. Delito
@@ -244,9 +244,8 @@
                 </div>        
             </div>
         </div>
-
-
-       
+        
+        
         <script src="{{ asset('js/libs/jquery-ui-1.10.3.min.js') }}"></script>
         
 

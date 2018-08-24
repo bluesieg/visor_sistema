@@ -529,3 +529,130 @@ function FilterTableAllFields(Letras, IdTabla)
     }
 }
 
+/********** RENIEC PERSONAS *****************************************/
+
+function consultar_dni(dni,hidden_input,input)
+{
+    if (dni == '' || dni.length <= 7) {
+        mostraralertas('* Ingrese Numero de Documento... <br>* ');
+        return false;
+    }
+    $.ajax({
+        url: 'personas/'+dni+'?show=recuperar_dni',
+        type: 'GET',
+        success: function (data) {
+            if (data) {
+                $("#"+hidden_input).val(data.id_pers);
+                $("#"+input).val(data.apaterno + ' ' +data.amaterno + ' ' + data.nombre);
+            } else {
+                dlg_nueva_persona(dni,hidden_input,input);
+            }
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });
+}
+
+function limpiar_personas() {
+    $("#pers_nro_doc,#pers_pat,#pers_mat,#pers_nombres,#pers_raz_soc,#pers_fnac").val('');
+    $("#pers_foto").attr("src", "img/avatars/male.png");
+}
+
+function dlg_nueva_persona(nro_doc,hidden_input,input) {
+    $("#dialog_Personas").dialog({
+        autoOpen: false, modal: true, width: 750, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: PERSONAS :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                    guardar_persona(hidden_input,input);
+                }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        close: function (event, ui) {
+            limpiar_personas();
+        },
+        open: function () {
+            limpiar_personas();
+        }
+    }).dialog('open');
+
+    $("#pers_nro_doc").val(nro_doc);
+    buscar_datos_reniec();
+
+}
+
+function guardar_persona(hidden_input,input) {
+    
+    if ($("#pers_sexo").val() == '-') {
+        mostraralertasconfoco('Ingrese Sexo', '#pers_sexo');
+        return false;
+    }
+    if ($("#pers_nombres").val() == '-'||$("#pers_nombres").val() == '') {
+        mostraralertasconfoco('Ingrese Nombre', '#pers_pat');
+        return false;
+    }
+    if ($("#pers_nro_doc").val() == '-'||$("#pers_mat").val() == '') {
+        mostraralertasconfoco('Ingrese DNI', '#pers_nro_doc');
+        return false;
+    }
+    if ($("#pers_pat").val()+$("#pers_mat").val() == '') {
+        mostraralertasconfoco('Ingrese al menos un apellido', '#pers_pat');
+        return false;
+    }
+ 
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'personas?tipo=1',
+        type: 'POST',
+        data: {
+            pers_ape_pat: $("#pers_pat").val() || '-',
+            pers_ape_mat: $("#pers_mat").val() || '-',
+            pers_nombres: $("#pers_nombres").val() || '-',
+            pers_raz_soc: $("#pers_raz_soc").val() || '-',
+            pers_tip_doc: $("#cb_tip_doc_3").val() || '-',
+            pers_nro_doc: $("#pers_nro_doc").val() || '-',
+            pers_sexo: $("#pers_sexo").val() || '-',
+            pers_fnac: $("#pers_fnac").val() || '1900-01-01',
+            pers_foto: $("#pers_foto").attr("src")
+        },
+        success: function (data) {
+            if (data) {
+                $("#"+hidden_input).val(data.id_pers);
+                $("#"+input).val(data.apaterno + ' ' +data.amaterno + ' ' + data.nombre);
+                MensajeExito('Se Registro la Persona Correctamente', 'Su Registro Fue Guardado Correctamente...');
+                dialog_close('dialog_Personas');
+            }
+        },
+        error: function (data) {
+            MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
+        }
+    });
+}
+
+function buscar_datos_reniec()
+{   
+    nro_doc = ($("#pers_nro_doc").val()).trim();    
+    MensajeDialogLoadAjax('dialog_Personas', 'Realizando Busqueda en Reniec...');
+    $.ajax({
+        type: 'GET',
+        url: 'personas/0?datos=buscar_datos_reniec&nro_doc='+nro_doc,        
+        success: function (data) {
+            $("#pers_pat").val(data.ape_pat);
+            $("#pers_mat").val(data.ape_mat);
+            $("#pers_nombres").val(data.nombres);
+            $("#pers_foto").attr("src",data.foto);
+        },
+        error: function (data){            
+            mostraralertas('* No se Encontró el DNI<br>* Porfavor Ingrese los Datos Manualmente...');            
+        }
+    });
+    setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 3000);
+}

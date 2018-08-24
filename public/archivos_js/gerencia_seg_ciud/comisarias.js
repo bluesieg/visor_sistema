@@ -14,7 +14,7 @@ function crear_nueva_comisaria()
 {
     id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
     if (id_comisaria) {
-        
+        activar_desactivar_inputs(2);
         $("#id_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'id'));
         $("#dlg_ubicacion").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'ubicacion')).attr('disabled',true);
         $("#dlg_nombre_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nombre')).attr('disabled',true);
@@ -83,7 +83,7 @@ function guardar_editar_datos(tipo) {
         var form= new FormData($("#FormularioComisarios")[0]);
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'comisarias?id_comisario=0',
+            url: 'comisarias?tipo=1',
             type: 'POST',
             dataType: 'json',
             data: form,
@@ -114,7 +114,7 @@ function guardar_editar_datos(tipo) {
         var form= new FormData($("#FormularioComisarios")[0]);
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'comisarias?id_comisario='+id_comisaria,
+            url: 'comisarias?tipo=2&id_comisario='+id_comisaria,
             type: 'POST',
             dataType: 'json',
             data: form,
@@ -174,13 +174,14 @@ function modificar_comisaria() {
         return false;
     }
 
-   
+    id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
+    
     MensajeDialogLoadAjax('dlg_nuevo_comisarias', '.:: Cargando ...');
 
     var form= new FormData($("#FormularioComisarias")[0]);
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'comisarias?id_comisario=0',
+        url: 'comisarias?tipo=3&id_comisaria='+id_comisaria,
         type: 'POST',
         dataType: 'json',
         data: form,
@@ -192,7 +193,6 @@ function modificar_comisaria() {
                 MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
                 MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
                 fn_actualizar_grilla('table_comisarias');
-                $("#dlg_nuevo_comisarias").dialog("close");
             }   
         },
         error: function(data) {
@@ -206,11 +206,16 @@ function modificar_comisaria() {
 }
 
 function modificar_comisarias()
-{
-    //limpiar_dl_ipm(1);
+{   
     id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
-    
+    activar_desactivar_inputs(1);
     if (id_comisaria) {
+        
+        $("#dlg_ubicacion").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'ubicacion'));
+        $("#dlg_nombre_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nombre'));
+        $("#dlg_telefono_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'telefono'));
+        $("#dlg_nro_efectivos").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nro_efectivos'));
+        $("#dlg_nro_vehiculos").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nro_vehiculos'));
         
         $("#dlg_nuevo_comisarias").dialog({
             autoOpen: false, modal: true, width: 950, show: {effect: "fade", duration: 300}, resizable: false,
@@ -238,11 +243,6 @@ function modificar_comisarias()
             type: 'GET',
             success: function(data)
             {          
-                $("#dlg_ubicacion").val(data[0].ubicacion);
-                $("#dlg_nombre_comisaria").val(data[0].nombre_comisaria);
-                $("#dlg_telefono_comisaria").val(data[0].telefono_comisaria);
-                $("#dlg_nro_efectivos").val(data[0].nro_efectivos);
-                $("#dlg_nro_vehiculos").val(data[0].nro_vehiculos);
                 $("#dlg_nombre_comisario").val(data[0].nombre_comisario);
                 $("#dlg_dni_comisario").val(data[0].dni);
                 $("#dlg_telefono_comisario").val(data[0].telefono_comisario);
@@ -260,6 +260,150 @@ function modificar_comisarias()
         mostraralertasconfoco("No Hay Registros Seleccionados","#table_comisarias");
     }
     
+}
+
+function activar_desactivar_inputs(tipo)
+{
+    if (tipo == 1) 
+    {
+        $('#dlg_ubicacion').removeAttr('disabled');
+        $('#dlg_nombre_comisaria').removeAttr('disabled');
+        $('#dlg_telefono_comisaria').removeAttr('disabled');
+        $('#dlg_nro_efectivos').removeAttr('disabled');
+        $('#dlg_nro_vehiculos').removeAttr('disabled');
+        $('#dlg_foto_comisaria').removeAttr('disabled');
+        $('#actualizar_comisaria').removeAttr('disabled');
+    }
+    
+    if (tipo == 2) 
+    {
+        $('#dlg_ubicacion').attr('disabled',true);
+        $('#dlg_nombre_comisaria').attr('disabled',true);
+        $('#dlg_telefono_comisaria').attr('disabled',true);
+        $('#dlg_nro_efectivos').attr('disabled',true);
+        $('#dlg_nro_vehiculos').attr('disabled',true);
+        $('#dlg_foto_comisaria').attr('disabled',true);
+        $('#actualizar_comisaria').attr('disabled',true);
+    }
+}
+
+function crear_observacion(id_comisaria)
+{
+    $('#id_observacion').val(id_comisaria);
+    $("#dlg_nueva_observacion_comisaria").dialog({
+        autoOpen: false, modal: true, width: 650, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  NUEVO REGISTRO DE OBSERVACIONES:.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    guardar_observacion(1);
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+    $("#dlg_nueva_observacion_comisaria").dialog('open');
+}
+
+function guardar_observacion()
+{
+    id_comisaria = $('#id_observacion').val();
+    fecha_observacion = $("#dlg_fecha_observacion").val();
+    observacion = $("#dlg_observacion").val();
+    
+    if(fecha_observacion == "")
+    {
+        mostraralertasconfoco("* El Campo Fecha Registro es Obligatorio","#dlg_fecha_observacion");
+        return false;
+    }
+    if(observacion == "")
+    {
+        mostraralertasconfoco("* El Campo Nombre es Obligatorio","#dlg_observacion");
+        return false;
+    }
+
+    MensajeDialogLoadAjax('dlg_nueva_observacion_comisaria', '.:: Cargando ...');
+    
+    $.confirm({
+        title: '.:Esta Seguro de guardar esta Observacion... ?',
+        content: 'Los Cambios no se podran revertir...',
+        buttons: {
+            Confirmar: function () {
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url: 'comisarias/create',
+                type: 'GET',
+                data: {
+                    id_comisaria:id_comisaria,
+                    fecha_observacion:fecha_observacion,
+                    observacion:observacion
+                },
+                success: function(data) 
+                {
+                    MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_observacion_comisaria');
+                    $("#dlg_nueva_observacion_comisaria").dialog("close");
+                    limpiar_observacion();
+                },
+                error: function(data) {
+                    mostraralertas("hubo un error, Comunicar al Administrador");
+                    MensajeDialogLoadAjaxFinish('table_comisarias');
+                    console.log('error');
+                    console.log(data);
+                }
+            });
+            },
+            Cancelar: function () {
+                MensajeAlerta('Guardar Observacion','Operacion Cancelada.');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion_comisaria');
+            }
+
+        }
+    });
+}
+
+function ver_observacion(id_comisaria)
+{
+    $('#hidden_id_observacion').val(id_comisaria);
+    $("#dlg_ver_observacion_comisaria").dialog({
+        autoOpen: false, modal: true, width: 650, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: BUSCAR OBSERVACIONES :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-file'></i>&nbsp; Abrir",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    abrir_reporte();
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+    $("#dlg_ver_observacion_comisaria").dialog('open');
+}
+
+function abrir_reporte()
+{
+    id_comisaria = $('#hidden_id_observacion').val();
+    fecha_inicio = $('#dlg_observacion_inicio').val();
+    fecha_fin = $('#dlg_observacion_fin').val();
+    
+    window.open('comisarias/0?reporte=observaciones&id_comisaria='+id_comisaria+'&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin);
+}
+
+function limpiar_observacion()
+{
+    $('#id_observacion').val('0');
+    $("#dlg_fecha_observacion").val('');
+    $("#dlg_observacion").val('');
 }
 
 function valida_capa_gerencia_seg_ciud(check)

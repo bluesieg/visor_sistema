@@ -261,6 +261,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('rutas_recojo_residuos','Recojo_Residuos_Controller');
     });
     
+    /****************************** PERSONAS RENIEC ********************************************************/
+    Route::group(['namespace' => 'personas'], function() {
+        Route::resource('personas','PersonasController');
+    });
+    
     /******************************      GERENCIA DE SEGURIDAD CIUDADANA ********************************************************/
     Route::group(['namespace' => 'gerencia_seg_ciud'], function() {
         Route::resource('comisarias','ComisariasController');

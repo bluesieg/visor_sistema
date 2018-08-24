@@ -1857,7 +1857,7 @@
 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="comisarias"> 
+                                                                        <h4 class="panel-title"><a href="comisarias?tipo=comisarias"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Matenimiento Comisarias
@@ -1867,7 +1867,7 @@
                                                                </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="mapas_delito"> 
+                                                                        <h4 class="panel-title"><a href="comisarias?tipo=mapa_delito"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Matenimiento Map. Delito

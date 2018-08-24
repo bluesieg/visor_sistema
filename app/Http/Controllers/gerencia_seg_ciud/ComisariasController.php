@@ -8,112 +8,115 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\gerencia_seg_ciud\Comisarias;
 use App\Models\gerencia_seg_ciud\PersonalComisaria;
+use App\Models\gerencia_seg_ciud\Observacion;
+use App\Models\gerencia_seg_ciud\MapaDelito;
 
 
 class ComisariasController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('gerencia_seg_ciud/vw_comisarias');
+        if ($request['tipo'] == 'comisarias') 
+        {
+            return view('gerencia_seg_ciud/vw_comisarias');
+        }
+        if ($request['tipo'] == 'mapa_delito') 
+        {
+            $tipo_delito = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.tipo_delito')->get();
+            return view('gerencia_seg_ciud/vw_mapa_delito',compact('tipo_delito'));
+        }
     }
 
-    public function show($id_comisaria,Request $request)
+    public function show($id,Request $request)
     {
-        if ($id_comisaria > 0) 
+        if ($id > 0) 
         {
-            $comisarias= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisaria_personal')->where('id',$id_comisaria)->get();
-            return $comisarias;
+            if($request['show']=='comisarias')
+            {
+                return $this->traer_datos_comisarias($id);
+            }
+            if($request['show']=='mapa_delito')
+            {
+                return $this->traer_datos_mapa_delito($id);
+            }
+//            $comisarias= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisaria_personal')->where('id',$id)->get();
+//            return $comisarias;
         }
-        if($request['grid']=='comisarias')
+        else
         {
-            return $this->cargar_datos_comisarias($request['nombre']);
-        }
-        if($request['mapa']=='comisarias')
-        {
-            return $this->cargar_mapa_comisarias($request);
-        }
-        
-        if($request['mapa']=='delitos')
-        {
-            return $this->cargar_mapa_delitos($request);
-        }
-        
-        if($request['mapa']=='fotos')
-        {
-            return $this->cargar_fotos($request['id_mapa']);
-        }
+            if($request['reporte']=='observaciones')
+            {
+                return $this->abrir_reporte_observaciones($request);
+            }
+            if($request['grid']=='comisarias')
+            {
+                return $this->cargar_datos_comisarias($request['nombre']);
+            }
+            if($request['grid']=='mapa_delito')
+            {
+                return $this->cargar_datos_mapa_delito();
+            }
+            if($request['mapa']=='comisarias')
+            {
+                return $this->cargar_mapa_comisarias($request);
+            }
+            if($request['mapa']=='delitos')
+            {
+                return $this->cargar_mapa_delitos($request);
+            }
+            if($request['mapa']=='fotos')
+            {
+                return $this->cargar_fotos($request['id_mapa']);
+            }
+        }      
     }
     
     public function store(Request $request)
     {
-        if ($request['id_comisario'] == '0') 
+        if ($request['tipo'] == 1) 
         {
-            $file = $request->file('dlg_foto_comisario');
-            $PersonalComisaria = new PersonalComisaria;
-            $PersonalComisaria->dni           = $request['dlg_dni_comisario'];
-            $PersonalComisaria->nombre        = strtoupper($request['dlg_nombre_comisario']);
-            $PersonalComisaria->telefono      = $request['dlg_telefono_comisario'];
-            $PersonalComisaria->fecha_inicio  = $request['dlg_fecha_inicio'];
-            $PersonalComisaria->tipo_per = 1;
-            
-            if ($file) {
-                $file_1 = \File::get($file);
-                $PersonalComisaria->foto = base64_encode($file_1);
-            }else{
-                $PersonalComisaria->foto = "";
-            }
-            
-            $PersonalComisaria->id_usuario = Auth::user()->id;
-            $PersonalComisaria->estado  = 1;
-            $PersonalComisaria->id_comisaria  = $request['id_comisaria'];
-            $PersonalComisaria->fecha_registro = date('d-m-Y');
-            $PersonalComisaria->save();
-
-            return $PersonalComisaria->id_personal_comisaria;
+            return $this->guardar_datos_comisario($request);
         }
-        if ($request['id_comisario'] > 0)
+        if ($request['tipo'] == 2) 
         {
-            $file = $request->file('dlg_foto_comisario');
-            $PersonalComisaria = new PersonalComisaria;
-            $val=  $PersonalComisaria::where("id_comisaria","=",$request['id_comisario'])->first();
-            $datos = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.personal_comisaria')->where('id_comisaria',$request['id_comisario'])->get();
-            if(count($val)>=1)
-            {
-                $val->dni = $request['dlg_dni_comisario'];
-                $val->nombre = strtoupper($request['dlg_nombre_comisario']);
-                $val->telefono = $request['dlg_telefono_comisario'];
-                $val->fecha_inicio = $request['dlg_fecha_inicio'];
-                $val->tipo_per = 1;
-                
-                
-                if ($file) {
-                    $file_1 = \File::get($file);
-                    $val->foto = base64_encode($file_1);
-                }else{
-                    $val->foto = $datos[0]->foto;
-                }
-                
-                $val->id_usuario = Auth::user()->id;
-                $val->estado = 1;
-                $val->id_comisaria = $request['id_comisario'];
-                $val->fecha_registro = $datos[0]->fecha_registro;
-                
-                $val->save();
-            }
-            return $val->id_personal_comisaria;    
+            return $this->editar_datos_comisario($request);
         }
-       
+        if ($request['tipo'] == 3) 
+        {
+            return $this->editar_datos_comisaria($request);
+        }
     }
     
     public function create(Request $request)
     {
+        $Observacion = new Observacion;
+        $Observacion->observacion    = strtoupper($request['observacion']);
+        $Observacion->fecha          = $request['fecha_observacion'];
+        $Observacion->id_usuario     = Auth::user()->id;
+        $Observacion->id_comisaria   = $request['id_comisaria'];
+        $Observacion->fecha_registro = date('d-m-Y');
         
+        $Observacion->save();
+        return $Observacion->id_observacion;
     }
     
-    public function edit(Request $request)
+    public function edit($id_mapa_delito,Request $request)
     {
-       
+        $MapaDelito = new MapaDelito;
+        $val=  $MapaDelito::where("id_mapa_delito","=",$id_mapa_delito )->first();
+        if($val)
+        {
+            $val->ubicacion = strtoupper($request['ubicacion']);
+            $val->id_tipo_delito = $request['tipo_delito'];
+            $val->id_pers_infractor = $request['infractor'];
+            $val->id_pers_encargado = $request['encargado'];
+            $val->vehiculo = strtoupper($request['vehiculo']);
+            $val->observacion = strtoupper($request['observacion']);
+            
+            $val->save();
+        }
+        return $id_mapa_delito;
     }
     
     public function update(Request $request, $id)
@@ -124,6 +127,145 @@ class ComisariasController extends Controller
     public function destroy(Request $request)
     {
       
+    }
+
+    public function traer_datos_dni($id)
+    {
+        $personas = DB::connection('gerencia_catastro')->table('public.personas')->where('pers_nro_doc',$id)->first();
+        if(isset($personas)){
+            return response()->json([
+                    'nombre' => trim(str_replace('-','',$personas->pers_nombres)),
+                    'apaterno' => trim(str_replace('-','',$personas->pers_ape_pat)),
+                    'amaterno' => trim(str_replace('-','',$personas->pers_ape_mat)),
+            ]);
+        }
+    }
+    
+    public function traer_datos_mapa_delito($id)
+    {
+        $mapa_delito= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_mapa_delito')->where('id_mapa_delito',$id)->get();
+        return $mapa_delito;
+    }
+    
+    public function guardar_datos_comisario(Request $request)
+    {
+        $Personal = new PersonalComisaria;
+        $comisario = $Personal::where('id_comisaria',$request['id_comisaria'])->where('estado',1)->first();
+        if ($comisario) 
+        {
+            $comisario->estado = 0;
+            $comisario->fecha_final = date('d-m-Y');
+            $comisario->save();
+            
+            $file = $request->file('dlg_foto_comisario');
+            $PersonalComisaria = new PersonalComisaria;
+            $PersonalComisaria->dni           = $request['dlg_dni_comisario'];
+            $PersonalComisaria->nombre        = strtoupper($request['dlg_nombre_comisario']);
+            $PersonalComisaria->telefono      = $request['dlg_telefono_comisario'];
+            $PersonalComisaria->fecha_inicio  = $request['dlg_fecha_inicio'];
+            $PersonalComisaria->tipo_per = 1;
+
+            if ($file) {
+                $file_1 = \File::get($file);
+                $PersonalComisaria->foto = base64_encode($file_1);
+            }else{
+                $PersonalComisaria->foto = "";
+            }
+
+            $PersonalComisaria->id_usuario = Auth::user()->id;
+            $PersonalComisaria->estado  = 1;
+            $PersonalComisaria->id_comisaria  = $request['id_comisaria'];
+            $PersonalComisaria->fecha_registro = date('d-m-Y');
+            $PersonalComisaria->save();
+
+            return $PersonalComisaria->id_personal_comisaria;
+        }
+        else
+        {
+            $file = $request->file('dlg_foto_comisario');
+            $PersonalComisaria = new PersonalComisaria;
+            $PersonalComisaria->dni           = $request['dlg_dni_comisario'];
+            $PersonalComisaria->nombre        = strtoupper($request['dlg_nombre_comisario']);
+            $PersonalComisaria->telefono      = $request['dlg_telefono_comisario'];
+            $PersonalComisaria->fecha_inicio  = $request['dlg_fecha_inicio'];
+            $PersonalComisaria->tipo_per = 1;
+
+            if ($file) {
+                $file_1 = \File::get($file);
+                $PersonalComisaria->foto = base64_encode($file_1);
+            }else{
+                $PersonalComisaria->foto = "";
+            }
+
+            $PersonalComisaria->id_usuario = Auth::user()->id;
+            $PersonalComisaria->estado  = 1;
+            $PersonalComisaria->id_comisaria  = $request['id_comisaria'];
+            $PersonalComisaria->fecha_registro = date('d-m-Y');
+            $PersonalComisaria->save();
+
+            return $PersonalComisaria->id_personal_comisaria;
+        }
+    }
+    
+    public function editar_datos_comisario(Request $request)
+    {
+        $file = $request->file('dlg_foto_comisario');
+        $PersonalComisaria = new PersonalComisaria;
+        $val=  $PersonalComisaria::where("id_comisaria","=",$request['id_comisario'])->first();
+        $datos = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.personal_comisaria')->where('id_comisaria',$request['id_comisario'])->get();
+        if($val)
+        {
+            $val->dni = $request['dlg_dni_comisario'];
+            $val->nombre = strtoupper($request['dlg_nombre_comisario']);
+            $val->telefono = $request['dlg_telefono_comisario'];
+            $val->fecha_inicio = $request['dlg_fecha_inicio'];
+            $val->tipo_per = 1;
+
+
+            if ($file) {
+                $file_1 = \File::get($file);
+                $val->foto = base64_encode($file_1);
+            }else{
+                $val->foto = $datos[0]->foto;
+            }
+
+            $val->id_usuario = Auth::user()->id;
+            $val->estado = 1;
+            $val->id_comisaria = $request['id_comisario'];
+            $val->fecha_registro = $datos[0]->fecha_registro;
+
+            $val->save();
+        }
+        return $val->id_personal_comisaria;    
+    }
+    
+    public function editar_datos_comisaria(Request $request)
+    {
+        $file = $request->file('dlg_foto_comisaria');
+        $Comisarias = new Comisarias;
+        $val=  $Comisarias::where("id","=",$request['id_comisaria'])->first();
+        $datos = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.comisarias')->where('id',$request['id_comisaria'])->get();
+        if($val)
+        {
+            $val->nombre = strtoupper($request['dlg_nombre_comisaria']);
+            $val->ubicacion = strtoupper($request['dlg_ubicacion']);
+            $val->telefono = $request['dlg_telefono_comisaria'];
+            $val->nro_efectivos = $request['dlg_nro_efectivos'];
+            $val->nro_vehiculos = $request['dlg_nro_vehiculos'];
+
+            if ($file) {
+                $file_1 = \File::get($file);
+                $val->foto = base64_encode($file_1);
+            }else{
+                $val->foto = $datos[0]->foto;
+            }
+
+            $val->id_usuario = Auth::user()->id;
+            $val->fecha_registro = $datos[0]->fecha_registro;
+
+            $val->save();
+        }
+        return $val->id;
     }
     
     public function cargar_datos_comisarias($nombre)
@@ -165,6 +307,51 @@ class ComisariasController extends Controller
                 trim($Datos->nro_vehiculos),
                 trim($Datos->nro_efectivos),
                 trim($Datos->ubicacion),
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="crear_observacion('.trim($Datos->id).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> OBSERVACION</button>',
+                '<button class="btn btn-labeled btn-success" type="button" onclick="ver_observacion('.trim($Datos->id).')"><span class="btn-label"><i class="fa fa-search"></i></span> VER</button>',
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function cargar_datos_mapa_delito()
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.vw_mapa_delito");
+        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_mapa_delito')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_mapa_delito;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_mapa_delito),
+                trim($Datos->infractor),
+                trim($Datos->descripcion),
+                trim($Datos->ubicacion),
+                trim($Datos->fecha_registro),
             );
         }
         return response()->json($Lista);
@@ -256,6 +443,25 @@ class ComisariasController extends Controller
                 'foto'=> $var->imagen,
                 'observacion'=> $var->observacion,
             ]);
+    }
+    
+    public function abrir_reporte_observaciones(Request $request)
+    {
+        $observaciones = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.observacion_comisaria')->where('id_comisaria',$request['id_comisaria'])->whereBetween('fecha', [$request['fecha_inicio'], $request['fecha_fin']])->orderBy('fecha','asc')->get();
+        $comisaria = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.comisarias')->where('id',$request['id_comisaria'])->get();
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
+        
+        if($observaciones)
+        {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
+            $view =  \View::make('gerencia_seg_ciud.reportes.reporte_observaciones', compact('observaciones','comisaria','institucion'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Reporte Observaciones".".pdf");
+        }
+        else
+        {   return 'No hay datos';}
     }
     
 }

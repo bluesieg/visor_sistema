@@ -98,15 +98,18 @@
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_inspector', 'NOMBRE COMISARIA', 'TELEFONO', 'NRO VEHICULOS','NRO EFECTIVOS','UBICACION'],
+            colNames: ['id_inspector', 'NOMBRE COMISARIA', 'TELEFONO', 'Nº VEHICULOS','Nº EFECTIVOS','UBICACION','OBSERVACION','VER'],
             rowNum: 50, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE COMISARIAS REGISTRADAS - CERRO COLORADO', align: "center",
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'nombre', index: 'nombre', align: 'left', width: 60},
+                {name: 'nombre', index: 'nombre', align: 'left', width: 40},
                 {name: 'telefono', index: 'telefono', align: 'center', width: 15},
                 {name: 'nro_vehiculos', index: 'nro_vehiculos', align: 'center', width: 12},
                 {name: 'nro_efectivos', index: 'nro_efectivos', align: 'center', width: 12},
-                {name: 'ubicacion', index: 'ubicacion', hidden: true}
+                {name: 'ubicacion', index: 'ubicacion', hidden: true},
+                {name: 'observacion', index: 'observacion', align: 'center', width: 17},
+                {name: 'ver', index: 'ver',align: 'center', width: 12}
+                
             ],
             pager: '#pager_table_comisarias',
             rowList: [50, 100],
@@ -164,7 +167,7 @@
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 165px">TEL. COMISARIA: &nbsp;<i class="fa fa-phone"></i></span>
                     <div> 
-                        <input id="dlg_telefono_comisaria" name="dlg_telefono_comisaria" type="text" class="form-control" style="height: 30px;" maxlength="20" onkeypress="return soloNumeroTab(event);">
+                        <input id="dlg_telefono_comisaria" name="dlg_telefono_comisaria" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
                     </div>
                 </div>
             </div>
@@ -267,6 +270,67 @@
     </div>
 </div>
 
+<div id="dlg_nueva_observacion_comisaria" style="display: none;">
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">DATOS OBSERVACION</div>
+        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            
+            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; ">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">FECHA REGISTRO &nbsp;<i class="fa fa-calendar"></i></span>
+                    <div>
+                        <input id="id_observacion" type="hidden" value="0">
+                        <input id="dlg_fecha_observacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 30px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">OBSERVACIONES: &nbsp;<i class="fa fa-location-arrow"></i></span>
+                    <div>
+                        <textarea id="dlg_observacion" rows="8" type="text" class="form-control text-uppercase" style="height: 120px;"></textarea>
+                       
+                    </div>
+                </div>
+            </div> 
+      
+        </div>
+    </div>
+    </div>
+    
+</div>
 
+<div id="dlg_ver_observacion_comisaria" style="display: none;">
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">OBSERVACIONES</div>
+        <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            
+            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; ">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">FECHA INICIO &nbsp;<i class="fa fa-calendar"></i></span>
+                    <div>
+                        <input id="hidden_id_observacion" type="hidden" value="0">
+                        <input id="dlg_observacion_inicio" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 30px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; ">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">FECHA FIN &nbsp;<i class="fa fa-calendar"></i></span>
+                    <div>
+                        <input id="dlg_observacion_fin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 30px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                    </div>
+                </div>
+            </div>
+      
+        </div>
+    </div>
+    </div>
+    
+</div>
 @endsection
 
