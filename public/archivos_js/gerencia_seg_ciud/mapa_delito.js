@@ -125,3 +125,9 @@ function guardar_datos() {
         }
     });
 }
+
+function fn_buscar_delitos(){
+    fecha_inicio = $("#fecha_inicio").val();
+    fecha_fin = $("#fecha_fin").val();
+    fn_actualizar_grilla('table_mapa_delito','comisarias/0?grid=mapa_delito&data=1&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin);
+}

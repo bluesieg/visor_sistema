@@ -333,7 +333,7 @@ class VerTecnicaController extends Controller
     {
         $RecDocumentos = new RecDocumentos;
         $val=  $RecDocumentos::where("id_reg_exp","=",$id_reg_exp)->first();
-        if(count($val)>=1)
+        if($val)
         {
             $val->fase = 8;
             $val->save();
@@ -727,7 +727,7 @@ class VerTecnicaController extends Controller
         $especificaciones = DB::connection('gerencia_catastro')->table("soft_lic_edificacion.especificaciones")->where('id_reg_exp',$id_reg_exp)->get();
         //$institucion = DB::select('SELECT * FROM maysa.institucion');
         
-        if(count($resolucion) && count($especificaciones) >= 0)
+        if($resolucion && $especificaciones)
         {
             $parametros = DB::connection('gerencia_catastro')->table('soft_lic_edificacion.registro_expediente')->where('id_reg_exp',$id_reg_exp)->first();
             

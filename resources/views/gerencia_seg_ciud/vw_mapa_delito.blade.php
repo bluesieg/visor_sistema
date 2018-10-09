@@ -40,25 +40,33 @@
                                             
                                         <h1 ><b>MAPA DEL DELITO</b></h1>
                                         
-                                        <div class="row" style="padding: 0px; margin-top: 30px">
-                                            <div class="col-xs-5">
+                                        <div class="row" style="padding: 0px; padding-top: 20px;">
+                                            <div class="col-xs-3" style="padding-right: 0px;">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Desde:</span>
+                                                <div class="icon-addon addon-md">
+                                                    <input  id="fecha_inicio" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="col-xs-3" style="padding-right: 0px;">
                                                 <div class="input-group input-group-md">
-                                                    <span class="input-group-addon">DELITO:. &nbsp;<i class="fa fa-male"></i></span>
-                                                    <div>
-                                                        <input id="dlg_buscar_comisaria" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR NOMBRE">
+                                                    <span class="input-group-addon">Hasta:</span>
+                                                    <div class="icon-addon addon-md">
+                                                        <input id="fecha_fin" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-xs-2">
                                                 <div class="text-left">
-                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_comisaria();">
+                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_delitos();">
                                                             <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
                                                         </button>
                                                 </div>
                                             </div>
                                             
-                                           <div class="col-xs-5 text-center">
+                                           <div class="col-xs-4 text-center">
 
                                                 <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_mapa_delito();">
                                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Delito
@@ -88,9 +96,8 @@
 @section('page-js-script')
 <script type="text/javascript">
     $(document).ready(function (){
-        
         jQuery("#table_mapa_delito").jqGrid({
-            url: 'comisarias/0?grid=mapa_delito',
+            url: 'comisarias/0?grid=mapa_delito&data=0',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
@@ -114,14 +121,6 @@
                 },
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){modificar_mapa_delito();}
-        });
-        
-        $("#dlg_buscar_comisaria").keypress(function (e) {
-            if (e.which == 13) {
-
-                   fn_buscar_comisaria();
-
-            }
         });
         
         

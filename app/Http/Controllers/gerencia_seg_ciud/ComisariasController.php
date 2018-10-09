@@ -26,6 +26,10 @@ class ComisariasController extends Controller
             $tipo_delito = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.tipo_delito')->get();
             return view('gerencia_seg_ciud/vw_mapa_delito',compact('tipo_delito'));
         }
+        if ($request['tipo'] == 'rutas_serenazgo') 
+        { 
+            return view('gerencia_seg_ciud/vw_rutas_serenazgo');
+        }
     }
 
     public function show($id,Request $request)
@@ -40,8 +44,8 @@ class ComisariasController extends Controller
             {
                 return $this->traer_datos_mapa_delito($id);
             }
-//            $comisarias= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisaria_personal')->where('id',$id)->get();
-//            return $comisarias;
+            $comisarias= DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_comisaria_personal')->where('id',$id)->get();
+            return $comisarias;
         }
         else
         {
@@ -55,7 +59,7 @@ class ComisariasController extends Controller
             }
             if($request['grid']=='mapa_delito')
             {
-                return $this->cargar_datos_mapa_delito();
+                return $this->cargar_datos_mapa_delito($request);
             }
             if($request['mapa']=='comisarias')
             {
@@ -314,9 +318,12 @@ class ComisariasController extends Controller
         return response()->json($Lista);
     }
     
-    public function cargar_datos_mapa_delito()
+    public function cargar_datos_mapa_delito(Request $request)
     {
         header('Content-type: application/json');
+        $data = $request['data'];
+        $fecha_inicio = $request['fecha_inicio'];
+        $fecha_fin = $request['fecha_fin'];
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -325,10 +332,18 @@ class ComisariasController extends Controller
         if ($start < 0) {
             $start = 0;
         }
-
-        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.vw_mapa_delito");
-        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_mapa_delito')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-
+        
+        if ($data == '0') 
+        {
+            $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.vw_mapa_delito");
+            $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_mapa_delito')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
+        else
+        {
+            $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fecha_inicio' and '$fecha_fin'");
+            $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_mapa_delito')->whereBetween('fecha_registro', [$fecha_inicio, $fecha_fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
+        
         $total_pages = 0;
         if (!$sidx) {
             $sidx = 1;

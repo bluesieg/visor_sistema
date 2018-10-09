@@ -269,6 +269,8 @@ Route::group(['middleware' => 'auth'], function() {
     /******************************      GERENCIA DE SEGURIDAD CIUDADANA ********************************************************/
     Route::group(['namespace' => 'gerencia_seg_ciud'], function() {
         Route::resource('comisarias','ComisariasController');
+        Route::resource('sub_geren_riesgos_desastres','Riesgos_Desastres_Controller');
+        Route::resource('sub_geren_transito_seg_vial','Transito_Seg_Vial_Controller');
     });
     
     /*******************************  PROCURADURIA **********************************************************/
@@ -286,6 +288,12 @@ Route::group(['middleware' => 'auth'], function() {
     
      Route::group(['namespace' => 'asesoria_legal'], function() {
         Route::resource('asesoria_legal','AsesorialegalController');
+    });
+    
+    Route::group(['namespace' => 'gerencia_obras_pub_infra'], function() {
+        Route::resource('sub_geren_estudios_proyectos','Estudios_Proyectos_Controller');
+        Route::resource('sub_geren_apoyo_matenimiento','Apoyo_Mantenimiento_Controller');
+        Route::resource('sub_geren_obras_publicas','Obras_Publicas_Controller');
     });
         
 });

@@ -127,7 +127,7 @@ class VerAdministrativaController extends Controller
     public function actualizar_expediente_verif_admin(Request $request){
         $RecDocumentos = new RecDocumentos;
         $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
-        if(count($val)>=1)
+        if($val)
         {
             $val->fase = 3;
             $val->save();
@@ -361,7 +361,7 @@ class VerAdministrativaController extends Controller
     public function cambiar_estado(Request $request){
         $RecDocumentos = new RecDocumentos;
         $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
-        if(count($val)>=1)
+        if($val)
         {
             $val->fase = 4;
             $val->save();
@@ -372,7 +372,7 @@ class VerAdministrativaController extends Controller
     public function estado_verif_admin(Request $request){
         $RecDocumentos = new RecDocumentos;
         $val=  $RecDocumentos::where("id_reg_exp","=",$request['id_reg_exp'])->first();
-        if(count($val)>=1)
+        if($val)
         {
             $val->fase = 3;
             $val->save();

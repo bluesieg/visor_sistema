@@ -109,9 +109,9 @@
                         
                         <div class="panel panel-default" style="background:  transparent;">
                             <div class="panel-heading" style="background: #2471A3; color: white">  
-                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-1"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> Sub Ge. Operaciones y Vigilancia Interna  </a></h4>
+                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseTwo_sub_gerencia_obras_publicas"> <i class="fa fa-fw fa-plus-circle txt-color-white"></i> <i class="fa fa-fw fa-minus-circle txt-color-white"></i> Sub Ge. Obras Publicas  </a></h4>
                             </div>
-                            <div id="collapseOne-1" class="panel-collapse collapse in cr_toogle">
+                            <div id="collapseTwo_sub_gerencia_obras_publicas" class="panel-collapse collapse in cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
                                     <div>
 <!--                                            widget edit box -->
@@ -128,35 +128,14 @@
 
                                                             <div class="panel panel-default" style="background: transparent">
                                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                    <h4 class="panel-title"><a href="comisarias?tipo=comisarias"> 
+                                                                    <h4 class="panel-title"><a href="sub_geren_obras_publicas"> 
                                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                            Matenimiento Comisarias
+                                                                            Modulo de Obras Publicas
                                                                         </a>
                                                                     </h4>
                                                                 </div>
-                                                           </div>
-                                                            <div class="panel panel-default" style="background: transparent">
-                                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                    <h4 class="panel-title"><a href="comisarias?tipo=mapa_delito"> 
-                                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                            Matenimiento Map. Delito
-                                                                        </a>
-                                                                    </h4>
-                                                                </div>
-                                                           </div>
-
-                                                            <div class="panel panel-default" style="background: transparent">
-                                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                    <h4 class="panel-title"><a href="comisarias?tipo=rutas_serenazgo"> 
-                                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                            Mantenimiento Rutas Serenazgo
-                                                                        </a>
-                                                                    </h4>
-                                                                </div>
-                                                           </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,14 +149,14 @@
                         <div class="panel panel-default" style="background: transparent">
                             <div class="panel-heading" style="background: #2471A3; color: white">  
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-riesgo_desa" class="collapsed"> 
+                                    <a data-toggle="collapse" data-parent="#accordion-3" href="#sub_gerencia_estudios_proyectos" class="collapsed"> 
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
                                         <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
-                                        Sub Ge. Riesgos y Desastres
+                                        Sub Ge. Estudios y Proyectos
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo_sub-riesgo_desa" class="panel-collapse collapse in cr_toogle">
+                            <div id="sub_gerencia_estudios_proyectos" class="panel-collapse collapse in cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
                                     <div>
                                     <!--widget edit box -->
@@ -191,35 +170,24 @@
 
                                                     <div class="panel panel-default" style="background: transparent">
                                                         <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                            <h4 class="panel-title"><a href="sub_geren_riesgos_desastres?tipo=zona_riesgo"> 
+                                                            <h4 class="panel-title"><a href="sub_geren_estudios_proyectos?tipo=perfiles"> 
                                                                     <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                     <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                    Mod. Zonas de Riesgos
+                                                                    Mod. Perfiles
                                                                 </a>
                                                             </h4>
                                                         </div>
                                                    </div>
                                                     <div class="panel panel-default" style="background: transparent">
                                                         <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                            <h4 class="panel-title"><a href="sub_geren_riesgos_desastres?tipo=ctr_zona_riesgo"> 
+                                                            <h4 class="panel-title"><a href="sub_geren_estudios_proyectos?tipo=expedientes_tecnicos"> 
                                                                     <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                     <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                    Mod. de Construcciones en Zonas de Riesgo
+                                                                    Mod. Expedientes Tecnicos
                                                                 </a>
                                                             </h4>
                                                         </div>
-                                                   </div>
-
-                                                    <div class="panel panel-default" style="background: transparent">
-                                                        <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                            <h4 class="panel-title"><a href="sub_geren_riesgos_desastres?tipo=atencion_emergencia"> 
-                                                                    <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                    <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                    Mod. de Zonas de Atencion por Emergencia
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                   </div>
+                                                    </div>
 
                                                 </div>
                                                 </div>
@@ -233,14 +201,14 @@
                         <div class="panel panel-default" style="background: transparent">
                             <div class="panel-heading" style="background: #2471A3; color: white">  
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-transito_seg_vial" class="collapsed"> 
+                                    <a data-toggle="collapse" data-parent="#accordion-3" href="#apoyo_mantenimiento" class="collapsed"> 
                                         <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
                                         <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
-                                        Sub Ge. Transito y Seguridad Vial
+                                        Apoyo y Mantenimiento
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo_sub-transito_seg_vial" class="panel-collapse collapse in cr_toogle">
+                            <div id="apoyo_mantenimiento" class="panel-collapse collapse in cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
                                     <div>
                                     <!--widget edit box -->
@@ -254,10 +222,21 @@
 
                                                     <div class="panel panel-default" style="background: transparent">
                                                         <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                            <h4 class="panel-title"><a href="sub_geren_transito_seg_vial"> 
+                                                            <h4 class="panel-title"><a href="sub_geren_apoyo_matenimiento?tipo=apoyo"> 
                                                                     <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                     <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                    Mod. Ubicacion de Semaforos
+                                                                    Mod. Apoyo
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default" style="background: transparent">
+                                                        <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                            <h4 class="panel-title"><a href="sub_geren_apoyo_matenimiento?tipo=mantenimiento"> 
+                                                                    <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                    <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                    Mod. Mantenimiento
                                                                 </a>
                                                             </h4>
                                                         </div>
