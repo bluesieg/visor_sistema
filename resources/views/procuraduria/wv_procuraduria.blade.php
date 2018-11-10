@@ -275,6 +275,12 @@
             }
         });
         
+        $("#dlg_dni_abogado").keypress(function (e) {
+            if (e.which == 13) {
+                consultar_dni($("#dlg_dni_abogado").val(),'hidden_dlg_abogado','dlg_abogado');
+            }
+        });
+        
         
     });
 </script>
@@ -354,37 +360,26 @@
                         </header>
                     </div>
                 </section>     
-                <div class="col-xs-12" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Responsable &nbsp;<i class="fa fa-list"></i></span>
+                <div class="col-xs-5" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 192px">DNI: &nbsp;<i class="fa fa-credit-card"></i></span>
                         <div>
-                            <select id='sel_responsable' class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione Responsable--</option>
-                                @foreach($abogados as $abogado)
-                                    <option value="{{ $abogado->id_abogado }}">{{ $abogado->nombre }}</option>
-                                @endforeach
-                            </select>                       
+                            <input id="dlg_dni_abogado" type="text" maxlength="8" class="form-control" style="height: 30px;"  onkeypress="return soloNumeroTab(event);">
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-9" style="padding: 0px;margin-top: 10px;margin-bottom: 10px ">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Tipo &nbsp;<i class="fa fa-list"></i></span>
+
+                <div class="col-xs-7" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 180px">RESPONSABLE: &nbsp;<i class="fa fa-user"></i></span>
                         <div>
-                            <select id='sel_tipo' onchange="seleccion_tipo();" class="form-control col-lg-8" style="height: 32px;">
-                                <option value="0">--Seleccione Tipo--</option>
-                                @foreach($tipos as $tipo)
-                                    <option value="{{ $tipo->id_tipo }}">{{ $tipo->descripcion }}</option>
-                                @endforeach                                
-                            </select>                       
+                            <input type="hidden" id="hidden_dlg_abogado" value="0">
+                            <input id="dlg_abogado" type="text" maxlength="250" class="form-control text-uppercase" style="height: 30px;"  disabled="">
                         </div>
                     </div>
                 </div>
-                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="cargar_mapa_procuraduria();" style="padding: 0px;margin-top: 10px " disabled="">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Ubicar Mapa
-                </button>
             </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
                         <header>
@@ -393,23 +388,19 @@
                         </header>
                     </div>
                 </section>
-                <div class="col-xs-8" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Habilitación Hurbana. &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div class=""  >
-                            <input type="hidden" id="hidden_inp_hab_urb" value="0">
-                            <input id="inp_hab_urb" type="text"  class="form-control" style="height: 32px; " disabled="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-4" style="padding: 0px;">
+                <div class="col-xs-9" style="padding: 0px;">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Cod. Catastral.&nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div class=""  >
+                        <div class="">
+                            <input type="hidden" id="inp_id_lote" value="0">
                             <input id="inp_cod_catastral" type="text"  class="form-control" style="height: 32px; " disabled="">
                         </div>
                     </div>
                 </div>
+                
+                <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="cargar_mapa_procuraduria();" style="padding: 0px;margin-top: 0px">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>Ubicar Mapa
+                </button>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
                <section>
@@ -609,6 +600,8 @@
     </div>
     </div>
 </div>
+
+@include('vw_personas')
 
 @endsection
 

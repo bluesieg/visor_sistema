@@ -358,6 +358,8 @@ function limpiar_campos()
     $('#dlg_avance_fisico').val('');
     $('#dlg_avance_financiero').val('');
     $('#id_mantenimiento').val('');
+    $('#btn_modificar_mantenimiento').hide();
+    $('#btn_agregar_mantenimiento').show();
     jQuery("#table_fotos_mantenimiento").jqGrid('setGridParam', {url: 'sub_geren_apoyo_matenimiento/0?grid=fotos_mantenimiento&indice='+0 }).trigger('reloadGrid');
 }
 
@@ -368,12 +370,6 @@ function nuevo_mantenimiento()
         autoOpen: false, modal: true, width: 1050, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  NUEVO MANTENIMIENTO  :.</h4></div>",
         buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-            "class": "btn btn-success bg-color-green",
-            click: function () {
-                    guardar_editar_datos(1);
-            }
-        }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () {
@@ -541,6 +537,8 @@ function guardar_editar_datos(tipo) {
                 }else{
                     jQuery("#table_fotos_mantenimiento").jqGrid('setGridParam', {url: 'sub_geren_apoyo_matenimiento/0?grid=fotos_mantenimiento&indice='+$("#id_mantenimiento").val() }).trigger('reloadGrid');
                 }
+                $('#btn_agregar_mantenimiento').hide();
+                $('#btn_modificar_mantenimiento').show();
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
@@ -608,16 +606,12 @@ function modificar_mantenimiento()
     
     if (id_mantenimiento) {
         
+        $('#btn_agregar_mantenimiento').hide();
+        $('#btn_modificar_mantenimiento').show();
         $("#dlg_nuevo_mantenimiento").dialog({
             autoOpen: false, modal: true, width: 1050, show: {effect: "fade", duration: 300}, resizable: false,
             title: "<div class='widget-header'><h4>.: INFORMACION DE MANTENIMIENTO :.</h4></div>",
             buttons: [{
-                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-                "class": "btn btn-success bg-color-green",
-                click: function () {
-                    guardar_editar_datos(2);
-                }
-            }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
                 click: function () {
@@ -911,3 +905,41 @@ function eliminar_foto()
         mostraralertasconfoco("No Hay Registros Seleccionados","#table_fotos_mantenimiento");
     }   
 }
+
+function Cambiar_estado(id_foto_mant,id_mantenimiento,estado)
+{
+    $.ajax({
+        url: 'sub_geren_apoyo_matenimiento/'+id_foto_mant+'/edit',
+        type:'GET',
+        data: {
+            id_mantenimiento:id_mantenimiento,
+            estado:estado,
+            tipo:3
+        },
+        success: function(data)
+        {
+            MensajeExito('FOTO MANTENIMIENTO', 'EL REGISTRO HA SIDO ACTUALIZADO');
+            id_foto_mantenimiento = $('#id_mantenimiento').val();
+            if (id_foto_mantenimiento == null) {
+                jQuery("#table_fotos_mantenimiento").jqGrid('setGridParam', {url: 'sub_geren_apoyo_matenimiento/0?grid=fotos_mantenimiento&indice='+0 }).trigger('reloadGrid');
+            }else{
+                jQuery("#table_fotos_mantenimiento").jqGrid('setGridParam', {url: 'sub_geren_apoyo_matenimiento/0?grid=fotos_mantenimiento&indice='+$("#id_mantenimiento").val() }).trigger('reloadGrid');
+            }
+        }        
+    });
+}
+
+function validarExtensionArchivo()
+{
+    var fileInput = document.getElementById('dlg_foto_mantenimiento');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+    if(!allowedExtensions.exec(filePath)){
+        mostraralertasconfoco("ARCHIVO INCORRECTO SOLO SE PUEDEN SUBIR ARCHIVOS DE TIPO .PNG / .JPG / .JPEG","#dlg_foto_mantenimiento");
+        fileInput.value = '';
+        return false;
+    }else{
+        MensajeExito('ARCHIVO CORRECTO','PRESIONE GUARDAR PARA FINALIZAR');
+    }
+}
+

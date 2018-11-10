@@ -94,7 +94,7 @@
     $(document).ready(function (){
         
         jQuery("#table_tipos").jqGrid({
-            url: 'procuraduria_mant_tipo/0?grid=tipos',
+            url: 'procuraduria/0?grid=tipos',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,

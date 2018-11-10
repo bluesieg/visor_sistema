@@ -81,7 +81,7 @@ function fn_consultar_dni(num) {
         return false;
     }
     $.ajax({
-        url: 'consultar_persona?nro_doc=' + num,
+        url: 'usuarios/'+num+'?show=recuperar_dni',
         type: 'GET',
         success: function (data) {
             if (data) {
@@ -156,7 +156,7 @@ function new_persona_user() {
     }
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'insert_personas_user',
+        url: 'usuarios?tipo=1',
         type: 'POST',
         data: {
             pers_ape_pat: $("#pers_pat").val().toUpperCase() || '-',

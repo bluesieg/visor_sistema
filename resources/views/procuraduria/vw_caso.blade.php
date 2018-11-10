@@ -94,7 +94,7 @@
     $(document).ready(function (){
         
         jQuery("#table_caso").jqGrid({
-            url: 'procuraduria_mant_casos/0?grid=casos',
+            url: 'procuraduria/0?grid=casos',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,

@@ -578,4 +578,3 @@ function modificar_exp_tecnico()
         mostraralertasconfoco("No Hay Registros Seleccionados","#table_expediente_tecnico");
     }
 }
-

@@ -129,7 +129,7 @@
 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria"> 
+                                                                        <h4 class="panel-title"><a href="procuraduria?tipo=procuraduria"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Procuraduria
@@ -138,17 +138,6 @@
                                                                     </div>
                                                                </div>
                                                                 
-                                                                
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_abogados"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Abogados
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
                                                                  <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
                                                                         <h4 class="panel-title"><a href="procuraduria_mant_tipo"> 
@@ -161,7 +150,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_tipo_sancion"> 
+                                                                        <h4 class="panel-title"><a href="procuraduria?tipo=tipo_sancion"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Tipo Sancion
@@ -171,7 +160,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_proceso"> 
+                                                                        <h4 class="panel-title"><a href="procuraduria?tipo=proceso"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Proceso
@@ -181,7 +170,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_materia"> 
+                                                                        <h4 class="panel-title"><a href="procuraduria?tipo=materia"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Materia
@@ -191,7 +180,7 @@
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_casos"> 
+                                                                        <h4 class="panel-title"><a href="procuraduria?tipo=caso"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mant. Casos
@@ -203,10 +192,7 @@
                                                                 
                                                             </div>
                                                         </div>
-                                                   
-                                                    
-                                          
-                                                   
+
                                                 </div>
                                            </div>
 <!--                                            end widget content -->

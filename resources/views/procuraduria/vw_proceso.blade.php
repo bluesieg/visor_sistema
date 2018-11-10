@@ -94,7 +94,7 @@
     $(document).ready(function (){
         
         jQuery("#table_proceso").jqGrid({
-            url: 'procuraduria_mant_proceso/0?grid=proceso',
+            url: 'procuraduria/0?grid=proceso',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,

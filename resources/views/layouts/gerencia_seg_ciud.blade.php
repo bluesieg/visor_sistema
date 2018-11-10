@@ -128,7 +128,7 @@
 
                                                             <div class="panel panel-default" style="background: transparent">
                                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                    <h4 class="panel-title"><a href="comisarias?tipo=comisarias"> 
+                                                                    <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=comisarias"> 
                                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                             Matenimiento Comisarias
@@ -138,7 +138,7 @@
                                                            </div>
                                                             <div class="panel panel-default" style="background: transparent">
                                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                    <h4 class="panel-title"><a href="comisarias?tipo=mapa_delito"> 
+                                                                    <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=mapa_delito"> 
                                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                             Matenimiento Map. Delito
@@ -149,7 +149,7 @@
 
                                                             <div class="panel panel-default" style="background: transparent">
                                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                    <h4 class="panel-title"><a href="comisarias?tipo=rutas_serenazgo"> 
+                                                                    <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=rutas_serenazgo"> 
                                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                             Mantenimiento Rutas Serenazgo

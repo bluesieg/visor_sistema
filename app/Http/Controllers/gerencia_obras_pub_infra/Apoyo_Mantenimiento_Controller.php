@@ -57,6 +57,18 @@ class Apoyo_Mantenimiento_Controller extends Controller
             {
                 return $this->cargar_datos_fotos_mantenimiento($request);
             }
+            if ($request['mapa'] == 'mapa_mantenimiento') 
+            {
+                return $this->cargar_mapa_mantenimiento($request);
+            }
+            if($request['reporte']=='mantenimientos')
+            {
+                return $this->reporte_mantenimientos($request);
+            }
+            if($request['fotos']=='fotos_mantenimiento')
+            {
+                return $this->cargar_fotos_mantenimiento($request);
+            }
         }  
     }
     
@@ -93,6 +105,10 @@ class Apoyo_Mantenimiento_Controller extends Controller
         if ($request['tipo'] == 2) 
         {
             return $this->editar_datos_mantenimiento($id,$request);
+        }
+        if ($request['tipo'] == 3) 
+        {
+            return $this->editar_estado_fotos_mantenimiento($id,$request);
         }
     }
     
@@ -210,7 +226,7 @@ class Apoyo_Mantenimiento_Controller extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_mantenimiento),
                 trim($Datos->nombre),
-                trim($Datos->modalidad),
+                trim($Datos->estado),
                 trim($Datos->nomb_hab_urba),
                 trim($Datos->fecha_inicio),
                 trim($Datos->fecha_termino),
@@ -258,11 +274,17 @@ class Apoyo_Mantenimiento_Controller extends Controller
         $Lista->total = $total_pages;
         $Lista->records = $count;
         foreach ($sql as $Index => $Datos) {                
-            $Lista->rows[$Index]['id'] = $Datos->id_foto_mant;            
+            $Lista->rows[$Index]['id'] = $Datos->id_foto_mant;
+            if ($Datos->estado == 1) {
+              $nuevo = '<button class="btn btn-labeled btn-success" type="button" onclick="Cambiar_estado('.trim($Datos->id_foto_mant).','.trim($Datos->id_matenimiento).',0)"><span class="btn-label"><i class="fa fa-plus"></i></span> VISIBLE</button>';
+            }else{
+               $nuevo = '<button class="btn btn-labeled btn-danger" type="button" onclick="Cambiar_estado('.trim($Datos->id_foto_mant).','.trim($Datos->id_matenimiento).',1)"><span class="btn-label"><i class="fa fa-trash"></i></span> OCULTO</button>'; 
+            }
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_foto_mant),
                 trim($Datos->fecha_creacion),
                 '<button class="btn btn-labeled btn-warning" type="button" onclick="ver_foto('.trim($Datos->id_foto_mant).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER FOTO</button>',
+                $nuevo,
             );
         }
         return response()->json($Lista);
@@ -411,4 +433,102 @@ class Apoyo_Mantenimiento_Controller extends Controller
         return $request['id_foto_mantenimiento'];
     }
     
+    function cargar_mapa_mantenimiento(Request $request)
+    {
+        $id_estado_mant = $request['id_estado_mant'];
+        $id_hab_urb = $request['id_hab_urb'];
+            
+        $mantenimientos = DB::connection('gerencia_catastro')->select("select * from geren_gopi.vw_mantenimiento where id_hab_urb = $id_hab_urb and id_estado_mant = $id_estado_mant");
+        
+        if($mantenimientos)
+        {
+            $mapa = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                        'type',     'FeatureCollection',
+                        'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_mantenimiento',id_mantenimiento,
+                                'nombre',nombre,
+                                'tipo_mant',tipo_mant,
+                                'observacion',observacion,
+                                'informe_tecnico',informe_tecnico,
+                                'tiempo_ejecucion',tiempo_ejecucion,
+                                'beneficiarios',beneficiarios,
+                                'fecha_inicio',fecha_inicio,
+                                'fecha_termino',fecha_termino,
+                                'descripcion',descripcion,
+                                'avance_fisico',avance_fisico,
+                                'avance_financiero',avance_financiero,
+                                'modalidad',modalidad,
+                                'estado',estado,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'ubicacion',ubicacion,
+                                'dni_ejecutor',dni_ejecutor,
+                                'ejecutor',ejecutor,
+                                'dni_supervisor',dni_supervisor,
+                                'supervisor',supervisor,
+                                'dni_residente',dni_residente,
+                                'residente',residente
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM geren_gopi.vw_mantenimiento where id_hab_urb = $id_hab_urb and id_estado_mant = $id_estado_mant) row) features;");
+
+            return response()->json($mapa);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
+    public function reporte_mantenimientos(Request $request)
+    {
+        $id_mantenimiento = $request['id_mantenimiento'];
+        $sql = DB::connection('gerencia_catastro')->select("select * from geren_gopi.vw_mantenimiento where id_mantenimiento = $id_mantenimiento ");
+        
+        if($sql)
+        {
+            $view =  \View::make('gerencia_obras_pub_infra.reportes.reporte_mantenimientos', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("REPORTE MANTENIMIENTO".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+    }
+    
+    public function editar_estado_fotos_mantenimiento($id_foto_mant, Request $request)
+    {
+        $id_mantenimiento = $request['id_mantenimiento'];
+        $estado = $request['estado'];
+        
+        $FotosMantenimiento = new FotosMantenimiento;
+        $val=  $FotosMantenimiento::where("id_foto_mant","=",$id_foto_mant)->where("id_matenimiento","=",$id_mantenimiento)->first();
+        if($val)
+        {
+            $val->estado = $estado;
+            $val->save();
+        }
+        return $id_foto_mant;
+    }
+    
+    public function cargar_fotos_mantenimiento(Request $request)
+    {
+        $id_mantenimiento = $request['id'];
+        $foto = DB::connection('gerencia_catastro')->select("select foto from geren_gopi.fotos_mantenimiento where id_matenimiento = $id_mantenimiento and estado = 1");
+        if($foto)
+        {
+            return $foto;
+        }
+        else
+        {
+            return 0; 
+        }
+    }
 }

@@ -9,19 +9,42 @@ use App\Models\procuraduria\Mtrprocuraduria;
 use App\Models\procuraduria\Dteprocuraduria;
 use App\Models\procuraduria\Documentos_Adjuntos;
 use Illuminate\Support\Facades\Response;
+use App\Models\procuraduria\Caso;
+use App\Models\procuraduria\Materia;
+use App\Models\procuraduria\Proceso;
+use App\Models\procuraduria\TipoSancion;
+use App\Models\procuraduria\Tipo;
 
 class ProcuraduriaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $abogados = DB::connection('gerencia_catastro')->table('procuraduria.abogados')->get();
-        $tipos = DB::connection('gerencia_catastro')->table('procuraduria.tipo')->get();
-        $tipos_sanciones = DB::connection('gerencia_catastro')->table('procuraduria.tipo_sancion')->get();
-        $materias = DB::connection('gerencia_catastro')->table('procuraduria.materia')->get();
-        $procesos = DB::connection('gerencia_catastro')->table('procuraduria.proceso')->get();
-        $casos = DB::connection('gerencia_catastro')->table('procuraduria.caso')->get();
-        $tip_doc = DB::connection('gerencia_catastro')->select('select * from procuraduria.tipo_documento order by 1');
-        return view('procuraduria/wv_procuraduria',compact('abogados','tipos','tipos_sanciones','materias','procesos','casos','tip_doc'));
+        if ($request['tipo'] == 'procuraduria') 
+        {
+            $abogados = DB::connection('gerencia_catastro')->table('procuraduria.abogados')->get();
+            $tipos_sanciones = DB::connection('gerencia_catastro')->table('procuraduria.tipo_sancion')->get();
+            $materias = DB::connection('gerencia_catastro')->table('procuraduria.materia')->get();
+            $procesos = DB::connection('gerencia_catastro')->table('procuraduria.proceso')->get();
+            $casos = DB::connection('gerencia_catastro')->table('procuraduria.caso')->get();
+            $tip_doc = DB::connection('gerencia_catastro')->select('select * from procuraduria.tipo_documento order by 1');
+            return view('procuraduria/wv_procuraduria',compact('abogados','tipos_sanciones','materias','procesos','casos','tip_doc'));
+        }
+        if ($request['tipo'] == 'tipo_sancion') 
+        {
+            return view('procuraduria/vw_tipo_sancion');
+        }
+        if ($request['tipo'] == 'proceso') 
+        {
+            return view('procuraduria/vw_proceso');
+        }
+        if ($request['tipo'] == 'materia') 
+        {
+            return view('procuraduria/vw_materia');
+        }
+        if ($request['tipo'] == 'caso') 
+        {
+            return view('procuraduria/vw_caso');
+        }
     }
     
     public function create(Request $request)
@@ -33,6 +56,26 @@ class ProcuraduriaController extends Controller
         if ($request['tipo'] == 2) 
         {
             return $this->agregar_DteProcuraduria($request);
+        }
+        if ($request['tipo'] == 3) 
+        {
+            return $this->agregar_datos_casos($request);
+        }
+        if ($request['tipo'] == 4) 
+        {
+            return $this->agregar_datos_materia($request);
+        }
+        if ($request['tipo'] == 5) 
+        {
+            return $this->agregar_datos_proceso($request);
+        }
+        if ($request['tipo'] == 6) 
+        {
+            return $this->agregar_datos_tipo_sancion($request);
+        }
+        if ($request['tipo'] == 7) 
+        {
+            return $this->agregar_datos_tipos($request);
         }
     }
     
@@ -57,6 +100,26 @@ class ProcuraduriaController extends Controller
             if ($request['show'] == 'observaciones') 
             {
                 return $this->traer_datos_observaciones($id);
+            }
+            if ($request['show'] == 'casos') 
+            {
+                return $this->traer_datos_casos($id);
+            }
+            if ($request['show'] == 'materia') 
+            {
+                return $this->traer_datos_materia($id);
+            }
+            if ($request['show'] == 'proceso') 
+            {
+                return $this->traer_datos_proceso($id);
+            }
+            if ($request['show'] == 'tipo_sancion') 
+            {
+                return $this->traer_datos_tipo_sancion($id);
+            }
+            if ($request['show'] == 'tipo') 
+            {
+                return $this->traer_datos_tipo($id);
             }
         }
         else
@@ -85,6 +148,30 @@ class ProcuraduriaController extends Controller
             {
                 return $this->cargar_documentos_adjuntos($request);
             }
+            if ($request['grid'] == 'casos') 
+            {
+                return $this->cargar_datos_casos($request);
+            }
+            if ($request['grid'] == 'materia') 
+            {
+                return $this->cargar_datos_materia($request);
+            }
+            if ($request['grid'] == 'proceso') 
+            {
+                return $this->cargar_datos_proceso($request);
+            }
+            if ($request['grid'] == 'tipo_sancion') 
+            {
+                return $this->cargar_datos_tipo_sancion($request);
+            }
+            if ($request['grid'] == 'tipos') 
+            {
+                return $this->cargar_datos_tipos($request);
+            }
+            if ($request['mapa'] == 'procuraduria') 
+            {
+                return $this->cargar_mapa_procuraduria($request);
+            }
         }  
     }
     public function edit($id,Request $request)
@@ -96,6 +183,26 @@ class ProcuraduriaController extends Controller
         if ($request['tipo'] == 2) 
         {
             return $this->editar_observaciones($id,$request);
+        }
+        if ($request['tipo'] == 3) 
+        {
+            return $this->editar_datos_casos($id,$request);
+        }
+        if ($request['tipo'] == 4) 
+        {
+            return $this->editar_datos_materia($id,$request);
+        }
+        if ($request['tipo'] == 5) 
+        {
+            return $this->editar_datos_proceso($id,$request);
+        }
+        if ($request['tipo'] == 6) 
+        {
+            return $this->editar_datos_tipo_sancion($id,$request);
+        }
+        if ($request['tipo'] == 7) 
+        {
+            return $this->editar_datos_tipos($id,$request);
         }
     }
     public function update(Request $request, $id)
@@ -126,6 +233,36 @@ class ProcuraduriaController extends Controller
         return $observaciones;
     }
     
+    public function traer_datos_casos($id_caso)
+    {
+        $casos = DB::connection('gerencia_catastro')->table('procuraduria.vw_casos')->where('id_caso',$id_caso)->get();
+        return $casos;
+    }
+    
+    public function traer_datos_materia($id_materia)
+    {
+        $materia = DB::connection('gerencia_catastro')->table('procuraduria.vw_materia')->where('id_materia',$id_materia)->get();
+        return $materia;
+    }
+    
+    public function traer_datos_proceso($id_proceso)
+    {
+        $proceso = DB::connection('gerencia_catastro')->table('procuraduria.vw_proceso')->where('id_proceso',$id_proceso)->get();
+        return $proceso;
+    }
+    
+    public function traer_datos_tipo_sancion($id_tipo_sancion)
+    {
+        $tipo_sancion = DB::connection('gerencia_catastro')->table('procuraduria.vw_tipo_sancion')->where('id_tipo_sancion',$id_tipo_sancion)->get();
+        return $tipo_sancion;
+    }
+    
+    public function traer_datos_tipo($id_tipo)
+    {
+        $tipo= DB::connection('gerencia_catastro')->table('procuraduria.vw_tipos')->where('id_tipo',$id_tipo)->get();
+        return $tipo;
+    }
+    
     public function traer_datos_expediente($codigo_expediente)
     {
         $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite',strtoupper($codigo_expediente))->first();
@@ -144,7 +281,7 @@ class ProcuraduriaController extends Controller
             return response()->json([
                 'msg' => 'si',
                 'id_gestor'     => $expedientes->idInteresado,
-                'gestor'        => $expedientes->nombres,
+                'gestor'        => $expedientes->nombres. " " .$expedientes->apellidos,
                 'dni'           => $expedientes->numeroIdentificacion,
                 'fecha_inicio'  => $expedientes->iniciado,
             ]);
@@ -338,6 +475,206 @@ class ProcuraduriaController extends Controller
         return response()->json($Lista);
     }
     
+    public function cargar_datos_casos(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_casos where descripcion like '%".strtoupper($request['descripcion'])."%'");
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_casos')->where('descripcion','like', '%'.strtoupper($request['descripcion']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_caso;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_caso),
+                trim($Datos->descripcion),
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function cargar_datos_materia(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_materia where descripcion like '%".strtoupper($request['descripcion'])."%'");
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_materia')->where('descripcion','like', '%'.strtoupper($request['descripcion']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_materia;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_materia),
+                trim($Datos->descripcion),
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function cargar_datos_proceso(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_proceso where descripcion like '%".strtoupper($request['descripcion'])."%'");
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_proceso')->where('descripcion','like', '%'.strtoupper($request['descripcion']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_proceso;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_proceso),
+                trim($Datos->descripcion),
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function cargar_datos_tipo_sancion(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_tipo_sancion where descripcion like '%".strtoupper($request['descripcion'])."%'");
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_tipo_sancion')->where('descripcion','like', '%'.strtoupper($request['descripcion']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_tipo_sancion;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_tipo_sancion),
+                trim($Datos->descripcion),
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function cargar_datos_tipos(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_tipos where descripcion like '%".strtoupper($request['descripcion'])."%'");
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_tipos')->where('descripcion','like', '%'.strtoupper($request['descripcion']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_tipo;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_tipo),
+                trim($Datos->descripcion),
+            );
+        }
+        return response()->json($Lista);
+    }
+    
     public function agregar_MtrProcuraduria(Request $request)
     {
         $Mtrprocuraduria = new Mtrprocuraduria;
@@ -347,10 +684,8 @@ class ProcuraduriaController extends Controller
         $Mtrprocuraduria->nro_doc_gestor  = $request['dni'];
         $Mtrprocuraduria->fecha_inicio_tramite  = $request['fecha_ini'];
         $Mtrprocuraduria->fecha_registro  = date('d-m-Y');
-        $Mtrprocuraduria->id_responsable  = $request['id_responsable'];
-        $Mtrprocuraduria->id_tipo  = $request['id_tipo'];
-        $Mtrprocuraduria->id_hab_urb  = $request['id_hab_urba'];
-        $Mtrprocuraduria->nomb_hab_urb  = $request['hab_urba'];
+        $Mtrprocuraduria->id_abogado  = $request['id_abogado'];
+        $Mtrprocuraduria->id_lote  = $request['id_lote'];
         $Mtrprocuraduria->cod_catastral  = $request['codigo_catastral'];
         $Mtrprocuraduria->id_tipo_sancion  = $request['id_tipo_sancion'];
         $Mtrprocuraduria->id_materia  = $request['id_materia'];
@@ -378,6 +713,42 @@ class ProcuraduriaController extends Controller
         return $Dteprocuraduria->id_det_procuraduria;
     }
     
+    public function agregar_datos_casos(Request $request)
+    {
+        $Caso = new Caso;
+        $Caso->descripcion = strtoupper($request['descripcion']);
+        $Caso->save();
+
+        return $Caso->id_caso;
+    }
+    
+    public function agregar_datos_materia(Request $request)
+    {
+        $Materia = new Materia;
+        $Materia->descripcion = strtoupper($request['descripcion']);
+        $Materia->save();
+
+        return $Materia->id_materia;
+    }
+    
+    public function agregar_datos_proceso(Request $request)
+    {
+        $Proceso = new Proceso;
+        $Proceso->descripcion = strtoupper($request['descripcion']);
+        $Proceso->save();
+
+        return $Proceso->id_proceso;
+    }
+    
+    public function agregar_datos_tipo_sancion(Request $request)
+    {
+        $TipoSancion = new TipoSancion;
+        $TipoSancion->descripcion = strtoupper($request['descripcion']);
+        $TipoSancion->save();
+
+        return $TipoSancion->id_tipo_sancion;
+    }
+    
     public function editar_procuraduria($id_procuraduria, Request $request)
     {
         $Mtrprocuraduria = new Mtrprocuraduria;
@@ -389,10 +760,8 @@ class ProcuraduriaController extends Controller
             $val->gestor = $request['gestor'];
             $val->nro_doc_gestor = $request['dni'];
             $val->fecha_inicio_tramite = $request['fecha_ini'];
-            $val->id_responsable = $request['id_responsable'];
-            $val->id_tipo = $request['id_tipo'];
-            $val->id_hab_urb = $request['id_hab_urba'];
-            $val->nomb_hab_urb = $request['hab_urba'];
+            $val->id_abogado = $request['id_abogado'];
+            $val->id_lote = $request['id_lote'];
             $val->cod_catastral = $request['codigo_catastral'];
             $val->id_tipo_sancion = $request['id_tipo_sancion'];
             $val->id_materia = $request['id_materia'];
@@ -416,6 +785,75 @@ class ProcuraduriaController extends Controller
             $val->save();
         }
         return $id_det_procuraduria;
+    }
+    
+    public function editar_datos_casos($id_caso, Request $request)
+    {
+        $Caso = new Caso;
+        $val=  $Caso::where("id_caso","=",$id_caso )->first();
+        if($val)
+        {
+            $val->descripcion = strtoupper($request['descripcion']);
+            $val->save();
+        }
+        return $id_caso;
+    }
+    
+    public function editar_datos_materia($id_materia, Request $request)
+    {
+        $Materia = new Materia;
+        $val=  $Materia::where("id_materia","=",$id_materia )->first();
+        if($val)
+        {
+            $val->descripcion = strtoupper($request['descripcion']);
+            $val->save();
+        }
+        return $id_materia;
+    }
+    
+    public function editar_datos_proceso($id_proceso, Request $request)
+    {
+        $Proceso = new Proceso;
+        $val=  $Proceso::where("id_proceso","=",$id_proceso )->first();
+        if($val)
+        {
+            $val->descripcion = strtoupper($request['descripcion']);
+            $val->save();
+        }
+        return $id_proceso;
+    }
+    
+    public function editar_datos_tipo_sancion($id_tipo_sancion, Request $request)
+    {
+        $TipoSancion = new TipoSancion;
+        $val=  $TipoSancion::where("id_tipo_sancion","=",$id_tipo_sancion )->first();
+        if($val)
+        {
+            $val->descripcion = strtoupper($request['descripcion']);
+            $val->save();
+        }
+        return $id_tipo_sancion;
+    }
+    
+    public function editar_datos_tipos($id_tipo, Request $request)
+    {
+        $Tipo = new Tipo;
+        $val=  $Tipo::where("id_tipo","=",$id_tipo )->first();
+        if($val)
+        {
+            $val->descripcion = strtoupper($request['descripcion']);
+            $val->save();
+        }
+        return $id_tipo;
+    }
+    
+    public function agregar_datos_tipos(Request $request)
+    {
+        $Tipo = new Tipo;
+        $Tipo->descripcion = strtoupper($request['descripcion']);
+        $Tipo->save();
+
+        return $Tipo->id_tipo;
     }
     
     public function get_pdf()
@@ -489,5 +927,47 @@ class ProcuraduriaController extends Controller
             $val->delete();
         }
         return "destroy ".$request['id_det_procuraduria'];
+    }
+    
+    public function cargar_mapa_procuraduria()
+    {
+        $sql = DB::connection('gerencia_catastro')->select("select * from procuraduria.vw_procuraduria");
+        
+        if($sql)
+        {
+            $procuraduria = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       
+                            'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_procuraduria',id_procuraduria,
+                                'nro_expediente',nro_expediente,
+                                'nro_doc_gestor',nro_doc_gestor,
+                                'fecha_inicio_tramite',fecha_inicio_tramite,
+                                'cod_catastral',cod_catastral,
+                                'referencia',referencia,
+                                'procedimiento',procedimiento,
+                                'tipo_sancion',tipo_sancion,
+                                'materia',materia,
+                                'proceso',proceso,
+                                'caso',caso,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'nro_doc_persona',nro_doc_persona,
+                                'persona',persona
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM procuraduria.vw_procuraduria limit 1) row) features;");
+
+            return response()->json($procuraduria);
+        }
+        else
+        {
+            return 0; 
+        }
     }
 }

@@ -4,7 +4,7 @@
 
 function fn_buscar_materia(){
     descripcion = $("#dlg_buscar_materia").val();
-    fn_actualizar_grilla('table_materia','procuraduria_mant_materia/0?grid=materia&descripcion='+descripcion);
+    fn_actualizar_grilla('table_materia','procuraduria/0?grid=materia&descripcion='+descripcion);
 }
 
 function crear_nueva_materia()
@@ -45,10 +45,11 @@ function guardar_editar_datos(tipo) {
       
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_materia/create',
+            url: 'procuraduria/create',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:4
             },
             success: function(data) 
             {
@@ -72,10 +73,11 @@ function guardar_editar_datos(tipo) {
         MensajeDialogLoadAjax('dlg_nueva_materia', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_materia/'+id_materia+'/edit',
+            url: 'procuraduria/'+id_materia+'/edit',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:4
             },
             success: function(data) 
             {
@@ -123,7 +125,7 @@ function modificar_materia()
 
         MensajeDialogLoadAjax('dlg_nueva_materia', '.:: Cargando ...');
 
-        $.ajax({url: 'procuraduria_mant_materia/'+id_materia,
+        $.ajax({url: 'procuraduria/'+id_materia+'?show=materia',
             type: 'GET',
             success: function(data)
             {          

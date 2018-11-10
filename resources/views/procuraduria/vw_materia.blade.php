@@ -94,7 +94,7 @@
     $(document).ready(function (){
         
         jQuery("#table_materia").jqGrid({
-            url: 'procuraduria_mant_materia/0?grid=materia',
+            url: 'procuraduria/0?grid=materia',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,

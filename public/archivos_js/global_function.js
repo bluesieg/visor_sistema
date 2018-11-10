@@ -369,7 +369,7 @@ function get_datos_dni() {
     MensajeDialogLoadAjax('dialog_Personas', 'Realizando Busqueda en Reniec...');
     $.ajax({
         type: 'GET',
-        url: 'get_datos_dni?nro_doc='+nro_doc,        
+        url: 'usuarios/0?datos=buscar_datos_reniec&nro_doc='+nro_doc,        
         success: function (data) {
             $("#pers_pat").val(data.ape_pat);
             $("#pers_mat").val(data.ape_mat);

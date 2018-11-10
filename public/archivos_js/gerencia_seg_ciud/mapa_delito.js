@@ -26,7 +26,7 @@ function modificar_mapa_delito()
 
         MensajeDialogLoadAjax('dlg_nuevo_mapa_delito', '.:: Cargando ...');
 
-        $.ajax({url: 'comisarias/'+id_mapa_delito+'?show=mapa_delito',
+        $.ajax({url: 'sub_geren_op_vigilancia_interna/'+id_mapa_delito+'?show=mapa_delito',
             type: 'GET',
             success: function(data)
             {          
@@ -100,7 +100,7 @@ function guardar_datos() {
     
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'comisarias/'+id_mapa_delito+'/edit',
+        url: 'sub_geren_op_vigilancia_interna/'+id_mapa_delito+'/edit',
         type: 'GET',
         data: {
             ubicacion:ubicacion,
@@ -108,7 +108,8 @@ function guardar_datos() {
             vehiculo:vehiculo,
             observacion:observacion,
             infractor:infractor,
-            encargado:encargado
+            encargado:encargado,
+            tipo:4
         },
         success: function(data) 
         { 
@@ -129,5 +130,5 @@ function guardar_datos() {
 function fn_buscar_delitos(){
     fecha_inicio = $("#fecha_inicio").val();
     fecha_fin = $("#fecha_fin").val();
-    fn_actualizar_grilla('table_mapa_delito','comisarias/0?grid=mapa_delito&data=1&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin);
+    fn_actualizar_grilla('table_mapa_delito','sub_geren_op_vigilancia_interna/0?grid=mapa_delito&data=1&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin);
 }

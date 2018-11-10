@@ -10,15 +10,124 @@ use App\Models\Usuarios_u;
 class Usuarios extends Controller {
 
     public function vw_usuarios_show() {
-        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_config_usuarios' and id_usu=".Auth::user()->id);
-        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        $permisos = DB::connection('pgsql')->select("SELECT * from permisos.vw_permisos where id_sistema='li_config_usuarios' and id_usu=".Auth::user()->id);
+        $menu = DB::connection('pgsql')->select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         if(count($permisos)==0)
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
-        $tip_doc=DB::select('select * from adm_tri.tipo_documento');
+        $tip_doc=DB::connection('pgsql')->select('select * from adm_tri.tipo_documento');
         $jef=DB::table('vw_usuarios')->where('jefe',1)->get();
         return view('configuracion/vw_usuarios',compact('tip_doc','jef','menu','permisos'));
+    }
+    
+    public function show($id,Request $request)
+    {
+        if ($id > 0) 
+        {
+            if ($request['show']=='recuperar_dni') 
+            {
+                return $this->traer_datos_dni($id);
+            } 
+        }
+        else
+        {
+            if($request['datos']=='buscar_datos_reniec')
+            {
+                return $this->buscar_datos_reniec($request);
+            }
+        }
+    }
+    
+    public function store(Request $request)
+    {
+        if ($request['tipo'] == 1) 
+        {
+            return $this->guardar_datos_persona($request);
+        }
+    }
+    
+    function guardar_datos_persona(Request $request){
+        $data = new Personas();
+        $data->pers_ape_pat = $request['pers_ape_pat'];
+        $data->pers_ape_mat = $request['pers_ape_mat'];
+        $data->pers_nombres = $request['pers_nombres'];
+        $data->pers_raz_soc = $request['pers_raz_soc'];
+        $data->pers_tip_doc = $request['pers_tip_doc'];
+        $data->pers_nro_doc = $request['pers_nro_doc'];
+        $data->pers_sexo = $request['pers_sexo'];
+        $data->pers_fnac = date('Y-m-d', strtotime($request['pers_fnac']));
+        $image=$request['pers_foto'];
+        $img_file = file_get_contents($image);
+        $data->pers_foto = base64_encode($img_file);
+        $data->usuario = Auth::user()->id;
+        $data->save();        
+        return $data->id_pers;
+    }
+    
+    function traer_datos_dni($nro_doc){        
+        $contribuyente = DB::table('public.vw_personas')->where('pers_nro_doc',$nro_doc)->get();
+        if(isset($contribuyente[0]->contribuyente)){
+            return response()->json([
+                    'contrib' => trim(str_replace('-','',$contribuyente[0]->contribuyente)),
+                    'id_pers' => trim(str_replace('-','',$contribuyente[0]->id_pers)),
+                    'pers_foto'=> $contribuyente[0]->pers_foto,
+                    'ape_pat'=> $contribuyente[0]->pers_ape_pat,
+                    'ape_mat'=> $contribuyente[0]->pers_ape_mat,
+                    'nombres'=> $contribuyente[0]->pers_nombres,
+            ]);
+        }
+    }
+    
+    function buscar_datos_reniec(Request $request){
+        $jefe = DB::table('public.usuarios')->where('id',Auth::user()->id)->get();
+        $acceso = DB::connection('pgsql')->table('adm_tri.conexion_reniec')->where('dni',$jefe[0]->dni_jefe)->get();
+        
+        $rq		= new \stdClass();
+        $rq->data	= new \stdClass();
+        $rq->auth	= new \stdClass();
+
+        $rq->auth->dni	= $acceso[0]->dni;		// DNI del usuario
+        $rq->auth->pas	= $acceso[0]->clave;           // Contrasenia
+        $rq->auth->ruc	= $acceso[0]->ruc;	// RUC de la entida del usuario
+
+        $rq->data->ws	= 'getDatosDni';	// Web Service al que se va a llamar
+        $rq->data->dni	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
+        $rq->data->cache= 'false';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
+
+        //$url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+         //  $url = 'http://ws.ehg.pe/';
+       $url = 'http://10.11.10.104/';
+        $options = array(
+                'http' => array(
+                'header'  => "Content-type: application/json\r\n",
+                'method'  => 'POST',                
+                'content' => json_encode($rq)
+            )
+        );
+
+        $context  = stream_context_create($options);
+
+        $result = file_get_contents($url, false, $context);
+
+        if ($result === FALSE){  
+          echo 'Error de conexion';
+        }
+
+        $rpta = json_decode($result);
+
+        if($rpta->resp->code == '0000'){
+            $Lista=new \stdClass();
+            $Lista->ape_pat=$rpta->data->apPrimer;
+            $Lista->ape_mat=$rpta->data->apSegundo;
+            $Lista->nombres=$rpta->data->prenombres;
+            $Lista->est_civil=$rpta->data->estadoCivil;
+            $Lista->dir=$rpta->data->direccion;
+            $Lista->ubigeo=$rpta->data->ubigeo;
+//            $Lista->foto='http://ws.ehg.pe'.$rpta->data->foto;
+            $Lista->foto='http://10.11.10.104'.$rpta->data->foto;
+            return response()->json($Lista);
+        }
     }
 
     public function getAllUsuarios2() {
@@ -112,7 +221,7 @@ class Usuarios extends Controller {
         $insert=$data->save();
         if ($insert) {
             $id_pers=$request['vw_usuario_txt_id_pers'];
-            DB::select("update public.usuarios set foto=(select pers_foto from adm_tri.personas where id_pers=".$id_pers.") where id=".$data->id);
+            DB::select("update public.usuarios set foto=(select pers_foto from public.personas where id_pers=".$id_pers.") where id=".$data->id);
             return response()->json(['msg' => 'si']);
         } else {
             return response()->json(['msg' => 'no']);

@@ -46,6 +46,22 @@ class Estudios_Proyectos_Controller extends Controller
             {
                 return $this->cargar_datos_expedientes_tecnicos($request);
             }
+            if($request['mapa']=='mapa_perfiles')
+            {
+                return $this->cargar_mapa_perfiles($request);
+            }
+            if($request['reporte']=='perfiles')
+            {
+                return $this->reporte_perfiles($request);
+            }
+            if($request['mapa']=='expedientes_tecnicos')
+            {
+                return $this->cargar_mapa_expedientes_tecnicos($request);
+            }
+            if($request['reporte']=='expedientes_tecnicos')
+            {
+                return $this->reporte_expedientes_tecnicos($request);
+            }
         }  
     }
     
@@ -288,4 +304,128 @@ class Estudios_Proyectos_Controller extends Controller
         return $id_expediente_tecnico;
     }
     
+    function cargar_mapa_perfiles(Request $request)
+    {
+        $nivel = $request['nivel'];
+        $id_hab_urb = $request['id_hab_urb'];
+            
+        $perfiles = DB::connection('gerencia_catastro')->select("select * from geren_gopi.vw_perfiles where id_hab_urb = $id_hab_urb and nivel = '".$nivel."' ");
+        
+        if($perfiles)
+        {
+            $mapa = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                        'type',     'FeatureCollection',
+                        'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_perfil',id_perfil,
+                                'codigo_snip',codigo_snip,
+                                'monto_perfil',monto_perfil,
+                                'responsabilidad_func',responsabilidad_func,
+                                'ubicacion',ubicacion,
+                                'unidad_form',unidad_form,
+                                'unidad_ejecutora',unidad_ejecutora,
+                                'nivel',nivel,
+                                'num_beneficiarios',num_beneficiarios,
+                                'cantidad',cantidad,
+                                'monto',monto,
+                                'viabilidad',viabilidad,
+                                'nombre_pip',nombre_pip,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'nro_doc_persona',nro_doc_persona,
+                                'persona',persona
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM geren_gopi.vw_perfiles where nivel = '".$nivel."' and id_hab_urb = $id_hab_urb) row) features;");
+
+            return response()->json($mapa);
+        }
+        else
+        {
+            return 0;
+        }
+        
+    }
+    
+    public function reporte_perfiles(Request $request)
+    {
+        $id_perfil = $request['id_perfil'];
+        $sql = DB::connection('gerencia_catastro')->select("select * from geren_gopi.vw_perfiles where id_perfil = $id_perfil ");
+        
+        if($sql)
+        {
+            $view =  \View::make('gerencia_obras_pub_infra.reportes.reporte_perfiles', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("REPORTE PERFIL".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+    }
+    
+    function cargar_mapa_expedientes_tecnicos(Request $request)
+    {
+        $id_hab_urb = $request['id_hab_urb'];
+            
+        $expedientes_tecnicos = DB::connection('gerencia_catastro')->select("select * from geren_gopi.vw_expediente_tecnico where id_hab_urb = $id_hab_urb");
+        
+        if($expedientes_tecnicos)
+        {
+            $mapa = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                        'type',     'FeatureCollection',
+                        'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_expediente_tecnico',id_expediente_tecnico,
+                                'codigo_snip',codigo_snip,
+                                'nombre_pip',nombre_pip,
+                                'monto_exp_t',monto_exp_t,
+                                'ubicacion',ubicacion,
+                                'descripcion',descripcion,
+                                'monto',monto,
+                                'tiempo_ejecucion',tiempo_ejecucion,
+                                'aprobacion',aprobacion,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'nro_doc_persona',nro_doc_persona,
+                                'persona',persona
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM geren_gopi.vw_expediente_tecnico where id_hab_urb = $id_hab_urb) row) features;");
+
+            return response()->json($mapa);
+        }
+        else
+        {
+            return 0;
+        }
+        
+    }
+    
+    public function reporte_expedientes_tecnicos(Request $request)
+    {
+        $id_expediente_tecnico = $request['id_expediente_tecnico'];
+        $sql = DB::connection('gerencia_catastro')->select("select * from geren_gopi.vw_expediente_tecnico where id_expediente_tecnico = $id_expediente_tecnico ");
+        
+        if($sql)
+        {
+            $view =  \View::make('gerencia_obras_pub_infra.reportes.reporte_exp_tecnicos', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("REPORTE EXPEDIENTE TECNICO".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+    }
 }

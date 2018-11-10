@@ -94,7 +94,7 @@
     $(document).ready(function (){
         
         jQuery("#table_tipo_sancion").jqGrid({
-            url: 'procuraduria_mant_tipo_sancion/0?grid=tipo_sancion',
+            url: 'procuraduria/0?grid=tipo_sancion',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,

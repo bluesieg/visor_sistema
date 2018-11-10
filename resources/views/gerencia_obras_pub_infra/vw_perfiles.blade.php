@@ -53,15 +53,15 @@
                                             <div class="col-xs-2">
                                                 <div class="text-left">
                                                         <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_ubicacion();">
-                                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                            <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>BUSCAR
                                                         </button>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-xs-5 text-center">
 
-                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="nuevo_perfil();">
-                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>NUEVO
+                                                <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_perfil();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>NUEVO
                                                 </button>
                                                 
                                                  <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_perfil();">
@@ -195,6 +195,39 @@
         <div class="panel-heading bg-color-success">INFORMACION PERFIL</div>
         <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
             
+            <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon" style="width: 120px">DISTRITO: &nbsp;<i class="fa fa-list"></i></span>
+                    <div>
+                        <select id='distrito' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
+                            <option value="CERRO COLORADO">CERRO COLORADO</option>
+                        </select>                       
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon" style="width: 120px">PROVINCIA: &nbsp;<i class="fa fa-list"></i></span>
+                    <div>
+                        <select id='provincia' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
+                            <option value="AREQUIPA">AREQUIPA</option>
+                        </select>                       
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon" style="width: 120px">DEPARTAMENTO: &nbsp;<i class="fa fa-list"></i></span>
+                    <div>
+                        <select id='departamento' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
+                            <option value="AREQUIPA">AREQUIPA</option>
+                        </select>                       
+                    </div>
+                </div>
+            </div>
+            
             <div class="col-xs-12" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 192px">CODIGO SNIP: &nbsp;<i class="fa fa-credit-card"></i></span>
@@ -227,39 +260,6 @@
                     <span class="input-group-addon" style="width: 180px">RESPONSABLIDAD FUNCIONAL: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
                         <input id="dlg_responsabilidad_funcional" type="text" maxlength="255" class="form-control text-uppercase" style="height: 30px;">
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon" style="width: 120px">DISTRITO: &nbsp;<i class="fa fa-list"></i></span>
-                    <div>
-                        <select id='distrito' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
-                            <option value="CERRO COLORADO">CERRO COLORADO</option>
-                        </select>                       
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon" style="width: 192px">PROVINCIA: &nbsp;<i class="fa fa-list"></i></span>
-                    <div>
-                        <select id='provincia' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
-                            <option value="AREQUIPA">AREQUIPA</option>
-                        </select>                       
-                    </div>
-                </div>
-            </div> 
-
-            <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
-                <div class="input-group input-group-md">
-                    <span class="input-group-addon" style="width: 192px">DEPARTAMENTO: &nbsp;<i class="fa fa-list"></i></span>
-                    <div>
-                        <select id='departamento' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
-                            <option value="AREQUIPA">AREQUIPA</option>
-                        </select>                       
                     </div>
                 </div>
             </div>

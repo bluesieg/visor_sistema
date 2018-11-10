@@ -53,15 +53,15 @@
                                             <div class="col-xs-2">
                                                 <div class="text-left">
                                                         <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_nombre_mantenimiento();">
-                                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                            <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>BUSCAR
                                                         </button>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-xs-5 text-center">
 
-                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="nuevo_mantenimiento();">
-                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>NUEVO
+                                                <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_mantenimiento();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>NUEVO
                                                 </button>
                                                 
                                                  <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_mantenimiento();">
@@ -103,7 +103,7 @@
             colModel: [
                 {name: 'id_mantenimiento', index: 'id_mantenimiento', hidden: true},
                 {name: 'nombre', index: 'nombre', align: 'left', width: 30},
-                {name: 'modalidad', index: 'modalidad', align: 'center', width: 15},
+                {name: 'estado', index: 'estado', align: 'center', width: 15},
                 {name: 'nomb_hab_urba', index: 'nomb_hab_urba', align: 'center', width: 40},
                 {name: 'fecha_inicio', index: 'fecha_inicio', align: 'center', width: 14},
                 {name: 'fecha_termino', index: 'fecha_termino', align: 'center', width: 14}
@@ -152,12 +152,13 @@
             datatype: 'json', mtype: 'GET',
             height: '150px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'FECHA REGISTRO','FOTOS'],
+            colNames: ['ID', 'FECHA REGISTRO','FOTOS','ESTADO'],
             rowNum: 50, sortname: 'id_foto_mant', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE FOTOS', align: "center",
             colModel: [
                 {name: 'id_foto_mant', index: 'id_foto_mant', align: 'left',width: 20, hidden: true},
                 {name: 'fecha_creacion', index: 'fecha_creacion', align: 'center', width: 300},
-                {name: 'foto', index: 'foto', align: 'center', width: 300}
+                {name: 'foto', index: 'foto', align: 'center', width: 200},
+                {name: 'estado', index: 'estado', align: 'center', width: 200}
             ],
             pager: '#pager_table_fotos_mantenimiento',
             rowList: [10, 20, 30, 40, 50],
@@ -169,7 +170,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_observacion()}
+            ondblClickRow: function (Id){modificar_foto()}
         });
          
     });
@@ -431,6 +432,18 @@
                     </div>
                 </div>
             </div>
+            
+            <div id="btn_agregar_mantenimiento">
+            <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-5" onclick="guardar_editar_datos(1);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>GUARDAR DATOS
+            </button>
+            </div>
+            
+            <div id="btn_modificar_mantenimiento">
+            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="guardar_editar_datos(2);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span>MODIFICAR DATOS
+            </button>
+            </div>
         </div>
     </div>
     </div>
@@ -442,7 +455,7 @@
         <div class="panel-heading bg-color-success">FOTOS</div>
     
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
-                <div class="col-xs-10" style="padding-left: 90px">
+                <div class="col-xs-10" style="padding-left: 40px">
                     <table id="table_fotos_mantenimiento" ></table>
                     <div id="pager_table_fotos_mantenimiento"></div>
                 </div>
@@ -477,7 +490,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 180px">SUBIR FOTO: &nbsp;<i class="fa fa-search"></i></span>
                         <div>
-                            <input id="dlg_foto_mantenimiento" name="dlg_foto_mantenimiento" type="file" maxlength="255" class="form-control text-uppercase" style="height: 30px;">
+                            <input id="dlg_foto_mantenimiento" name="dlg_foto_mantenimiento" type="file" maxlength="255" class="form-control text-uppercase" style="height: 30px;" onchange="return validarExtensionArchivo();">
                         </div>
                     </div>
                 </div> 

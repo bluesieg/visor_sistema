@@ -8,10 +8,11 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>MDCC</title>
-       
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 
-		<link rel="stylesheet" href="{{ asset('layers/ol.css')}}" />
-		<script src="{{ asset('layers/ol.js')}}"></script>
+        <link rel="stylesheet" href="{{ asset('layers/ol.css')}}" />
+        <script src="{{ asset('layers/ol.js')}}"></script>
         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('layers/ol3-layerswitcher.css')}}">
         <script  src="{{ asset('layers/ol3-layerswitcher.js')}}"></script>
@@ -19,15 +20,15 @@
         <script src="{{ asset('js/plugin/jqgrid/grid.locale-en.min.js') }}"></script>
 
         <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
-<!-- Basic Styles -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+        <!-- Basic Styles -->
+        <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
 
-		<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
-                <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
+        <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+        <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
+        <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
         <script src='mapbox/mapbox.js'></script>
         <link href='mapbox/mapbox.css' rel='stylesheet' />
         <link href="{{ asset('css/jquery-confirm.css') }}" rel="stylesheet">
@@ -1274,102 +1275,89 @@
                             <div id="collapse-procuraduria" class="panel-collapse collapse cr_toogle">
                                 <div class="panel-body" style="padding-left: 20px" >
                                     <div>
-                                          <div class="widget-body no-padding">
-                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+                                        <div class="widget-body no-padding">
+                                            <div class="panel-group smart-accordion-default" id="accordion-3">
 
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Procuraduria
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                               </div>
-                                                                
-                                                                
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_abogados"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Abogados
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                                 <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_tipo"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Tipos
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_tipo_sancion"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Tipo Sancion
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_proceso"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Proceso
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_materia"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Materia
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_casos"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Casos
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                <div class="widget-body">
-                                                                    <div class="tree smart-form" style="color:white !important">
-                                                                        <ul >
-                                                                            <li >
-                                                                                <span style="width: 160px;">
-                                                                                    <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_map_licencias" onchange="valida_capa('chk_map_licencias')" ><i></i>
-                                                                                    <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Mapa Procuraduria
-                                                                                    </label> 
-                                                                                </span> 
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
+                                                <div class="panel panel-default" style="background: transparent">
+                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                        <h4 class="panel-title"><a href="procuraduria?tipo=procuraduria"> 
+                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                Procuraduria
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    
+                                                    <div class="widget-body">
+                                                        <div class="tree smart-form" style="color:white !important">
+                                                            <ul >
+                                                                <li >
+                                                                    <span style="width: 160px;">
+                                                                        <label class="checkbox inline-block" style="color:white !important">
+                                                                        <input type="checkbox" name="checkbox-inline" id="chk_map_procuraduria" onchange="valida_capa('chk_map_procuraduria')"><i></i>
+                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                        Mapa Procuraduria
+                                                                        </label> 
+                                                                    </span> 
+                                                                </li>
+                                                            </ul>
                                                         </div>
+                                                    </div>
+                                                </div>
 
+                                                 <div class="panel panel-default" style="background: transparent">
+                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                        <h4 class="panel-title"><a href="procuraduria_mant_tipo"> 
+                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                Mant. Tipos
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" style="background: transparent">
+                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                        <h4 class="panel-title"><a href="procuraduria?tipo=tipo_sancion"> 
+                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                Mant. Tipo Sancion
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" style="background: transparent">
+                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                        <h4 class="panel-title"><a href="procuraduria?tipo=proceso"> 
+                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                Mant. Proceso
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" style="background: transparent">
+                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                        <h4 class="panel-title"><a href="procuraduria?tipo=materia"> 
+                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                Mant. Materia
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" style="background: transparent">
+                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                        <h4 class="panel-title"><a href="procuraduria?tipo=caso"> 
+                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                Mant. Casos
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                    </div>
                                 </div>
                             </div>                         
@@ -1723,28 +1711,61 @@
 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="comisarias?tipo=comisarias"> 
+                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=comisarias"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Matenimiento Comisarias
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                               </div>
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_comisarias" onchange="valida_capa('chk_geren_seg_ciud_comisarias')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Comisarias
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="comisarias?tipo=mapa_delito"> 
+                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=mapa_delito"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Matenimiento Map. Delito
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                               </div>
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_delitos" onchange="valida_capa('chk_geren_seg_ciud_delitos')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Delitos
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="comisarias?tipo=rutas_serenazgo"> 
+                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=rutas_serenazgo"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
                                                                                 Mantenimiento Rutas Serenazgo
@@ -1752,6 +1773,25 @@
                                                                         </h4>
                                                                     </div>
                                                                </div>
+                                                                
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_camaras" onchange="valida_capa('chk_geren_seg_ciud_camaras')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Camaras
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 
                                                             </div>
                                                         </div>
@@ -1903,6 +1943,22 @@
                                                                                 Mod. Ubicacion de Semaforos
                                                                             </a>
                                                                         </h4>
+                                                                    </div>
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_semaforos" onchange="valida_capa('chk_geren_seg_ciud_semaforos')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Semaforos
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 
@@ -2513,7 +2569,23 @@
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                               </div>
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_map_gopi_obras" onchange="valida_capa('chk_map_gopi_obras')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Obras
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             </div>
                                                         </div> 
@@ -2552,7 +2624,25 @@
                                                                             </a>
                                                                         </h4>
                                                                     </div>
+
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_map_gopi_perfiles" onchange="valida_capa('chk_map_gopi_perfiles')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Perfiles
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                                
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
                                                                         <h4 class="panel-title"><a href="sub_geren_estudios_proyectos?tipo=expedientes_tecnicos"> 
@@ -2561,6 +2651,23 @@
                                                                                 Mod. Expedientes Tecnicos
                                                                             </a>
                                                                         </h4>
+                                                                    </div>
+                                                                    
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_map_gopi_expedientes_tecnicos" onchange="valida_capa('chk_map_gopi_expedientes_tecnicos')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Expedientes Tecnicos
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
                                                                     </div>
                                                                 </div> 
                                                             </div>
@@ -2611,6 +2718,23 @@
                                                                                 Mod. Mantenimiento
                                                                             </a>
                                                                         </h4>
+                                                                    </div>
+                                                                    
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_map_gopi_mantenimientos" onchange="valida_capa('chk_map_gopi_mantenimientos')" >
+                                                                                            <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Mantenimientos
+                                                                                    </label> 
+                                                                                </span> 
+                                                                            </li>
+                                                                            </ul>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 
@@ -2740,9 +2864,7 @@
                 </div>        
             </div>
         </div>
-
-
-        <script src="{{ asset('archivos_js/gerencia_seg_ciud/comisarias.js') }}"></script>
+       
         <script src="{{ asset('js/libs/jquery-ui-1.10.3.min.js') }}"></script>
         
 

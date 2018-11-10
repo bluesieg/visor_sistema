@@ -53,15 +53,15 @@
                                             <div class="col-xs-2">
                                                 <div class="text-left">
                                                         <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_ubicacion();">
-                                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                            <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>BUSCAR
                                                         </button>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-xs-5 text-center">
 
-                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="nuevo_exp_tecnico();">
-                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>NUEVO
+                                                <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_exp_tecnico();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>NUEVO
                                                 </button>
                                                 
                                                  <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_exp_tecnico();">

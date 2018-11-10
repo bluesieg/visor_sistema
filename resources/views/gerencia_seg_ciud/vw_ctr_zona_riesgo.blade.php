@@ -132,17 +132,16 @@
         });
         
         jQuery("#table_observaciones").jqGrid({
-            url: 'sub_geren_riesgos_desastres/0?grid=observaciones&indice=0',
+            url: 'sub_geren_riesgos_desastres/0?grid=observaciones_ctr_zona_riesgo&indice=0',
             datatype: 'json', mtype: 'GET',
             height: '150px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'FECHA REGISTRO','PLAN CONT.','OBSERVACIONES'],
-            rowNum: 50, sortname: 'id_plan', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE OBSERVACIONES', align: "center",
+            colNames: ['ID', 'FECHA REGISTRO','OBSERVACIONES'],
+            rowNum: 50, sortname: 'id_observ_ctr_zon_rg', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE OBSERVACIONES', align: "center",
             colModel: [
-                {name: 'id_plan', index: 'id_plan', align: 'left',width: 20, hidden: true},
+                {name: 'id_observ_ctr_zon_rg', index: 'id_observ_ctr_zon_rg', align: 'left',width: 20, hidden: true},
                 {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 130},
-                {name: 'plan_contin', index: 'plan_contin', align: 'left', width: 280},
-                {name: 'observaciones', index: 'observaciones', align: 'left', width: 280}
+                {name: 'observaciones', index: 'observaciones', align: 'left', width: 520}
             ],
             pager: '#pager_table_observaciones',
             rowList: [10, 20, 30, 40, 50],
@@ -237,6 +236,30 @@
     
     <input type="hidden" id="id_const_zona_riesgo">
     
+    <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body panel-success">
+        <div class="panel-heading bg-color-success">OBSERVACIONES</div>
+    
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
+                <div class="col-xs-10">
+                    <table id="table_observaciones" ></table>
+                    <div id="pager_table_observaciones"></div>
+                </div>
+                <div class="col-xs-2">
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion();" >
+                       <i class="glyphicon glyphicon-plus-sign"></i>
+                    </button>
+                    <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="modificar_observacion();" >
+                       <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button class="btn bg-color-red txt-color-white cr-btn-big"style="width: 120px;" onclick="eliminar_observacion();" >
+                       <i class="glyphicon glyphicon-trash"></i
+                    </button>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
 
 <div id="dlg_nueva_observacion" style="display: none;">
@@ -244,16 +267,6 @@
     <div class="col-xs-12 cr-body panel-success">
         <div class="panel-heading bg-color-success">DATOS OBSERVACION</div>
         <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-            
-            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 180px">PLAN CONTINGENCIA: &nbsp;<i class="fa fa-location-arrow"></i></span>
-                    <div>
-                        <textarea id="dlg_plan_contingencia" rows="8" type="text" class="form-control text-uppercase" style="height: 120px;"></textarea>
-                       
-                    </div>
-                </div>
-            </div> 
             
             <div class="col-xs-12" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">

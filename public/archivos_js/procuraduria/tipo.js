@@ -4,7 +4,7 @@
 
 function fn_buscar_tipos(){
     descripcion = $("#dlg_buscar_tipo").val();
-    fn_actualizar_grilla('table_tipos','procuraduria_mant_tipo/0?grid=tipos&descripcion='+descripcion);
+    fn_actualizar_grilla('table_tipos','procuraduria/0?grid=tipos&descripcion='+descripcion);
 }
 
 function crear_nuevo_tipo()
@@ -45,10 +45,11 @@ function guardar_editar_datos(tipo) {
       
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_tipo/create',
+            url: 'procuraduria/create',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:7
             },
             success: function(data) 
             {
@@ -72,10 +73,11 @@ function guardar_editar_datos(tipo) {
         MensajeDialogLoadAjax('dlg_nuevo_tipo', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_tipo/'+id_tipo+'/edit',
+            url: 'procuraduria/'+id_tipo+'/edit',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:7
             },
             success: function(data) 
             {
@@ -123,7 +125,7 @@ function modificar_tipo()
 
         MensajeDialogLoadAjax('dlg_nuevo_tipo', '.:: Cargando ...');
 
-        $.ajax({url: 'procuraduria_mant_tipo/'+id_tipo,
+        $.ajax({url: 'procuraduria_mant_tipo/'+id_tipo+'?show=tipo',
             type: 'GET',
             success: function(data)
             {          

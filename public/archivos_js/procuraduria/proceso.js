@@ -4,7 +4,7 @@
 
 function fn_buscar_proceso(){
     descripcion = $("#dlg_buscar_proceso").val();
-    fn_actualizar_grilla('table_proceso','procuraduria_mant_proceso/0?grid=proceso&descripcion='+descripcion);
+    fn_actualizar_grilla('table_proceso','procuraduria/0?grid=proceso&descripcion='+descripcion);
 }
 
 function crear_nuevo_proceso()
@@ -45,10 +45,11 @@ function guardar_editar_datos(tipo) {
       
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_proceso/create',
+            url: 'procuraduria/create',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:5
             },
             success: function(data) 
             {
@@ -72,10 +73,11 @@ function guardar_editar_datos(tipo) {
         MensajeDialogLoadAjax('dlg_nuevo_proceso', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_proceso/'+id_proceso+'/edit',
+            url: 'procuraduria/'+id_proceso+'/edit',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:5
             },
             success: function(data) 
             {
@@ -123,7 +125,7 @@ function modificar_proceso()
 
         MensajeDialogLoadAjax('dlg_nuevo_proceso', '.:: Cargando ...');
 
-        $.ajax({url: 'procuraduria_mant_proceso/'+id_proceso,
+        $.ajax({url: 'procuraduria/'+id_proceso+'?show=proceso',
             type: 'GET',
             success: function(data)
             {          

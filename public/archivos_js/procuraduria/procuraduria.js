@@ -1,29 +1,4 @@
 
-
-function autocompletar_habilitacion_urbana(textbox){
-    $.ajax({
-        type: 'GET',
-        url: 'autocomplete_hab_urba',
-        success: function (data) {
-
-            var $datos = data;
-            $("#"+ textbox).autocomplete({
-                source: $datos,
-                focus: function (event, ui) {
-                    $("#" + textbox).val(ui.item.label);
-                    $("#hidden_" + textbox).val(ui.item.value);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#" + textbox).val(ui.item.label);
-                    $("#hidden_"+ textbox).val(ui.item.value);
-                    return false;
-                }
-            });
-        }
-    });
-}
-
 function limpiar_datos(){
     $("#inp_nro_exp").val('');
     $("#inp_id_gestor").val('');
@@ -31,9 +6,7 @@ function limpiar_datos(){
     $("#inp_dni").val('');
     $("#inp_fec_ini").val('');
     $("#sel_responsable").val(0);
-    $("#sel_tipo").val(0);
-    $("#hidden_inp_hab_urb").val('');
-    $("#inp_hab_urb").val('');
+    $("#inp_id_lote").val(0);
     $("#inp_cod_catastral").val('');
     $("#sel_tipo_san").val(0);
     $("#sel_materia").val(0);
@@ -41,12 +14,15 @@ function limpiar_datos(){
     $("#sel_caso").val(0);
     $("#inp_referencia").val('');
     $("#inp_procedimiento").val('');
+    $("#dlg_dni_abogado").val('');
+    $("#dlg_abogado").val('');
+    $("#hidden_dlg_abogado").val(0);
     $('#btn_modificar_expediente').hide();
     $('#btn_agregar_expediente').show();
     $('#inp_id_procuraduria').val(0);
     jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'procuraduria/0?grid=observaciones&indice='+0 }).trigger('reloadGrid');
 }
-aux_procuraduria=0;
+
 function new_exp_procuraduria()
 {
     limpiar_datos();
@@ -61,11 +37,6 @@ function new_exp_procuraduria()
     });
     $("#dlg_new_exp_procuraduria").dialog('open');
     
-    if(aux_procuraduria==0)
-    {
-        autocompletar_habilitacion_urbana('inp_hab_urb');
-        aux_procuraduria=1;
-    }
 }
 
 function fn_obtener_exp()
@@ -109,30 +80,6 @@ function fn_obtener_exp()
             MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
         }
     });
-}
-
-function seleccion_tipo()
-{
-    tipo = $('#sel_tipo').val();
-    if (tipo == 1) {
-        $('#inp_hab_urb').removeAttr('disabled');
-        $('#hidden_inp_hab_urb').val('0');
-        $('#inp_hab_urb').val('');
-        $('#inp_cod_catastral').val('');
-    }else
-    {
-        $('#inp_hab_urb').attr('disabled',true);
-    }
-    
-    if (tipo == 2) {
-        $('#btn_bus_mapa').removeAttr('disabled');
-        $('#hidden_inp_hab_urb').val('0');
-        $('#inp_hab_urb').val('');
-        $('#inp_cod_catastral').val('');
-    }else
-    {
-        $('#btn_bus_mapa').attr('disabled',true);
-    }
 }
 
 //CODIGO DEL MAPA
@@ -452,8 +399,7 @@ function cargar_mapa_lotes_procuraduria()
                     //$("#id_expediente_lote").val(feature.get('id_lote'));
                     var codlote = feature.get('sector')+feature.get('codi_mzna')+feature.get('codi_lote');
                     $("#inp_cod_catastral").val(codlote);
-                    $("#inp_hab_urb").val($("#input_habilitacion_procuraduria").val());
-                    $("#hidden_inp_hab_urb").val($("#hidden_input_habilitacion_procuraduria").val());
+                    $("#inp_id_lote").val(feature.get('id_lote'));
                     
                     if($("#inp_cod_catastral").val() == '')
                     {
@@ -478,10 +424,8 @@ function guardar_editar_datos(variable)
     gestor = $("#inp_gestor").val();
     dni = $("#inp_dni").val();
     fecha_ini = $("#inp_fec_ini").val();
-    id_responsable = $("#sel_responsable").val();
-    id_tipo = $("#sel_tipo").val();
-    id_hab_urba = $("#hidden_inp_hab_urb").val();
-    hab_urba = $("#inp_hab_urb").val();
+    id_abogado = $("#hidden_dlg_abogado").val();
+    id_lote = $("#inp_id_lote").val();
     codigo_catastral = $("#inp_cod_catastral").val();
     id_tipo_sancion = $("#sel_tipo_san").val();
     id_materia = $("#sel_materia").val();
@@ -512,21 +456,15 @@ function guardar_editar_datos(variable)
         return false;
     }
     
-     if(id_responsable == '0')
+    if(id_abogado == '0')
     {
-        mostraralertasconfoco("* Debes Seleccionar un Abogado","#sel_responsable");
+        mostraralertasconfoco("* Debes buscar un Abogado","#dlg_dni_abogado");
         return false;
     }
     
-    if(id_tipo == '0')
+    if(id_lote == '0')
     {
-        mostraralertasconfoco("* Debes Seleccionar un Tipo","#sel_tipo");
-        return false;
-    }
-    
-    if(hab_urba == "")
-    {
-        mostraralertasconfoco("* El Campo Habilitacion Urbana es Obligatorio","#inp_hab_urb");
+        mostraralertasconfoco("* Debes Seleccionar un Lote","#btn_bus_mapa");
         return false;
     }
     
@@ -580,10 +518,8 @@ function guardar_editar_datos(variable)
                 gestor : gestor,
                 dni : dni,
                 fecha_ini : fecha_ini,
-                id_responsable : id_responsable,
-                id_tipo : id_tipo,
-                id_hab_urba : id_hab_urba,
-                hab_urba : hab_urba,
+                id_abogado : id_abogado,
+                id_lote : id_lote,
                 codigo_catastral : codigo_catastral,
                 id_tipo_sancion : id_tipo_sancion,
                 id_materia : id_materia,
@@ -699,10 +635,8 @@ function guardar_editar_datos(variable)
                 gestor : gestor,
                 dni : dni,
                 fecha_ini : fecha_ini,
-                id_responsable : id_responsable,
-                id_tipo : id_tipo,
-                id_hab_urba : id_hab_urba,
-                hab_urba : hab_urba,
+                id_abogado : id_abogado,
+                id_lote : id_lote,
                 codigo_catastral : codigo_catastral,
                 id_tipo_sancion : id_tipo_sancion,
                 id_materia : id_materia,
@@ -879,10 +813,10 @@ function edit_exp_procuraduria()
                 $("#inp_gestor").val(data[0].gestor);
                 $("#inp_dni").val(data[0].nro_doc_gestor);
                 $("#inp_fec_ini").val(data[0].fecha_inicio_tramite);
-                $("#sel_responsable").val(data[0].id_responsable);
-                $("#sel_tipo").val(data[0].id_tipo);
-                $("#hidden_inp_hab_urb").val(data[0].id_hab_urb);
-                $("#inp_hab_urb").val(data[0].nomb_hab_urb);
+                $("#dlg_dni_abogado").val(data[0].nro_doc_persona);
+                $("#hidden_dlg_abogado").val(data[0].id_abogado);
+                $("#dlg_abogado").val(data[0].persona);
+                $("#inp_id_lote").val(data[0].id_lote);
                 $("#inp_cod_catastral").val(data[0].cod_catastral);
                 $("#sel_tipo_san").val(data[0].id_tipo_sancion);
                 $("#sel_materia").val(data[0].id_materia);

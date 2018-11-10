@@ -1,38 +1,22 @@
- function limpiar_datos_comisario(){
-    $("#dlg_nombre_comisario").val("");
-    $("#dlg_dni_comisario").val("");
-    $("#dlg_telefono_comisario").val("");
-    $("#dlg_foto_comisario").val("");
+function fn_buscar_ruta_serenazgo(){
+    ubicacion = $("#dlg_buscar_ruta").val();
+    fn_actualizar_grilla('table_rutas_serenazgo','sub_geren_op_vigilancia_interna/0?grid=rutas_serenazgo&ubicacion='+ubicacion);
 }
 
-function fn_buscar_comisaria(){
-    nombre = $("#dlg_buscar_comisaria").val();
-    fn_actualizar_grilla('table_comisarias','comisarias/0?grid=comisarias&nombre='+nombre);
-}
-
-function crear_nueva_comisaria()
+function modificar_ruta_serenazgo()
 {
-    id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
-    if (id_comisaria) {
-        activar_desactivar_inputs(2);
-        $("#id_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'id'));
-        $("#dlg_ubicacion").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'ubicacion')).attr('disabled',true);
-        $("#dlg_nombre_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nombre')).attr('disabled',true);
-        $("#dlg_telefono_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'telefono')).attr('disabled',true);
-        $("#dlg_nro_efectivos").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nro_efectivos')).attr('disabled',true);
-        $("#dlg_nro_vehiculos").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nro_vehiculos')).attr('disabled',true);
-        $("#dlg_foto_comisaria").attr('disabled',true);
-        $("#actualizar_comisaria").attr('disabled',true);
+    id_ruta_serenazgo = $('#table_rutas_serenazgo').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_ruta_serenazgo) {
         
-        limpiar_datos_comisario();
-        $("#dlg_nuevo_comisarias").dialog({
+        $("#dlg_nueva_ruta_serenazgo").dialog({
             autoOpen: false, modal: true, width: 950, show: {effect: "fade", duration: 300}, resizable: false,
-            title: "<div class='widget-header'><h4>.:  NUEVO REGISTRO DE COMISARIAS:.</h4></div>",
+            title: "<div class='widget-header'><h4>.: INFORMACION DE RUTAS SERENAZGO :.</h4></div>",
             buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
                 click: function () {
-                        guardar_editar_datos(1);
+                    editar_rutas_serenazgo();
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -42,65 +26,139 @@ function crear_nueva_comisaria()
                 }
             }],
         });
-        $("#dlg_nuevo_comisarias").dialog('open');
+        $("#dlg_nueva_ruta_serenazgo").dialog('open');
+
+
+        MensajeDialogLoadAjax('dlg_nueva_ruta_serenazgo', '.:: Cargando ...');
+
+        $.ajax({url: 'sub_geren_op_vigilancia_interna/'+id_ruta_serenazgo+'?show=rutas_serenazgo',
+            type: 'GET',
+            success: function(data)
+            {
+                $("#dlg_ubicacion").val(data[0].ubicacion);
+                $("#dlg_unidad").val(data[0].unidad);
+                $("#sel_tipo_transporte").val(data[0].id_tipo_transporte);
+                $("#dlg_placa").val(data[0].placa);
+                $("#sel_tipo_personal").val(data[0].personal);
+                id_ruta_serenazgo = $("#id_ruta_serenazgo").val(data[0].id_ruta_serenazgo);
+                if (id_ruta_serenazgo == null) {
+                    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=observaciones_rutas_serenazgo&indice='+0 }).trigger('reloadGrid');
+                    jQuery("#table_personal").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=personal_rutas_serenazgo&indice='+0 }).trigger('reloadGrid');
+                }else{
+                    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=observaciones_rutas_serenazgo&indice='+$("#id_ruta_serenazgo").val() }).trigger('reloadGrid');
+                    jQuery("#table_personal").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=personal_rutas_serenazgo&indice='+$("#id_ruta_serenazgo").val() }).trigger('reloadGrid');
+                }
+                MensajeDialogLoadAjaxFinish('dlg_nueva_ruta_serenazgo');
+            },
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_nueva_ruta_serenazgo');
+            }
+        });
     }else{
-        mostraralertasconfoco("No Hay Registros Seleccionados","#table_comisarias");
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_rutas_serenazgo");
     }
 }
 
-function guardar_editar_datos(tipo) {
-    
-    nombre_comisario = $("#dlg_nombre_comisario").val();
-    dni_comisario = $("#dlg_dni_comisario").val();
-    telefono_comisario = $("#dlg_telefono_comisario").val();
-    fecha_inicio = $("#dlg_fecha_inicio").val();
-    foto_comisario = $("#dlg_foto_comisario").val();
-    
-    if(nombre_comisario == "")
+function editar_rutas_serenazgo()
+{
+    id_ruta_serenazgo = $("#id_ruta_serenazgo").val();
+    ubicacion = $("#dlg_ubicacion").val();
+    unidad = $("#dlg_unidad").val();
+    tipo_transporte = $("#sel_tipo_transporte").val();
+    placa = $("#dlg_placa").val();
+    tipo_personal = $("#sel_tipo_personal").val();
+
+    if(ubicacion == "")
     {
-        mostraralertasconfoco("* El Campo Nombre Comisario es Obligatorio","#dlg_nombre_comisario");
+        mostraralertasconfoco("* El Campo UBICACION es Obligatorio","#dlg_ubicacion");
         return false;
     }
-    if(dni_comisario == "")
+    if(unidad == "")
     {
-        mostraralertasconfoco("* El Campo DNI es Obligatorio","#dlg_dni_comisario");
+        mostraralertasconfoco("* El Campo UNIDAD es Obligatorio","#dlg_unidad");
         return false;
     }
-    if(telefono_comisario == "")
+    if(tipo_transporte == "0")
     {
-        mostraralertasconfoco("* El Campo Telefono es Obligatorio","#dlg_telefono_comisario");
+        mostraralertasconfoco("* Debes Seleccionar un Tipo de Transporte","#sel_tipo_transporte");
         return false;
     }
-    if(fecha_inicio == "")
+    if(placa == "")
     {
-        mostraralertasconfoco("* El Campo Fecha Inicio es Obligatorio","#dlg_fecha_inicio");
+        mostraralertasconfoco("* El Campo PLACA es Obligatorio","#dlg_placa");
+        return false;
+    }
+    if(tipo_personal == "0")
+    {
+        mostraralertasconfoco("* Debes Seleccionar un Tipo de Personal","#sel_tipo_personal");
         return false;
     }
 
+    MensajeDialogLoadAjax('dlg_nueva_ruta_serenazgo', '.:: Cargando ...');
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'sub_geren_op_vigilancia_interna/'+id_ruta_serenazgo+'/edit',
+        type: 'GET',
+        data: {
+            ubicacion:ubicacion,
+            unidad:unidad,
+            tipo_transporte:tipo_transporte,
+            placa:placa,
+            tipo_personal:tipo_personal,
+            tipo:1
+        },
+        success: function(data) 
+        {
+            MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+            MensajeDialogLoadAjaxFinish('dlg_nueva_ruta_serenazgo');
+            fn_actualizar_grilla('table_rutas_serenazgo');
+            $("#dlg_nueva_ruta_serenazgo").dialog("close");
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('table_rutas_serenazgo');
+            console.log('error');
+            console.log(data);
+        }
+    });
+}
+
+function guardar_editar_datos(tipo) {
+    observaciones = $("#dlg_observacion").val();
+    id_ruta_serenazgo = $("#id_ruta_serenazgo").val();
+    
+    if(observaciones == "")
+    {
+        mostraralertasconfoco("* El Campo OBSERVACION es Obligatorio","#dlg_observacion");
+        return false;
+    }
+    
     if (tipo == 1) {
-        MensajeDialogLoadAjax('dlg_nuevo_comisarias', '.:: Cargando ...');
-        
-        var form= new FormData($("#FormularioComisarios")[0]);
+
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
+      
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'comisarias?tipo=1',
-            type: 'POST',
-            dataType: 'json',
-            data: form,
-            processData: false,
-            contentType: false,
+            url: 'sub_geren_op_vigilancia_interna/create',
+            type: 'GET',
+            data: {
+                observaciones:observaciones,
+                id_ruta_serenazgo:id_ruta_serenazgo,
+                tipo:1            
+            },
             success: function(data) 
-            {   
-                if (data > 0) {
-                    MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
-                    MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
-                    fn_actualizar_grilla('table_comisarias');
-                    $("#dlg_nuevo_comisarias").dialog("close");
-                }   
+            {
+                MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+                fn_actualizar_grilla('table_observaciones');
+                $("#dlg_nueva_observacion").dialog("close");
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
-                MensajeDialogLoadAjaxFinish('table_comisarias');
+                MensajeDialogLoadAjaxFinish('table_observaciones');
                 console.log('error');
                 console.log(data);
             }
@@ -108,30 +166,27 @@ function guardar_editar_datos(tipo) {
     }
     else if (tipo == 2) {
 
-        id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
+        id_observ_ruta_srzgo = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
 
-        MensajeDialogLoadAjax('table_comisarias', '.:: Cargando ...');
-        var form= new FormData($("#FormularioComisarios")[0]);
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'comisarias?tipo=2&id_comisario='+id_comisaria,
-            type: 'POST',
-            dataType: 'json',
-            data: form,
-            processData: false,
-            contentType: false,
+            url: 'sub_geren_op_vigilancia_interna/'+id_observ_ruta_srzgo+'/edit',
+            type: 'GET',
+            data: {
+        	observaciones:observaciones,
+                tipo:2
+            },
             success: function(data) 
             {
-                if (data > 0) {
-                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');   
-                MensajeDialogLoadAjaxFinish('table_comisarias');
-                fn_actualizar_grilla('table_comisarias');
-                $("#dlg_nuevo_comisarias").dialog("close");
-                }
+                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+                fn_actualizar_grilla('table_observaciones');
+                $("#dlg_nueva_observacion").dialog("close");
             },
             error: function(data) {
                 mostraralertas("hubo un error, Comunicar al Administrador");
-                MensajeDialogLoadAjaxFinish('table_comisarias');
+                MensajeDialogLoadAjaxFinish('table_observaciones');
                 console.log('error');
                 console.log(data);
             }
@@ -140,93 +195,172 @@ function guardar_editar_datos(tipo) {
  
 }
 
-function modificar_comisaria() {
+function guardar_editar_datos_persona(tipo) {
+    dni = $("#dlg_dni").val();
+    nombres = $("#dlg_nombres").val();
+    apaterno = $("#dlg_apaterno").val();
+    amaterno = $("#dlg_amaterno").val();
+    telefono = $("#dlg_telefono").val();
+    id_ruta_serenazgo = $("#id_ruta_serenazgo").val();
     
-    ubicacion = $("#dlg_ubicacion").val();
-    nombre_comisaria = $("#dlg_nombre_comisaria").val();
-    telefono_comisaria = $("#dlg_telefono_comisaria").val();
-    nro_efectivos = $("#dlg_nro_efectivos").val();
-    nro_vehiculos = $("#dlg_nro_vehiculos").val();
+    if(dni == "")
+    {
+        mostraralertasconfoco("* El Campo DNI es Obligatorio","#dlg_dni");
+        return false;
+    }
+    if(nombres == "")
+    {
+        mostraralertasconfoco("* El Campo NOMBRES es Obligatorio","#dlg_nombres");
+        return false;
+    }
+    if(apaterno == "")
+    {
+        mostraralertasconfoco("* El Campo APELLIDO PATERNO es Obligatorio","#dlg_apaterno");
+        return false;
+    }
+    if(amaterno == "")
+    {
+        mostraralertasconfoco("* El Campo APELLIDO MATERNO es Obligatorio","#dlg_amaterno");
+        return false;
+    }
+    if(telefono == "")
+    {
+        mostraralertasconfoco("* El Campo TELEFONO es Obligatorio","#dlg_telefono");
+        return false;
+    }
     
-    if(ubicacion == "")
-    {
-        mostraralertasconfoco("* El Campo Ubicacion Comisaria es Obligatorio","#dlg_ubicacion");
-        return false;
-    }
-    if(nombre_comisaria == "")
-    {
-        mostraralertasconfoco("* El Campo Nombre Comisaria es Obligatorio","#dlg_nombre_comisaria");
-        return false;
-    }
-    if(telefono_comisaria == "")
-    {
-        mostraralertasconfoco("* El Campo Telefono es Obligatorio","#dlg_telefono_comisaria");
-        return false;
-    }
-    if(nro_efectivos == "")
-    {
-        mostraralertasconfoco("* El Campo Nro Efectivos Inicio es Obligatorio","#dlg_nro_efectivos");
-        return false;
-    }
-    if(nro_vehiculos == "")
-    {
-        mostraralertasconfoco("* El Campo Nro Vehiculos Inicio es Obligatorio","#dlg_nro_vehiculos");
-        return false;
-    }
+    if (tipo == 1) {
 
-    id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
-    
-    MensajeDialogLoadAjax('dlg_nuevo_comisarias', '.:: Cargando ...');
+        MensajeDialogLoadAjax('dlg_nueva_persona', '.:: Cargando ...');
+      
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'sub_geren_op_vigilancia_interna/create',
+            type: 'GET',
+            data: {
+                dni:dni,
+                nombres:nombres,
+                apaterno:apaterno,
+                amaterno:amaterno,
+                telefono:telefono,
+                id_ruta_serenazgo:id_ruta_serenazgo,
+                tipo:2            
+            },
+            success: function(data) 
+            {
+                if (data > 0) 
+                {
+                    MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_persona');
+                    fn_actualizar_grilla('table_personal');
+                    $("#dlg_nueva_persona").dialog("close");
+                }
+                else
+                {
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_persona');
+                    mostraralertasconfoco("EL NUMERO DE DNI YA FUE REGISTRADO","#dlg_dni");  
+                }
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_personal');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
+    else if (tipo == 2) {
 
-    var form= new FormData($("#FormularioComisarias")[0]);
-    $.ajax({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'comisarias?tipo=3&id_comisaria='+id_comisaria,
-        type: 'POST',
-        dataType: 'json',
-        data: form,
-        processData: false,
-        contentType: false,
-        success: function(data) 
-        {   
-            if (data > 0) {
-                MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
-                fn_actualizar_grilla('table_comisarias');
-            }   
-        },
-        error: function(data) {
-            mostraralertas("hubo un error, Comunicar al Administrador");
-            MensajeDialogLoadAjaxFinish('table_comisarias');
-            console.log('error');
-            console.log(data);
-        }
-    });
+        id_per_ruta_serenazgo = $('#table_personal').jqGrid ('getGridParam', 'selrow');
+
+        MensajeDialogLoadAjax('dlg_nueva_persona', '.:: Cargando ...');
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'sub_geren_op_vigilancia_interna/'+id_per_ruta_serenazgo+'/edit',
+            type: 'GET',
+            data: {
+                dni:dni,
+                nombres:nombres,
+                apaterno:apaterno,
+                amaterno:amaterno,
+                telefono:telefono,
+                id_ruta_serenazgo:id_ruta_serenazgo,
+                tipo:3
+            },
+            success: function(data) 
+            {
+                if (data > 0) 
+                {
+                    MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_persona');
+                    fn_actualizar_grilla('table_personal');
+                    $("#dlg_nueva_persona").dialog("close");
+                }
+                else
+                {
+                    MensajeDialogLoadAjaxFinish('dlg_nueva_persona');
+                    mostraralertasconfoco("EL NUMERO DE DNI YA FUE REGISTRADO","#dlg_dni");  
+                }
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_personal');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
  
 }
 
-function modificar_comisarias()
-{   
-    id_comisaria = $('#table_comisarias').jqGrid ('getGridParam', 'selrow');
-    activar_desactivar_inputs(1);
-    if (id_comisaria) {
+function limpiar_persona()
+{
+    $("#dlg_dni").val('');
+    $("#dlg_nombres").val('');
+    $("#dlg_apaterno").val('');
+    $("#dlg_amaterno").val('');
+    $("#dlg_telefono").val('');
+}
+
+function nueva_persona()
+{
+    limpiar_persona();
+    $("#dlg_nueva_persona").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  NUEVO REGISTRO PERSONA  :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+            "class": "btn btn-success bg-color-green",
+            click: function () {
+                    guardar_editar_datos_persona(1);
+            }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }],
+    });
+    $("#dlg_nueva_persona").dialog('open');
+}
+
+function modificar_persona()
+{
+    id_per_ruta_serenazgo = $('#table_personal').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_per_ruta_serenazgo) {
         
-        $("#dlg_ubicacion").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'ubicacion'));
-        $("#dlg_nombre_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nombre'));
-        $("#dlg_telefono_comisaria").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'telefono'));
-        $("#dlg_nro_efectivos").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nro_efectivos'));
-        $("#dlg_nro_vehiculos").val($('#table_comisarias').jqGrid ('getCell', id_comisaria, 'nro_vehiculos'));
-        
-        $("#dlg_nuevo_comisarias").dialog({
-            autoOpen: false, modal: true, width: 950, show: {effect: "fade", duration: 300}, resizable: false,
-            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION COMISARIAS :.</h4></div>",
+        $("#dlg_nueva_persona").dialog({
+            autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION PERSONA :.</h4></div>",
             buttons: [{
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
                 click: function () {
-                    guardar_editar_datos(2);
+                    guardar_editar_datos_persona(2);
                 }
-            }, {
+            },{
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
                 click: function () {
@@ -234,70 +368,88 @@ function modificar_comisarias()
                 }
             }],
         });
-        $("#dlg_nuevo_comisarias").dialog('open');
+        $("#dlg_nueva_persona").dialog('open');
 
 
-        MensajeDialogLoadAjax('dlg_nuevo_comisarias', '.:: Cargando ...');
+        MensajeDialogLoadAjax('dlg_nueva_persona', '.:: Cargando ...');
 
-        $.ajax({url: 'comisarias/'+id_comisaria,
+        $.ajax({url: 'sub_geren_op_vigilancia_interna/'+id_per_ruta_serenazgo+'?show=personal_rutas_serenazgo',
             type: 'GET',
             success: function(data)
             {          
-                $("#dlg_nombre_comisario").val(data[0].nombre_comisario);
-                $("#dlg_dni_comisario").val(data[0].dni);
-                $("#dlg_telefono_comisario").val(data[0].telefono_comisario);
-                $("#dlg_fecha_inicio").val(data[0].fecha_inicio);
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
+                $("#dlg_dni").val(data[0].dni);
+                $("#dlg_nombres").val(data[0].nombres);
+                $("#dlg_apaterno").val(data[0].ape_pat);
+                $("#dlg_amaterno").val(data[0].ape_mat);
+                $("#dlg_telefono").val(data[0].telefono);
+                MensajeDialogLoadAjaxFinish('dlg_nueva_persona');
             },
             error: function(data) {
                 mostraralertas("Hubo un Error, Comunicar al Administrador");
                 console.log('error');
                 console.log(data);
-                MensajeDialogLoadAjaxFinish('dlg_nuevo_comisarias');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_persona');
             }
         });
     }else{
-        mostraralertasconfoco("No Hay Registros Seleccionados","#table_comisarias");
-    }
-    
-}
-
-function activar_desactivar_inputs(tipo)
-{
-    if (tipo == 1) 
-    {
-        $('#dlg_ubicacion').removeAttr('disabled');
-        $('#dlg_nombre_comisaria').removeAttr('disabled');
-        $('#dlg_telefono_comisaria').removeAttr('disabled');
-        $('#dlg_nro_efectivos').removeAttr('disabled');
-        $('#dlg_nro_vehiculos').removeAttr('disabled');
-        $('#dlg_foto_comisaria').removeAttr('disabled');
-        $('#actualizar_comisaria').removeAttr('disabled');
-    }
-    
-    if (tipo == 2) 
-    {
-        $('#dlg_ubicacion').attr('disabled',true);
-        $('#dlg_nombre_comisaria').attr('disabled',true);
-        $('#dlg_telefono_comisaria').attr('disabled',true);
-        $('#dlg_nro_efectivos').attr('disabled',true);
-        $('#dlg_nro_vehiculos').attr('disabled',true);
-        $('#dlg_foto_comisaria').attr('disabled',true);
-        $('#actualizar_comisaria').attr('disabled',true);
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_personal");
     }
 }
 
-function crear_observacion(id_comisaria)
+function eliminar_persona()
 {
-    $('#id_observacion').val(id_comisaria);
-    $("#dlg_nueva_observacion_comisaria").dialog({
-        autoOpen: false, modal: true, width: 650, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  NUEVO REGISTRO DE OBSERVACIONES:.</h4></div>",
+    id_per_ruta_serenazgo = $('#table_personal').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_per_ruta_serenazgo) {
+
+        $.confirm({
+            title: '.:Cuidado... !',
+            content: 'Los Cambios no se podran revertir...',
+            buttons: {
+                Confirmar: function () {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: 'sub_geren_op_vigilancia_interna/destroy',
+                        type: 'POST',
+                        data: {_method: 'delete', id_per_ruta_serenazgo: id_per_ruta_serenazgo, tipo: 2},
+                        success: function (data) {
+                            fn_actualizar_grilla('table_personal');
+                            MensajeExito('Eliminar Observacion', id_per_ruta_serenazgo + ' - Ha sido Eliminado');
+                        },
+                        error: function (data) {
+                            MensajeAlerta('Eliminar Observacion', id_per_ruta_serenazgo + ' - No se pudo Eliminar.');
+                        }
+                    });
+                },
+                Cancelar: function () {
+                    MensajeAlerta('Eliminar Observacion','Operacion Cancelada.');
+                }
+
+            }
+        });
+        
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_personal");
+    }   
+}
+
+//OBSERVACIONES
+function limpiar_observaciones()
+{
+    $("#dlg_observacion").val('');
+}
+
+function nueva_observacion()
+{
+    limpiar_observaciones();
+    $("#dlg_nueva_observacion").dialog({
+        autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  NUEVO REGISTRO DE OBSERVACION  :.</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Guardar",
             "class": "btn btn-success bg-color-green",
             click: function () {
-                    guardar_observacion(1);
+                    guardar_editar_datos(1);
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -307,224 +459,89 @@ function crear_observacion(id_comisaria)
             }
         }],
     });
-    $("#dlg_nueva_observacion_comisaria").dialog('open');
+    $("#dlg_nueva_observacion").dialog('open');
 }
 
-function guardar_observacion()
+function modificar_observacion()
 {
-    id_comisaria = $('#id_observacion').val();
-    fecha_observacion = $("#dlg_fecha_observacion").val();
-    observacion = $("#dlg_observacion").val();
+    id_observ_ruta_srzgo = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
     
-    if(fecha_observacion == "")
-    {
-        mostraralertasconfoco("* El Campo Fecha Registro es Obligatorio","#dlg_fecha_observacion");
-        return false;
-    }
-    if(observacion == "")
-    {
-        mostraralertasconfoco("* El Campo Nombre es Obligatorio","#dlg_observacion");
-        return false;
-    }
-
-    MensajeDialogLoadAjax('dlg_nueva_observacion_comisaria', '.:: Cargando ...');
-    
-    $.confirm({
-        title: '.:Esta Seguro de guardar esta Observacion... ?',
-        content: 'Los Cambios no se podran revertir...',
-        buttons: {
-            Confirmar: function () {
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: 'comisarias/create',
-                type: 'GET',
-                data: {
-                    id_comisaria:id_comisaria,
-                    fecha_observacion:fecha_observacion,
-                    observacion:observacion
-                },
-                success: function(data) 
-                {
-                    MensajeExito('OPERACION EXITOSA', 'El registro fue guardado Correctamente');
-                    MensajeDialogLoadAjaxFinish('dlg_nueva_observacion_comisaria');
-                    $("#dlg_nueva_observacion_comisaria").dialog("close");
-                    limpiar_observacion();
-                },
-                error: function(data) {
-                    mostraralertas("hubo un error, Comunicar al Administrador");
-                    MensajeDialogLoadAjaxFinish('table_comisarias');
-                    console.log('error');
-                    console.log(data);
+    if (id_observ_ruta_srzgo) {
+        
+        $("#dlg_nueva_observacion").dialog({
+            autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION OBSERVACION :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                    guardar_editar_datos(2);
                 }
-            });
+            },{
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_nueva_observacion").dialog('open');
+
+
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
+
+        $.ajax({url: 'sub_geren_op_vigilancia_interna/'+id_observ_ruta_srzgo+'?show=observaciones_rutas_serenazgo',
+            type: 'GET',
+            success: function(data)
+            {          
+                $("#dlg_observacion").val(data[0].observaciones);              
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
             },
-            Cancelar: function () {
-                MensajeAlerta('Guardar Observacion','Operacion Cancelada.');
-                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion_comisaria');
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
             }
-
-        }
-    });
+        });
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_observaciones");
+    }
 }
 
-function ver_observacion(id_comisaria)
+function eliminar_observacion()
 {
-    $('#hidden_id_observacion').val(id_comisaria);
-    $("#dlg_ver_observacion_comisaria").dialog({
-        autoOpen: false, modal: true, width: 650, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.: BUSCAR OBSERVACIONES :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-file'></i>&nbsp; Abrir",
-            "class": "btn btn-success bg-color-green",
-            click: function () {
-                    abrir_reporte();
-            }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }],
-    });
-    $("#dlg_ver_observacion_comisaria").dialog('open');
-}
-
-function abrir_reporte()
-{
-    id_comisaria = $('#hidden_id_observacion').val();
-    fecha_inicio = $('#dlg_observacion_inicio').val();
-    fecha_fin = $('#dlg_observacion_fin').val();
+    id_observ_ruta_srzgo = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
     
-    window.open('comisarias/0?reporte=observaciones&id_comisaria='+id_comisaria+'&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin);
-}
+    if (id_observ_ruta_srzgo) {
 
-function limpiar_observacion()
-{
-    $('#id_observacion').val('0');
-    $("#dlg_fecha_observacion").val('');
-    $("#dlg_observacion").val('');
-}
+        $.confirm({
+            title: '.:Cuidado... !',
+            content: 'Los Cambios no se podran revertir...',
+            buttons: {
+                Confirmar: function () {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: 'sub_geren_op_vigilancia_interna/destroy',
+                        type: 'POST',
+                        data: {_method: 'delete', id_observ_ruta_srzgo: id_observ_ruta_srzgo, tipo: 1},
+                        success: function (data) {
+                            fn_actualizar_grilla('table_observaciones');
+                            MensajeExito('Eliminar Observacion', id_observ_ruta_srzgo + ' - Ha sido Eliminado');
+                        },
+                        error: function (data) {
+                            MensajeAlerta('Eliminar Observacion', id_observ_ruta_srzgo + ' - No se pudo Eliminar.');
+                        }
+                    });
+                },
+                Cancelar: function () {
+                    MensajeAlerta('Eliminar Observacion','Operacion Cancelada.');
+                }
 
-function valida_capa_gerencia_seg_ciud(check)
-{
-    if($("#"+check).prop('checked'))
-    {
-        MensajeDialogLoadAjax('map', '.:: Cargando ...');
-        if(check=='chk_geren_seg_ciud_comisarias')
-        {
-            Crear_Comisarias();
-        }
-        
-        if(check=='chk_geren_seg_ciud_delitos')
-        {
-            Crear_Delitos();
-        }
-        
-    }
-    else
-    {
-        if(check=='chk_geren_seg_ciud_comisarias')
-        {
-            map.removeLayer(lyr_comisarias);
-        }
-        
-        if(check=='chk_geren_seg_ciud_delitos')
-        {
-            map.removeLayer(lyr_delitos);
-        }
-    }
-}
-
-function Crear_Comisarias()
-{
-    $.ajax({url: 'comisarias/0?mapa=comisarias',
-            type: 'GET',
-//            async: false,
-            success: function(r)
-            {
-                geojson_salud = JSON.parse(r[0].json_build_object);
-                var format_salud= new ol.format.GeoJSON();
-                var features_salud = format_salud.readFeatures(geojson_salud,
-                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                var jsonSource_salud = new ol.source.Vector({
-                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                });
-                jsonSource_salud.addFeatures(features_salud);
-                lyr_comisarias = new ol.layer.Vector({
-                    source:jsonSource_salud,
-                    style: stylecomisarias,
-                    title: "Geren_seg_ciudadana"
-                });
-                map.addLayer(lyr_comisarias);
-                var extent = lyr_comisarias.getSource().getExtent();
-                map.getView().fit(extent, map.getSize());
-                MensajeDialogLoadAjaxFinish('map');
             }
         });
+        
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_observaciones");
+    }   
 }
-function stylecomisarias(feature, resolution){
-    return  new ol.style.Style({
-        image: new ol.style.Icon({
-          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
-          src: 'img/recursos/comisaria.png',
-        }),
-        text: new ol.style.Text({
-            text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
-            Placement: 'point',
-            textAlign: "center", 
-            fill: new ol.style.Fill({
-                color: 'white',
-            }),
-            offsetY:map.getView().getZoom() > 16 ? 40 : 20
-        })
-      });
-}
-
-
-function Crear_Delitos()
-{
-    $.ajax({url: 'comisarias/0?mapa=delitos',
-            type: 'GET',
-//            async: false,
-            success: function(r)
-            {
-                geojson_delitos = JSON.parse(r[0].json_build_object);
-                var format_delitos= new ol.format.GeoJSON();
-                var features_delitos = format_delitos.readFeatures(geojson_delitos,
-                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                var jsonSource_delitos = new ol.source.Vector({
-                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                });
-                jsonSource_delitos.addFeatures(features_delitos);
-                lyr_delitos = new ol.layer.Vector({
-                    source:jsonSource_delitos,
-                    style: estilos_lotes,
-                    title: "Geren_seg_ciudadana1"
-                });
-                map.addLayer(lyr_delitos);
-                var extent = lyr_delitos.getSource().getExtent();
-                map.getView().fit(extent, map.getSize());
-                MensajeDialogLoadAjaxFinish('map');
-            }
-        });
-}
-function estilos_lotes(feature, resolution){
-
-        return  new ol.style.Style({
-        image: new ol.style.Icon({
-          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
-          src: 'img/recursos/contenedores_sev_ciud.png',
-        }),
-        text: new ol.style.Text({
-            text: map.getView().getZoom() > 14 ? feature.get('x_utm') : '',
-            Placement: 'point',
-            textAlign: "center", 
-            fill: new ol.style.Fill({
-                color: 'white',
-            }),
-            offsetY:map.getView().getZoom() > 16 ? 40 : 20
-        })
-      });
-}
-

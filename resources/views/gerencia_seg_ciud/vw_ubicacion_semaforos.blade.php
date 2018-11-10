@@ -201,7 +201,7 @@
                 </div>
             </div>
             
-            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+            <div class="col-xs-4" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 192px">PEATONAL: &nbsp;<i class="fa fa-angle-up"></i></span>
                     <div>
@@ -210,7 +210,7 @@
                 </div>
             </div>
             
-            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+            <div class="col-xs-8" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md">
                     <span class="input-group-addon">CONTROLADOR &nbsp;<i class="fa fa-list"></i></span>
                     <div>

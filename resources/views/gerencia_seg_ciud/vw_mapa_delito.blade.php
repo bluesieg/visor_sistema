@@ -97,7 +97,7 @@
 <script type="text/javascript">
     $(document).ready(function (){
         jQuery("#table_mapa_delito").jqGrid({
-            url: 'comisarias/0?grid=mapa_delito&data=0',
+            url: 'sub_geren_op_vigilancia_interna/0?grid=mapa_delito&data=0',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,

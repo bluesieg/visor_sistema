@@ -4,7 +4,7 @@
 
 function fn_buscar_tipo_sancion(){
     descripcion = $("#dlg_buscar_tipo_sancion").val();
-    fn_actualizar_grilla('table_tipo_sancion','procuraduria_mant_tipo_sancion/0?grid=tipo_sancion&descripcion='+descripcion);
+    fn_actualizar_grilla('table_tipo_sancion','procuraduria/0?grid=tipo_sancion&descripcion='+descripcion);
 }
 
 function crear_nuevo_tipo_sancion()
@@ -45,10 +45,11 @@ function guardar_editar_datos(tipo) {
       
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_tipo_sancion/create',
+            url: 'procuraduria/create',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:6
             },
             success: function(data) 
             {
@@ -72,10 +73,11 @@ function guardar_editar_datos(tipo) {
         MensajeDialogLoadAjax('dlg_nuevo_tipo_sancion', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_tipo_sancion/'+id_tipo_sancion+'/edit',
+            url: 'procuraduria/'+id_tipo_sancion+'/edit',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:6
             },
             success: function(data) 
             {
@@ -123,7 +125,7 @@ function modificar_tipo_sancion()
 
         MensajeDialogLoadAjax('dlg_nuevo_tipo_sancion', '.:: Cargando ...');
 
-        $.ajax({url: 'procuraduria_mant_tipo_sancion/'+id_tipo_sancion,
+        $.ajax({url: 'procuraduria_mant_tipo_sancion/'+id_tipo_sancion+'?show=tipo_sancion',
             type: 'GET',
             success: function(data)
             {          

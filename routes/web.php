@@ -240,6 +240,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
     
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
+    Route::resource('usuarios', 'Usuarios');
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
     Route::get('/usuarios', 'Usuarios@vw_usuarios_show')->name('usuarios'); //vw_usuarios
     Route::post('usuario_save', 'Usuarios@insert_Usuario');
@@ -268,7 +269,7 @@ Route::group(['middleware' => 'auth'], function() {
     
     /******************************      GERENCIA DE SEGURIDAD CIUDADANA ********************************************************/
     Route::group(['namespace' => 'gerencia_seg_ciud'], function() {
-        Route::resource('comisarias','ComisariasController');
+        Route::resource('sub_geren_op_vigilancia_interna','Operaciones_Vigilancia_Interna_Controller');
         Route::resource('sub_geren_riesgos_desastres','Riesgos_Desastres_Controller');
         Route::resource('sub_geren_transito_seg_vial','Transito_Seg_Vial_Controller');
     });
@@ -277,12 +278,6 @@ Route::group(['middleware' => 'auth'], function() {
     
      Route::group(['namespace' => 'procuraduria'], function() {
         Route::resource('procuraduria','ProcuraduriaController');
-        Route::resource('procuraduria_mant_abogados','AbogadosController');
-        Route::resource('procuraduria_mant_tipo','TipoController');
-        Route::resource('procuraduria_mant_tipo_sancion','TipoSancionController');
-        Route::resource('procuraduria_mant_proceso','ProcesoController');
-        Route::resource('procuraduria_mant_materia','MateriaController');
-        Route::resource('procuraduria_mant_casos','CasoController');
     });
      /*******************************  ASESORIA LEGAL **********************************************************/
     

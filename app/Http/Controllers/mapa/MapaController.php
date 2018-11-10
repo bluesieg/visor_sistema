@@ -12,19 +12,19 @@ class MapaController extends Controller
 
     public function index()
     {
-        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_map_cris' and id_usu=".Auth::user()->id);
-        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        $permisos = DB::connection('pgsql')->select("SELECT * from permisos.vw_permisos where id_sistema='li_map_cris' and id_usu=".Auth::user()->id);
+        $menu = DB::connection('pgsql')->select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         if(count($permisos)==0)
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
-        $sectores = DB::select('SELECT  id_sec, sector FROM catastro.sectores order by sector asc;');
-        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        $sectores = DB::connection('pgsql')->select('SELECT  id_sec, sector FROM catastro.sectores order by sector asc;');
+        $anio_tra = DB::connection('pgsql')->select('select anio from adm_tri.uit order by anio desc');
         return view('cartografia/mapa_cris', compact('sectores','anio_tra','menu','permisos'));
     }
     function get_limites(){
 
-        $limites =  DB::select("SELECT json_build_object(
+        $limites =  DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )

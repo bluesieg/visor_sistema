@@ -622,4 +622,3 @@ function modificar_perfil()
         mostraralertasconfoco("No Hay Registros Seleccionados","#table_perfil");
     }
 }
-

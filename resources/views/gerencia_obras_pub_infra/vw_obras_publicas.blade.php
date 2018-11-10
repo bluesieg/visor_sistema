@@ -43,28 +43,28 @@
                                         <div class="row" style="padding: 0px; margin-top: 30px">
                                             <div class="col-xs-5">
                                                 <div class="input-group input-group-md">
-                                                    <span class="input-group-addon">MANTENIMIENTO:. &nbsp;<i class="fa fa-male"></i></span>
+                                                    <span class="input-group-addon">OBRA:. &nbsp;<i class="fa fa-male"></i></span>
                                                     <div>
-                                                        <input id="dlg_buscar_mantenimiento" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="NOMBRE MANTENIMIENTO">
+                                                        <input id="dlg_buscar_obra" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="NOMBRE DE LA OBRA">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-xs-2">
                                                 <div class="text-left">
-                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_nombre_mantenimiento();">
-                                                            <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                        <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="fn_buscar_nombre_obras();">
+                                                            <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>BUSCAR
                                                         </button>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-xs-5 text-center">
 
-                                                <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="nuevo_mantenimiento();">
-                                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>NUEVO
+                                                <button  type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nueva_obra();">
+                                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>NUEVO
                                                 </button>
                                                 
-                                                 <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_mantenimiento();">
+                                                 <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_obra();">
                                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>MODIFICAR
                                                 </button>
                                             </div>
@@ -72,8 +72,8 @@
                                         
                                             <div class="col-xs-12" style="padding: 0px; margin-top: 30px">
                                                 <article class="col-xs-12" style=" padding: 0px !important">
-                                                        <table id="table_mantenimiento"></table>
-                                                        <div id="pager_table_mantenimiento"></div>
+                                                        <table id="table_obras"></table>
+                                                        <div id="pager_table_obras"></div>
                                                 </article>
                                             </div>
                                         
@@ -93,38 +93,38 @@
 <script type="text/javascript">
     $(document).ready(function (){
         
-        jQuery("#table_mantenimiento").jqGrid({
-            url: 'sub_geren_apoyo_matenimiento/0?grid=mantenimiento',
+        jQuery("#table_obras").jqGrid({
+            url: 'sub_geren_obras_publicas/0?grid=obras_publicas',
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'MANTENIMIENTO', 'MODALIDAD','HAB. URB.','FEC. INICIO','FEC. TERMINO'],
-            rowNum: 50, sortname: 'id_mantenimiento', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE MANTENIMIENTOS - CERRO COLORADO', align: "center",
+            colNames: ['ID', 'OBRA', 'TIPO','HAB. URB.','MODALIDAD','ESTADO'],
+            rowNum: 50, sortname: 'id_obra', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE OBRAS - CERRO COLORADO', align: "center",
             colModel: [
-                {name: 'id_mantenimiento', index: 'id_mantenimiento', hidden: true},
+                {name: 'id_obra', index: 'id_obra', hidden: true},
                 {name: 'nombre', index: 'nombre', align: 'left', width: 30},
-                {name: 'modalidad', index: 'modalidad', align: 'center', width: 15},
+                {name: 'tipo_obra', index: 'tipo_obra', align: 'center', width: 35},
                 {name: 'nomb_hab_urba', index: 'nomb_hab_urba', align: 'center', width: 40},
-                {name: 'fecha_inicio', index: 'fecha_inicio', align: 'center', width: 14},
-                {name: 'fecha_termino', index: 'fecha_termino', align: 'center', width: 14}
+                {name: 'modalidad', index: 'modalidad', align: 'center', width: 35},
+                {name: 'estado_obra', index: 'estado_obra', align: 'center', width: 20}
             ],
-            pager: '#pager_table_mantenimiento',
+            pager: '#pager_table_obras',
             rowList: [50, 100],
             gridComplete: function () {
-                    var idarray = jQuery('#table_mantenimiento').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_obras').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_mantenimiento').jqGrid('getDataIDs')[0];
-                            $("#table_mantenimiento").setSelection(firstid);    
+                    var firstid = jQuery('#table_obras').jqGrid('getDataIDs')[0];
+                            $("#table_obras").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_mantenimiento();}
+            ondblClickRow: function (Id){modificar_obra();}
         });
         
-        $("#dlg_buscar_mantenimiento").keypress(function (e) {
+        $("#dlg_buscar_obra").keypress(function (e) {
             if (e.which == 13) {
 
-                   fn_buscar_nombre_mantenimiento();
+                   fn_buscar_nombre_obras();
 
             }
         });
@@ -147,29 +147,30 @@
             }
         });
         
-        jQuery("#table_fotos_mantenimiento").jqGrid({
-            url: 'sub_geren_apoyo_matenimiento/0?grid=fotos_mantenimiento&indice=0',
+        jQuery("#table_fotos_obra").jqGrid({
+            url: 'sub_geren_obras_publicas/0?grid=fotos_obra&indice=0',
             datatype: 'json', mtype: 'GET',
             height: '150px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'FECHA REGISTRO','FOTOS'],
-            rowNum: 50, sortname: 'id_foto_mant', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE FOTOS', align: "center",
+            colNames: ['ID', 'FECHA REGISTRO','FOTOS','ESTADO'],
+            rowNum: 50, sortname: 'id_foto_obra', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE FOTOS', align: "center",
             colModel: [
-                {name: 'id_foto_mant', index: 'id_foto_mant', align: 'left',width: 20, hidden: true},
+                {name: 'id_foto_obra', index: 'id_foto_obra', align: 'left',width: 20, hidden: true},
                 {name: 'fecha_creacion', index: 'fecha_creacion', align: 'center', width: 300},
-                {name: 'foto', index: 'foto', align: 'center', width: 300}
+                {name: 'foto', index: 'foto', align: 'center', width: 200},
+                {name: 'estado', index: 'estado', align: 'center', width: 200}
             ],
-            pager: '#pager_table_fotos_mantenimiento',
+            pager: '#pager_table_fotos_obra',
             rowList: [10, 20, 30, 40, 50],
             gridComplete: function () {
-                    var idarray = jQuery('#table_fotos_mantenimiento').jqGrid('getDataIDs');
+                    var idarray = jQuery('#table_fotos_obra').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#table_fotos_mantenimiento').jqGrid('getDataIDs')[0];
-                            $("#table_fotos_mantenimiento").setSelection(firstid);    
+                    var firstid = jQuery('#table_fotos_obra').jqGrid('getDataIDs')[0];
+                            $("#table_fotos_obra").setSelection(firstid);    
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_observacion()}
+            ondblClickRow: function (Id){modificar_foto()}
         });
          
     });
@@ -178,7 +179,7 @@
 @stop
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/gerencia_obras_pub_infra/obras_publicas.js') }}"></script>
 
-<div id="dlg_nuevo_mantenimiento" style="display: none;">
+<div id="dlg_nueva_obra" style="display: none;">
     <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body panel-success">
         <div class="panel-heading bg-color-success">DATOS PERSONAS</div>
@@ -253,13 +254,13 @@
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 180px">UBICACION: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
-                        <input type="hidden" id="id_lote_mantenimiento" value="0">
+                        <input type="hidden" id="id_lote_obra" value="0">
                         <input id="dlg_ubicacion" type="text" maxlength="20" class="form-control text-uppercase" style="height: 30px;"  disabled="">
                     </div>
                 </div>
             </div> 
 
-            <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="cargar_mapa_mantenimiento();" style="padding: 0px;margin-top: 10px ">
+            <button id="btn_bus_mapa" type="button" class="btn btn-labeled bg-color-blue txt-color-white col-xs-2" onclick="cargar_mapa_obra();" style="padding: 0px;margin-top: 10px ">
                 <span class="cr-btn-label"><i class="glyphicon glyphicon-search"></i></span>VER MAPA
             </button>
             
@@ -269,7 +270,7 @@
     
     <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body panel-success">
-        <div class="panel-heading bg-color-success">INFORMACION MANTENIMIENTO</div>
+        <div class="panel-heading bg-color-success">INFORMACION OBRA</div>
         <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
             
             <div class="col-xs-4" style="padding: 0px; margin-top:10px;">
@@ -305,20 +306,25 @@
                 </div>
             </div>
             
-            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+            <div class="col-xs-6" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 192px">NOMBRE MANTENIMIENTO: &nbsp;<i class="fa fa-credit-card"></i></span>
+                    <span class="input-group-addon" style="width: 192px">NOMBRE DE LA OBRA: &nbsp;<i class="fa fa-credit-card"></i></span>
                     <div>
-                        <input id="dlg_nombre_mant" type="text" maxlength="255" class="form-control text-uppercase" style="height: 30px;">
+                        <input id="dlg_nombre_obra" type="text" maxlength="255" class="form-control text-uppercase" style="height: 30px;">
                     </div>
                 </div>
             </div>
-
-            <div class="col-xs-6" style="padding: 0px; margin-top:10px">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 192px">TIPO MANTENIMIENTO: &nbsp;<i class="fa fa-user"></i></span>
+            
+            <div class="col-xs-6" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon" style="width: 192px">TIPO DE OBRA: &nbsp;<i class="fa fa-list"></i></span>
                     <div>
-                        <input id="dlg_tipo_mant" type="text" maxlength="250" class="form-control text-uppercase" style="height: 30px;">
+                        <select id='tipo_obra' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
+                            <option value="0">-- SELECCIONAR UNA OPCION --</option>
+                            @foreach($tipo_obra as $tip_o)
+                                <option value="{{ $tip_o->id_tipo_obra }}">-- {{ $tip_o->descripcion }} --</option>
+                            @endforeach
+                        </select>                       
                     </div>
                 </div>
             </div>
@@ -329,8 +335,19 @@
                     <div>
                         <select id='modalidad_ejecucion' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
                             <option value="0">-- SELECCIONAR UNA OPCION --</option>
-                             
+                            @foreach($modalidad_ejecucion as $modalidad_ejec)
+                                <option value="{{ $modalidad_ejec->id_modalidad_ejec }}">-- {{ $modalidad_ejec->descripcion }} --</option>
+                            @endforeach
                         </select>                       
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-6" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 192px">MONTO: &nbsp;<i class="fa fa-user"></i></span>
+                    <div>
+                        <input id="dlg_monto" type="text" class="form-control text-uppercase" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                     </div>
                 </div>
             </div>
@@ -346,14 +363,32 @@
             
             <div class="col-xs-4" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 192px">INFORME TECNICO: &nbsp;<i class="fa fa-angle-up"></i></span>
+                    <span class="input-group-addon" style="width: 192px">CODIGO SNIP: &nbsp;<i class="fa fa-angle-up"></i></span>
                     <div>
-                        <input id="chkbox_informe_tecnico" type="checkbox" class="form-control" style="height: 30px;">
+                        <input id="dlg_codigo_snip" type="text" class="form-control text-uppercase" style="height: 30px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-4" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 192px">PERFIL: &nbsp;<i class="fa fa-angle-up"></i></span>
+                    <div>
+                        <input id="chkbox_perfil" type="checkbox" class="form-control" style="height: 30px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-4" style="padding: 0px; margin-top:10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 192px">EXPEDIENTE TECNICO: &nbsp;<i class="fa fa-angle-up"></i></span>
+                    <div>
+                        <input id="chkbox_expediente_tecnico" type="checkbox" class="form-control" style="height: 30px;">
                     </div>
                 </div>
             </div>
 
-            <div class="col-xs-8" style="padding: 0px; margin-top:10px">
+            <div class="col-xs-6" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 180px">TIEMPO EJECUCION: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
@@ -362,7 +397,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12" style="padding: 0px; margin-top:10px">
+            <div class="col-xs-6" style="padding: 0px; margin-top:10px">
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 192px">BENEFICIARIOS: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
@@ -400,11 +435,13 @@
             
             <div class="col-xs-6" style="padding: 0px; margin-top:10px;">
                 <div class="input-group input-group-md">
-                    <span class="input-group-addon" style="width: 192px">EST. MANTE.: &nbsp;<i class="fa fa-list"></i></span>
+                    <span class="input-group-addon" style="width: 192px">ESTADO DE LA OBRA: &nbsp;<i class="fa fa-list"></i></span>
                     <div>
-                        <select id='est_mantenimiento' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
+                        <select id='id_estado_obra' class="form-control col-xs-12 col-md-12 col-lg-12" style="height: 32px;">
                             <option value="0">-- SELECCIONAR UNA OPCION --</option>
-                             
+                            @foreach($estado_obra as $est_obr)
+                                <option value="{{ $est_obr->id_estado_obra }}">-- {{ $est_obr->descripcion }} --</option>
+                            @endforeach
                         </select>                       
                     </div>
                 </div>
@@ -414,7 +451,7 @@
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 192px">AVANCE FISICO: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
-                        <input id="dlg_avance_fisico" type="text" maxlength="255" class="form-control text-uppercase" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
+                        <input id="dlg_avance_fisico" type="text" class="form-control text-uppercase" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                     </div>
                 </div>
             </div>
@@ -423,24 +460,36 @@
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 192px">AVANCE FINANCIERO: &nbsp;<i class="fa fa-user"></i></span>
                     <div>
-                        <input id="dlg_avance_financiero" type="text" maxlength="255" class="form-control text-uppercase" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
+                        <input id="dlg_avance_financiero" type="text" class="form-control text-uppercase" style="height: 30px;" onkeypress="return soloNumeroTab(event);">
                     </div>
                 </div>
+            </div>
+            
+            <div id="btn_agregar_obra">
+            <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-5" onclick="guardar_editar_datos(1);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>GUARDAR DATOS
+            </button>
+            </div>
+            
+            <div id="btn_modificar_obra">
+            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="guardar_editar_datos(2);" style="padding: 0px;margin-top: 10px ">
+                <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span>MODIFICAR DATOS
+            </button>
             </div>
         </div>
     </div>
     </div>
     
-    <input type="hidden" id="id_mantenimiento">
+    <input type="hidden" id="id_obra">
     
     <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body panel-success">
         <div class="panel-heading bg-color-success">FOTOS</div>
     
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
-                <div class="col-xs-10" style="padding-left: 90px">
-                    <table id="table_fotos_mantenimiento" ></table>
-                    <div id="pager_table_fotos_mantenimiento"></div>
+                <div class="col-xs-10" style="padding-left: 40px">
+                    <table id="table_fotos_obra" ></table>
+                    <div id="pager_table_fotos_obra"></div>
                 </div>
                 <div class="col-xs-2">
                     <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_foto();" >
@@ -464,16 +513,16 @@
         <div class="panel-heading bg-color-success">FOTOS</div>
         <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
             
-            <form id="FormularioFotosMantenimiento" name="FormularioFotosMantenimiento" method="post" enctype="multipart/form-data">
+            <form id="FormularioFotosObra" name="FormularioFotosObra" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token1" id="_token1" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}">
                 
-                <input type="hidden" id="id_mantenimiento_foto" name="id_mantenimiento_foto">
+                <input type="hidden" id="id_obra_foto" name="id_obra_foto">
                 
                 <div class="col-xs-12" style="padding: 0px; margin-top:10px">
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 180px">SUBIR FOTO: &nbsp;<i class="fa fa-search"></i></span>
                         <div>
-                            <input id="dlg_foto_mantenimiento" name="dlg_foto_mantenimiento" type="file" maxlength="255" class="form-control text-uppercase" style="height: 30px;">
+                            <input id="dlg_foto_obra" name="dlg_foto_obra" type="file" class="form-control text-uppercase" style="height: 30px;" onchange="validarExtensionArchivo();">
                         </div>
                     </div>
                 </div> 
@@ -501,10 +550,10 @@
     </div>    
 </div>
 
-<div id="dlg_mapa_mantenimiento" >
-    <input type="hidden" id="hidden_input_habilitacion_mantenimiento" value="0"/>
+<div id="dlg_mapa_obra" >
+    <input type="hidden" id="hidden_input_habilitacion_obra" value="0"/>
     <form class="smart-form">
-        <div id="id_map_reg_lote_mantenimiento" style="background: white; height: 100% !important">
+        <div id="id_map_reg_lote_obra" style="background: white; height: 100% !important">
             <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>

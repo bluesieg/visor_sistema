@@ -4,7 +4,7 @@
 
 function fn_buscar_caso(){
     descripcion = $("#dlg_buscar_caso").val();
-    fn_actualizar_grilla('table_caso','procuraduria_mant_casos/0?grid=casos&descripcion='+descripcion);
+    fn_actualizar_grilla('table_caso','procuraduria/0?grid=casos&descripcion='+descripcion);
 }
 
 function crear_nuevo_caso()
@@ -45,10 +45,11 @@ function guardar_editar_datos(tipo) {
       
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_casos/create',
+            url: 'procuraduria/create',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:3
             },
             success: function(data) 
             {
@@ -72,10 +73,11 @@ function guardar_editar_datos(tipo) {
         MensajeDialogLoadAjax('dlg_nuevo_caso', '.:: Cargando ...');
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'procuraduria_mant_casos/'+id_caso+'/edit',
+            url: 'procuraduria/'+id_caso+'/edit',
             type: 'GET',
             data: {
-        	descripcion:descripcion
+        	descripcion:descripcion,
+                tipo:3
             },
             success: function(data) 
             {
@@ -123,7 +125,7 @@ function modificar_caso()
 
         MensajeDialogLoadAjax('dlg_nuevo_caso', '.:: Cargando ...');
 
-        $.ajax({url: 'procuraduria_mant_casos/'+id_caso,
+        $.ajax({url: 'procuraduria/'+id_caso+'?show=casos',
             type: 'GET',
             success: function(data)
             {          

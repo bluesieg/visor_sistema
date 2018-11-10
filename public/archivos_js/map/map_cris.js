@@ -11,6 +11,27 @@ var lyr_map_mod_hab_urb_amarillo;
 var lyr_map_mod_hab_urb_verde;
 var lyr_map_mod_hab_urb_rojo;
 
+var lyr_map_gopi_perfiles_evaluacion;
+var lyr_map_gopi_perfiles_pendiente;
+var lyr_map_gopi_perfiles_aprobado;
+
+var lyr_map_gopi_mantenimiento_inicio;
+var lyr_map_gopi_mantenimiento_ejecucion;
+var lyr_map_gopi_mantenimiento_paralizada;
+var lyr_map_gopi_mantenimiento_culminada;
+var lyr_map_gopi_mantenimiento_recepcionada;
+var lyr_map_gopi_mantenimiento_liquidada;
+var lyr_map_gopi_mantenimiento_entregada;
+
+var lyr_map_gopi_obra_inicio;
+var lyr_map_gopi_obra_ejecucion;
+var lyr_map_gopi_obra_paralizada;
+var lyr_map_gopi_obra_culminada;
+var lyr_map_gopi_obra_recepcionada;
+var lyr_map_gopi_obra_liquidada;
+var lyr_map_gopi_obra_entregada;
+
+
 var aux_constancias=0;
 map.on('singleclick', function(evt) {
 //    map.getLayers().forEach(function(el) {
@@ -122,49 +143,6 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
-                if(layer.get('title')=='Geren_seg_ciudadana'&&mostrar==0)
-                {
-                    $("#seg_ciudadana_foto_comisario").html("");
-                    mostrar=1;
-                    $("#seg_ciudadana_nombre_comisaria").text(feature.get('nombre'));
-                    $("#seg_ciudadana_ubicacion").text(feature.get('ubicacion'));
-                    $("#seg_ciudadana_comisario").text(feature.get('comisario'));
-                    $("#seg_ciudadana_nro_efectivos").text(feature.get('nro_efectivos'));
-                    $("#seg_ciudadana_nro_vehiculos").text(feature.get('nro_vehiculos'));
-                    $("#seg_ciudadana_tel_comisario").text(feature.get('tlefno_comisario'));
-                    $("#seg_ciudadana_tel_comisaria").text(feature.get('tlfno_comsaria'));
-                    $("#seg_ciudadana_foto_comisario").attr("src","data:image/jpg;base64,"+feature.get('foto_comisario'));
-                    //$("#seg_ciudadana_foto_comisario").html('<img src="data:image/png;base64,'+feature.get('foto_comisario')+'" style="max-height:250px; max-width:400px"')
-                    crear_dlg("dlg_get_comisarias",1100,"Cerro Colorado - COMISARIAS");
-                    return false;
-                }
-                
-                if(layer.get('title')=='Geren_seg_ciudadana1'&&mostrar==0)
-                {
-                    mostrar=1;
-                    $.ajax({url: 'comisarias/0?mapa=fotos',
-                    type: 'GET',
-                    data:{id_mapa:feature.get('id')},
-                    success: function(data) 
-                    {
-                        if (data.msg === 'si'){
-                            
-                            $("#mapa_delito_observaciones").text(data.observacion);
-                            $("#seg_ciudadana_foto_mapa_detito").attr("src","data:image/png;base64,"+data.foto);
-                           //$("#seg_ciudad_imagen_prueba").html('<img src="data:image/jpg;base64,'+data[0].foto+'" style="max-height:250px; max-width:400px"')
-                        }
-                    },
-                        error: function(data) {
-                            mostraralertas("hubo un error, Comunicar al Administrador");
-                            console.log('error');
-                            console.log(data);
-                            MensajeDialogLoadAjaxFinish('dlg_nuevo_exp');
-                        }
-                    });
-                    crear_dlg("dlg_get_mapa_delito",1100,"Cerro Colorado - MAPA DELITO");
-                    return false;
-                }
-                
                 if(layer.get('title')=='gerencia_administracion_tributaria'&&mostrar==0)
                 {
                     mostrar=1;
@@ -199,9 +177,212 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
+                if(layer.get('title')=='gopi_perfiles_evaluacion'||layer.get('title')=='gopi_perfiles_pendiente'||layer.get('title')=='gopi_perfiles_aprobado'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gopi_perfil").val(feature.get('id_perfil'));
+                    $("#dlg_gopi_perfiles_dni").text(feature.get('nro_doc_persona'));
+                    $("#dlg_gopi_perfiles_nombre").text(feature.get('persona'));
+                    $("#dlg_gopi_perfiles_codigo_catastral").text(feature.get('ubicacion'));
+                    $("#dlg_gopi_perfiles_hab_urb").text(feature.get('nomb_hab_urba'));
+                    $("#dlg_gopi_perfiles_codigo_snip").text(feature.get('codigo_snip'));
+                    $("#dlg_gopi_perfiles_nombre_pip").text(feature.get('nombre_pip'));
+                    $("#dlg_gopi_perfiles_monto_perfil").text(feature.get('monto_perfil'));
+                    $("#dlg_gopi_perfiles_respon_funcional").text(feature.get('responsabilidad_func'));
+                    $("#dlg_gopi_perfiles_uni_formuladora").text(feature.get('unidad_form'));
+                    $("#dlg_gopi_perfiles_uni_ejecutora").text(feature.get('unidad_ejecutora'));
+                    $("#dlg_gopi_perfiles_nivel").text(feature.get('nivel'));
+                    $("#dlg_gopi_perfiles_num_beneficiarios").text(feature.get('num_beneficiarios'));
+                    $("#dlg_gopi_perfiles_cant_alternativas").text(feature.get('cantidad'));
+                    $("#dlg_gopi_perfiles_monto").text(feature.get('monto'));
+                    if (feature.get('viabilidad') == '1') {
+                        $("#dlg_gopi_perfiles_viabilidad").text('SI');
+                    }else{
+                        $("#dlg_gopi_perfiles_viabilidad").text('NO');
+                    }
+                                  
+                    crear_dlg("dlg_gopi_perfiles",1200,"GOPI - PERFILES");
+                    return false;
+                }
                 
-            });
-    
+                if(layer.get('title')=='gopi_expedientes_tecnicos'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gopi_exp_tecnico").val(feature.get('id_expediente_tecnico'));
+                    $("#dlg_gopi_exp_tecnico_dni").text(feature.get('nro_doc_persona'));
+                    $("#dlg_gopi_exp_tecnico_nombre").text(feature.get('persona'));
+                    $("#dlg_gopi_exp_tecnico_cod_catastral").text(feature.get('ubicacion'));
+                    $("#dlg_gopi_exp_tecnico_hab_urb").text(feature.get('nomb_hab_urba'));
+                    $("#dlg_gopi_exp_tecnico_monto_exp_tec").text(feature.get('monto_exp_t'));
+                    $("#dlg_gopi_exp_tecnico_codigo_snip").text(feature.get('codigo_snip'));
+                    $("#dlg_gopi_exp_tecnico_nombre_pip").text(feature.get('nombre_pip'));
+                    $("#dlg_gopi_exp_tecnico_monto").text(feature.get('monto'));
+                    $("#dlg_gopi_exp_tecnico_descripcion").text(feature.get('descripcion'));
+                    $("#dlg_gopi_exp_tecnico_tiempo_ejec").text(feature.get('tiempo_ejecucion'));
+                    $("#dlg_gopi_exp_tecnico_aprob").text(feature.get('aprobacion'));
+                                  
+                    crear_dlg("dlg_gopi_expedientes_tecnicos",1200,"GOPI - EXPEDIENTES TECNICOS");
+                    return false;
+                }
+                
+                if(layer.get('title')=='gopi_mantenimiento_inicio'||layer.get('title')=='gopi_mantenimiento_en_ejecucion'||layer.get('title')=='gopi_mantenimiento_paralizada'||layer.get('title')=='gopi_mantenimiento_culminada'||layer.get('title')=='gopi_mantenimiento_recepcionada'||layer.get('title')=='gopi_mantenimiento_liquidada'||layer.get('title')=='gopi_mantenimiento_entregada'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gopi_mantenimiento").val(feature.get('id_mantenimiento'));
+                    $("#dlg_gopi_mantenimiento_dni_ejec").text(feature.get('dni_ejecutor'));
+                    $("#dlg_gopi_mantenimiento_nomb_ejec").text(feature.get('ejecutor'));
+                    $("#dlg_gopi_mantenimiento_dni_sup").text(feature.get('dni_supervisor'));
+                    $("#dlg_gopi_mantenimiento_nomb_sup").text(feature.get('supervisor'));
+                    $("#dlg_gopi_mantenimiento_dni_res").text(feature.get('dni_residente'));
+                    $("#dlg_gopi_mantenimiento_nomb_res").text(feature.get('residente'));
+                    $("#dlg_gopi_mantenimiento_cod_cat").text(feature.get('ubicacion'));
+                    $("#dlg_gopi_mantenimiento_hab_urb").text(feature.get('nomb_hab_urba'));
+                    $("#dlg_gopi_mantenimiento_nomb_mant").text(feature.get('nombre'));
+                    $("#dlg_gopi_mantenimiento_tip_mant").text(feature.get('tipo_mant'));
+                    $("#dlg_gopi_mantenimiento_mod_ejec").text(feature.get('modalidad'));
+                    $("#dlg_gopi_mantenimiento_observ").text(feature.get('observacion'));
+                    $("#dlg_gopi_mantenimiento_tiem_ejec").text(feature.get('tiempo_ejecucion'));
+                    $("#dlg_gopi_mantenimiento_bene").text(feature.get('beneficiarios'));
+                    $("#dlg_gopi_mantenimiento_fec_ini").text(feature.get('fecha_inicio'));
+                    $("#dlg_gopi_mantenimiento_fec_term").text(feature.get('fecha_termino'));
+                    $("#dlg_gopi_mantenimiento_descr").text(feature.get('descripcion'));
+                    $("#dlg_gopi_mantenimiento_est_mant").text(feature.get('estado'));
+                    $("#dlg_gopi_mantenimiento_av_fis").text(feature.get('avance_fisico'));
+                    $("#dlg_gopi_mantenimiento_av_fin").text(feature.get('avance_financiero'));
+                    if (feature.get('informe_tecnico') == '1') {
+                        $("#dlg_gopi_mantenimiento_inf_tec").text('SI');
+                    }else{
+                        $("#dlg_gopi_mantenimiento_inf_tec").text('NO');
+                    }
+                    
+                    ver_galeria_fotos(feature.get('id_mantenimiento'),'sub_geren_apoyo_matenimiento','fotos_mantenimiento','dlg_gopi_mantenimiento_fotos');
+                                  
+                    crear_dlg("dlg_gopi_mantenimientos",1200,"GOPI - MANTENIMIENTOS");
+                    return false;
+                }
+                
+                if(layer.get('title')=='gopi_obra_inicio'||layer.get('title')=='gopi_obra_en_ejecucion'||layer.get('title')=='gopi_obra_paralizada'||layer.get('title')=='gopi_obra_culminada'||layer.get('title')=='gopi_obra_recepcionada'||layer.get('title')=='gopi_obra_liquidada'||layer.get('title')=='gopi_obra_entregada'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gopi_obra").val(feature.get('id_obra'));
+                    $("#dlg_gopi_obra_dni_ejec").text(feature.get('dni_ejecutor'));
+                    $("#dlg_gopi_obra_nomb_ejec").text(feature.get('ejecutor'));
+                    $("#dlg_gopi_obra_dni_sup").text(feature.get('dni_supervisor'));
+                    $("#dlg_gopi_obra_nomb_sup").text(feature.get('supervisor'));
+                    $("#dlg_gopi_obra_dni_res").text(feature.get('dni_residente'));
+                    $("#dlg_gopi_obra_nomb_res").text(feature.get('residente'));
+                    $("#dlg_gopi_obra_cod_cat").text(feature.get('ubicacion'));
+                    $("#dlg_gopi_obra_hab_urb").text(feature.get('nomb_hab_urba'));
+                    $("#dlg_gopi_obra_nomb_obra").text(feature.get('nombre'));
+                    $("#dlg_gopi_obra_tip_obra").text(feature.get('tipo_obra'));
+                    $("#dlg_gopi_obra_mod_ejec").text(feature.get('modalidad'));
+                    $("#dlg_gopi_obra_monto").text(feature.get('monto'));
+                    $("#dlg_gopi_obra_observaciones").text(feature.get('observacion'));
+                    $("#dlg_gopi_obra_cod_snip").text(feature.get('codigo_snip'));
+                    $("#dlg_gopi_obra_tiem_ejec").text(feature.get('tiempo_ejecucion'));
+                    $("#dlg_gopi_obra_beneficiarios").text(feature.get('beneficiarios'));
+                    $("#dlg_gopi_obra_fec_ini").text(feature.get('fecha_inicio'));
+                    $("#dlg_gopi_obra_fec_term").text(feature.get('fecha_termino'));
+                    $("#dlg_gopi_obra_descripcion").text(feature.get('descripcion'));
+                    $("#dlg_gopi_obra_est_obra").text(feature.get('estado_obra'));
+                    $("#dlg_gopi_obra_av_fis").text(feature.get('avance_fisico'));
+                    $("#dlg_gopi_obra_av_fin").text(feature.get('avance_financiero'));
+                    if (feature.get('perfil') == '1') {
+                        $("#dlg_gopi_obra_perfil").text('SI');
+                    }else{
+                        $("#dlg_gopi_obra_perfil").text('NO');
+                    }
+                    if (feature.get('expediente_tecnico') == '1') {
+                        $("#dlg_gopi_obra_exp_tec").text('SI');
+                    }else{
+                        $("#dlg_gopi_obra_exp_tec").text('NO');
+                    }
+                    
+                    ver_galeria_fotos(feature.get('id_obra'),'sub_geren_obras_publicas','fotos_obra','dlg_gopi_obra_fotos');
+                                  
+                    crear_dlg("dlg_gopi_obras",1200,"GOPI - OBRAS");
+                    return false;
+                }
+                
+                if(layer.get('title')=='geren_seg_ciudadana_comisarias'&&mostrar==0)
+                {
+                    $("#dlg_gsc_comisaria_foto").html("");
+                    mostrar=1;
+                    $("#id_gsc_comisaria").val(feature.get('id'));
+                    $("#dlg_gsc_comisaria_nombre").text(feature.get('nombre'));
+                    $("#dlg_gsc_comisaria_ubicacion").text(feature.get('ubicacion'));
+                    $("#dlg_gsc_comisaria_nro_efectivos").text(feature.get('nro_efectivos'));
+                    $("#dlg_gsc_comisaria_nro_vehiculos").text(feature.get('nro_vehiculos'));
+                    $("#dlg_gsc_comisaria_telefono").text(feature.get('telefono'));
+                    if (feature.get('foto') == null) 
+                    {
+                        $("#dlg_gsc_comisaria_foto").attr("src","img/recursos/Home-icon.png");
+                    }
+                    else
+                    {
+                        $("#dlg_gsc_comisaria_foto").attr("src","data:image/png;base64,"+feature.get('foto'));
+                    }
+                    
+                    crear_dlg("dlg_gsc_comisarias",1100,"Cerro Colorado - COMISARIAS");
+                    return false;
+                }
+                
+                if(layer.get('title')=='geren_seg_ciudadana_semaforos'&&mostrar==0)
+                {
+                    $("#dlg_gsc_semaforos_imagen").html("");
+                    mostrar=1;
+                    $("#id_gsc_semaforo").val(feature.get('id_semaforo'));
+                    $("#dlg_gsc_semaforos_ubicacion").text(feature.get('ubicacion'));
+                    $("#dlg_gsc_semaforos_codigo").text(feature.get('cod_semaforo'));
+                    $("#dlg_gsc_semaforos_tip_sem").text(feature.get('tipo_semaforo'));
+                    $("#dlg_gsc_semaforos_estado").text(feature.get('estado'));
+                    $("#dlg_gsc_semaforos_cod_controlador").text(feature.get('cod_controlador'));
+                    $("#dlg_gsc_semaforos_controlador").text(feature.get('controlador'));
+                    $("#dlg_gsc_semaforos_imagen").attr("src","data:image/png;base64,"+feature.get('imagen'));
+                    
+                    if (feature.get('peatonal') == '1') {
+                        $("#dlg_gsc_semaforos_peatonal").text('SI');
+                    }else{
+                        $("#dlg_gsc_semaforos_peatonal").text('NO');
+                    }
+                    
+                    crear_dlg("dlg_gsc_semaforos",1100,"GSC - SEMAFOROS");
+                    return false;
+                }
+                
+                if(layer.get('title')=='geren_seg_ciudadana_mapa_delitos'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gsc_mapa_delito").val(feature.get('id_mapa_delito'));
+                    $("#dlg_gsc_map_delito_dni_infractor").text(feature.get('nro_doc_infractor'));
+                    $("#dlg_gsc_map_delito_nomb_infractor").text(feature.get('infractor'));
+                    $("#dlg_gsc_map_delito_dni_encargado").text(feature.get('nro_doc_encargado')); 
+                    $("#dlg_gsc_map_delito_nomb_encargado").text(feature.get('encargado'));
+                    $("#dlg_gsc_map_delito_ubicacion").text(feature.get('ubicacion'));
+                    $("#dlg_gsc_map_delito_tip_delito").text(feature.get('descripcion'));
+                    $("#dlg_gsc_map_delito_fec_reg").text(feature.get('fecha_registro'));
+                    $("#dlg_gsc_map_delito_vehiculo").text(feature.get('vehiculo'));
+                    $("#dlg_gsc_map_delito_observaciones").text(feature.get('observacion'));
+                    
+                    traer_foto_gsc_mapa_delito(feature.get('id_mapa_delito'));
+                    
+                    crear_dlg("dlg_gsc_mapa_delitos",1000,"GSC - MAPA DELITOS");
+                    return false;
+                }
+                
+                if(layer.get('title')=='geren_seg_ciudadana_camaras'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gsc_camara").val(feature.get('id_mapa_delito'));
+                    $("#dlg_gsc_camara_observacion").text(feature.get('observacion'));
+                    $("#dlg_gsc_camara_imagen").attr("src","data:image/png;base64,"+feature.get('imagen'));
+                    
+                    crear_dlg("dlg_gsc_mapa_camaras",1000,"GSC - MAPA CAMARAS");
+                    return false;
+                }
+                
+                
+            });  
 });
 
 
@@ -799,6 +980,110 @@ function valida_capa(check)
         {
             crear_mapa_adm_tributaria();
         }
+        if(check=='chk_map_gopi_expedientes_tecnicos')
+        {
+            crear_mapa_gopi_expedientes_tecnicos();
+        }
+        if(check=='chk_map_gopi_perfiles')
+        {
+            crear_mapa_gopi_perfiles();
+        }
+        if(check=='chk_evaluacion')
+        {
+            crear_semaforo_mapa_gopi_perfiles('EVALUACION');
+        }
+        if(check=='chk_pendiente')
+        {
+            crear_semaforo_mapa_gopi_perfiles('PENDIENTE');
+        }
+        if(check=='chk_aprobado')
+        {
+            crear_semaforo_mapa_gopi_perfiles('APROBADO');
+        }
+        if(check=='chk_map_gopi_mantenimientos')
+        {
+            crear_mapa_gopi_mantenimientos();
+        }
+        if(check=='chk_inicio')
+        {
+            crear_estados_mapa_gopi_mantenimiento(1);
+        }
+        if(check=='chk_en_ejecucion')
+        {
+            crear_estados_mapa_gopi_mantenimiento(2);
+        }
+        if(check=='chk_paralizada')
+        {
+            crear_estados_mapa_gopi_mantenimiento(3);
+        }
+        if(check=='chk_culminada')
+        {
+            crear_estados_mapa_gopi_mantenimiento(4);
+        }
+        if(check=='chk_recepcionada')
+        {
+            crear_estados_mapa_gopi_mantenimiento(5);
+        }
+        if(check=='chk_liquidada')
+        {
+            crear_estados_mapa_gopi_mantenimiento(6);
+        }
+        if(check=='chk_entregada')
+        {
+            crear_estados_mapa_gopi_mantenimiento(7);
+        }
+        if(check=='chk_map_gopi_obras')
+        {
+            crear_mapa_gopi_obras();
+        }
+        if(check=='chk_inicio_obra')
+        {
+            crear_estados_mapa_gopi_obra(1);
+        }
+        if(check=='chk_en_ejecucion_obra')
+        {
+            crear_estados_mapa_gopi_obra(2);
+        }
+        if(check=='chk_paralizada_obra')
+        {
+            crear_estados_mapa_gopi_obra(3);
+        }
+        if(check=='chk_culminada_obra')
+        {
+            crear_estados_mapa_gopi_obra(4);
+        }
+        if(check=='chk_recepcionada_obra')
+        {
+            crear_estados_mapa_gopi_obra(5);
+        }
+        if(check=='chk_liquidada_obra')
+        {
+            crear_estados_mapa_gopi_obra(6);
+        }
+        if(check=='chk_entregada_obra')
+        {
+            crear_estados_mapa_gopi_obra(7);
+        }
+        if(check=='chk_geren_seg_ciud_comisarias')
+        {
+            crear_mapa_gsc_comisarias();
+        }
+        if(check=='chk_geren_seg_ciud_semaforos')
+        {
+            crear_mapa_gsc_semaforos();
+        }
+        if(check=='chk_geren_seg_ciud_delitos')
+        {
+            crear_mapa_gsc_mapa_delitos();
+        }
+        if(check=='chk_geren_seg_ciud_camaras')
+        {
+            crear_mapa_gsc_mapa_camaras();
+        }
+        if(check=='chk_map_procuraduria')
+        {
+            crear_mapa_geren_procuraduria();
+        }
     }
     else
     {
@@ -988,6 +1273,141 @@ function valida_capa(check)
             $("#inp_habilitacion_adm_tributaria").hide();
             $("#btn_busqueda").hide();
             $("#anio_pred").show();
+        }
+        if (check== 'chk_map_gopi_expedientes_tecnicos') 
+        {
+            map.removeLayer(lyr_gopi_expedientes_tecnicos);
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            $("#inp_habilitacion_gopi_exp_tecnico").hide();
+            $("#btn_busqueda_gopi_exp_tecnico").hide();
+            $("#anio_pred").show();
+        }
+        if(check=='chk_map_gopi_perfiles')
+        {
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            map.removeLayer(lyr_map_gopi_perfiles_evaluacion);
+            map.removeLayer(lyr_map_gopi_perfiles_pendiente);
+            map.removeLayer(lyr_map_gopi_perfiles_aprobado);
+            $("#inp_habilitacion_gopi_perfiles,#legend").hide();
+            $("#anio_pred").show();
+        }
+        if(check=='chk_evaluacion')
+        {
+            map.removeLayer(lyr_map_gopi_perfiles_evaluacion);
+        }
+        if(check=='chk_pendiente')
+        {
+            map.removeLayer(lyr_map_gopi_perfiles_pendiente);
+        }
+        if(check=='chk_aprobado')
+        {
+            map.removeLayer(lyr_map_gopi_perfiles_aprobado);
+        }
+        if(check=='chk_map_gopi_mantenimientos')
+        {
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            map.removeLayer(lyr_map_gopi_mantenimiento_inicio);
+            map.removeLayer(lyr_map_gopi_mantenimiento_ejecucion);
+            map.removeLayer(lyr_map_gopi_mantenimiento_paralizada);
+            map.removeLayer(lyr_map_gopi_mantenimiento_culminada);
+            map.removeLayer(lyr_map_gopi_mantenimiento_recepcionada);
+            map.removeLayer(lyr_map_gopi_mantenimiento_liquidada);
+            map.removeLayer(lyr_map_gopi_mantenimiento_entregada);
+            $("#inp_habilitacion_gopi_mantenimiento,#legend").hide();
+            $("#anio_pred").show();
+        }
+        if(check=='chk_inicio')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_inicio);
+        }
+        if(check=='chk_en_ejecucion')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_ejecucion);
+        }
+        if(check=='chk_paralizada')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_paralizada);
+        }
+        if(check=='chk_culminada')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_culminada);
+        }
+        if(check=='chk_recepcionada')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_recepcionada);
+        }
+        if(check=='chk_liquidada')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_liquidada);
+        }
+        if(check=='chk_entregada')
+        {
+            map.removeLayer(lyr_map_gopi_mantenimiento_entregada);
+        }
+        if(check=='chk_map_gopi_obras')
+        {
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            map.removeLayer(lyr_map_gopi_obra_inicio);
+            map.removeLayer(lyr_map_gopi_obra_ejecucion);
+            map.removeLayer(lyr_map_gopi_obra_paralizada);
+            map.removeLayer(lyr_map_gopi_obra_culminada);
+            map.removeLayer(lyr_map_gopi_obra_recepcionada);
+            map.removeLayer(lyr_map_gopi_obra_liquidada);
+            map.removeLayer(lyr_map_gopi_obra_entregada);
+            $("#inp_habilitacion_gopi_obra,#legend").hide();
+            $("#anio_pred").show();
+        }
+        if(check=='chk_inicio_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_inicio);
+        }
+        if(check=='chk_en_ejecucion_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_ejecucion);
+        }
+        if(check=='chk_paralizada_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_paralizada);
+        }
+        if(check=='chk_culminada_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_culminada);
+        }
+        if(check=='chk_recepcionada_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_recepcionada);
+        }
+        if(check=='chk_liquidada_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_liquidada);
+        }
+        if(check=='chk_entregada_obra')
+        {
+            map.removeLayer(lyr_map_gopi_obra_entregada);
+        }
+        if(check=='chk_geren_seg_ciud_comisarias')
+        {
+            map.removeLayer(lyr_gsc_comisarias);
+        }
+        if(check=='chk_geren_seg_ciud_semaforos')
+        {
+            map.removeLayer(lyr_gsc_semaforos);
+        }
+        if(check=='chk_geren_seg_ciud_delitos')
+        {
+            map.removeLayer(lyr_gsc_delitos);
+        }
+        if(check=='chk_geren_seg_ciud_camaras')
+        {
+            map.removeLayer(lyr_gsc_camaras);
+        }
+        if(check=='chk_map_procuraduria')
+        {
+            map.removeLayer(lyr_geren_procuraduria);
         }
     }
 }
@@ -3332,4 +3752,1155 @@ function cargar_habilitacion()
             }
         });
     //alert($('#hidden_inp_habilitacion_adm_tributaria').val());
+}
+
+// GERENCIA OBRAS PUBLICAS E INFRAESTRUCTURA
+// GOPI - EXPEDIENTES TECNICOS
+
+
+function crear_mapa_gopi_expedientes_tecnicos()
+{
+    var aux_haburb_gopi_perfiles=0;
+    $("#inp_habilitacion_gopi_exp_tecnico").show();
+    $("#btn_busqueda_gopi_exp_tecnico").show();
+    $("#inp_habilitacion_gopi_exp_tecnico").val('');
+    $("#hidden_inp_habilitacion_gopi_exp_tecnico").val('');
+    $("#anio_pred").hide();
+    
+    
+    if(aux_haburb_gopi_perfiles==0)
+    {
+        aux_haburb_gopi_perfiles=1;
+        autocompletar_haburb('inp_habilitacion_gopi_exp_tecnico');
+    }
+    MensajeDialogLoadAjaxFinish('map');   
+}
+
+var lyr_gopi_expedientes_tecnicos;
+function cargar_habilitacion_gopi_exp_tecnico()
+{
+    if($("#hidden_inp_habilitacion_gopi_exp_tecnico").val()==0)
+    {
+        mostraralertasconfoco("DEBE ESCRIBIR EL NOMBRE DE UNA HABILITACION URBANA","#inp_habilitacion_gopi_exp_tecnico");
+        MensajeDialogLoadAjaxFinish('map');
+        return false;
+    }
+    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_exp_tecnico").val(),1);
+    MensajeDialogLoadAjax('map', '.:: Cargando ...');
+        $.ajax({url: 'sub_geren_estudios_proyectos/0?mapa=expedientes_tecnicos&id_hab_urb='+$('#hidden_inp_habilitacion_gopi_exp_tecnico').val(),
+            type: 'GET',
+            success: function(data)
+            {
+                if(data==0)
+                {
+                    MensajeAlerta('EXPEDIENTES TECNICOS','NO SE ENCONTRO EXPEDIENTES TECNICOS EN ESTA HABILITACION.');
+                }
+                else
+                {
+                    geojson_gopi_exp_tecnico = JSON.parse(data[0].json_build_object);
+                    var format_gopi_exp_tecnico = new ol.format.GeoJSON();
+                    var features_gopi_exp_tecnico = format_gopi_exp_tecnico.readFeatures(geojson_gopi_exp_tecnico,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_gopi_exp_tecnico = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_gopi_exp_tecnico.addFeatures(features_gopi_exp_tecnico);
+                    lyr_gopi_expedientes_tecnicos = new ol.layer.Vector({
+                        source:jsonSource_gopi_exp_tecnico,
+                        style: estilos_adm_tributaria,
+                        title: "gopi_expedientes_tecnicos"
+                    });
+                    map.addLayer(lyr_gopi_expedientes_tecnicos);
+                    var extent = lyr_gopi_expedientes_tecnicos.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                }
+                    MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+
+function imprimir_docs_expedientes_tecnicos()
+{
+    window.open('sub_geren_estudios_proyectos/0?reporte=expedientes_tecnicos&id_expediente_tecnico='+$('#id_gopi_exp_tecnico').val());
+}
+
+// GOPI - PERFILES
+
+function crear_mapa_gopi_perfiles()
+{
+    var aux_haburb_gopi_perfiles=0;
+    $("#inp_habilitacion_gopi_perfiles").show();
+    $("#inp_habilitacion_gopi_perfiles").val('');
+    $("#hidden_inp_habilitacion_gopi_perfiles").val('');
+    $("#anio_pred").hide();
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_evaluacion" onchange="valida_capa('+"'chk_evaluacion'"+')">\n\
+                                    <i></i>\n\
+                                    EVALUACION\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_pendiente" onchange="valida_capa('+"'chk_pendiente'"+')">\n\
+                                    <i></i>\n\
+                                    PENDIENTE\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_aprobado" onchange="valida_capa('+"'chk_aprobado'"+')">\n\
+                                    <i></i>\n\
+                                    APROBADO\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+    
+    if(aux_haburb_gopi_perfiles==0)
+    {
+        aux_haburb_gopi_perfiles=1;
+        autocompletar_haburb('inp_habilitacion_gopi_perfiles');
+    }
+    MensajeDialogLoadAjaxFinish('map');   
+}
+
+function crear_semaforo_mapa_gopi_perfiles(color)
+{
+    if($("#hidden_inp_habilitacion_gopi_perfiles").val()==0)
+    {
+        mostraralertasconfoco("Seleccione Hablitacion","#inp_habilitacion_gopi_perfiles");
+        MensajeDialogLoadAjaxFinish('map');
+        $("#chk_evaluacion,#chk_pendiente,#chk_aprobado").prop("checked", false);
+        return false;
+    }
+    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_perfiles").val(),1);
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'sub_geren_estudios_proyectos/0?mapa=mapa_perfiles&nivel='+color+'&id_hab_urb='+$("#hidden_inp_habilitacion_gopi_perfiles").val(),
+            type: 'get',
+            success: function (data) {
+                if(data==0)
+                {
+                    MensajeAlerta('PERFILES','NO SE ENCONTRO PERFILES EN ESTA HABILITACION.');
+                }
+                else
+                {
+                    var format = new ol.format.GeoJSON();
+                    var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource.addFeatures(features);
+                    if(color == 'EVALUACION')
+                    {
+                        lyr_map_gopi_perfiles_evaluacion = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: gopi_perfiles_amarillo,
+                            title: "gopi_perfiles_evaluacion"
+                        });
+                        map.addLayer(lyr_map_gopi_perfiles_evaluacion);
+                        var extent = lyr_map_gopi_perfiles_evaluacion.getSource().getExtent();
+                    }
+                    if(color == 'PENDIENTE')
+                    {
+                        lyr_map_gopi_perfiles_pendiente = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: gopi_perfiles_verde,
+                            title: "gopi_perfiles_pendiente"
+                        });
+                        map.addLayer(lyr_map_gopi_perfiles_pendiente);
+                        var extent = lyr_map_gopi_perfiles_pendiente.getSource().getExtent();
+                    }
+                    if(color == 'APROBADO')
+                    {
+                        lyr_map_gopi_perfiles_aprobado = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: gopi_perfiles_rojo,
+                            title: "gopi_perfiles_aprobado"
+                        });
+                        map.addLayer(lyr_map_gopi_perfiles_aprobado);
+                        var extent = lyr_map_gopi_perfiles_aprobado.getSource().getExtent();
+                    }
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+
+function gopi_perfiles_amarillo(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(243, 156, 18 , 0.5)',
+        })
+    });
+    
+}
+
+function gopi_perfiles_rojo(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(169, 50, 38, 0.5)',
+        })
+    });
+    
+}
+
+function gopi_perfiles_verde(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(25, 111, 61, 0.5)',
+        })
+    });
+    
+}
+
+function imprimir_docs_perfiles()
+{
+    window.open('sub_geren_estudios_proyectos/0?reporte=perfiles&id_perfil='+$('#id_gopi_perfil').val());
+}
+
+// GOPI - MANTENIMIENTOS
+
+function crear_mapa_gopi_mantenimientos()
+{
+    var aux_haburb_gopi_mantenimiento=0;
+    $("#inp_habilitacion_gopi_mantenimiento").show();
+    $("#inp_habilitacion_gopi_mantenimiento").val('');
+    $("#hidden_inp_habilitacion_gopi_mantenimiento").val('');
+    $("#anio_pred").hide();
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_inicio" onchange="valida_capa('+"'chk_inicio'"+')">\n\
+                                    <i></i>\n\
+                                    INICIO\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_en_ejecucion" onchange="valida_capa('+"'chk_en_ejecucion'"+')">\n\
+                                    <i></i>\n\
+                                    EN EJECUCION\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_paralizada" onchange="valida_capa('+"'chk_paralizada'"+')">\n\
+                                    <i></i>\n\
+                                    PARALIZADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_culminada" onchange="valida_capa('+"'chk_culminada'"+')">\n\
+                                    <i></i>\n\
+                                    CULMINADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_recepcionada" onchange="valida_capa('+"'chk_recepcionada'"+')">\n\
+                                    <i></i>\n\
+                                    RECEPCIONADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_liquidada" onchange="valida_capa('+"'chk_liquidada'"+')">\n\
+                                    <i></i>\n\
+                                    LIQUIDADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_entregada" onchange="valida_capa('+"'chk_entregada'"+')">\n\
+                                    <i></i>\n\
+                                    ENTREGADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+    
+    if(aux_haburb_gopi_mantenimiento==0)
+    {
+        aux_haburb_gopi_mantenimiento=1;
+        autocompletar_haburb('inp_habilitacion_gopi_mantenimiento');
+    }
+    MensajeDialogLoadAjaxFinish('map');   
+}
+
+function crear_estados_mapa_gopi_mantenimiento(estado)
+{
+    if($("#hidden_inp_habilitacion_gopi_mantenimiento").val()==0)
+    {
+        mostraralertasconfoco("SELECCIONE UNA HABILITACION","#inp_habilitacion_gopi_mantenimiento");
+        MensajeDialogLoadAjaxFinish('map');
+        $("#chk_inicio,#chk_en_ejecucion,#chk_paralizada,#chk_culminada,#chk_recepcionada,#chk_liquidada,#chk_entregada").prop("checked", false);
+        return false;
+    }
+    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_mantenimiento").val(),1);
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'sub_geren_apoyo_matenimiento/0?mapa=mapa_mantenimiento&id_estado_mant='+estado+'&id_hab_urb='+$("#hidden_inp_habilitacion_gopi_mantenimiento").val(),
+        type: 'get',
+        success: function (data) {
+            if(data==0)
+            {
+                MensajeAlerta('MANTENIMIENTOS','NO SE ENCONTRO MANTENIMIENTOS EN ESTA HABILITACION.');
+            }
+            else
+            {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                if(estado == 1)
+                {
+                    lyr_map_gopi_mantenimiento_inicio = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_inicio"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_inicio);
+                    var extent = lyr_map_gopi_mantenimiento_inicio.getSource().getExtent();
+                }
+                if(estado == 2)
+                {
+                    lyr_map_gopi_mantenimiento_ejecucion = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_en_ejecucion"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_ejecucion);
+                    var extent = lyr_map_gopi_mantenimiento_ejecucion.getSource().getExtent();
+                }
+                if(estado == 3)
+                {
+                    lyr_map_gopi_mantenimiento_paralizada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_paralizada"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_paralizada);
+                    var extent = lyr_map_gopi_mantenimiento_paralizada.getSource().getExtent();
+                }
+                if(estado == 4)
+                {
+                    lyr_map_gopi_mantenimiento_culminada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_culminada"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_culminada);
+                    var extent = lyr_map_gopi_mantenimiento_culminada.getSource().getExtent();
+                }
+                if(estado == 5)
+                {
+                    lyr_map_gopi_mantenimiento_recepcionada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_recepcionada"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_recepcionada);
+                    var extent = lyr_map_gopi_mantenimiento_recepcionada.getSource().getExtent();
+                }
+                if(estado == 6)
+                {
+                    lyr_map_gopi_mantenimiento_liquidada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_liquidada"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_liquidada);
+                    var extent = lyr_map_gopi_mantenimiento_liquidada.getSource().getExtent();
+                }
+                if(estado == 7)
+                {
+                    lyr_map_gopi_mantenimiento_entregada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_mantenimiento_rojo,
+                        title: "gopi_mantenimiento_entregada"
+                    });
+                    map.addLayer(lyr_map_gopi_mantenimiento_entregada);
+                    var extent = lyr_map_gopi_mantenimiento_entregada.getSource().getExtent();
+                }
+                map.getView().fit(extent, map.getSize());
+            }
+            MensajeDialogLoadAjaxFinish('map');
+        },
+        error: function (data) {
+            MensajeAlerta('Predios','No se encontró.');
+        }
+    });
+}
+
+function gopi_mantenimiento_rojo(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(169, 50, 38, 0.5)',
+        })
+    });
+    
+}
+
+function imprimir_docs_mantenimientos()
+{
+    window.open('sub_geren_apoyo_matenimiento/0?reporte=mantenimientos&id_mantenimiento='+$('#id_gopi_mantenimiento').val());
+}
+
+function ver_galeria_fotos(id,url,ruta,dlg_foto)
+{  
+    $.ajax({url: url+'/0?fotos='+ruta,
+    type: 'GET',
+    data:
+    {
+        id:id
+    },
+    success: function(r) 
+    {
+        texto1='';
+        texto2='';
+        $("#"+dlg_foto).html("");
+        if(r!=0)
+        {
+            $("#"+dlg_foto).html('<center><img src="data:image/png;base64,'+r[0].foto+'" width="100%"/></center>');
+
+            for(i=0;i<r.length;i++)
+            {
+                if(i==0)
+                {
+                    texto1=texto1+'<li data-target="#myCarousel" data-slide-to="'+i+'" class="active"></li>';            
+                    texto2=texto2+'<div class="item active"><center><img src="data:image/png;base64,'+r[i].foto+'" alt=""></center></div>';
+
+                }
+                else
+                {
+                    texto1=texto1+'<li data-target="#myCarousel" data-slide-to="'+i+'"></li>';            
+                    texto2=texto2+'<div class="item"><center><img src="data:image/png;base64,'+r[i].foto+'" alt=""></center></div>\n\
+                                  '
+                }
+            }
+            final='<div id="myCarousel" class="carousel fade" style="margin-bottom: 20px;">\n\
+                  <ol class="carousel-indicators">\n\
+                  '+texto1+'\n\
+                  </ol>\n\
+                  <div class="carousel-inner">\n\
+                    '+texto2+'\n\
+                  </div>\n\
+                <a class="left carousel-control" href="#myCarousel" data-slide="next"> <span class="glyphicon glyphicon-chevron-left"></span> </a>\n\
+                <a class="right carousel-control" href="#myCarousel" data-slide="prev"> <span class="glyphicon glyphicon-chevron-right"></span> </a>\n\
+                </div>';
+            $("#"+dlg_foto).html(final);
+        }
+        else
+        {
+            $("#"+dlg_foto).html('<center><img src="img/recursos/Home-icon.png" width="100%"/></center>');
+        }
+        
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+    }
+    }); 
+}
+
+// GOPI - OBRAS
+
+function crear_mapa_gopi_obras()
+{
+    var aux_haburb_gopi_obra=0;
+    $("#inp_habilitacion_gopi_obra").show();
+    $("#inp_habilitacion_gopi_obra").val('');
+    $("#hidden_inp_habilitacion_gopi_obra").val('');
+    $("#anio_pred").hide();
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_inicio_obra" onchange="valida_capa('+"'chk_inicio_obra'"+')">\n\
+                                    <i></i>\n\
+                                    INICIO\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_en_ejecucion_obra" onchange="valida_capa('+"'chk_en_ejecucion_obra'"+')">\n\
+                                    <i></i>\n\
+                                    EN EJECUCION\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_paralizada_obra" onchange="valida_capa('+"'chk_paralizada_obra'"+')">\n\
+                                    <i></i>\n\
+                                    PARALIZADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_culminada_obra" onchange="valida_capa('+"'chk_culminada_obra'"+')">\n\
+                                    <i></i>\n\
+                                    CULMINADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_recepcionada_obra" onchange="valida_capa('+"'chk_recepcionada_obra'"+')">\n\
+                                    <i></i>\n\
+                                    RECEPCIONADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_liquidada_obra" onchange="valida_capa('+"'chk_liquidada_obra'"+')">\n\
+                                    <i></i>\n\
+                                    LIQUIDADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_entregada_obra" onchange="valida_capa('+"'chk_entregada_obra'"+')">\n\
+                                    <i></i>\n\
+                                    ENTREGADA\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+    
+    if(aux_haburb_gopi_obra==0)
+    {
+        aux_haburb_gopi_obra=1;
+        autocompletar_haburb('inp_habilitacion_gopi_obra');
+    }
+    MensajeDialogLoadAjaxFinish('map');   
+}
+
+function crear_estados_mapa_gopi_obra(estado)
+{
+    if($("#hidden_inp_habilitacion_gopi_obra").val()==0)
+    {
+        mostraralertasconfoco("SELECCIONE UNA HABILITACION","#inp_habilitacion_gopi_obra");
+        MensajeDialogLoadAjaxFinish('map');
+        $("#chk_inicio_obra,#chk_en_ejecucion_obra,#chk_paralizada_obra,#chk_culminada_obra,#chk_recepcionada_obra,#chk_liquidada_obra,#chk_entregada_obra").prop("checked", false);
+        return false;
+    }
+    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_obra").val(),1);
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: 'sub_geren_obras_publicas/0?mapa=mapa_obra&id_estado_obra='+estado+'&id_hab_urb='+$("#hidden_inp_habilitacion_gopi_obra").val(),
+        type: 'get',
+        success: function (data) {
+            if(data==0)
+            {
+                MensajeAlerta('OBRAS','NO SE ENCONTRO OBRAS EN ESTA HABILITACION.');
+            }
+            else
+            {
+                var format = new ol.format.GeoJSON();
+                var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                if(estado == 1)
+                {
+                    lyr_map_gopi_obra_inicio = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_inicio"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_inicio);
+                    var extent = lyr_map_gopi_obra_inicio.getSource().getExtent();
+                }
+                if(estado == 2)
+                {
+                    lyr_map_gopi_obra_ejecucion = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_en_ejecucion"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_ejecucion);
+                    var extent = lyr_map_gopi_obra_ejecucion.getSource().getExtent();
+                }
+                if(estado == 3)
+                {
+                    lyr_map_gopi_obra_paralizada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_paralizada"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_paralizada);
+                    var extent = lyr_map_gopi_obra_paralizada.getSource().getExtent();
+                }
+                if(estado == 4)
+                {
+                    lyr_map_gopi_obra_culminada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_culminada"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_culminada);
+                    var extent = lyr_map_gopi_obra_culminada.getSource().getExtent();
+                }
+                if(estado == 5)
+                {
+                    lyr_map_gopi_obra_recepcionada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_recepcionada"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_recepcionada);
+                    var extent = lyr_map_gopi_obra_recepcionada.getSource().getExtent();
+                }
+                if(estado == 6)
+                {
+                    lyr_map_gopi_obra_liquidada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_liquidada"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_liquidada);
+                    var extent = lyr_map_gopi_obra_liquidada.getSource().getExtent();
+                }
+                if(estado == 7)
+                {
+                    lyr_map_gopi_obra_entregada = new ol.layer.Vector({
+                        source:jsonSource,
+                        style: gopi_obra_rojo,
+                        title: "gopi_obra_entregada"
+                    });
+                    map.addLayer(lyr_map_gopi_obra_entregada);
+                    var extent = lyr_map_gopi_obra_entregada.getSource().getExtent();
+                }
+                map.getView().fit(extent, map.getSize());
+            }
+            MensajeDialogLoadAjaxFinish('map');
+        },
+        error: function (data) {
+            MensajeAlerta('Predios','No se encontró.');
+        }
+    });
+}
+
+function gopi_obra_rojo(feature, resolution) {
+    
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(169, 50, 38, 0.5)'
+        }),
+        text: new ol.style.Text({
+            font: '12px Roboto',
+            text: feature.get('nomb_hab_urba')
+        })
+    });
+    
+}
+
+function imprimir_docs_obras()
+{
+    window.open('sub_geren_obras_publicas/0?reporte=obras&id_obra='+$('#id_gopi_obra').val());
+}
+
+// GERENCIA DE SEGURIDAD CIUDADANA
+// GSC - COMISARIAS
+
+function crear_mapa_gsc_comisarias()
+{
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=comisarias',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_gsc_comisarias = JSON.parse(r[0].json_build_object);
+                var format_gsc_comisarias= new ol.format.GeoJSON();
+                var features_gsc_comisarias = format_gsc_comisarias.readFeatures(geojson_gsc_comisarias,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_gsc_comisarias = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_gsc_comisarias.addFeatures(features_gsc_comisarias);
+                lyr_gsc_comisarias = new ol.layer.Vector({
+                    source:jsonSource_gsc_comisarias,
+                    style: geren_seg_ciudadana_style_comisarias,
+                    title: "geren_seg_ciudadana_comisarias"
+                });
+                map.addLayer(lyr_gsc_comisarias);
+                var extent = lyr_gsc_comisarias.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+
+function geren_seg_ciudadana_style_comisarias(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.03,
+          src: 'img/recursos/comisaria.png',
+        })
+      });
+}
+
+function imprimir_docs_comisarias()
+{
+    window.open('sub_geren_op_vigilancia_interna/0?reporte=comisarias&id_comisaria='+$('#id_gsc_comisaria').val());
+}
+
+function traer_datos_gsc_personal_comisaria(id_comisaria)
+{
+    $("#gsc_personal_comisarias").html("");
+    $("#dlg_ver_personal_comisarias").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: LISTA DE PERSONAL COMISARIA :.</h4></div>",
+        buttons: [{
+                    html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                    "class": "btn btn-primary bg-color-red",
+                    click: function () {$(this).dialog("close");}
+                }]
+        }).dialog('open');
+
+        MensajeDialogLoadAjax('dlg_ver_personal_comisarias', '.:: Cargando ...');
+        $.ajax({
+        url: 'sub_geren_op_vigilancia_interna/'+id_comisaria+'?show=datos_personal_comisaria',
+        type: 'GET',
+        success: function(data) 
+        {
+            if (data == 0) 
+            {
+                html="";
+                html = html+'<div class="gsc_personal_comisarias col-xs-12">\n\
+                            <div class="col-xs-12">NO PRESENTA PERSONAL</div>\n\
+                        </div>';
+                $("#gsc_personal_comisarias").html(html);
+            }
+            else
+            {
+                html="<div class='gsc_personal_comisarias col-xs-12'>\n\
+                                <div class='col-xs-2 text-center'>DNI</div>\n\
+                                <div class='col-xs-4 text-center'>NOMBRE PERSONA</div>\n\
+                                <div class='col-xs-2 text-center'>TELEFONO</div>\n\
+                                <div class='col-xs-2 text-center'>CARGO</div>\n\
+                                <div class='col-xs-2 text-center'>FECHA REGISTRO</div>\n\
+                            </div>";
+                for(i=0;i<data.length;i++)
+                {
+                    html = html+'<div class="gsc_personal_comisarias col-xs-12">\n\
+                                <div class="col-xs-2 text-center">'+data[i].dni+'</div>\n\
+                                <div class="col-xs-4 text-center">'+data[i].persona+'</div>\n\
+                                <div class="col-xs-2 text-center">'+data[i].telefono+'</div>\n\
+                                <div class="col-xs-2 text-center">'+data[i].descripcion+'</div>\n\
+                                <div class="col-xs-2 text-center">'+data[i].fecha_registro+'</div>\n\
+                            </div>';
+                }
+                $("#gsc_personal_comisarias").html(html);
+            }
+            MensajeDialogLoadAjaxFinish('dlg_ver_personal_comisarias'); 
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_ver_personal_comisarias');
+        }
+    }); 
+}
+
+function traer_datos_gsc_observ_comisarias(id_comisaria)
+{
+    $("#gsc_observ_comisarias").html("");
+    $("#dlg_ver_observacion_comisarias").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: LISTA DE OBSERVACIONES COMISARIA :.</h4></div>",
+        buttons: [{
+                    html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                    "class": "btn btn-primary bg-color-red",
+                    click: function () {$(this).dialog("close");}
+                }]
+        }).dialog('open');
+
+        MensajeDialogLoadAjax('dlg_ver_observacion_comisarias', '.:: Cargando ...');
+        $.ajax({
+        url: 'sub_geren_op_vigilancia_interna/'+id_comisaria+'?show=datos_observacion_comisaria',
+        type: 'GET',
+        success: function(data) 
+        {
+            if (data == 0) 
+            {
+                html="";
+                html = html+'<div class="gsc_personal_comisarias col-xs-12">\n\
+                            <div class="col-xs-12">NO PRESENTA OBSERVACIONES</div>\n\
+                        </div>';
+                $("#gsc_observ_comisarias").html(html);
+            }
+            else
+            {
+                html="<div class='gsc_personal_comisarias col-xs-12'>\n\
+                                <div class='col-xs-3 text-center'>FECHA REGISTRO</div>\n\
+                                <div class='col-xs-9 text-center'>OBSERVACION</div>\n\
+                            </div>";
+                for(i=0;i<data.length;i++)
+                {
+                    html = html+'<div class="gsc_personal_comisarias col-xs-12">\n\
+                                <div class="col-xs-3 text-center">'+data[i].fecha_registro+'</div>\n\
+                                <div class="col-xs-9 text-center">'+data[i].observacion+'</div>\n\
+                            </div>';
+                }
+                $("#gsc_observ_comisarias").html(html);
+            }
+            MensajeDialogLoadAjaxFinish('dlg_ver_observacion_comisarias'); 
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_ver_observacion_comisarias');
+        }
+    });
+}
+
+// GSC - SEMAFOROS
+
+function crear_mapa_gsc_semaforos()
+{
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=semaforos',
+            type: 'GET',
+            success: function(data)
+            {
+                if(data == 0)
+                {
+                    MensajeAlerta('SEMAFOROS','NO SE ENCONTRO REGISTROS.');
+                }
+                else
+                {
+                    geojson_gsc_semaforos = JSON.parse(data[0].json_build_object);
+                    var format_gsc_semaforos= new ol.format.GeoJSON();
+                    var features_gsc_semaforos = format_gsc_semaforos.readFeatures(geojson_gsc_semaforos,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_gsc_semaforos = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_gsc_semaforos.addFeatures(features_gsc_semaforos);
+                    lyr_gsc_semaforos = new ol.layer.Vector({
+                        source:jsonSource_gsc_semaforos,
+                        style: geren_seg_ciudadana_style_semaforos,
+                        title: "geren_seg_ciudadana_semaforos"
+                    });
+                    map.addLayer(lyr_gsc_semaforos);
+                    var extent = lyr_gsc_semaforos.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Problema de red','Contactar con el Administrador.');
+            }
+        });
+}
+function geren_seg_ciudadana_style_semaforos(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
+          src: 'img/recursos/semaforo.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+function imprimir_docs_semaforos()
+{
+    window.open('sub_geren_op_vigilancia_interna/0?reporte=semaforos&id_semaforo='+$('#id_gsc_semaforo').val());
+}
+
+// GSC - MAPA DELITOS
+
+function crear_mapa_gsc_mapa_delitos()
+{
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos',
+            type: 'GET',
+            success: function(data)
+            {
+                if(data == 0)
+                {
+                    MensajeAlerta('DELITOS','NO SE ENCONTRO REGISTROS.');
+                }
+                else
+                {
+                    geojson_gsc_delitos = JSON.parse(data[0].json_build_object);
+                    var format_gsc_delitos= new ol.format.GeoJSON();
+                    var features_gsc_delitos = format_gsc_delitos.readFeatures(geojson_gsc_delitos,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_gsc_delitos = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_gsc_delitos.addFeatures(features_gsc_delitos);
+                    lyr_gsc_delitos = new ol.layer.Vector({
+                        source:jsonSource_gsc_delitos,
+                        style: geren_seg_ciudadana_style_delitos,
+                        title: "geren_seg_ciudadana_mapa_delitos"
+                    });
+                    map.addLayer(lyr_gsc_delitos);
+                    var extent = lyr_gsc_delitos.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Problema de red','Contactar con el Administrador.');
+            }
+        });
+}
+function geren_seg_ciudadana_style_delitos(feature, resolution){
+
+        return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
+          src: 'img/recursos/delito.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('x_utm') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+function traer_foto_gsc_mapa_delito(id_mapa_delito)
+{
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?fotos=fotos_delitos',
+        type: 'GET',
+        data:{id_mapa_delito:id_mapa_delito},
+        success: function(data) 
+        {
+            $("#dlg_gsc_map_delito_imagen").html("");
+            if (data == 0)
+            {
+                $("#dlg_gsc_map_delito_imagen").html('<center><img src="img/recursos/Home-icon.png" width="100%"/></center>');
+            }
+            else
+            {
+                $("#dlg_gsc_map_delito_imagen").attr("src","data:image/png;base64,"+data[0].imagen);
+            }
+        },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_gsc_mapa_delitos');
+            }
+        });
+}
+
+function imprimir_docs_mapa_delitos()
+{
+    window.open('sub_geren_op_vigilancia_interna/0?reporte=mapa_delito&id_mapa_delito='+$('#id_gsc_mapa_delito').val());
+}
+
+// GSC - CAMARAS
+
+function crear_mapa_gsc_mapa_camaras()
+{
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=camaras',
+            type: 'GET',
+            success: function(data)
+            {
+                if(data == 0)
+                {
+                    MensajeAlerta('CAMARAS','NO SE ENCONTRO REGISTROS.');
+                }
+                else
+                {
+                    geojson_gsc_camaras = JSON.parse(data[0].json_build_object);
+                    var format_gsc_camaras= new ol.format.GeoJSON();
+                    var features_gsc_camaras = format_gsc_camaras.readFeatures(geojson_gsc_camaras,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_gsc_camaras = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_gsc_camaras.addFeatures(features_gsc_camaras);
+                    lyr_gsc_camaras = new ol.layer.Vector({
+                        source:jsonSource_gsc_camaras,
+                        style: geren_seg_ciudadana_style_camaras,
+                        title: "geren_seg_ciudadana_camaras"
+                    });
+                    map.addLayer(lyr_gsc_camaras);
+                    var extent = lyr_gsc_camaras.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Problema de red','Contactar con el Administrador.');
+            }
+        });
+}
+function geren_seg_ciudadana_style_camaras(feature, resolution){
+
+        return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
+          src: 'img/recursos/camara.jpg',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('x_utm') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+// PROCURADURIA
+
+function crear_mapa_geren_procuraduria()
+{
+    $.ajax({url: 'procuraduria/0?mapa=procuraduria',
+            type: 'GET',
+            success: function(data)
+            {
+                if(data == 0)
+                {
+                    MensajeAlerta('PROCURADURIA','NO SE ENCONTRO REGISTROS.');
+                }
+                else
+                {
+                    geojson_procuraduria = JSON.parse(data[0].json_build_object);
+                    var format_procuraduria= new ol.format.GeoJSON();
+                    var features_procuraduria = format_procuraduria.readFeatures(geojson_procuraduria,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_procuraduria = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_procuraduria.addFeatures(features_procuraduria);
+                    lyr_geren_procuraduria = new ol.layer.Vector({
+                        source:jsonSource_procuraduria,
+                        style: geren_procuraduria,
+                        title: "gerencia_procuraduria"
+                    });
+                    map.addLayer(lyr_geren_procuraduria);
+                    var extent = lyr_geren_procuraduria.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Problema de red','Contactar con el Administrador.');
+            }
+        });
+}
+
+function geren_procuraduria(feature, resolution)
+{
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.03,
+          src: 'img/recursos/comisaria.png',
+        })
+      });
 }
