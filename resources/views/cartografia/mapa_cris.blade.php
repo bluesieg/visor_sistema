@@ -16,7 +16,7 @@
             border-radius: 4px;
             padding: 2px;
             position: absolute;
-            width:500px;
+            width:900px;
             top: 5px;
             left:40px;
         }
@@ -29,9 +29,40 @@
         background-color:#FFFFFF;
         display: none;
         }
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+        .tooltip-measure {
+            opacity: 1  !important;
+            font-weight: bold;
+        }
+        .tooltip-static {
+            background-color: #ffcc33  !important;
+            color: black  !important;
+            border: 1px solid white  !important;
+        }
+        .tooltip-measure:before, .tooltip-static:before {
+            border-top: 6px solid rgba(0, 0, 0, 0.5);
+            border-right: 6px solid transparent;
+            border-left: 6px solid transparent;
+            content:"";
+            position: absolute;
+            bottom: -6px;
+            margin-left: -7px;
+            left: 50%;
+        }
+        .tooltip-static:before {
+            border-top-color: #ffcc33;
+        } 
     </style>
   
-    <form class="smart-form">
+    <form >
 
     <input type="hidden" id="hidden_inp_habilitacion" value="0"/>
     
@@ -60,19 +91,33 @@
         $(document).ready(function () {
             $("#menu_cart_base").show();
             $("#li_map_cris").addClass('cr-active');
-            
-            $('.carousel.fade').carousel({
-                interval : 1500,
-                cycle : true
-        });
 
         });
-</script>
+    </script>
     <script>
         window.app = {};
         var app = window.app;
         var layersList = [];
-        var vectorSource = new ol.source.Vector({});
+        //var vectorSource = new ol.source.Vector({});
+        var source_mesure = new ol.source.Vector();
+        var vector_mesure = new ol.layer.Vector({
+          source: source_mesure,
+          style: new ol.style.Style({
+            fill: new ol.style.Fill({
+              color: 'rgba(255, 255, 255, 0.2)'
+            }),
+            stroke: new ol.style.Stroke({
+              color: '#ffcc33',
+              width: 2
+            }),
+            image: new ol.style.Circle({
+              radius: 7,
+              fill: new ol.style.Fill({
+                color: '#ffcc33'
+              })
+            })
+          })
+        });
         var lyr_sectores;
         var lyr_manzanas;
         var lyr_limites_distritales0;
@@ -103,7 +148,7 @@
             
             var selectList_adm_tributaria = document.createElement("input");
             selectList_adm_tributaria.id = "inp_habilitacion_adm_tributaria";
-            selectList_adm_tributaria.className = "input-sm col-xs-9";
+            selectList_adm_tributaria.className = "input-sm col-xs-8";
             selectList_adm_tributaria.type = "text";
             selectList_adm_tributaria.style = "height:18px;display:none";
             selectList_adm_tributaria.placeholder = "ESCRIBIR NOMBRE DE UNA HABILITACION";
@@ -155,6 +200,66 @@
             boton_busqueda.onclick = function(e){
                 cargar_habilitacion();
             }
+            var boton_conf = document.createElement("button");
+            boton_conf.id = "boton_conf";
+            boton_conf.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_conf.type = "button";
+            boton_conf.style = "width: 30px; height: 30px;margin-right: 2px; margin-top: 1px;padding: 0px";
+            boton_conf.innerHTML = '<i class="glyphicon glyphicon-cog" ></i>';
+            boton_conf.title='Configuración';
+            boton_conf.onclick = function(e){
+                //iniciar_largo();
+            }
+            var boton_largo = document.createElement("button");
+            boton_largo.id = "btn_largo";
+            boton_largo.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_largo.type = "button";
+            boton_largo.style = "width: 30px; height: 30px;margin-right: 2px; margin-top: 1px;padding: 0px";
+            boton_largo.innerHTML = '<i class="glyphicon glyphicon-resize-horizontal" ></i>';
+            boton_largo.title='Largo';
+            boton_largo.onclick = function(e){
+                iniciar_largo();
+            }
+            var boton_print = document.createElement("button");
+            boton_print.id = "btn_print";
+            boton_print.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_print.type = "button";
+            boton_print.style = "width: 30px; height: 30px;margin-right: 2px; margin-top: 1px;padding: 0px";
+            boton_print.innerHTML = '<i class="glyphicon glyphicon-print" ></i>';
+            boton_print.title='Imprimir';
+            boton_print.onclick = function(e){
+                //iniciar_largo();
+            }
+            var boton_coordendas = document.createElement("button");
+            boton_coordendas.id = "btn_coordenadas";
+            boton_coordendas.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_coordendas.type = "button";
+            boton_coordendas.style = "width: 30px; height: 30px;margin-right: 2px; margin-top: 1px;padding: 0px";
+            boton_coordendas.innerHTML = '<i class="glyphicon glyphicon-map-marker" ></i>';
+            boton_coordendas.title='Coordenadas UTM';
+            boton_coordendas.onclick = function(e){
+                //iniciar_largo();
+            }
+            var boton_ayuda = document.createElement("button");
+            boton_ayuda.id = "btn_ayuda";
+            boton_ayuda.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_ayuda.type = "button";
+            boton_ayuda.style = "width: 30px; height: 30px;margin-right: 2px; margin-top: 1px;padding: 0px";
+            boton_ayuda.innerHTML = '<i class="glyphicon glyphicon-question-sign" ></i>';
+            boton_ayuda.title='Ayuda';
+            boton_ayuda.onclick = function(e){
+                //iniciar_largo();
+            }
+            var boton_info = document.createElement("button");
+            boton_info.id = "btn_info";
+            boton_info.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_info.type = "button";
+            boton_info.style = "width: 30px; height: 30px;margin-right: 2px; margin-top: 1px;padding: 0px";
+            boton_info.innerHTML = '<i class="glyphicon glyphicon-exclamation-sign" ></i>';
+            boton_info.title='Información';
+            boton_info.onclick = function(e){
+                //iniciar_largo();
+            }
 
 //            var sectores = {!! json_encode($sectores) !!};
 //            var option = document.createElement("option");
@@ -201,6 +306,12 @@
             var element = document.createElement('div');
             element.className = 'ol-unselectable ol-mycontrol';
             
+            element.appendChild(boton_conf);
+            element.appendChild(boton_largo);
+            element.appendChild(boton_print);
+            element.appendChild(boton_coordendas);
+            element.appendChild(boton_ayuda);
+            element.appendChild(boton_info);
             element.appendChild(selectList_anio);
             element.appendChild(selectList);
             element.appendChild(selectList_adm_tributaria);
@@ -257,7 +368,8 @@
                               key: 'EqfF5l6dY2LLMQa8JHlI~voA5TXsAVOQgFOP74piAbg~Aqg-emVFCImabFdRRDvdjqh1rB6Bl9l8ZkcmL7nGveSeeNkV7iSRC7XTHi1XeUVu',
                               imagerySet: 'Aerial'
                             })
-                        })
+                        }),
+                        vector_mesure
                     ]
                 })
             ],
@@ -1074,28 +1186,28 @@
                         <div >
                             <label id="dlg_geren_adm_tri_0" class="form-control" style="height: 32px;"></label>
                         </div>
-
+                
                     </div>
                     </div>
                 
                     <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 30%">LOTES DECLARADOS &nbsp;<i class="fa fa-hashtag"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_1"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
-                    </div> 
+
+                    </div>
+                </div>
                     <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 30%">LOTES OMISOS&nbsp;<i class="fa fa-hashtag"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_2"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
-                    </div> 
+
+                    </div>
+                </div>
                     
                 </div>                
                 <div>
@@ -1108,17 +1220,17 @@
                 </div> 
                 <div class="row">
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">% DE MOROSIDAD AUTOVALÚO &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_3"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
+
                     </div>
+                </div>
 
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">% DE MOROSIDAD ARBITRIOS &nbsp;<i class="fa fa-p"></i></span>
                             <div>
                                 <label id="dlg_geren_adm_tri_4"  class="form-control" style="height: 32px;"></label>
@@ -1210,17 +1322,17 @@
                         </div>
 
                     </div>
-                    </div>
+                </div>
                 
                     <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 30%">NOMBRE &nbsp;<i class="fa fa-hashtag"></i></span>
-                            <div>
+                        <div>
                                 <label id="dlg_gopi_perfiles_nombre"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
-                    </div>  
+
+                    </div>
+                </div>
                 </div>                
                 <div>
                     <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
@@ -1237,19 +1349,19 @@
                             <div>
                                 <label id="dlg_gopi_perfiles_codigo_catastral"  class="form-control" style="height: 32px;"></label>
                             </div>
-
+                
                         </div>
                     </div>
 
                     <div class="col-xs-9" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">HABILITACION URBANA &nbsp;<i class="fa fa-p"></i></span>
-                            <div>
+                        <div>
                                 <label id="dlg_gopi_perfiles_hab_urb"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
+
                     </div>
+                </div>
                 </div>
                 <div>
                     <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
@@ -1266,7 +1378,7 @@
                             <div>
                                 <label id="dlg_gopi_perfiles_codigo_snip"  class="form-control" style="height: 32px;"></label>
                             </div>
-
+                
                         </div>
                     </div>
 
@@ -1290,46 +1402,46 @@
                         </div>
                     </div>
                      
-                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">RESPONSABILIDAD FUNCIONAL &nbsp;<i class="fa fa-"></i></span>
-                            <div>
+                        <div>
                                 <label id="dlg_gopi_perfiles_respon_funcional"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
+
                     </div>
-                     
+                </div>
+                
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">UNIDAD FORMULADORA &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_perfiles_uni_formuladora"  class="form-control" style="height: 32px;"></label>
                             </div>
-
-                        </div>
+                    
+                </div>
                     </div>
-                     
+                
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">UNIDAD EJECUTORA &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_perfiles_uni_ejecutora"  class="form-control" style="height: 32px;"></label>
                             </div>
-
-                        </div>
+           
+            </div>
                     </div>
-                     
+          
                     <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">NIVEL &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_perfiles_nivel"  class="form-control" style="height: 32px;"></label>
-                            </div>
+        </div>
 
-                        </div>
-                    </div>
-                     
+    </div>
+</div> 
+
                     <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">NUM. BENEFICIARIOS &nbsp;<i class="fa fa-"></i></span>
@@ -1403,17 +1515,17 @@
                         </div>
 
                     </div>
-                    </div>
+                </div>
                 
                     <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 30%">NOMBRE &nbsp;<i class="fa fa-hashtag"></i></span>
-                            <div>
+                        <div>
                                 <label id="dlg_gopi_exp_tecnico_nombre"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
-                    </div>  
+
+                    </div>
+                </div>
                 </div>                
                 <div>
                     <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
@@ -1430,7 +1542,7 @@
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_cod_catastral"  class="form-control" style="height: 32px;"></label>
                             </div>
-
+                
                         </div>
                     </div>
 
@@ -1454,72 +1566,72 @@
                 </div> 
                  <div class="row">
                      
-                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">MONTO EXP TEC &nbsp;<i class="fa fa-"></i></span>
-                            <div>
+                        <div>
                                 <label id="dlg_gopi_exp_tecnico_monto_exp_tec"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
                         </div>
+
                     </div>
+                </div>
                      
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">CODIGO SNIP &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_codigo_snip"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
+                </div>
+              
                         </div>
                     </div>
 
-                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">NOMBRE PIP &nbsp;<i class="fa fa-users"></i></span>
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_nombre_pip"  class="form-control" style="height: 32px;"></label>
                             </div>
-
-                        </div>
+                    
+                </div>
                     </div>
-                     
+                
                     <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">MONTO &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_monto"  class="form-control" style="height: 32px;"></label>
                             </div>
-
+                    
                         </div>
                     </div>
-                     
+                    
                     <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">DESCRIPCION &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_descripcion"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
+                </div>
+                
                         </div>
                     </div>
-                     
+           
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">TIEMPO EJECUCION &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_tiempo_ejec"  class="form-control" style="height: 32px;"></label>
-                            </div>
-
-                        </div>
-                    </div>
+            </div>
+          
+        </div>
+    </div>
                      
                     <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                             <span class="input-group-addon" style="width: 250px;">APROBACION &nbsp;<i class="fa fa-"></i></span>
                             <div>
                                 <label id="dlg_gopi_exp_tecnico_aprob"  class="form-control" style="height: 32px;"></label>
-                            </div>
+</div> 
 
                         </div>
                     </div>
@@ -1562,23 +1674,23 @@
                             <section style="padding-right: 0px">
                                 <div class="col-xs-12">                                            
                                     <div>
-                                        <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
                                             <div class="col-xs-12 cr-body">
-                                                <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                                                    <div>
-                                                        <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
-                                                            <header>
-                                                                    <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <div>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
                                                                     <h2>Información de Personas::..</h2>
-                                                            </header>
-                                                        </div>
-                                                    </div>
+                        </header>
+                    </div>
+                </div> 
 
                                                     <input type="hidden" id="id_gopi_mantenimiento" value="0">
 
-                                                    <div class="row">
-                                                       <div class="col-xs-4" style="padding: 0px;  margin-top: 10px">
-                                                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                <div class="row">
+                   <div class="col-xs-4" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                             <span class="input-group-addon" style="width: 30%">DNI&nbsp;<i class="fa fa-hashtag"></i></span>
                                                             <div>
                                                                 <label id="dlg_gopi_mantenimiento_dni_ejec" class="form-control" style="height: 32px;"></label>
@@ -1600,22 +1712,22 @@
                                                         <div class="col-xs-4" style="padding: 0px;  margin-top: 10px">
                                                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                             <span class="input-group-addon" style="width: 30%">DNI&nbsp;<i class="fa fa-hashtag"></i></span>
-                                                            <div >
+                        <div >
                                                                 <label id="dlg_gopi_mantenimiento_dni_sup" class="form-control" style="height: 32px;"></label>
-                                                            </div>
+                        </div>
 
-                                                        </div>
-                                                        </div>
-
+                    </div>
+                    </div>
+                
                                                         <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 30%">SUPERVISOR &nbsp;<i class="fa fa-hashtag"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_mantenimiento_nomb_sup"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>  
+                        </div>
+                    </div> 
 
                                                         <div class="col-xs-4" style="padding: 0px;  margin-top: 10px">
                                                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
@@ -1646,35 +1758,35 @@
                                                         </div>
                                                     </div> 
                                                     <div class="row">
-                                                        <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">CODIGO CATASTRAL &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_mantenimiento_cod_cat"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
-
+                        </div>
+                    </div> 
+                    
                                                         <div class="col-xs-8" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">HABILITACION URBANA &nbsp;<i class="fa fa-p"></i></span>
                                                                 <div>
                                                                     <label id="dlg_gopi_mantenimiento_hab_urb"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                </div>                
 
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
-                                                            <header>
-                                                                    <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                <div>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
                                                                     <h2>Información del Mantenimiento::..</h2>
-                                                            </header>
-                                                        </div>
-                                                    </div> 
-                                                     <div class="row">
+                        </header>
+                    </div>
+                </div> 
+                <div class="row">
 
                                                         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
@@ -1686,62 +1798,62 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">TIPO MANTENIMIENTO &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_mantenimiento_tip_mant"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
+                        </div>
+                    </div>
 
-                                                        <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">MODALIDAD EJECUCION &nbsp;<i class="fa fa-users"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_mantenimiento_mod_ejec"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
+                        </div>
+                    </div>
 
                                                         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">OBSERVACIONES &nbsp;<i class="fa fa-"></i></span>
                                                                 <div>
                                                                     <label id="dlg_gopi_mantenimiento_observ"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
-
+                </div>
+                
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">INFORME TECNICO &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_mantenimiento_inf_tec"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
+                        </div>
+                    </div>
 
-                                                        <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">TIEMPO EJECUCION &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_mantenimiento_tiem_ejec"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
+                        </div>
+                    </div>
 
                                                         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">BENEFICIARIOS &nbsp;<i class="fa fa-"></i></span>
                                                                 <div>
                                                                     <label id="dlg_gopi_mantenimiento_bene"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                </div>
 
                                                             </div>
                                                         </div>
@@ -1749,7 +1861,7 @@
                                                         <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">FECHA INICIO &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                <div>
                                                                     <label id="dlg_gopi_mantenimiento_fec_ini"  class="form-control" style="height: 32px;"></label>
                                                                 </div>
 
@@ -1880,17 +1992,17 @@
                                             <div class="col-xs-12 cr-body">
                                                 <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
                                                     <div>
-                                                        <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
-                                                            <header>
-                                                                    <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
+                    <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px; margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-calendar-o"></i> </span>
                                                                     <h2>Información de Personas::..</h2>
-                                                            </header>
-                                                        </div>
-                                                    </div>
+                        </header>
+                    </div>
+                </div> 
 
                                                     <input type="hidden" id="id_gopi_obra" value="0">
 
-                                                    <div class="row">
+                 <div class="row">
                                                        <div class="col-xs-4" style="padding: 0px;  margin-top: 10px">
                                                         <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                             <span class="input-group-addon" style="width: 30%">DNI&nbsp;<i class="fa fa-hashtag"></i></span>
@@ -1990,52 +2102,52 @@
                                                     </div> 
                                                      <div class="row">
 
-                                                        <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">NOMBRE OBRA &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_obra_nomb_obra"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
+                        </div>
+                    </div>
 
-                                                        <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
-                                                            <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                    <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">TIPO OBRA &nbsp;<i class="fa fa-"></i></span>
-                                                                <div>
+                            <div>
                                                                     <label id="dlg_gopi_obra_tip_obra"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+                            </div>
 
-                                                            </div>
-                                                        </div>
+                        </div>
+                    </div>
 
                                                         <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">MODALIDAD EJECUCION &nbsp;<i class="fa fa-users"></i></span>
                                                                 <div>
                                                                     <label id="dlg_gopi_obra_mod_ejec"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
-
+                </div>
+                
                                                             </div>
                                                         </div>
-
+           
                                                         <div class="col-xs-6" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">MONTO &nbsp;<i class="fa fa-"></i></span>
                                                                 <div>
                                                                     <label id="dlg_gopi_obra_monto"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
+            </div>
+          
+        </div>
+    </div>
 
                                                         <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
                                                             <div class="input-group input-group-md col-xs-12" style="padding: 0px">
                                                                 <span class="input-group-addon" style="width: 250px;">OBSERVACIONES &nbsp;<i class="fa fa-"></i></span>
                                                                 <div>
                                                                     <label id="dlg_gopi_obra_observaciones"  class="form-control" style="height: 32px;"></label>
-                                                                </div>
+</div> 
 
                                                             </div>
                                                         </div>

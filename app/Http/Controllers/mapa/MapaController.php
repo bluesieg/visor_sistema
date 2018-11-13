@@ -404,7 +404,7 @@ class MapaController extends Controller
     }
     function get_limit_txt(){
 
-        $planquebradas = DB::select("SELECT json_build_object(
+        $planquebradas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -423,7 +423,7 @@ class MapaController extends Controller
     }
     function get_limit_veci(){
 
-        $planquebradas = DB::select("SELECT json_build_object(
+        $planquebradas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )

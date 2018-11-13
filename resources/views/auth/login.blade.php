@@ -71,7 +71,20 @@
                     </footer>
                 </form>
             </div>
+            <div class="col-xs-12">
+                <b><u>Gestión 2015-2018</u></b><br>
+                Alcalde Econ. Manuel E. Vera Paredes<br>
+                <br>
+                <b><u>Derecho de autor Software Sistema - SIUGI</u></b><br>
+                Gerente de Desarrollo Urbano y Catastro<br>
+                Arq. Carlos D. Ampuero Riega<br>
+                Especialista Gis<br>
+                Arq. Sergio Valdivia Aviles<br>
+                Técnico Db Espaciales<br>
+                Luis Ivan Mendoza Cruz
+            </div>
         </div>
+        
     </div>
     </section>
 <!--</div>-->
