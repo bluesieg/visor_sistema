@@ -260,6 +260,16 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'limpieza_publica'], function() {
         Route::resource('rutas_barrido_calles','Barrido_Calles_Controller');
         Route::resource('rutas_recojo_residuos','Recojo_Residuos_Controller');
+        Route::resource('contenedores','Contenedores_Controller');
+        Route::resource('botaderos','Botaderos_Controller');
+    });
+    ///////////////////////areas_verdes
+    Route::group(['namespace' => 'areas_verdes'], function() {
+        Route::resource('areas_verdes','Areas_Verdes_Controller');
+    });
+    ///////////////////////desarrollo economico
+    Route::group(['namespace' => 'desarrollo_economico'], function() {
+        Route::resource('mypes','Mypes_Controller');
     });
     
     /****************************** PERSONAS RENIEC ********************************************************/

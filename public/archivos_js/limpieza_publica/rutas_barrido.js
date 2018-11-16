@@ -201,7 +201,7 @@ function dlg_ver_observacion()
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
                 click: function () {
-                        grabar_observacion();
+                        ver_observacion();
                 }
             },
             {
@@ -278,5 +278,119 @@ function ver_observacion()
     }
     }); 
 }
+///////////////////////////mapa pantalla principal
+function crear_rutas_barrido()
+{
+    $.ajax({url: 'rutas_barrido_calles/0?grid=rutas_geom',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                geojson = JSON.parse(r[0].json_build_object);
+                var format= new ol.format.GeoJSON();
+                var features = format.readFeatures(geojson,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_rutas_barrido= new ol.layer.Vector({
+                    source:jsonSource,
+                    style: style_rutas_barrido,
+                    title: "Rutas Barrido"
+                });
+                map.addLayer(lyr_rutas_barrido);
+                var extent = lyr_rutas_barrido.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+              
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
 
+function style_rutas_barrido(feature, resolution){
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: '#B40477',
+        width: 2
+      }),
+        text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: map.getView().getZoom() > 14 ? feature.get('cod_ruta_barrido') : "", 
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+
+var inicio_barrido=0;
+function iniciar_visualizar_mapa_barrido(id,des,cod)
+{
+    $("#dlg_edit_des_ruta").val(des);
+    $("#dlg_edit_cod_ruta").val(cod);
+    if(inicio_barrido==0)
+    {
+        inicio_barrido=1;
+        jQuery("#table_rutas_personal_barrido").jqGrid({
+            url: 'rutas_barrido_calles/0?grid=personal&cod='+id,
+            datatype: 'json', mtype: 'GET',
+            height: '100px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_per_barrido', 'DNI', 'Nombre','Teléfono'],
+            rowNum: 100, sortname: 'id_per_barrido', sortorder: 'desc', viewrecords: true, caption: 'Personal Barrido Calles', align: "center",
+            colModel: [
+                {name: 'id_per_barrido', index: 'id_per_barrido', hidden: true},
+                {name: 'dni', index: 'dni', align: 'left', width: 100},
+                {name: 'ape_pat', index: 'ape_pat', align: 'left', width: 600},
+                {name: 'telefono', index: 'telefono', align: 'left', width: 200}
+                
+            ],
+            pager: '#pager_table_rutas_personal_barrido',
+            rowList: [100, 200],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_rutas_personal_barrido').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_rutas_personal_barrido').jqGrid('getDataIDs')[0];
+                            $("#table_rutas_personal_barrido").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+    }
+    else
+    {
+        jQuery("#table_rutas_personal").jqGrid('setGridParam', {
+         url: 'rutas_barrido_calles/0?grid=personal&cod='+id}).trigger('reloadGrid');
+    }
+    $.ajax({url: 'rutas_barrido_calles/0?grid=observacion&cod='+id,
+    type: 'GET',
+    success: function(r) 
+    {
+        html="";
+        for(i=0;i<r.length;i++)
+        {
+            html=html+'<div class="cuerpo_li_observacion col-xs-12"><div class="col-xs-2">'+r[i].fec_obs+'</div><div class="col-xs-10">'+r[i].observacion+'</div></div>';
+        }
+        $("#cuerpo_obs_barrido_mapa").html(html);
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_ver_observacion');
+    }
+    }); 
+    crear_dlg("dlg_ruta_barrido",1000,"Ruta Barrido Calles");
+}
 

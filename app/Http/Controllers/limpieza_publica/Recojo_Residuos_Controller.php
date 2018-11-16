@@ -94,6 +94,10 @@ class Recojo_Residuos_Controller extends Controller
         {
             return $this->grid_transporte($request);
         }
+         if($id==0&&$request['grid']=="rutas_geom")
+        {
+            return $this->rutas_mapa($request);
+        }
     }
 
      public function edit($id, Request $request)
@@ -295,5 +299,26 @@ class Recojo_Residuos_Controller extends Controller
     {
         $codigo = strtoupper($request['cod']);
         return DB::connection('gerencia_catastro')->table('limpieza_publica.observaciones_rutas_recojo')->where("id_ruta_recojo",$codigo)->orderBy('id_obs_recojo','desc' )->get();
+    }
+    //////////////////////mapas
+    function rutas_mapa(){
+        $rutas = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_ruta_recojo',id_ruta_recojo,
+                                'descripcion', descripcion,
+                                'cod_ruta_recojo', cod_ruta_recojo,
+                                'placa', placa
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM limpieza_publica.vw_rutas_recojo) row) features;");
+
+        return response()->json($rutas);
     }
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\limpieza_publica\contenedores;
+use App\Models\limpieza_publica\observaciones_contenedores;
+use Illuminate\Support\Facades\Auth;
 
 class Contenedores_Controller extends Controller
 {
@@ -15,9 +17,25 @@ class Contenedores_Controller extends Controller
         return view('limpieza_publica/vw_contenedores');
     }
 
-    public function create()
+     public function create(Request $request)
     {
-        //
+        
+        if($request['tipo_create']=='observacion')
+        {
+            return $this->create_observacion_contenedor($request);
+        }
+    }
+    /////creates
+    public function create_observacion_contenedor(Request $request)
+    {
+        $obs = new observaciones_contenedores;
+        $obs->id_contenedor = $request['id'];
+        $obs->observacion = $request['obs'];
+        $obs->fec_obs = $request['fecha'];
+        $obs->fec_reg = date("d/m/Y");
+        $obs->usuario = Auth::user()->id;
+        $obs->save();
+        return $obs->id_obs_contenedores;
     }
 
     public function store(Request $request)
@@ -27,15 +45,46 @@ class Contenedores_Controller extends Controller
 
     public function show($id, Request $request)
     {
+        if($id>0)
+        {
+            return $this->show_normal($id);
+        }
         if($id==0&&$request['grid']=="contenedores")
         {
             return $this->grid_contenedores($request);
         }
+         if($id==0&&$request['grid']=="observacion")
+        {
+            return $this->list_observacion_contenedores($request);
+        }
+        if($id==0&&$request['grid']=="mapa_contenedores")
+        {
+            return $this->mapa($request);
+        }
+    }
+    public function show_normal($id)
+    {
+        return DB::connection('gerencia_catastro')->table('limpieza_publica.contenedores')->where("id",$id )->get();
+    }
+    
+    public function list_observacion_contenedores(Request $request)
+    {
+        $codigo = strtoupper($request['cod']);
+        return DB::connection('gerencia_catastro')->table('limpieza_publica.observaciones_contenedores')->where("id_contenedor",$codigo)->orderBy('id_obs_contenedores','desc' )->get();
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+       $contenedor = new  contenedores;
+        $val=  $contenedor::where("id","=",$id )->first();
+        if(count($val)>=1)
+        {
+            $val->codigo = $request['cod'];
+            $val->cantidad = $request['cant'];
+            $val->ubicacion = strtoupper($request['ubi']);
+            $val->save();
+        }
+        return $id;
     }
 
     public function update(Request $request, $id)
@@ -96,5 +145,28 @@ class Contenedores_Controller extends Controller
 
         return response()->json($Lista);
 
+    }
+    /////////////mapa
+    function mapa(Request $request){
+        $rutas = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id',id,
+                                'observacion', observacion,
+                                'imagen', imagen,
+                                'ubicacion', ubicacion,
+                                'codigo', codigo,
+                                'cantidad', cantidad
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM limpieza_publica.contenedores) row) features;");
+
+        return response()->json($rutas);
     }
 }

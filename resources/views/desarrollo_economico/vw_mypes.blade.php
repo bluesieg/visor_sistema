@@ -35,7 +35,7 @@
                     <ul id="tabs1" class="nav nav-tabs bordered">
                         <li class="active">
                             <a href="#s1" data-toggle="tab" aria-expanded="true">
-                                Mantenimiento de Contenedores
+                                Mantenimiento de MYPES
                                 <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                             </a>
                         </li>
@@ -46,8 +46,12 @@
                         <div id="s1" class="tab-pane fade active in">
                             <div class="col-xs-12" style="padding: 5px">
                                 
-                                
-                                <div id="id_mapa" style="background: white; height: 100% !important">
+                                <div  class="col-xs-12 text-right" style=" padding-top: 5px">
+                                        <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="nuevo_mypes(0);">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>Nuevo
+                                        </button>
+                                 </div>
+                                <div id="id_mapa" style="background: white; height: 100% !important; margin-top: 10px">
                                     <div id="popup" class="ol-popup">
                                         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                                         <div id="popup-content"></div>
@@ -159,7 +163,7 @@
             target: 'id_mapa',
             
         });
-        $.ajax({url: 'contenedores/0?grid=mapa_contenedores',
+        $.ajax({url: 'mypes/0?grid=mapa_mypes',
                     type: 'GET',
                     async: false,
                     success: function(r)
@@ -173,17 +177,17 @@
                         });
                         jsonSource.addFeatures(features);
 
-                        lyr_contenedores = new ol.layer.Vector({
+                        lyr_mypes= new ol.layer.Vector({
                             source:jsonSource,
-                            style: contenedorstyle,
-                            title: "Contenedores",
+                            style: areastyle,
+                            title: "MYPES",
 
                         });
 
-                        map.addLayer(lyr_contenedores);
+                        map.addLayer(lyr_mypes);
                         var scale = new ol.control.ScaleLine();
                         map.addControl(scale);
-                        var extent = lyr_contenedores.getSource().getExtent();
+                        var extent = lyr_mypes.getSource().getExtent();
                         map.getView().fit(extent, map.getSize());
                         var fullscreen = new ol.control.FullScreen();
                         map.addControl(fullscreen);
@@ -192,22 +196,24 @@
         });
         
   
-        function contenedorstyle(feature, resolution) {
-            return  new ol.style.Style({
-            image: new ol.style.Icon({
-              scale: map.getView().getZoom() > 16 ? (map.getView().getZoom() > 18 ? 0.3 : 0.1) : 0.07,
-              src: 'img/recursos/contenedor.png',
-            }),
-            text: new ol.style.Text({
-                
-                Placement: 'point',
-                textAlign: "center", 
-                fill: new ol.style.Fill({
-                    color: 'white',
+        function areastyle(feature, resolution) {
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 2
                 }),
-                offsetY:map.getView().getZoom() > 16 ? 40 : 20
-            })
-          });
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 0.1)'
+                }),
+                text: new ol.style.Text({
+                    font: '12px Calibri,sans-serif',
+                    fill: new ol.style.Fill({ color: '#fff' }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000', width: 2
+                    }),
+                    text:map.getView().getZoom() > 14 ? feature.get('codi_lote') : ""
+                })
+            });
         }
         autocompletar_haburb('inp_habilitacion');
         function autocompletar_haburb(textbox){
@@ -290,13 +296,11 @@
             mostrar=0;
             var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                
-                if(layer.get('title')=='Contenedores'&&mostrar==0)
+                if(layer.get('title')=='MYPES'&&mostrar==0)
                 {
                     mostrar=1;
-                    limpiar_contenedor('dlg_contenedores');
-                    $("#foto_contenedor").html("");
-                    $("#hidden_contenedor").val(feature.get('id'));
-                    crear_edit_contenedores(feature.get('id'));
+                    $("#hidden_mype").val(feature.get('id_lote'));
+                    nuevo_mypes(feature.get('id_lote'));
                     return false;
                 }
             });
@@ -307,11 +311,11 @@
 </script>
 
 @stop
-<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/limpieza_publica/contenedores.js') }}"></script>
-<div id="dlg_contenedores" style="display: none;">
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/desarrollo_economico/mypes.js') }}"></script>
+<div id="dlg_mypes" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div class="col-xs-12 cr-body" >
-            <div class="col-xs-8" style="padding: 0px">
+            <div class="col-xs-12" style="padding: 0px">
             <section class="col-xs-12" style="padding: 0px">
                 <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
                     <header>
@@ -321,40 +325,77 @@
                 </div>
             </section>
            
+                <div class="col-xs-3" style="padding-left: 0px;">
+                        <div class="input-group input-group-md">
+                            <input type="hidden" id="dlg_idpre" value="0">
+                            <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec" type="text" disabled="" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3" style="padding-left: 0px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input class="text-center form-control" style="height: 32px;" id="dlg_mzna" type="text"  disabled="" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3" style="padding-left: 0px;">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                            <div class="icon-addon addon-md">
+                                <input class="text-center form-control" style="height: 32px;" id="dlg_lot" type="text"  disabled="" >
+                                <input type="hidden" id="hidden_dlg_lot" value="0">
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-xs-3" style="padding-left: 0px;">
+                    <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="map_reg_lote();">
+                        <span class="btn-label"><i class="glyphicon glyphicon-globe"></i></span>Buscar en Mapa
+                    </button>
+                </div>
            
-            <div class="col-xs-12" style="padding-left: 0px; ">
+            <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px ">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Codigo de contendor &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                    <span class="input-group-addon" style="width: 200px">RUC MYPE &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
                     <div class="icon-addon addon-md">
-                        <input type="hidden" id="hidden_contenedor" value="0"/>
-                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_cod_contenedor" type="text" maxlength="8" >
+                        <input type="hidden" id="hidden_mype" value="0"/>
+                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ruc_mype" type="text" maxlength="12" >
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12" style="padding-left: 0px;  margin-top: 5px ">
+            
+            <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Cantidad de contendores &nbsp;&nbsp;<i class="fa fa-hashtag"></i></span>
+                    <span class="input-group-addon" style="width: 200px">Ubicación MYPE &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
                     <div class="icon-addon addon-md">
-                        <input type="hidden" id="hidden_contenedor" value="0"/>
-                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_cantidad_contenedor" type="text" onkeypress="return soloNumeroTab(event);" >
+                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ubicacion_mype" type="text" >
                     </div>
                 </div>
             </div>
             <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                    <span class="input-group-addon" style="width: 200px">Representante MYPE &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
                     <div class="icon-addon addon-md">
-                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ubicacion_contendor" type="text" >
+                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_representante_mype" type="text" >
                     </div>
                 </div>
             </div>
+            
+                
             <div  class="col-xs-12 text-right" style=" padding-top: 5px">
-                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="save_contenedor();">
-                        <span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar
+                    <button id="save_button"  type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="save_mype(1);">
+                        <span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>Grabar
+                    </button>
+            
+                    <button id="mod_button"  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="save_mype(2);">
+                        <span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>modificar
                     </button>
              </div>
             </div>
-            <div class="col-xs-4" style="padding: 0px">
+            <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
            
             <section class="col-xs-12" style="padding: 0px;">
                 <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 5px;"  >
@@ -364,51 +405,68 @@
                     </header>
                 </div>
             </section>
-            <div  class="col-xs-12" id="foto_contenedor">
+            <div  class="col-xs-12" id="foto_mypes">
                     
              </div>
             </div>
-            <section class="col-xs-12" style="padding: 0px; margin-top: 5px">
-                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 5px;"  >
-                    <header>
-                            <span class="widget-icon"> <i class="fa fa-search"></i> </span>
-                            <h2>Observaciones ::..</h2>
-                    </header>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<div id="dlg_mapa_reg_lote" >
+    <input type="hidden" id="hidden_inp_habilitacion_2" value="0"/>
+    <form class="smart-form">
+        <div id="id_map_reg_lote" style="background: white; height: 100% !important">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+            <div id="legend"></div>
+        </div>
+    </form>
+</div>
+<div id="dlg_view_foto" style="display: none;">
+    <div class="col-xs-12">
+       <div class=" col-xs-3">
+            <div class="input-group input-group-md">
+                <input type="hidden" id="dlg_idpre" value="0">
+                <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec_foto" type="text" name="dlg_sec" disabled="" >
                 </div>
-            </section>
-            <div  class="col-xs-12">
-                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="agregar_observacion();">
-                        <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Agregar Observación
-                    </button>
-                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="ver_observacion()">
-                        <span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Ver Observaciones
-                    </button>
-             </div>
-        </div>
-    </div>
-</div>
-<div id="dlg_new_observacion" style="display: none;">
-    <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px;">
-        <div class="input-group input-group-md" style="width: 100%">
-            <span class="input-group-addon" style="width: 200px">Ingresar Fecha &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
-            <div class="icon-addon addon-md" >
-                <input id="dlg_fec_obs" name="dlg_fec_obs" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}" autocomplete="false">
             </div>
         </div>
-    </div>
-    <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px; margin-bottom: 10px">
-        <div class="input-group input-group-md" style="width: 100%">
-            <span class="input-group-addon" style="width: 200px">Ingresar Observación &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
-            <div class="icon-addon addon-md" >
-                <textarea class="form-control" id="txt_observacion" style="height: 100px"></textarea>
+        <div class="col-xs-3">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_mzna_foto" type="text" name="dlg_mzna" disabled="" >
+                </div>
             </div>
         </div>
+        <div class="col-xs-3">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_lot_foto" type="text" name="dlg_mzna" disabled="" >
+                    <input type="hidden" id="hidden_dlg_lot_foto" value="0">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3" style="padding-left: 0px;">
+            <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="selec_reg_lote();">
+                <span class="btn-label"><i class="glyphicon glyphicon-check"></i></span>Seleccinar Lote
+            </button>
+        </div>
     </div>
-</div>
-
-
-<div id="dlg_ver_observacion" style="display: none;">
-    <div class="col-xs-12" id="cuerpo_obs" style="margin-bottom: 10px; padding: 0px; background-color: white"></div>
-</div>
+    <div class="panel panel-success cr-panel-sep" style="border:0px; margin-top: 10px">
+        <div class="panel-body cr-body">
+            <div id="dlg_img_view_big" style="padding-top: 0px"></div>
+        </div>
+    </div>
+</div> 
 @endsection
 

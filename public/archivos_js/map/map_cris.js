@@ -34,13 +34,10 @@ var lyr_map_gopi_obra_entregada;
 
 var aux_constancias=0;
 map.on('singleclick', function(evt) {
-//    map.getLayers().forEach(function(el) {
-//        if(el.get('title')=='lotes')
-//        { }});
-            //alert(el.target.getFeatures().getLength());
-            
-            mostrar=0;
-            var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+    if(inicio_largo==0)
+    {
+        mostrar=0;
+        var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                 if(layer.get('title')=='Zonificación'&&mostrar==0)
                 {   
                     $("#show_img_pdm_zonificaicon").html('');
@@ -380,9 +377,52 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_gsc_mapa_camaras",1000,"GSC - MAPA CAMARAS");
                     return false;
                 }
+                if(layer.get('title')=='Rutas Barrido'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_visualizar_mapa_barrido(feature.get('id_ruta_barrido'),feature.get('descripcion'),feature.get('cod_ruta_barrido'))
+                    return false;
+                }
+                if(layer.get('title')=='Rutas Recojo Residuos'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_visualizar_mapa_recojo(feature.get('id_ruta_recojo'),feature.get('descripcion'),feature.get('cod_ruta_recojo'),feature.get('placa'))
+                    return false;
+                }
+                if(layer.get('title')=='Contenedores'&&mostrar==0)
+                {
+                    mostrar=1;
+                    limpiar_contenedor('dlg_contenedores');
+                    $("#foto_contenedor, #cuerpo_obs_contenedores").html("");
+                    $("#hidden_contenedor").val(feature.get('id'));
+                    iniciar_contenedores(feature.get('id'));
+                    return false;
+                }
+                if(layer.get('title')=='Botaderos'&&mostrar==0)
+                {
+                    mostrar=1;
+                    limpiar_contenedor('dlg_botaderos');
+                    $("#foto_botadero, #cuerpo_obs_botaderos").html("");
+                    $("#hidden_botadero").val(feature.get('id_botadero'));
+                    iniciar_botaderos(feature.get('id_botadero'));
+                    return false;
+                }
+                if(layer.get('title')=='Area Verde'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_area_verde(feature.get('id_lote'));
+                    return false;
+                }
+                if(layer.get('title')=='MYPES'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_mypes(feature.get('id_lote'));
+                    return false;
+                }
                 
                 
             });  
+    }
 });
 
 
@@ -1084,6 +1124,30 @@ function valida_capa(check)
         {
             crear_mapa_geren_procuraduria();
         }
+        if(check=='chk_rutas_barrido')
+        {
+            crear_rutas_barrido();
+        }
+        if(check=='chk_rutas_recojo')
+        {
+            crear_rutas_recojo();
+        }
+        if(check=='chk_contendores')
+        {
+            crear_mapa_contedores();
+        }
+        if(check=='chk_botaderos')
+        {
+            crear_mapa_botaderos();
+        }
+        if(check=='chk_are_verdes')
+        {
+            crear_mapa_areas_verdes();
+        }
+        if(check=='chk_mypes')
+        {
+            crear_mapa_mypes();
+        }
     }
     else
     {
@@ -1408,6 +1472,30 @@ function valida_capa(check)
         if(check=='chk_map_procuraduria')
         {
             map.removeLayer(lyr_geren_procuraduria);
+        }
+        if(check=='chk_rutas_barrido')
+        {
+            map.removeLayer(lyr_rutas_barrido);
+        }
+        if(check=='chk_rutas_recojo')
+        {
+            map.removeLayer(lyr_rutas_recojo);
+        }
+        if(check=='chk_contendores')
+        {
+            map.removeLayer(lyr_mapa_contenedores);
+        }
+        if(check=='chk_botaderos')
+        {
+            map.removeLayer(lyr_mapa_botaderos);
+        }
+        if(check=='chk_are_verdes')
+        {
+            map.removeLayer(lyr_mapa_areas_verdes);
+        }
+        if(check=='chk_mypes')
+        {
+            map.removeLayer(lyr_mypes);
         }
     }
 }
@@ -4904,3 +4992,137 @@ function geren_procuraduria(feature, resolution)
         })
       });
 }
+
+
+
+
+var sketch;
+var helpTooltipElement;
+var helpTooltip;
+var measureTooltipElement;
+var measureTooltip;
+var continueLineMsg = 'Clic para seguir dibujando';
+var draw;
+var inicio_largo=0;
+var formatLength = function (line) {
+    var length = Math.round(line.getLength() * 100) / 100;
+    var output;
+    if (length > 100) {
+        output = (Math.round(length / 1000 * 100) / 100) +
+            ' ' + 'km';
+    } else {
+        output = (Math.round(length * 100) / 100) +
+            ' ' + 'm';
+    }
+    return output;
+};
+function iniciar_largo()
+{
+    if(inicio_largo==0)
+    {
+        $("#btn_largo").removeClass("bg-color-blue");
+        $("#btn_largo").addClass("bg-color-blueLight");
+        inicio_largo=1;
+        createMeasureTooltip();
+        //createHelpTooltip();
+        var pointerMoveHandler = function(evt) {
+            if (evt.dragging) {
+              return;
+            }
+            /** @type {string} */
+            //var helpMsg = 'Click para iniciar';
+
+            if (sketch) {
+              var geom = (sketch.getGeometry());
+
+            }
+            helpTooltip.setPosition(evt.coordinate);
+          };
+
+        map.on('pointermove', pointerMoveHandler);
+        addInteraction();
+    }
+    else
+    {
+        $("#btn_largo").removeClass("bg-color-blueLight");
+        $("#btn_largo").addClass("bg-color-blue");
+        inicio_largo=0;
+        vector_mesure.getSource().clear();
+        map.removeInteraction(draw);
+        $(".tooltip-static").remove();
+    }
+    
+}
+
+function addInteraction() {
+    
+        draw = new ol.interaction.Draw({
+          source: source_mesure,
+          type: 'LineString'
+          
+        });
+        
+        map.addInteraction(draw);
+
+        createMeasureTooltip();
+        createHelpTooltip();
+
+        var listener;
+        draw.on('drawstart',
+          function(evt) {
+            // set sketch
+            sketch = evt.feature;
+
+            /** @type {module:ol/coordinate~Coordinate|undefined} */
+            var tooltipCoord = evt.coordinate;
+
+            listener = sketch.getGeometry().on('change', function(evt) {
+              var geom = evt.target;
+              var output;
+              output = formatLength(geom);
+              tooltipCoord = geom.getLastCoordinate();
+              
+              measureTooltipElement.innerHTML = output;
+              measureTooltip.setPosition(tooltipCoord);
+            });
+          }, this);
+
+        draw.on('drawend',
+          function() {
+            measureTooltipElement.className = 'tooltip tooltip-static';
+            measureTooltip.setOffset([0, -7]);
+            // unset sketch
+            sketch = null;
+            // unset tooltip so that a new one can be created
+            measureTooltipElement = null;
+            createMeasureTooltip();
+            //unByKey(listener);
+          }, this);
+}
+function createHelpTooltip() {
+        if (helpTooltipElement) {
+          helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+        }
+        helpTooltipElement = document.createElement('div');
+        helpTooltipElement.className = 'tooltip hidden';
+        helpTooltip = new ol.Overlay({
+          element: helpTooltipElement,
+          offset: [15, 0],
+          positioning: 'center-left'
+        });
+        map.addOverlay(helpTooltip);
+      }
+function createMeasureTooltip() {
+  if (measureTooltipElement) {
+    measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+  }
+  measureTooltipElement = document.createElement('div');
+  measureTooltipElement.className = 'tooltip tooltip-measure';
+  measureTooltip = new ol.Overlay({
+    element: measureTooltipElement,
+    offset: [0, -15],
+    positioning: 'bottom-center'
+  });
+  map.addOverlay(measureTooltip);
+}
+

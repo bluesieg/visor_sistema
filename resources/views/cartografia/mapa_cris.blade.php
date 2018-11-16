@@ -208,7 +208,7 @@
             boton_conf.innerHTML = '<i class="glyphicon glyphicon-cog" ></i>';
             boton_conf.title='Configuración';
             boton_conf.onclick = function(e){
-                //iniciar_largo();
+                location.href="usuarios";
             }
             var boton_largo = document.createElement("button");
             boton_largo.id = "btn_largo";
@@ -228,7 +228,7 @@
             boton_print.innerHTML = '<i class="glyphicon glyphicon-print" ></i>';
             boton_print.title='Imprimir';
             boton_print.onclick = function(e){
-                //iniciar_largo();
+                printDiv('map');
             }
             var boton_coordendas = document.createElement("button");
             boton_coordendas.id = "btn_coordenadas";
@@ -2652,5 +2652,12 @@
         </button>
     </div>
 </div>
+
+@include('limpieza_publica.div_barrido_calles')
+@include('limpieza_publica.div_recojo_residuos')
+@include('limpieza_publica.div_contenedores')
+@include('limpieza_publica.div_botaderos')
+@include('areas_verdes.div_areas_verdes')
+@include('desarrollo_economico.div_mypes')
 
 @endsection

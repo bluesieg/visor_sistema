@@ -441,7 +441,7 @@ class MapaController extends Controller
     }
     function get_puntosgeo_control(){
 
-        $planquebradas = DB::select("SELECT json_build_object(
+        $planquebradas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -459,7 +459,7 @@ class MapaController extends Controller
     }
     function get_puntosgeo(){
 
-        $planquebradas = DB::select("SELECT json_build_object(
+        $planquebradas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -477,7 +477,7 @@ class MapaController extends Controller
     }
     function get_lotes_rurales(){
 
-        $planquebradas = DB::select("SELECT json_build_object(
+        $planquebradas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -496,7 +496,7 @@ class MapaController extends Controller
     }
     function leyenda_aportes()
     {
-        $leyenda = DB::select("SELECT count(gid) as total, layer,  color
+        $leyenda = DB::connection('pgsql')->select("SELECT count(gid) as total, layer,  color
             FROM catastro.aporte
             group by layer, color;");
 
@@ -505,7 +505,7 @@ class MapaController extends Controller
     }
     function leyenda_hab_urb()
     {
-        $leyenda = DB::select("select count(id_hab_urb) as total,aprobado,color 
+        $leyenda = DB::connection('pgsql')->select("select count(id_hab_urb) as total,aprobado,color 
             from catastro.hab_urb 
             group by aprobado, color");
         return response()->json($leyenda);
@@ -518,7 +518,7 @@ class MapaController extends Controller
             $where='where id_hab_urb='.$id;
         }
        
-        $sectores = DB::select("SELECT json_build_object(
+        $sectores = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -540,7 +540,7 @@ class MapaController extends Controller
     public function get_lotes_x_hab_urb(Request $req){
 
 
-        $lotes = DB::select("SELECT json_build_object(
+        $lotes = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )

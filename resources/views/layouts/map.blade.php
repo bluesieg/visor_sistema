@@ -134,6 +134,7 @@
                                                                         <i></i>
                                                                         <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
                                                                         Limites
+                                                                    </labe>
                                                                 </span>
                                                             </li>
                                                             <li>
@@ -1432,12 +1433,56 @@
                                                                </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_rutas_barrido" onchange="valida_capa('chk_rutas_barrido')"/>
+
+                                                                                                     <i></i>
+                                                                                                     RUTAS BARRIDO
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                        
+                                                                        
+                                                                    </div>
+                                                               </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
                                                                         <h4 class="panel-title"><a href="rutas_recojo_residuos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
                                                                                 Mod. Rutas Recojo Residuos
                                                                             </a>
                                                                         </h4>
+                                                                    </div>
+                                                               </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_rutas_recojo" onchange="valida_capa('chk_rutas_recojo')"/>
+
+                                                                                                     <i></i>
+                                                                                                     RUTAS RECOJO
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                        
+                                                                        
                                                                     </div>
                                                                </div>
                                                            </div>
@@ -1468,7 +1513,7 @@
                                                            <div class="widget-body">
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="contenedores"> 
+                                                                        <h4 class="panel-title"><a href="botaderos"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
                                                                                 Mantenimiento Botaderos
@@ -1476,9 +1521,29 @@
                                                                         </h4>
                                                                     </div>
                                                                </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_botaderos" onchange="valida_capa('chk_botaderos')"/>
+
+                                                                                                     <i></i>
+                                                                                                     MAPA BOTADEROS
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="rutas_recojo_residuos"> 
+                                                                        <h4 class="panel-title"><a href="contenedores"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                                                 <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
                                                                                 Mantenimiento Contenedores
@@ -1486,6 +1551,82 @@
                                                                         </h4>
                                                                     </div>
                                                                </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_contendores" onchange="valida_capa('chk_contendores')"/>
+
+                                                                                                     <i></i>
+                                                                                                     MAPA CONTENEDORES
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-areas_verdes"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Areas Verdes
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-areas_verdes" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding: 0px;padding-left: 20px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="areas_verdes"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Mantenimiento Areas Verdes
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_are_verdes" onchange="valida_capa('chk_are_verdes')"/>
+                                                                                                     <i></i>
+                                                                                                     MAPA AREAS VERDES
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
+                                                                
                                                            </div>
                                                         <!--end widget content -->
                                                         </div>
@@ -1566,60 +1707,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-resi_soli" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Residuos Sólidos 
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_sub-resi_soli" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                  <ul >
-                                                                      
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_botaderos" onchange="valida_capa('chk_aportes')">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Botaderos
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_curtiembre" onchange="valida_capa('chk_aportes')">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Ubicación Curtiembres
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                  </ul>
-                                                              </div>
-                                                           </div>
-                                                        <!--end widget content -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- fin option-->
+                                            
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
@@ -2158,42 +2246,59 @@
                                     <div class="widget-body no-padding">
                                         <div class="panel-group smart-accordion-default" id="accordion-3">
                                             
-                                            <div class="panel panel-default" style="background: transparent">
+                                            
+                                                        
+                                                        <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-zonificacion"> 
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-mypes_turismo"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Zonificación
+                                                            sub Gerencia de MYPES y Turismo
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapseOne-sub-zonificacion" class="panel-collapse cr_toogle collapse">
-                                                    <div class="panel-body" style="padding-left: 30px" >
+                                                <div id="collapseOne-sub-mypes_turismo" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding: 0px;padding-left: 20px" >
                                                         <div>
                                                         <!--widget edit box -->
                                                             <div class="jarviswidget-editbox">
                                                             </div>
-                                                        <!--end widget edit box 
+                                                        <!--end widget edit box -->
 
-                                                            widget content -->
+                                                        
+                                                        
+                                                        
                                                            <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                    <ul >
-
-                                                                            <li >
-                                                                                <span style="width: 160px;">
-                                                                                    <label class="checkbox inline-block" style="color:white !important">
-                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_zonificacion" onchange=""/>
-
-                                                                                        <i></i>
-                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
-                                                                                        Zonificación
-                                                                                </span>
-                                                                            </li>
-                                    
-                                                                    </ul>
-                                                              </div>
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="mypes"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Mantenimiento MYPES
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_mypes" onchange="valida_capa('chk_mypes')"/>
+                                                                                                     <i></i>
+                                                                                                     MAPA MYPES
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
+                                                                
                                                            </div>
                                                         <!--end widget content -->
                                                         </div>

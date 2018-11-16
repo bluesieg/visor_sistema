@@ -1,4 +1,4 @@
-function limpiar_contenedor(dialogo)
+function limpiar_botadero(dialogo)
 {
     $("#"+dialogo+" input[type='text']").val("");
     $("#"+dialogo+" input[type='hidden']").val(0);
@@ -18,26 +18,25 @@ function crear_dlg(dlg,ancho,titulo)
             }]
     }).dialog('open');
 }
-function crear_edit_contenedores(id)
+function crear_edit_botaderos(id)
 {
-    $.ajax({url: 'contenedores/'+id+'?grid=normal',
+    $.ajax({url: 'botaderos/'+id+'?grid=normal',
     type: 'GET',
     success: function(r) 
     {
-        $("#dlg_edit_cod_contenedor").val(r[0].codigo);
-        $("#dlg_edit_cantidad_contenedor").val(r[0].cantidad);
-        $("#dlg_edit_ubicacion_contendor").val(r[0].ubicacion);
-        $("#foto_contenedor").html("<center><img src= 'data:image/png;base64," + r[0].imagen+"'/></center>");
+        $("#dlg_edit_cod_botadero").val(r[0].cod_botadero);
+        $("#dlg_edit_ubicacion_botadero").val(r[0].ubicacion);
+        $("#foto_botadero").html("<center><img src= 'data:image/png;base64," + r[0].imagen+"'/></center>");
                     
     },
     error: function(data) {
         mostraralertas("hubo un error, Comunicar al Administrador");
         console.log('error');
         console.log(data);  
-        MensajeDialogLoadAjaxFinish('dlg_ver_observacion');
+        MensajeDialogLoadAjaxFinish('dlg_botaderos');
     }
     });
-    crear_dlg("dlg_contenedores",1000,"Mantenimiento Contenedores");
+    crear_dlg("dlg_botaderos",1000,"Mantenimiento Botaderos");
 }
 function agregar_observacion()
 {
@@ -71,11 +70,11 @@ function grabar_observacion()
         return false;
     }
     MensajeDialogLoadAjax('dlg_new_observacion', '.:: Cargando ...');
-    $.ajax({url: 'contenedores/create',
+    $.ajax({url: 'botaderos/create',
     type: 'GET',
     data:{fecha:$("#dlg_fec_obs").val(),
         obs:$("#txt_observacion").val(),
-        id:$("#hidden_contenedor").val(),
+        id:$("#hidden_botadero").val(),
         tipo_create:"observacion"},
     success: function(r) 
     {
@@ -123,7 +122,7 @@ function ver_observacion()
     }).dialog('open');
     
     MensajeDialogLoadAjax('dlg_ver_observacion', '.:: Cargando ...');
-    $.ajax({url: 'contenedores/0?grid=observacion&cod='+$("#hidden_contenedor").val(),
+    $.ajax({url: 'botaderos/0?grid=observacion&cod='+$("#hidden_botadero").val(),
     type: 'GET',
     success: function(r) 
     {
@@ -143,17 +142,16 @@ function ver_observacion()
     }
     }); 
 }
-function save_contenedor()
+function save_botadero()
 {
-    MensajeDialogLoadAjax('dlg_contenedores', '.:: Cargando ...');
-    $.ajax({url: 'contenedores/'+$("#hidden_contenedor").val()+'/edit',
+    MensajeDialogLoadAjax('dlg_botaderos', '.:: Cargando ...');
+    $.ajax({url: 'botaderos/'+$("#hidden_botadero").val()+'/edit',
     type: 'GET',
-    data:{cod:$("#dlg_edit_cod_contenedor").val(),
-        cant:$("#dlg_edit_cantidad_contenedor").val(),
-        ubi:$("#dlg_edit_ubicacion_contendor").val()},
+    data:{cod:$("#dlg_edit_cod_botadero").val(),
+        ubi:$("#dlg_edit_ubicacion_botadero").val()},
     success: function(r) 
     {
-        MensajeDialogLoadAjaxFinish('dlg_contenedores');
+        MensajeDialogLoadAjaxFinish('dlg_botaderos');
         MensajeExito('Se Modificó con Exito','Su Contenedor fue modificado',5000);
         
     },
@@ -161,14 +159,14 @@ function save_contenedor()
         mostraralertas("hubo un error, Comunicar al Administrador");
         console.log('error');
         console.log(data);
-        MensajeDialogLoadAjaxFinish('dlg_contenedores');
+        MensajeDialogLoadAjaxFinish('dlg_botaderos');
     }
     }); 
 }
 /////////////mapa pantalla inicial
-function crear_mapa_contedores()
+function crear_mapa_botaderos()
 {
-    $.ajax({url: 'contenedores/0?grid=mapa_contenedores',
+    $.ajax({url: 'botaderos/0?grid=mapa_botaderos',
                     type: 'GET',
                     async: false,
                     success: function(r)
@@ -185,7 +183,7 @@ function crear_mapa_contedores()
                         lyr_contenedores = new ol.layer.Vector({
                             source:jsonSource,
                             style: contenedorstyle,
-                            title: "Contenedores",
+                            title: "Botaderos",
 
                         });
 
@@ -202,7 +200,7 @@ function contenedorstyle(feature, resolution) {
     return  new ol.style.Style({
     image: new ol.style.Icon({
       scale: map.getView().getZoom() > 16 ? (map.getView().getZoom() > 18 ? 0.3 : 0.1) : 0.07,
-      src: 'img/recursos/contenedor.png',
+      src: 'img/recursos/reciclaje.png',
     }),
     text: new ol.style.Text({
 
@@ -215,27 +213,25 @@ function contenedorstyle(feature, resolution) {
     })
   });
 }
-function iniciar_contenedores(id)
+function iniciar_botaderos(id)
 {
-    $.ajax({url: 'contenedores/'+id+'?grid=normal',
+    $.ajax({url: 'botaderos/'+id+'?grid=normal',
     type: 'GET',
     success: function(r) 
     {
-        $("#dlg_edit_cod_contenedor").val(r[0].codigo);
-        $("#dlg_edit_cantidad_contenedor").val(r[0].cantidad);
-        $("#dlg_edit_ubicacion_contendor").val(r[0].ubicacion);
-        $("#foto_contenedor").html("<center><img src= 'data:image/png;base64," + r[0].imagen+"'/></center>");
+        $("#dlg_edit_cod_botadero").val(r[0].cod_botadero);
+        $("#dlg_edit_ubicacion_botadero").val(r[0].ubicacion);
+        $("#foto_botadero").html("<center><img src= 'data:image/png;base64," + r[0].imagen+"'/></center>");
                     
     },
     error: function(data) {
         mostraralertas("hubo un error, Comunicar al Administrador");
         console.log('error');
         console.log(data);
-        MensajeDialogLoadAjaxFinish('dlg_ver_observacion');
     }
     });
     
-    $.ajax({url: 'contenedores/0?grid=observacion&cod='+id,
+    $.ajax({url: 'botaderos/0?grid=observacion&cod='+id,
     type: 'GET',
     success: function(r) 
     {
@@ -244,7 +240,7 @@ function iniciar_contenedores(id)
         {
             html=html+'<div class="cuerpo_li_observacion col-xs-12"><div class="col-xs-2">'+r[i].fec_obs+'</div><div class="col-xs-10">'+r[i].observacion+'</div></div>';
         }
-        $("#cuerpo_obs_contenedores").html(html);
+        $("#cuerpo_obs_botaderos").html(html);
     },
     error: function(data) {
         mostraralertas("hubo un error, Comunicar al Administrador");
@@ -253,5 +249,5 @@ function iniciar_contenedores(id)
         MensajeDialogLoadAjaxFinish('dlg_ver_observacion');
     }
     }); 
-    crear_dlg("dlg_contenedores",1000,"Contenedores");
+    crear_dlg("dlg_botaderos",1000,"Botaderos");
 }

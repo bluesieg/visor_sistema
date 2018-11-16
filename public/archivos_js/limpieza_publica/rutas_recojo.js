@@ -241,7 +241,7 @@ function dlg_ver_observacion()
                 html: "<i class='fa fa-save'></i>&nbsp; Guardar",
                 "class": "btn btn-success bg-color-green",
                 click: function () {
-                        grabar_observacion();
+                        ver_observacion();
                 }
             },
             {
@@ -359,4 +359,119 @@ function poner_tranporte(id,placa)
         MensajeDialogLoadAjaxFinish('dlg_edit_ruta');
     }
     });
+}
+///////////////////////////mapa pantalla principal
+function crear_rutas_recojo()
+{
+    $.ajax({url: 'rutas_recojo_residuos/0?grid=rutas_geom',
+            type: 'GET',
+//            async: false,
+            success: function(r)
+            {
+                geojson = JSON.parse(r[0].json_build_object);
+                var format= new ol.format.GeoJSON();
+                var features = format.readFeatures(geojson,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_rutas_recojo= new ol.layer.Vector({
+                    source:jsonSource,
+                    style: style_rutas_recojo,
+                    title: "Rutas Recojo Residuos"
+                });
+                map.addLayer(lyr_rutas_recojo);
+                var extent = lyr_rutas_recojo.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+              
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+
+function style_rutas_recojo(feature, resolution){
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: '#A40477',
+        width: 2
+      }),
+        text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: map.getView().getZoom() > 14 ? feature.get('cod_ruta_recojo') : "", 
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+
+var inicio_recojo=0;
+function iniciar_visualizar_mapa_recojo(id,des,cod,placa)
+{
+    $("#dlg_edit_des_ruta_recojo").val(des);
+    $("#dlg_edit_cod_ruta_recojo").val(cod);
+    $("#dlg_uni_trans_recojo").val(placa);
+    if(inicio_recojo==0)
+    {
+        inicio_recojo=1;
+        jQuery("#table_rutas_personal_recojo").jqGrid({
+            url: 'rutas_recojo_residuos/0?grid=personal&cod='+id,
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_per_barrido', 'DNI', 'Nombre','Teléfono','Tipo'],
+            rowNum: 100, sortname: 'id_per_recojo', sortorder: 'desc', viewrecords: true, caption: 'Personal Recojo de Residuos', align: "center",
+            colModel: [
+                {name: 'id_per_recojo', index: 'id_per_recojo', hidden: true},
+                {name: 'dni', index: 'dni', align: 'left', width: 80},
+                {name: 'ape_pat', index: 'ape_pat', align: 'left', width: 404},
+                {name: 'telefono', index: 'telefono', align: 'left', width: 200},
+                {name: 'des_tip_per', index: 'des_tip_per', align: 'left', width: 200},
+            ],
+            pager: '#pager_table_rutas_personal_recojo',
+            rowList: [100, 200],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_rutas_personal_recojo').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_rutas_personal_recojo').jqGrid('getDataIDs')[0];
+                            $("#table_rutas_personal_recojo").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+    }
+    else
+    {
+        jQuery("#table_rutas_personal").jqGrid('setGridParam', {
+         url: 'rutas_recojo_residuos/0?grid=personal&cod='+id}).trigger('reloadGrid');
+    }
+    $.ajax({url: 'rutas_recojo_residuos/0?grid=observacion&cod='+id,
+    type: 'GET',
+    success: function(r) 
+    {
+        html="";
+        for(i=0;i<r.length;i++)
+        {
+            html=html+'<div class="cuerpo_li_observacion col-xs-12"><div class="col-xs-2">'+r[i].fec_obs+'</div><div class="col-xs-10">'+r[i].observacion+'</div></div>';
+        }
+        $("#cuerpo_obs_recojo_mapa").html(html);
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+    }
+    }); 
+    crear_dlg("dlg_ruta_recojo_basura",1000,"Ruta Recojo de Residuos Solidos");
 }

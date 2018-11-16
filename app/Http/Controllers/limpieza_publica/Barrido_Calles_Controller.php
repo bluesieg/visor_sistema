@@ -75,8 +75,12 @@ class Barrido_Calles_Controller extends Controller
         {
             return $this->list_observacion_barrido($request);
         }
+         if($id==0&&$request['grid']=="rutas_geom")
+        {
+            return $this->rutas_mapa($request);
+        }
     }
-
+     
     public function edit($id, Request $request)
     {
        $Ruta = new  rutas_barrido_calles;
@@ -219,5 +223,25 @@ class Barrido_Calles_Controller extends Controller
     {
         $codigo = strtoupper($request['cod']);
         return DB::connection('gerencia_catastro')->table('limpieza_publica.observaciones_rutas_barrido_calles')->where("id_ruta_barrido",$codigo)->orderBy('id_obs_barrido_calles','desc' )->get();
+    }
+    //////////////////////mapas
+    function rutas_mapa(){
+        $rutas = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_ruta_barrido',id_ruta_barrido,
+                                'descripcion', descripcion,
+                                'cod_ruta_barrido', cod_ruta_barrido
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM limpieza_publica.rutas_barrido_calles) row) features;");
+
+        return response()->json($rutas);
     }
 }

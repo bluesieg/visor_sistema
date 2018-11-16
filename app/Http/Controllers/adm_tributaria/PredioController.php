@@ -366,7 +366,7 @@ class PredioController extends Controller
     }
     public function getfotoid($lote)
     {
-        $lote = DB::select("SELECT id_lote, a.id_mzna, codi_lote, id_hab_urb, b.codi_mzna,c.id_sec,c.sector
+        $lote = DB::connection('pgsql')->select("SELECT id_lote, a.id_mzna, codi_lote, id_hab_urb, b.codi_mzna,c.id_sec,c.sector
                                                     FROM catastro.lotes a
                                                     left join catastro.manzanas b on a.id_mzna=b.id_mzna
                                                     left join catastro.sectores c on b.id_sect=c.id_sec

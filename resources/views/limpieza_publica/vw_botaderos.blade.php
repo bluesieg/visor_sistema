@@ -35,7 +35,7 @@
                     <ul id="tabs1" class="nav nav-tabs bordered">
                         <li class="active">
                             <a href="#s1" data-toggle="tab" aria-expanded="true">
-                                Mantenimiento de Contenedores
+                                Mantenimiento de Botaderos
                                 <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                             </a>
                         </li>
@@ -159,7 +159,7 @@
             target: 'id_mapa',
             
         });
-        $.ajax({url: 'contenedores/0?grid=mapa_contenedores',
+        $.ajax({url: 'botaderos/0?grid=mapa_botaderos',
                     type: 'GET',
                     async: false,
                     success: function(r)
@@ -173,17 +173,17 @@
                         });
                         jsonSource.addFeatures(features);
 
-                        lyr_contenedores = new ol.layer.Vector({
+                        lyr_botaderos = new ol.layer.Vector({
                             source:jsonSource,
-                            style: contenedorstyle,
-                            title: "Contenedores",
+                            style: botaderosstyle,
+                            title: "Botaderos",
 
                         });
 
-                        map.addLayer(lyr_contenedores);
+                        map.addLayer(lyr_botaderos);
                         var scale = new ol.control.ScaleLine();
                         map.addControl(scale);
-                        var extent = lyr_contenedores.getSource().getExtent();
+                        var extent = lyr_botaderos.getSource().getExtent();
                         map.getView().fit(extent, map.getSize());
                         var fullscreen = new ol.control.FullScreen();
                         map.addControl(fullscreen);
@@ -192,11 +192,11 @@
         });
         
   
-        function contenedorstyle(feature, resolution) {
+        function botaderosstyle(feature, resolution) {
             return  new ol.style.Style({
             image: new ol.style.Icon({
               scale: map.getView().getZoom() > 16 ? (map.getView().getZoom() > 18 ? 0.3 : 0.1) : 0.07,
-              src: 'img/recursos/contenedor.png',
+              src: 'img/recursos/reciclaje.png',
             }),
             text: new ol.style.Text({
                 
@@ -290,13 +290,13 @@
             mostrar=0;
             var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                
-                if(layer.get('title')=='Contenedores'&&mostrar==0)
+                if(layer.get('title')=='Botaderos'&&mostrar==0)
                 {
                     mostrar=1;
-                    limpiar_contenedor('dlg_contenedores');
-                    $("#foto_contenedor").html("");
-                    $("#hidden_contenedor").val(feature.get('id'));
-                    crear_edit_contenedores(feature.get('id'));
+                    limpiar_botadero('dlg_contenedores');
+                    $("#foto_botadero").html("");
+                    $("#hidden_botadero").val(feature.get('id_botadero'));
+                    crear_edit_botaderos(feature.get('id_botadero'));
                     return false;
                 }
             });
@@ -307,8 +307,8 @@
 </script>
 
 @stop
-<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/limpieza_publica/contenedores.js') }}"></script>
-<div id="dlg_contenedores" style="display: none;">
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/limpieza_publica/botaderos.js') }}"></script>
+<div id="dlg_botaderos" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
         <div class="col-xs-12 cr-body" >
             <div class="col-xs-8" style="padding: 0px">
@@ -326,30 +326,22 @@
                 <div class="input-group input-group-md" style="width: 100%">
                     <span class="input-group-addon" style="width: 200px">Codigo de contendor &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
                     <div class="icon-addon addon-md">
-                        <input type="hidden" id="hidden_contenedor" value="0"/>
-                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_cod_contenedor" type="text" maxlength="8" >
+                        <input type="hidden" id="hidden_botadero" value="0"/>
+                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_cod_botadero" type="text" maxlength="8" >
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12" style="padding-left: 0px;  margin-top: 5px ">
-                <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Cantidad de contendores &nbsp;&nbsp;<i class="fa fa-hashtag"></i></span>
-                    <div class="icon-addon addon-md">
-                        <input type="hidden" id="hidden_contenedor" value="0"/>
-                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_cantidad_contenedor" type="text" onkeypress="return soloNumeroTab(event);" >
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                    <span class="input-group-addon" style="width: 200px">Ubicación de Botadero &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
                     <div class="icon-addon addon-md">
-                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ubicacion_contendor" type="text" >
+                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ubicacion_botadero" type="text" >
                     </div>
                 </div>
             </div>
             <div  class="col-xs-12 text-right" style=" padding-top: 5px">
-                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="save_contenedor();">
+                    <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="save_botadero();">
                         <span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar
                     </button>
              </div>
@@ -364,7 +356,7 @@
                     </header>
                 </div>
             </section>
-            <div  class="col-xs-12" id="foto_contenedor">
+            <div  class="col-xs-12" id="foto_botadero">
                     
              </div>
             </div>

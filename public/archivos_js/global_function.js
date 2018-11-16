@@ -656,3 +656,14 @@ function buscar_datos_reniec()
     });
     setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 3000);
 }
+
+function printDiv(nombreDiv) {
+     var contenido= document.getElementById(nombreDiv).innerHTML;
+     var contenidoOriginal= document.body.innerHTML;
+
+     document.body.innerHTML = contenido;
+
+     window.print();
+
+     document.body.innerHTML = contenidoOriginal;
+}
