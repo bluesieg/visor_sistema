@@ -153,16 +153,16 @@ return [
 //            'prefix' => '',
 //        ],
 //        
-//        'sql_crud' => [
-//            'driver' => 'sqlsrv',
-//            'host' => env('SQL_DB_HOST', 'localhost'),
-//            'port' => env('SQL_DB_PORT', '1433'),
-//            'database' => env('SQL_DB_DATABASE', 'forge'),
-//            'username' => env('SQL_DB_USERNAME', 'forge'),
-//            'password' => env('SQL_DB_PASSWORD', ''),
-//            'charset' => 'utf8',
-//            'prefix' => '',
-//        ],
+        'sql_crud' => [
+            'driver' => 'sqlsrv',
+            'host' => env('SQL_DB_HOST', 'localhost'),
+            'port' => env('SQL_DB_PORT', '1433'),
+            'database' => env('SQL_DB_DATABASE', 'forge'),
+            'username' => env('SQL_DB_USERNAME', 'forge'),
+            'password' => env('SQL_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
 
     ],
 

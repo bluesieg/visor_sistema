@@ -121,6 +121,10 @@ class ProcuraduriaController extends Controller
             {
                 return $this->traer_datos_tipo($id);
             }
+            if($request['show']=='datos_observacion_procuraduria')
+            {
+                return $this->traer_observaciones_procuraduria($id);
+            }
         }
         else
         {
@@ -148,6 +152,10 @@ class ProcuraduriaController extends Controller
             {
                 return $this->cargar_documentos_adjuntos($request);
             }
+            if ($request['grid'] == 'documentos_adj') 
+            {
+                return $this->documentos_adjuntos($request);
+            }
             if ($request['grid'] == 'casos') 
             {
                 return $this->cargar_datos_casos($request);
@@ -171,6 +179,10 @@ class ProcuraduriaController extends Controller
             if ($request['mapa'] == 'procuraduria') 
             {
                 return $this->cargar_mapa_procuraduria($request);
+            }
+            if($request['reporte']=='procuraduria')
+            {
+                return $this->abrir_reporte_procuraduria($request);
             }
         }  
     }
@@ -334,7 +346,7 @@ class ProcuraduriaController extends Controller
                 trim($Datos->nro_doc_gestor),
                 trim($Datos->gestor),
                 trim($Datos->fecha_inicio_tramite),
-                trim($Datos->fecha_registro),
+                trim($Datos->nomb_hab_urba),
             );
         }
         return response()->json($Lista);
@@ -468,8 +480,49 @@ class ProcuraduriaController extends Controller
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_doc_adj),
                 trim($Datos->descripcion),
-                '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER</button>',
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile_procuraduria('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER</button>',
                 '<button class="btn btn-labeled btn-danger" type="button" onclick="delfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-trash"></i></span> BORRAR</button>',
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function documentos_adjuntos(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+         $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from procuraduria.vw_doc_adjuntos where id_procuraduria=".$request['id_procuraduria']);
+         $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_doc_adjuntos')->where('id_procuraduria',$request['id_procuraduria'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_doc_adj;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_doc_adj),
+                trim($Datos->descripcion),
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile_procuraduria('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER DOCUMENTO</button>',
             );
         }
         return response()->json($Lista);
@@ -929,9 +982,11 @@ class ProcuraduriaController extends Controller
         return "destroy ".$request['id_det_procuraduria'];
     }
     
-    public function cargar_mapa_procuraduria()
+    public function cargar_mapa_procuraduria(Request $request)
     {
-        $sql = DB::connection('gerencia_catastro')->select("select * from procuraduria.vw_procuraduria");
+        $id_hab_urb = $request['id_hab_urb'];
+        
+        $sql = DB::connection('gerencia_catastro')->select("select * from procuraduria.vw_procuraduria where id_hab_urb = $id_hab_urb");
         
         if($sql)
         {
@@ -948,6 +1003,7 @@ class ProcuraduriaController extends Controller
                                 'id_procuraduria',id_procuraduria,
                                 'nro_expediente',nro_expediente,
                                 'nro_doc_gestor',nro_doc_gestor,
+                                'gestor',gestor,
                                 'fecha_inicio_tramite',fecha_inicio_tramite,
                                 'cod_catastral',cod_catastral,
                                 'referencia',referencia,
@@ -961,7 +1017,7 @@ class ProcuraduriaController extends Controller
                                 'persona',persona
                              )
                           ) AS feature
-                          FROM (SELECT * FROM procuraduria.vw_procuraduria limit 1) row) features;");
+                          FROM (SELECT * FROM procuraduria.vw_procuraduria where id_hab_urb = $id_hab_urb) row) features;");
 
             return response()->json($procuraduria);
         }
@@ -969,5 +1025,34 @@ class ProcuraduriaController extends Controller
         {
             return 0; 
         }
+    }
+    
+    public function traer_observaciones_procuraduria($id_procuraduria)
+    {
+        $observaciones = DB::connection('gerencia_catastro')->table('procuraduria.dte_procuraduria')->where("id_mtr_procuraduria",$id_procuraduria)->orderBy('fecha_registro','desc')->get();
+        if ($observaciones->count()) 
+        {
+            return $observaciones;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
+    public function abrir_reporte_procuraduria(Request $request)
+    { 
+        $sql = DB::connection('gerencia_catastro')->table('procuraduria.vw_procuraduria')->where('id_procuraduria',$request['id_procuraduria'])->first();
+        $observaciones = DB::connection('gerencia_catastro')->table('procuraduria.dte_procuraduria')->where('id_mtr_procuraduria',$sql->id_procuraduria)->get();
+        
+        if($sql)
+        {
+            $view =  \View::make('procuraduria.reportes.reporte_procuraduria', compact('sql','observaciones'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("REPORTE EXPEDIENTE PROCURADURIA".".pdf");
+        }
+        else
+        {   return 'No hay datos';}
     }
 }

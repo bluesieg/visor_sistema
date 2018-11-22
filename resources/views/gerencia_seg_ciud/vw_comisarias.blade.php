@@ -29,19 +29,34 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: -12px">
             <div class="well well-sm well-light">
                 <div class="row">                    
-                    
-                    <section class="col col-lg-12">
+                    <section class="col col-lg-12">                        
+                        <ul id="tabs1" class="nav nav-tabs bordered">
+                            <li class="active">
+                                <a href="#s1" data-toggle="tab" aria-expanded="true">
+                                    COMISARIAS
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">
+                                   ADJUNTAR DOCUMENTOS
+                                    <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
+                                </a>
+                            </li>                            
+                        </ul>
+                    <div id="myTabContent1" class="tab-content padding-1"> 
+
+                        <div id="s1" class="tab-pane fade active in">
                         <section class="col col-lg-12">
                         <div class="col-xs-12">               
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <section style="padding-right: 0px">
-                                        <div class="col-xs-12">
-                                            
-                                        <h1 ><b>MANTENIMIENTO DE COMISARIAS</b></h1>
-                                        
-                                        <div class="row" style="padding: 0px; margin-top: 30px">
-                                            <div class="col-xs-5">
+                                        <div class="col-xs-12">                                            
+                                        <h1 ><b>MANTENIMIENTO COMISARIAS</b></h1>
+                                        <div class="row" style=" padding-top: 20px">
+
+                                             <div class="col-xs-5">
                                                 <div class="input-group input-group-md">
                                                     <span class="input-group-addon">COMISARIA:. &nbsp;<i class="fa fa-male"></i></span>
                                                     <div>
@@ -57,27 +72,84 @@
                                                         </button>
                                                 </div>
                                             </div>
-                                            
-                                           <div class="col-xs-5 text-center">
+
+                                            <div class="col-xs-5 text-center">
                                                 <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="modificar_comisarias();">
                                                     <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar Comisaria
                                                 </button>
                                             </div>
-                                        </div>
-                                        
+
                                             <div class="col-xs-12" style="padding: 0px; margin-top: 30px">
                                                 <article class="col-xs-12" style=" padding: 0px !important">
                                                         <table id="table_comisarias"></table>
                                                         <div id="pager_table_comisarias"></div>
                                                 </article>
                                             </div>
-                                        
-                                        </div> 
-                                    </section> 
+
+                                        </div>
+                                        </div>
+
+                                    </section>
+
                                 </div>
                             </div>
                            </div>
                         </section>
+
+                      </div>
+
+                        <div id="s2" class="tab-pane fade" style="height: auto">
+                        <section class="col col-lg-12">
+                        <div class="col-xs-12">               
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <section style="padding-right: 10px">
+                                        <div class="col-xs-12">
+
+                                    <h1><b>ADJUNTAR DOCUMENTOS</b></h1>
+                                        <div class="col-xs-7">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">NOMBRE COMISARIA:. &nbsp;<i class="fa fa-male"></i></span>
+                                                <div>
+                                                    <input id="dlg_comisaria_scan" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR NOMBRE COMISARIA">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-2">
+                                            <div class="text-left">
+                                                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="busqueda_escaneo_comisaria();">
+                                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                    </button>
+                                            </div>
+                                        </div>
+
+                                        </div>
+
+                                    </section>
+
+                                    </div>
+
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 35px;">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_escaneos"></table>
+                                                    <div id="pager_table_escaneos"></div>
+                                            </article>
+                                        </div>
+
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 150px;">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_doc"></table>
+                                                    <div id="pager_table_doc"></div>
+                                            </article>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        </section>
+                        </div>
+                    </div> 
+
                     </section>
                 </div>
             </div>            
@@ -91,7 +163,7 @@
         jQuery("#table_comisarias").jqGrid({
             url: 'sub_geren_op_vigilancia_interna/0?grid=comisarias',
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: '250px', autowidth: true,
             toolbarfilter: true,
             colNames: ['ID', 'NOMBRE COMISARIA', 'TELEFONO', 'Nº VEHICULOS','Nº EFECTIVOS','UBICACION'],
             rowNum: 50, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE COMISARIAS REGISTRADAS - CERRO COLORADO', align: "center",
@@ -120,6 +192,14 @@
             if (e.which == 13) {
 
                    fn_buscar_comisaria();
+
+            }
+        });
+        
+        $("#dlg_comisaria_scan").keypress(function (e) {
+            if (e.which == 13) {
+
+                   busqueda_escaneo_comisaria();
 
             }
         });
@@ -177,12 +257,69 @@
             onSelectRow: function (Id){},
             ondblClickRow: function (Id){modificar_persona()}
         });
+        
+        jQuery("#table_escaneos").jqGrid({
+            url: 'sub_geren_op_vigilancia_interna/0?grid=escaneos_comisarias',
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['ID', 'NOMBRE COMISARIA','UBICACION','TELEFONO','SUBIR'],
+            rowNum: 50, sortname: 'id', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE COMISARIAS', align: "center",
+            colModel: [
+                {name: 'id', index: 'id', align: 'left',width: 20, hidden: true},
+                {name: 'nombre', index: 'nombre', align: 'left', width: 300},
+                {name: 'ubicacion', index: 'ubicacion', align: 'left', width: 350},
+                {name: 'telefono', index: 'telefono', align: 'center', width: 120},
+                {name: 'archivo', index: 'archivo', align: 'center', width: 200}
+            ],
+            pager: '#pager_table_escaneos',
+            rowList: [10, 20, 30, 40, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_escaneos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_escaneos').jqGrid('getDataIDs')[0];
+                            $("#table_escaneos").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id)
+            {
+                jQuery("#table_doc").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=doc_adjuntos_comisarias&id='+Id}).trigger('reloadGrid');
+            },
+            ondblClickRow: function (Id){}
+        });
+        
+        jQuery("#table_doc").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_doc_adj', 'DESCRIPCION','VER','ELIMINAR'],
+            rowNum: 200, sortname: 'id_doc_adj_com', sortorder: 'desc', viewrecords: true, caption: 'DOCUMENTOS ESCANEADOS', align: "center",
+            colModel: [
+                {name: 'id_doc_adj_com', index: 'id_doc_adj_com', hidden: true},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 400},
+                {name: 'ver', index: 'ver', align: 'center', width: 160},
+                {name: 'del', index: 'del', align: 'center', width: 150},
+            ],
+            pager: '#pager_table_doc',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_doc').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                        var firstid = jQuery('#table_doc').jqGrid('getDataIDs')[0];
+                            $("#table_doc").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
          
     });
 </script>
 
 @stop
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/gerencia_seg_ciud/comisarias.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/gerencia_seg_ciud/doc_adj_comisarias.js') }}"></script>
 
 <div id="dlg_nuevo_comisarias" style="display: none;">
     <div class='cr_content col-xs-12' style="margin-bottom: 10px;">
@@ -430,6 +567,38 @@
     </div>
     </div>
     
+</div>
+
+<div id="dlg_subir_escaneo_comisarias" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+    <div class="col-xs-12 cr-body" >
+            <form id="FormularioScans" name="FormularioScans" method="post" enctype="multipart/form-data" action="sub_geren_op_vigilancia_interna?tipo=4"  target="ifrafile">
+                <input type="hidden" name="_token" id="_token2" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
+                <input type="hidden" value='0' id='id_comisaria_scan' name="id_comisaria_scan"/>
+                
+                <div class="col-xs-12" style="padding: 0px; padding-top: 10px ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Documento &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                        <div>
+                            <input name="dlg_documento_file" id="dlg_documento_file" type="file"  class="form-control" style="height: 32px; width: 100%" onchange="llamarsubmitscan();">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding: 0px; padding-top: 10px ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 165px">Descripción &nbsp;<i class="fa fa-text-height"></i></span>
+                        <div>
+                            <input name="dlg_documento_descripcion" id="dlg_documento_descripcion" type="text"  class="form-control text-uppercase" style="height: 32px; width: 100%">
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+            <div id="dlg_sub_frame" class='cr_content col-xs-12 ' style="margin-bottom: 10px; padding-top: 10px ">
+                <iframe name="ifrafile" id="ifrafile" class="form-control col-xs-12"  style=" height: 400px; padding: 0px"></iframe>
+            </div>
+    </div>
+    </div>
 </div>
 
 @endsection

@@ -155,15 +155,15 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID', 'NUMERO EXPEDIENTE','Nº DOCUMENTO','GESTOR','FECHA INICIO TRAMITE','FECHA REGISTRO'],
+            colNames: ['ID', 'NUMERO EXPEDIENTE','DNI','GESTOR','FEC. INICIO TRAMITE','HAB.URB.'],
             rowNum: 50, sortname: 'id_procuraduria', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE EXPEDIENTES', align: "center",
             colModel: [
                 {name: 'id_procuraduria', index: 'id_procuraduria', align: 'left',width: 20, hidden: true},
-                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 20},
-                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'left', width: 20},
-                {name: 'gestor', index: 'gestor', align: 'left', width: 40},
-                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 25},
-                {name: 'fecha_registro', index: 'fecha_registro', align: 'left', width: 25}
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'center', width: 20},
+                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'center', width: 12},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 35},
+                {name: 'fecha_inicio_tramite', index: 'fecha_inicio_tramite', align: 'left', width: 20},
+                {name: 'nomb_hab_urba', index: 'nomb_hab_urba', align: 'left', width: 45}
             ],
             pager: '#pager_table_expedientes',
             rowList: [10, 20, 30, 40, 50],

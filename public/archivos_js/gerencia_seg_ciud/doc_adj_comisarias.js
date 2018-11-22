@@ -1,31 +1,31 @@
-function limpiar_datos_procuraduria()
+function limpiar_datos()
 {
-    $('#dlg_documento_des_procuraduria').val('');
-    $('#dlg_documento_file_procuraduria').val('');
+    $('#dlg_documento_descripcion').val('');
+    $('#dlg_documento_file').val('');
     $('#ifrafile').attr('src','about:blank');
 }
 
 function llamarsubmitscan()
 {
-    var fileInput = document.getElementById('dlg_documento_file_procuraduria');
+    var fileInput = document.getElementById('dlg_documento_file');
     var filePath = fileInput.value;
     var allowedExtensions = /(\.pdf)$/i;
     if(!allowedExtensions.exec(filePath)){
-        mostraralertasconfoco("ARCHIVO INCORRECTO SOLO SE PUEDEN SUBIR ARCHIVOS DE TIPO .PDF","#dlg_documento_file_procuraduria");
+        mostraralertasconfoco("ARCHIVO INCORRECTO SOLO SE PUEDEN SUBIR ARCHIVOS DE TIPO .PDF","#dlg_documento_file");
         fileInput.value = '';
         return false;
     }else{
         MensajeExito('ARCHIVO CORRECTO','PRESIONE GUARDAR PARA FINALIZAR');
-        MensajeDialogLoadAjax('dlg_subir_escaneo_procuraduria', '.:: CARGANDO ...');
-        $("#FormularioScans_procuraduria").submit();
-        $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_procuraduria');}).show();
+        MensajeDialogLoadAjax('dlg_subir_escaneo_comisarias', '.:: CARGANDO ...');
+        $("#FormularioScans").submit();
+        $('#ifrafile').load(function(){MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_comisarias');}).show();
     }
 }
-function subir_scan_procuraduria(id)
+function subir_scan_comisaria(id)
 {
-    limpiar_datos_procuraduria();
-    $("#id_scan_procuraduria").val(id);
-    $("#dlg_subir_escaneo_procuraduria").dialog({
+    limpiar_datos();
+    $("#id_comisaria_scan").val(id);
+    $("#dlg_subir_escaneo_comisarias").dialog({
     autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
     title: "<div class='widget-header'><h4>.: Subir Archivos :.</h4></div>",
     buttons: [
@@ -44,11 +44,11 @@ function subir_scan_procuraduria(id)
 function grabarfinal()
 {
     id_escaneo = $('#table_escaneos').jqGrid ('getGridParam', 'selrow');
-    MensajeDialogLoadAjax('dlg_subir_escaneo_procuraduria', '.:: CARGANDO ...');
-    var form= new FormData($("#FormularioScans_procuraduria")[0]);
+    MensajeDialogLoadAjax('dlg_subir_escaneo_comisarias', '.:: CARGANDO ...');
+    var form= new FormData($("#FormularioScans")[0]);
         $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'procuraduria?tipo=2',
+        url: 'sub_geren_op_vigilancia_interna?tipo=5',
         type: 'POST',  
         dataType: 'json',
         data: form,
@@ -58,29 +58,29 @@ function grabarfinal()
         {
             if(r==0)
             {
-                mostraralertasconfoco("Subir Archivo de lo contrario no se podra Grabar","#dlg_documento_file_procuraduria");
+                mostraralertasconfoco("Subir Archivo de lo contrario no se podra Grabar","#dlg_documento_file");
             }
             else
             {
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-                $("#dlg_subir_escaneo_procuraduria").dialog("close");
+                $("#dlg_subir_escaneo_comisarias").dialog("close");
             }
-            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_procuraduria');
-            jQuery("#table_doc").jqGrid('setGridParam', {url: 'procuraduria/0?grid=doc_adjuntos&id='+id_escaneo}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_comisarias');
+            jQuery("#table_doc").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=doc_adjuntos_comisarias&id='+id_escaneo}).trigger('reloadGrid');
             
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
-            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_procuraduria');
+            MensajeDialogLoadAjaxFinish('dlg_subir_escaneo_comisarias');
             console.log('error');
             console.log(data);
         }
         });
 }
 
-function verfile_procuraduria(id)
+function verfile_comisaria(id)
 {
-    window.open('procuraduria/0?reporte=escaneos&id='+id);
+    window.open('sub_geren_op_vigilancia_interna/0?reporte=escaneos_comisarias&id='+id);
 }
 
 function delfile(id)
@@ -94,12 +94,12 @@ function delfile(id)
             Confirmar: function () {
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: 'procuraduria/destroy',
+                    url: 'sub_geren_op_vigilancia_interna/destroy',
                     type: 'POST',
-                    data: {_method: 'delete', id_doc_adj: id, tipo: 2},
+                    data: {_method: 'delete', id_doc_adj_com: id, tipo: 5},
                     success: function (data) {
                         MensajeExito("Operacion Correcta","Se eliminio Correctamente el Archivo...",4000);
-                        jQuery("#table_doc").jqGrid('setGridParam', {url: 'procuraduria/0?grid=doc_adjuntos&id='+id_escaneo}).trigger('reloadGrid');
+                        jQuery("#table_doc").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=doc_adjuntos_comisarias&id='+id_escaneo}).trigger('reloadGrid');
 
                     },
                     error: function (data) {
@@ -115,7 +115,7 @@ function delfile(id)
     });
 }
 
-function busqueda_escaneo()
+function busqueda_escaneo_comisaria()
 {
-    jQuery("#table_escaneos").jqGrid('setGridParam', {url: 'procuraduria/0?grid=escaneos&nro_expediente='+$('#dlg_buscar_nro_expediente').val()}).trigger('reloadGrid');
+    jQuery("#table_escaneos").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=escaneos_comisarias&nombre='+$('#dlg_comisaria_scan').val()}).trigger('reloadGrid');
 }

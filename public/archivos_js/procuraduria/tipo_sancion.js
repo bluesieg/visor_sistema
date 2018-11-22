@@ -125,7 +125,7 @@ function modificar_tipo_sancion()
 
         MensajeDialogLoadAjax('dlg_nuevo_tipo_sancion', '.:: Cargando ...');
 
-        $.ajax({url: 'procuraduria_mant_tipo_sancion/'+id_tipo_sancion+'?show=tipo_sancion',
+        $.ajax({url: 'procuraduria/'+id_tipo_sancion+'?show=tipo_sancion',
             type: 'GET',
             success: function(data)
             {          

@@ -13,6 +13,8 @@ use App\Models\gerencia_seg_ciud\MapaDelito;
 use App\Models\gerencia_seg_ciud\RutasSerenazgo;
 use App\Models\gerencia_seg_ciud\ObservRutasSerenazgo;
 use App\Models\gerencia_seg_ciud\PersonalRutaSerenazgo;
+use App\Models\gerencia_seg_ciud\DocAdjComisarias;
+use Illuminate\Support\Facades\Response;
 
 
 class Operaciones_Vigilancia_Interna_Controller extends Controller
@@ -140,6 +142,23 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
             {
                 return $this->cargar_datos_personal_rutas_serenazgo($request);
             }
+            if($request['grid']=='escaneos_comisarias')
+            {
+                return $this->cargar_datos_escaneos_comisarias($request);
+            }
+            if($request['grid']=='doc_adjuntos_comisarias')
+            {
+                return $this->cargar_documentos_adjuntos_comisarias($request);
+            }
+            if ($request['reporte'] == 'escaneos_comisarias') 
+            {
+                return $this->ver_documentos_comisarias($request);
+            }
+            if ($request['grid'] == 'documentos_adj_comisaria') 
+            {
+                return $this->documentos_adjuntos_comisaria($request);
+            }
+            
         }      
     }
     
@@ -156,6 +175,14 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
         if ($request['tipo'] == 3) 
         {
             return $this->editar_datos_comisaria($request);
+        }
+        if ($request['tipo'] == 4) 
+        {
+            return $this->get_pdf_comisaria();
+        }
+        if ($request['tipo'] == 5) 
+        {
+            return $this->agregar_datos_doc_adj_comisaria($request);
         }
     }
     
@@ -225,6 +252,10 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
         if ($request['tipo'] == 4) 
         {
             return $this->eliminar_personal_comisarias($request);
+        }
+        if ($request['tipo'] == 5) 
+        {
+            return $this->eliminar_doc_adj_comisarias($request);
         }
     }
 
@@ -980,42 +1011,84 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
         }
     }
     
-    public function cargar_mapa_delitos()
+    public function cargar_mapa_delitos(Request $request)
     {
-        $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_mapa_delito");
-        
-        if($sql)
+        if ($request['valor'] == 1) 
         {
-            $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
-                                'type',     'FeatureCollection',
-                                'features', json_agg(feature)
-                            )
-                            FROM (
-                              SELECT json_build_object(
-                                'type',       
-                                'Feature',
-                                'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
-                                'properties', json_build_object(
-                                    'id_mapa_delito',id_mapa_delito,
-                                    'nro_doc_infractor',nro_doc_infractor,
-                                    'infractor',infractor,
-                                    'nro_doc_encargado',nro_doc_encargado,
-                                    'encargado',encargado,
-                                    'descripcion',descripcion,
-                                    'ubicacion',ubicacion,
-                                    'fecha_registro',fecha_registro,
-                                    'observacion',observacion,
-                                    'vehiculo',vehiculo
-                                 )
-                              ) AS feature
-                              FROM (SELECT id_mapa_delito,geom,nro_doc_infractor,infractor,nro_doc_encargado,encargado,descripcion,ubicacion,fecha_registro,observacion,vehiculo FROM geren_seg_ciudadana.vw_mapa_delito) row) features;");
+            $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_mapa_delito where fecha_registro = (select * from current_date)");
+        
+            if($sql)
+            {
+                $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                                    'type',     'FeatureCollection',
+                                    'features', json_agg(feature)
+                                )
+                                FROM (
+                                  SELECT json_build_object(
+                                    'type',       
+                                    'Feature',
+                                    'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                                    'properties', json_build_object(
+                                        'id_mapa_delito',id_mapa_delito,
+                                        'nro_doc_infractor',nro_doc_infractor,
+                                        'infractor',infractor,
+                                        'nro_doc_encargado',nro_doc_encargado,
+                                        'encargado',encargado,
+                                        'descripcion',descripcion,
+                                        'ubicacion',ubicacion,
+                                        'fecha_registro',fecha_registro,
+                                        'observacion',observacion,
+                                        'vehiculo',vehiculo
+                                     )
+                                  ) AS feature
+                                  FROM (SELECT id_mapa_delito,geom,nro_doc_infractor,infractor,nro_doc_encargado,encargado,descripcion,ubicacion,fecha_registro,observacion,vehiculo FROM geren_seg_ciudadana.vw_mapa_delito where fecha_registro = (select * from current_date)) row) features;");
 
-            return response()->json($delitos);
+                return response()->json($delitos);
+            }
+            else
+            {
+                return 0; 
+            }
         }
         else
-        {
-            return 0; 
-        }    
+        {   
+            $fec_desde = $request['fec_desde'];
+            $fec_hasta = $request['fec_hasta'];
+            $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fec_desde' and '$fec_hasta'");
+            
+            if($sql)
+            {
+                $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                                    'type',     'FeatureCollection',
+                                    'features', json_agg(feature)
+                                )
+                                FROM (
+                                  SELECT json_build_object(
+                                    'type',       
+                                    'Feature',
+                                    'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                                    'properties', json_build_object(
+                                        'id_mapa_delito',id_mapa_delito,
+                                        'nro_doc_infractor',nro_doc_infractor,
+                                        'infractor',infractor,
+                                        'nro_doc_encargado',nro_doc_encargado,
+                                        'encargado',encargado,
+                                        'descripcion',descripcion,
+                                        'ubicacion',ubicacion,
+                                        'fecha_registro',fecha_registro,
+                                        'observacion',observacion,
+                                        'vehiculo',vehiculo
+                                     )
+                                  ) AS feature
+                                  FROM (SELECT id_mapa_delito,geom,nro_doc_infractor,infractor,nro_doc_encargado,encargado,descripcion,ubicacion,fecha_registro,observacion,vehiculo FROM geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fec_desde' and '$fec_hasta') row) features;");
+
+                return response()->json($delitos);
+            }
+            else
+            {
+                return 0; 
+            }
+        }
     }
     
     public function cargar_mapa_camaras()
@@ -1152,6 +1225,194 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
             $val->delete();
         }
         return "destroy ".$request['id_personal_comisaria'];
+    }
+    
+    public function cargar_datos_escaneos_comisarias(Request $request)
+    {
+        header('Content-type: application/json');
+        $nombre = $request['nombre'];
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.comisarias where nombre like '%".strtoupper($nombre)."%'");
+        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.comisarias')->where('nombre','like', '%'.strtoupper($nombre).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id),
+                trim($Datos->nombre),
+                trim($Datos->ubicacion),
+                trim($Datos->telefono),
+                '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="subir_scan_comisaria('.trim($Datos->id).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR ESCANEO</button>'
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function get_pdf_comisaria()
+    {   
+           $file = file_get_contents($_FILES['dlg_documento_file']['tmp_name']);
+            if($_FILES["dlg_documento_file"]["type"]=='application/pdf')
+            {  
+                return Response::make($file, 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="prueba"'
+                ]);
+            }
+            else
+            {    return "<html><head></head><body style='margin:3px;padding:0px;font-family:verdana;font-size:11px'>No es .pdf</body></html>";$i=0;}
+    }
+    
+    public function agregar_datos_doc_adj_comisaria(Request $request)
+    {
+        $file = $request->file('dlg_documento_file');
+        
+        if($file)
+        {
+            $file2 = \File::get($file);
+            $dig=new DocAdjComisarias;
+            $dig->archivo = base64_encode($file2);
+            $dig->id_comisaria = $request['id_comisaria_scan'];
+            $dig->descripcion = strtoupper($request['dlg_documento_descripcion']);
+            $dig->save();
+            return $dig->id_doc_adj_com;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
+    public function cargar_documentos_adjuntos_comisarias(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+         $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.doc_adj_comisarias where id_comisaria=".$request['id']);
+         $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.doc_adj_comisarias')->where('id_comisaria',$request['id'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_doc_adj_com;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_doc_adj_com),
+                trim($Datos->descripcion),
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile_comisaria('.trim($Datos->id_doc_adj_com).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER</button>',
+                '<button class="btn btn-labeled btn-danger" type="button" onclick="delfile('.trim($Datos->id_doc_adj_com).')"><span class="btn-label"><i class="fa fa-trash"></i></span> BORRAR</button>',
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function ver_documentos_comisarias(Request $request)
+    {
+        $sql = DB::connection('gerencia_catastro')->select('select * from geren_seg_ciudadana.doc_adj_comisarias where id_doc_adj_com='.$request['id']);
+        if(count($sql)>=1)
+        {
+            return Response::make(base64_decode($sql[0]->archivo), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="Documento"'
+                ]);
+        }
+        else
+        {
+            return "No hay Archvos";
+        }
+    }
+    
+    public function eliminar_doc_adj_comisarias(Request $request)
+    {
+        $Documentos_Adjuntos = new  DocAdjComisarias;
+        $val=  $Documentos_Adjuntos::where("id_doc_adj_com","=",$request['id_doc_adj_com'] )->first();
+        if($val)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id_doc_adj_com'];
+    }
+    
+    public function documentos_adjuntos_comisaria(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+         $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from geren_seg_ciudadana.doc_adj_comisarias where id_comisaria=".$request['id_comisaria']);
+         $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.doc_adj_comisarias')->where('id_comisaria',$request['id_comisaria'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_doc_adj_com;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_doc_adj_com),
+                trim($Datos->descripcion),
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile_comisaria('.trim($Datos->id_doc_adj_com).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER DOCUMENTO</button>',
+            );
+        }
+        return response()->json($Lista);
     }
     
 }

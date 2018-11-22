@@ -399,7 +399,7 @@
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_salud" onchange="valida_capa('chk_salud')">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_salud" onchange="valida_capa('chk_gduc_salud')">
                                                                                     <i></i>
                                                                                     <img src="img/recursos/hospital.png" height="20px" />
                                                                                     Salud
@@ -409,7 +409,7 @@
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_educacion" onchange="valida_capa('chk_educacion')">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_educacion" onchange="valida_capa('chk_gduc_educacion')">
                                                                                     <i></i>
                                                                                     <img src="img/recursos/colegio.png" height="20px" />
                                                                                     Educación
@@ -419,62 +419,39 @@
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_comer" >
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_equipamiento" onchange="valida_capa('chk_gduc_equipamiento')">
                                                                                     <i></i>
-                                                                                    Comercio
+                                                                                    <img src="img/recursos/equipamiento.png" height="20px" />
+                                                                                    Equipamiento
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_industria" >
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_turistico" onchange="valida_capa('chk_gduc_turistico')">
                                                                                     <i></i>
-                                                                                    Industria
+                                                                                    <img src="img/recursos/turismo.png" height="20px" />
+                                                                                    Lugares Turisticos
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
                                                                         <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_deporte">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_recreacion" onchange="valida_capa('chk_gduc_recreacion')">
                                                                                     <i></i>
-                                                                                    Recre. Dep.
+                                                                                    <img src="img/recursos/recreacion.png" height="20px" />
+                                                                                    Recreacion
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
                                                                         <li>
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_recre_esp">
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_gubernamental" onchange="valida_capa('chk_gduc_gubernamental')">
                                                                                     <i></i>
-                                                                                    Recre. Esp.
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_parque" >
-                                                                                    <i></i>
-                                                                                    Pareque Recre.
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_otros" >
-                                                                                    <i></i>
-                                                                                    Otros
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gob" >
-                                                                                    <i></i>
+                                                                                    <img src="img/recursos/gubernamental.png" height="20px" />
                                                                                     Gubernamentales
                                                                                 </label> 
                                                                             </span>
@@ -482,9 +459,10 @@
                                                                         <li>
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_finan" >
+                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_gduc_financiera" onchange="valida_capa('chk_gduc_financiera')">
                                                                                     <i></i>
-                                                                                    Ins. Financieras
+                                                                                    <img src="img/recursos/financiera.png" height="20px" />
+                                                                                    Entidades Financieras
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
@@ -1308,16 +1286,6 @@
                                                                 </div>
                                                 </div>
 
-                                                                 <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="procuraduria_mant_tipo"> 
-                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mant. Tipos
-                                                                            </a>
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
                                                         <h4 class="panel-title"><a href="procuraduria?tipo=tipo_sancion"> 

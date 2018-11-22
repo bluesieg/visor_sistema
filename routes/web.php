@@ -307,6 +307,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('sub_geren_estudios_proyectos','Estudios_Proyectos_Controller');
         Route::resource('sub_geren_apoyo_matenimiento','Apoyo_Mantenimiento_Controller');
         Route::resource('sub_geren_obras_publicas','Obras_Publicas_Controller');
-});
+    });
+    
+    Route::group(['namespace' => 'gduc'], function() {
+        Route::resource('infraestructura_urbana','Infraestructura_Urbana_Controller');
+    });
         
 });

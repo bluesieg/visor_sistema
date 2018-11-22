@@ -321,6 +321,7 @@ map.on('singleclick', function(evt) {
                     }
                     
                     crear_dlg("dlg_gsc_comisarias",1100,"Cerro Colorado - COMISARIAS");
+                    jQuery("#table_documentos_comisaria").jqGrid('setGridParam', {url: 'sub_geren_op_vigilancia_interna/0?grid=documentos_adj_comisaria&id_comisaria='+feature.get('id') }).trigger('reloadGrid');
                     return false;
                 }
                 
@@ -375,6 +376,29 @@ map.on('singleclick', function(evt) {
                     $("#dlg_gsc_camara_imagen").attr("src","data:image/png;base64,"+feature.get('imagen'));
                     
                     crear_dlg("dlg_gsc_mapa_camaras",1000,"GSC - MAPA CAMARAS");
+                    return false;
+                }
+                if(layer.get('title')=='gerencia_procuraduria'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_procuraduria").val(feature.get('id_procuraduria'));
+                    $("#dlg_proc_dni_responsable").text(feature.get('nro_doc_persona'));
+                    $("#dlg_proc_nombre_responsable").text(feature.get('persona'));
+                    $("#dlg_proc_dni_gestor").text(feature.get('nro_doc_gestor')); 
+                    $("#dlg_proc_nombre_gestor").text(feature.get('gestor'));
+                    $("#dlg_proc_num_expe").text(feature.get('nro_expediente'));
+                    $("#dlg_proc_fec_inicio").text(feature.get('fecha_inicio_tramite'));
+                    $("#dlg_proc_cod_catastral").text(feature.get('cod_catastral'));
+                    $("#dlg_proc_hab_urb").text(feature.get('nomb_hab_urba'));
+                    $("#dlg_proc_tip_sancion").text(feature.get('tipo_sancion'));
+                    $("#dlg_proc_materia").text(feature.get('materia'));
+                    $("#dlg_proc_proceso").text(feature.get('proceso'));
+                    $("#dlg_proc_caso").text(feature.get('caso'));
+                    $("#dlg_proc_referencia").text(feature.get('referencia'));
+                    $("#dlg_proc_procedimiento").text(feature.get('procedimiento'));
+                    
+                    crear_dlg("dlg_gerencia_procuraduria",1000,"EXPEDIENTE PROCURADURIA");
+                    jQuery("#table_documentos_procuraduria").jqGrid('setGridParam', {url: 'procuraduria/0?grid=documentos_adj&id_procuraduria='+feature.get('id_procuraduria') }).trigger('reloadGrid');
                     return false;
                 }
                 if(layer.get('title')=='Rutas Barrido'&&mostrar==0)
@@ -1131,7 +1155,7 @@ function valida_capa(check)
         }
         if(check=='chk_geren_seg_ciud_delitos')
         {
-            crear_mapa_gsc_mapa_delitos();
+            crear_mapa_gsc_mapa_delitos(1);
         }
         if(check=='chk_geren_seg_ciud_camaras')
         {
@@ -1168,6 +1192,34 @@ function valida_capa(check)
         if(check=='chk_infra_deportiva')
         {
             crear_mapa_infra_deportiva();
+        }
+        if(check=='chk_gduc_salud')
+        {
+            crear_mapa_gduc_salud();
+        }
+	if(check=='chk_gduc_educacion')
+        {
+            crear_mapa_gduc_educacion();
+        }
+        if(check=='chk_gduc_gubernamental')
+        {
+            crear_mapa_gduc_gubernamental();
+        }
+        if(check=='chk_gduc_recreacion')
+        {
+            crear_mapa_gduc_recreacion();
+        }
+        if(check=='chk_gduc_equipamiento')
+        {
+            crear_mapa_gduc_equipamiento();
+        }
+        if(check=='chk_gduc_financiera')
+        {
+            crear_mapa_gduc_financiera();
+        }
+        if(check=='chk_gduc_turistico')
+        {
+            crear_mapa_gduc_turistico();
         }
     }
     else
@@ -1369,7 +1421,7 @@ function valida_capa(check)
             map.removeLayer(lyr_gopi_expedientes_tecnicos);
             map.removeLayer(lyr_sectores_cat1);
             map.removeLayer(lyr_lotes3);
-            $("#inp_habilitacion_gopi_exp_tecnico").hide();
+            $("#inp_habilitacion").hide();
             $("#btn_busqueda_gopi_exp_tecnico").hide();
             $("#anio_pred").show();
         }
@@ -1380,7 +1432,7 @@ function valida_capa(check)
             map.removeLayer(lyr_map_gopi_perfiles_evaluacion);
             map.removeLayer(lyr_map_gopi_perfiles_pendiente);
             map.removeLayer(lyr_map_gopi_perfiles_aprobado);
-            $("#inp_habilitacion_gopi_perfiles,#legend").hide();
+            $("#inp_habilitacion,#legend").hide();
             $("#anio_pred").show();
         }
         if(check=='chk_evaluacion')
@@ -1406,7 +1458,7 @@ function valida_capa(check)
             map.removeLayer(lyr_map_gopi_mantenimiento_recepcionada);
             map.removeLayer(lyr_map_gopi_mantenimiento_liquidada);
             map.removeLayer(lyr_map_gopi_mantenimiento_entregada);
-            $("#inp_habilitacion_gopi_mantenimiento,#legend").hide();
+            $("#inp_habilitacion,#legend").hide();
             $("#anio_pred").show();
         }
         if(check=='chk_inicio')
@@ -1448,7 +1500,7 @@ function valida_capa(check)
             map.removeLayer(lyr_map_gopi_obra_recepcionada);
             map.removeLayer(lyr_map_gopi_obra_liquidada);
             map.removeLayer(lyr_map_gopi_obra_entregada);
-            $("#inp_habilitacion_gopi_obra,#legend").hide();
+            $("#inp_habilitacion,#legend").hide();
             $("#anio_pred").show();
         }
         if(check=='chk_inicio_obra')
@@ -1490,6 +1542,8 @@ function valida_capa(check)
         if(check=='chk_geren_seg_ciud_delitos')
         {
             map.removeLayer(lyr_gsc_delitos);
+            $("#fec_desde,#fec_hasta,#btn_busqueda_delitos").hide();
+            $("#anio_pred").show();
         }
         if(check=='chk_geren_seg_ciud_camaras')
         {
@@ -1498,6 +1552,11 @@ function valida_capa(check)
         if(check=='chk_map_procuraduria')
         {
             map.removeLayer(lyr_geren_procuraduria);
+            map.removeLayer(lyr_sectores_cat1);
+            map.removeLayer(lyr_lotes3);
+            $("#inp_habilitacion").hide();
+            $("#btn_busqueda_procuraduria").hide();
+            $("#anio_pred").show();
         }
         if(check=='chk_rutas_barrido')
         {
@@ -1526,6 +1585,34 @@ function valida_capa(check)
         if(check=='chk_infra_deportiva')
         {
             map.removeLayer(lyr_infra_deportiva);
+        }
+        if(check=='chk_gduc_salud')
+        {
+            map.removeLayer(lyr_gduc_salud);
+        }
+        if(check=='chk_gduc_educacion')
+        {
+            map.removeLayer(lyr_gduc_educacion);
+        }
+        if(check=='chk_gduc_equipamiento')
+        {
+            map.removeLayer(lyr_gduc_equipamiento);
+        }
+        if(check=='chk_gduc_turistico')
+        {
+            map.removeLayer(lyr_gduc_turistico);
+        }
+        if(check=='chk_gduc_recreacion')
+        {
+            map.removeLayer(lyr_gduc_recreacion);
+        }
+        if(check=='chk_gduc_gubernamental')
+        {
+            map.removeLayer(lyr_gduc_gubernamental);
+        }
+        if(check=='chk_gduc_financiera')
+        {
+            map.removeLayer(lyr_gduc_financiera);
         }
     }
 }
@@ -3908,17 +3995,17 @@ function cargar_habilitacion()
 function crear_mapa_gopi_expedientes_tecnicos()
 {
     var aux_haburb_gopi_perfiles=0;
-    $("#inp_habilitacion_gopi_exp_tecnico").show();
+    $("#inp_habilitacion").show();
     $("#btn_busqueda_gopi_exp_tecnico").show();
-    $("#inp_habilitacion_gopi_exp_tecnico").val('');
-    $("#hidden_inp_habilitacion_gopi_exp_tecnico").val('');
+    $("#inp_habilitacion").val('');
+    $("#hidden_inp_habilitacion").val('');
     $("#anio_pred").hide();
     
     
     if(aux_haburb_gopi_perfiles==0)
     {
         aux_haburb_gopi_perfiles=1;
-        autocompletar_haburb('inp_habilitacion_gopi_exp_tecnico');
+        autocompletar_haburb('inp_habilitacion');
     }
     MensajeDialogLoadAjaxFinish('map');   
 }
@@ -3926,15 +4013,15 @@ function crear_mapa_gopi_expedientes_tecnicos()
 var lyr_gopi_expedientes_tecnicos;
 function cargar_habilitacion_gopi_exp_tecnico()
 {
-    if($("#hidden_inp_habilitacion_gopi_exp_tecnico").val()==0)
+    if($("#hidden_inp_habilitacion").val()==0)
     {
-        mostraralertasconfoco("DEBE ESCRIBIR EL NOMBRE DE UNA HABILITACION URBANA","#inp_habilitacion_gopi_exp_tecnico");
+        mostraralertasconfoco("DEBE ESCRIBIR EL NOMBRE DE UNA HABILITACION URBANA","#inp_habilitacion");
         MensajeDialogLoadAjaxFinish('map');
         return false;
     }
-    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_exp_tecnico").val(),1);
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
     MensajeDialogLoadAjax('map', '.:: Cargando ...');
-        $.ajax({url: 'sub_geren_estudios_proyectos/0?mapa=expedientes_tecnicos&id_hab_urb='+$('#hidden_inp_habilitacion_gopi_exp_tecnico').val(),
+        $.ajax({url: 'sub_geren_estudios_proyectos/0?mapa=expedientes_tecnicos&id_hab_urb='+$('#hidden_inp_habilitacion').val(),
             type: 'GET',
             success: function(data)
             {
@@ -3979,9 +4066,9 @@ function imprimir_docs_expedientes_tecnicos()
 function crear_mapa_gopi_perfiles()
 {
     var aux_haburb_gopi_perfiles=0;
-    $("#inp_habilitacion_gopi_perfiles").show();
-    $("#inp_habilitacion_gopi_perfiles").val('');
-    $("#hidden_inp_habilitacion_gopi_perfiles").val('');
+    $("#inp_habilitacion").show();
+    $("#inp_habilitacion").val('');
+    $("#hidden_inp_habilitacion").val('');
     $("#anio_pred").hide();
     $("#legend").html("");
     html=
@@ -4022,24 +4109,24 @@ function crear_mapa_gopi_perfiles()
     if(aux_haburb_gopi_perfiles==0)
     {
         aux_haburb_gopi_perfiles=1;
-        autocompletar_haburb('inp_habilitacion_gopi_perfiles');
+        autocompletar_haburb('inp_habilitacion');
     }
     MensajeDialogLoadAjaxFinish('map');   
 }
 
 function crear_semaforo_mapa_gopi_perfiles(color)
 {
-    if($("#hidden_inp_habilitacion_gopi_perfiles").val()==0)
+    if($("#hidden_inp_habilitacion").val()==0)
     {
-        mostraralertasconfoco("Seleccione Hablitacion","#inp_habilitacion_gopi_perfiles");
+        mostraralertasconfoco("Seleccione Hablitacion","#inp_habilitacion");
         MensajeDialogLoadAjaxFinish('map');
         $("#chk_evaluacion,#chk_pendiente,#chk_aprobado").prop("checked", false);
         return false;
     }
-    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_perfiles").val(),1);
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'sub_geren_estudios_proyectos/0?mapa=mapa_perfiles&nivel='+color+'&id_hab_urb='+$("#hidden_inp_habilitacion_gopi_perfiles").val(),
+            url: 'sub_geren_estudios_proyectos/0?mapa=mapa_perfiles&nivel='+color+'&id_hab_urb='+$("#hidden_inp_habilitacion").val(),
             type: 'get',
             success: function (data) {
                 if(data==0)
@@ -4150,9 +4237,9 @@ function imprimir_docs_perfiles()
 function crear_mapa_gopi_mantenimientos()
 {
     var aux_haburb_gopi_mantenimiento=0;
-    $("#inp_habilitacion_gopi_mantenimiento").show();
-    $("#inp_habilitacion_gopi_mantenimiento").val('');
-    $("#hidden_inp_habilitacion_gopi_mantenimiento").val('');
+    $("#inp_habilitacion").show();
+    $("#inp_habilitacion").val('');
+    $("#hidden_inp_habilitacion").val('');
     $("#anio_pred").hide();
     $("#legend").html("");
     html=
@@ -4229,24 +4316,24 @@ function crear_mapa_gopi_mantenimientos()
     if(aux_haburb_gopi_mantenimiento==0)
     {
         aux_haburb_gopi_mantenimiento=1;
-        autocompletar_haburb('inp_habilitacion_gopi_mantenimiento');
+        autocompletar_haburb('inp_habilitacion');
     }
     MensajeDialogLoadAjaxFinish('map');   
 }
 
 function crear_estados_mapa_gopi_mantenimiento(estado)
 {
-    if($("#hidden_inp_habilitacion_gopi_mantenimiento").val()==0)
+    if($("#hidden_inp_habilitacion").val()==0)
     {
-        mostraralertasconfoco("SELECCIONE UNA HABILITACION","#inp_habilitacion_gopi_mantenimiento");
+        mostraralertasconfoco("SELECCIONE UNA HABILITACION","#inp_habilitacion");
         MensajeDialogLoadAjaxFinish('map');
         $("#chk_inicio,#chk_en_ejecucion,#chk_paralizada,#chk_culminada,#chk_recepcionada,#chk_liquidada,#chk_entregada").prop("checked", false);
         return false;
     }
-    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_mantenimiento").val(),1);
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'sub_geren_apoyo_matenimiento/0?mapa=mapa_mantenimiento&id_estado_mant='+estado+'&id_hab_urb='+$("#hidden_inp_habilitacion_gopi_mantenimiento").val(),
+        url: 'sub_geren_apoyo_matenimiento/0?mapa=mapa_mantenimiento&id_estado_mant='+estado+'&id_hab_urb='+$("#hidden_inp_habilitacion").val(),
         type: 'get',
         success: function (data) {
             if(data==0)
@@ -4425,9 +4512,9 @@ function ver_galeria_fotos(id,url,ruta,dlg_foto)
 function crear_mapa_gopi_obras()
 {
     var aux_haburb_gopi_obra=0;
-    $("#inp_habilitacion_gopi_obra").show();
-    $("#inp_habilitacion_gopi_obra").val('');
-    $("#hidden_inp_habilitacion_gopi_obra").val('');
+    $("#inp_habilitacion").show();
+    $("#inp_habilitacion").val('');
+    $("#hidden_inp_habilitacion").val('');
     $("#anio_pred").hide();
     $("#legend").html("");
     html=
@@ -4504,24 +4591,24 @@ function crear_mapa_gopi_obras()
     if(aux_haburb_gopi_obra==0)
     {
         aux_haburb_gopi_obra=1;
-        autocompletar_haburb('inp_habilitacion_gopi_obra');
+        autocompletar_haburb('inp_habilitacion');
     }
     MensajeDialogLoadAjaxFinish('map');   
 }
 
 function crear_estados_mapa_gopi_obra(estado)
 {
-    if($("#hidden_inp_habilitacion_gopi_obra").val()==0)
+    if($("#hidden_inp_habilitacion").val()==0)
     {
-        mostraralertasconfoco("SELECCIONE UNA HABILITACION","#inp_habilitacion_gopi_obra");
+        mostraralertasconfoco("SELECCIONE UNA HABILITACION","#inp_habilitacion");
         MensajeDialogLoadAjaxFinish('map');
         $("#chk_inicio_obra,#chk_en_ejecucion_obra,#chk_paralizada_obra,#chk_culminada_obra,#chk_recepcionada_obra,#chk_liquidada_obra,#chk_entregada_obra").prop("checked", false);
         return false;
     }
-    traer_hab_by_id($("#hidden_inp_habilitacion_gopi_obra").val(),1);
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        url: 'sub_geren_obras_publicas/0?mapa=mapa_obra&id_estado_obra='+estado+'&id_hab_urb='+$("#hidden_inp_habilitacion_gopi_obra").val(),
+        url: 'sub_geren_obras_publicas/0?mapa=mapa_obra&id_estado_obra='+estado+'&id_hab_urb='+$("#hidden_inp_habilitacion").val(),
         type: 'get',
         success: function (data) {
             if(data==0)
@@ -4676,6 +4763,15 @@ function geren_seg_ciudadana_style_comisarias(feature, resolution){
         image: new ol.style.Icon({
           scale: map.getView().getZoom() > 14 ? 0.2 : 0.03,
           src: 'img/recursos/comisaria.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('nombre') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
         })
       });
 }
@@ -4860,9 +4956,17 @@ function imprimir_docs_semaforos()
 
 // GSC - MAPA DELITOS
 
-function crear_mapa_gsc_mapa_delitos()
+function crear_mapa_gsc_mapa_delitos(valor)
 {
-    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos',
+    $("#anio_pred").hide();
+    $("#fec_desde").show();
+    $("#fec_hasta").show();
+    $("#btn_busqueda_delitos").show();
+    
+    MensajeDialogLoadAjax('map', '.:: Cargando ...');
+    if (valor == 1) 
+    {
+        $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos&valor=1',
             type: 'GET',
             success: function(data)
             {
@@ -4895,16 +4999,54 @@ function crear_mapa_gsc_mapa_delitos()
                 MensajeAlerta('Problema de red','Contactar con el Administrador.');
             }
         });
+    }
+    else
+    {
+        $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos&valor=2&fec_desde='+$("#fec_desde").val()+'&fec_hasta='+$("#fec_hasta").val(),
+            type: 'GET',
+            success: function(data)
+            {
+                if(data == 0)
+                {
+                    MensajeAlerta('DELITOS','NO SE ENCONTRO REGISTROS.');
+                }
+                else
+                {
+                    map.removeLayer(lyr_gsc_delitos);
+                    geojson_gsc_delitos = JSON.parse(data[0].json_build_object);
+                    var format_gsc_delitos= new ol.format.GeoJSON();
+                    var features_gsc_delitos = format_gsc_delitos.readFeatures(geojson_gsc_delitos,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_gsc_delitos = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_gsc_delitos.addFeatures(features_gsc_delitos);
+                    lyr_gsc_delitos = new ol.layer.Vector({
+                        source:jsonSource_gsc_delitos,
+                        style: geren_seg_ciudadana_style_delitos,
+                        title: "geren_seg_ciudadana_mapa_delitos"
+                    });
+                    map.addLayer(lyr_gsc_delitos);
+                    var extent = lyr_gsc_delitos.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Problema de red','Contactar con el Administrador.');
+            }
+        });
+    }
 }
 function geren_seg_ciudadana_style_delitos(feature, resolution){
 
         return  new ol.style.Style({
         image: new ol.style.Icon({
-          scale: map.getView().getZoom() > 16 ? 0.05 : 0.08,
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.08,
           src: 'img/recursos/delito.png',
         }),
         text: new ol.style.Text({
-            text: map.getView().getZoom() > 14 ? feature.get('x_utm') : '',
+            text: map.getView().getZoom() > 14 ? feature.get('ubicacion') : '',
             Placement: 'point',
             textAlign: "center", 
             fill: new ol.style.Fill({
@@ -5007,18 +5149,45 @@ function geren_seg_ciudadana_style_camaras(feature, resolution){
 
 function crear_mapa_geren_procuraduria()
 {
-    $.ajax({url: 'procuraduria/0?mapa=procuraduria',
+    var aux_haburb_procuraduria=0;
+    $("#inp_habilitacion").show();
+    $("#btn_busqueda_procuraduria").show();
+    $("#inp_habilitacion").val('');
+    $("#hidden_inp_habilitacion").val('');
+    $("#anio_pred").hide();
+    
+    
+    if(aux_haburb_procuraduria==0)
+    {
+        aux_haburb_procuraduria=1;
+        autocompletar_haburb('inp_habilitacion');
+    }
+    MensajeDialogLoadAjaxFinish('map');   
+}
+
+var lyr_geren_procuraduria;
+function cargar_habilitacion_procuraduria()
+{
+    if($("#hidden_inp_habilitacion").val()==0)
+    {
+        mostraralertasconfoco("DEBE ESCRIBIR EL NOMBRE DE UNA HABILITACION URBANA","#inp_habilitacion");
+        MensajeDialogLoadAjaxFinish('map');
+        return false;
+    }
+    traer_hab_by_id($("#hidden_inp_habilitacion").val(),1);
+    MensajeDialogLoadAjax('map', '.:: Cargando ...');
+        $.ajax({url: 'procuraduria/0?mapa=procuraduria&id_hab_urb='+$('#hidden_inp_habilitacion').val(),
             type: 'GET',
             success: function(data)
             {
-                if(data == 0)
+                if(data==0)
                 {
-                    MensajeAlerta('PROCURADURIA','NO SE ENCONTRO REGISTROS.');
+                    MensajeAlerta('EXPEDIENTES PROCURADURIA','NO SE ENCONTRO EXPEDIENTES EN ESTA HABILITACION.');
                 }
                 else
                 {
                     geojson_procuraduria = JSON.parse(data[0].json_build_object);
-                    var format_procuraduria= new ol.format.GeoJSON();
+                    var format_procuraduria = new ol.format.GeoJSON();
                     var features_procuraduria = format_procuraduria.readFeatures(geojson_procuraduria,
                             {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
                     var jsonSource_procuraduria = new ol.source.Vector({
@@ -5034,20 +5203,436 @@ function crear_mapa_geren_procuraduria()
                     var extent = lyr_geren_procuraduria.getSource().getExtent();
                     map.getView().fit(extent, map.getSize());
                 }
-                MensajeDialogLoadAjaxFinish('map');
+                    MensajeDialogLoadAjaxFinish('map');
             },
             error: function (data) {
-                MensajeAlerta('Problema de red','Contactar con el Administrador.');
+                MensajeAlerta('Predios','No se encontró.');
             }
         });
 }
 
 function geren_procuraduria(feature, resolution)
 {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(169, 50, 38, 0.5)'
+        }),
+        text: new ol.style.Text({
+            font: '12px Roboto',
+            text: feature.get('nro_expediente')
+        })
+    });
+}
+
+function traer_datos_observ_procuraduria(id_procuraduria)
+{
+    $("#observaciones_procuraduria").html("");
+    $("#dlg_ver_observacion_procuraduria").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: LISTA DE OBSERVACIONES EXPEDIENTES PROCURADURIA :.</h4></div>",
+        buttons: [{
+                    html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                    "class": "btn btn-primary bg-color-red",
+                    click: function () {$(this).dialog("close");}
+                }]
+        }).dialog('open');
+
+        MensajeDialogLoadAjax('dlg_ver_observacion_procuraduria', '.:: Cargando ...');
+        $.ajax({
+        url: 'procuraduria/'+id_procuraduria+'?show=datos_observacion_procuraduria',
+        type: 'GET',
+        success: function(data) 
+        {
+            if (data == 0) 
+            {
+                html="";
+                html = html+'<div class="gsc_personal_comisarias col-xs-12">\n\
+                            <div class="col-xs-12">NO PRESENTA OBSERVACIONES</div>\n\
+                        </div>';
+                $("#observaciones_procuraduria").html(html);
+            }
+            else
+            {
+                html="<div class='gsc_personal_comisarias col-xs-12'>\n\
+                                <div class='col-xs-3 text-center'>FECHA REGISTRO</div>\n\
+                                <div class='col-xs-9 text-center'>OBSERVACION</div>\n\
+                            </div>";
+                for(i=0;i<data.length;i++)
+                {
+                    html = html+'<div class="gsc_personal_comisarias col-xs-12">\n\
+                                <div class="col-xs-3 text-center">'+data[i].fecha_registro+'</div>\n\
+                                <div class="col-xs-9 text-center">'+data[i].observaciones+'</div>\n\
+                            </div>';
+                }
+                $("#observaciones_procuraduria").html(html);
+            }
+            MensajeDialogLoadAjaxFinish('dlg_ver_observacion_procuraduria'); 
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_ver_observacion_procuraduria');
+        }
+    });
+}
+
+function imprimir_docs_procuraduria()
+{
+    window.open('procuraduria/0?reporte=procuraduria&id_procuraduria='+$('#id_procuraduria').val());
+}
+
+function grilla_datos_procuraduria()
+{
+    jQuery("#table_documentos").jqGrid({
+        url: 'procuraduria/0?grid=documentos_adj&id_procuraduria='+$('#id_procuraduria').val(),
+        datatype: 'json', mtype: 'GET',
+        height: '150px', autowidth: true,
+        toolbarfilter: true,
+        colNames: ['ID', 'DESCRIPCION','VER','DESCARGAR'],
+        rowNum: 50, sortname: 'id_doc_adj', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE EXPEDIENTES', align: "center",
+        colModel: [
+            {name: 'id_doc_adj', index: 'id_doc_adj', align: 'left',width: 20, hidden: true},
+            {name: 'descripcion', index: 'descripcion', align: 'left', width: 200},
+            {name: 'ver', index: 'ver', align: 'left', width: 100},
+            {name: 'descargar', index: 'descargar', align: 'left', width: 150},
+        ],
+        pager: '#pager_table_documentos',
+        rowList: [10, 20, 30, 40, 50],
+        gridComplete: function () {
+            var idarray = jQuery('#table_documentos').jqGrid('getDataIDs');
+            if (idarray.length > 0) {
+            var firstid = jQuery('#table_documentos').jqGrid('getDataIDs')[0];
+                    $("#table_documentos").setSelection(firstid);    
+                }
+        }
+    });
+}
+
+// GDUC
+// SALUD
+
+function crear_mapa_gduc_salud()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=salud',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_salud = JSON.parse(r[0].json_build_object);
+                var format_salud= new ol.format.GeoJSON();
+                var features_salud = format_salud.readFeatures(geojson_salud,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_salud = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_salud.addFeatures(features_salud);
+                lyr_gduc_salud = new ol.layer.Vector({
+                    source:jsonSource_salud,
+                    style: stylehospitales,
+                    title: "Hospitales"
+                });
+                map.addLayer(lyr_gduc_salud);
+                var extent = lyr_gduc_salud.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function stylehospitales(feature, resolution){
     return  new ol.style.Style({
         image: new ol.style.Icon({
           scale: map.getView().getZoom() > 14 ? 0.2 : 0.03,
-          src: 'img/recursos/comisaria.png',
+          src: 'img/recursos/hospital.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('text') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+//EDUCACION
+
+function crear_mapa_gduc_educacion()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=educacion',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_educacion = JSON.parse(r[0].json_build_object);
+                var format_educacion= new ol.format.GeoJSON();
+                var features_educacion = format_educacion.readFeatures(geojson_educacion,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_educacion = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_educacion.addFeatures(features_educacion);
+                lyr_gduc_educacion = new ol.layer.Vector({
+                    source:jsonSource_educacion,
+                    style: styleEducacion,
+                    title: "Educacion"
+                });
+                map.addLayer(lyr_gduc_educacion);
+                var extent = lyr_gduc_educacion.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleEducacion(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.4 : 0.08,
+          src: 'img/recursos/colegio.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('cen_edu_l') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+//GUBERNAMENTAL
+
+function crear_mapa_gduc_gubernamental()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=gubernamental',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_gubernamental = JSON.parse(r[0].json_build_object);
+                var format_gubernamental = new ol.format.GeoJSON();
+                var features_gubernamental = format_gubernamental.readFeatures(geojson_gubernamental,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_gubernamental = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_gubernamental.addFeatures(features_gubernamental);
+                lyr_gduc_gubernamental = new ol.layer.Vector({
+                    source:jsonSource_gubernamental,
+                    style: styleGubernamental,
+                    title: "Gubernamental"
+                });
+                map.addLayer(lyr_gduc_gubernamental);
+                var extent = lyr_gduc_gubernamental.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleGubernamental(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.08,
+          src: 'img/recursos/gubernamental.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('text') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+//RECREACION
+
+function crear_mapa_gduc_recreacion()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=recreacion',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_recreacion = JSON.parse(r[0].json_build_object);
+                var format_recreacion = new ol.format.GeoJSON();
+                var features_recreacion = format_recreacion.readFeatures(geojson_recreacion,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_recreacion = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_recreacion.addFeatures(features_recreacion);
+                lyr_gduc_recreacion = new ol.layer.Vector({
+                    source:jsonSource_recreacion,
+                    style: styleRecreacion,
+                    title: "Recreacion"
+                });
+                map.addLayer(lyr_gduc_recreacion);
+                var extent = lyr_gduc_recreacion.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleRecreacion(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.08,
+          src: 'img/recursos/recreacion.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('nombre1') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+//EQUIPAMIENTO
+
+function crear_mapa_gduc_equipamiento()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=equipamiento',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_equipamiento = JSON.parse(r[0].json_build_object);
+                var format_equipamiento = new ol.format.GeoJSON();
+                var features_equipamiento = format_equipamiento.readFeatures(geojson_equipamiento,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_equipamiento = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_equipamiento.addFeatures(features_equipamiento);
+                lyr_gduc_equipamiento = new ol.layer.Vector({
+                    source:jsonSource_equipamiento,
+                    style: styleEquipamiento,
+                    title: "Equipamiento"
+                });
+                map.addLayer(lyr_gduc_equipamiento);
+                var extent = lyr_gduc_equipamiento.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleEquipamiento(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.08,
+          src: 'img/recursos/equipamiento.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('equi_impor') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+//FINANCIERA
+
+function crear_mapa_gduc_financiera()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=financiera',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_financiera = JSON.parse(r[0].json_build_object);
+                var format_financiera = new ol.format.GeoJSON();
+                var features_financiera = format_financiera.readFeatures(geojson_financiera,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_financiera = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_financiera.addFeatures(features_financiera);
+                lyr_gduc_financiera = new ol.layer.Vector({
+                    source:jsonSource_financiera,
+                    style: styleFinanciera,
+                    title: "Financiera"
+                });
+                map.addLayer(lyr_gduc_financiera);
+                var extent = lyr_gduc_financiera.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleFinanciera(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.1 : 0.08,
+          src: 'img/recursos/financiera.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('nombre') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
+        })
+      });
+}
+
+//ATRACTIVOS TURISTICOS
+
+function crear_mapa_gduc_turistico()
+{
+    $.ajax({url: 'infraestructura_urbana/0?mapa=turistico',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson_turistico = JSON.parse(r[0].json_build_object);
+                var format_turistico = new ol.format.GeoJSON();
+                var features_turistico = format_turistico.readFeatures(geojson_turistico,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_turistico = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_turistico.addFeatures(features_turistico);
+                lyr_gduc_turistico = new ol.layer.Vector({
+                    source:jsonSource_turistico,
+                    style: styleTuristico,
+                    title: "Turistico"
+                });
+                map.addLayer(lyr_gduc_turistico);
+                var extent = lyr_gduc_turistico.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+function styleTuristico(feature, resolution){
+    return  new ol.style.Style({
+        image: new ol.style.Icon({
+          scale: map.getView().getZoom() > 14 ? 0.2 : 0.08,
+          src: 'img/recursos/turismo.png',
+        }),
+        text: new ol.style.Text({
+            text: map.getView().getZoom() > 14 ? feature.get('nombre') : '',
+            Placement: 'point',
+            textAlign: "center", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            offsetY:map.getView().getZoom() > 16 ? 40 : 20
         })
       });
 }
