@@ -35,10 +35,28 @@ class Vias_Controller extends Controller
         {
             return $this->grid_vias($request);
         }
+         if($id==0&&$request['grid']=="completar_vias")
+        {
+            return $this->autocomplete_vias($request);
+        }
     }
     public function show_normal($id)
     {
         return DB::connection('pgsql')->table('catastro.vias_geom')->where("gid",$id)->get();
+    }
+    public function autocomplete_vias(Request $request){
+
+        $Consulta = DB::connection('pgsql')->select('select * from catastro.vias_geom order by nombre_via asc');
+        $todo = array();
+        foreach ($Consulta as $Datos) {
+            $Lista = new \stdClass();
+            $Lista->value = $Datos->gid;
+            $Lista->label = trim($Datos->cod_via)."-".trim($Datos->nombre_via);
+            array_push($todo, $Lista);
+        }
+
+        return response()->json($todo);
+
     }
     public function edit($id, Request $request)
     {

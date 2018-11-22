@@ -44,6 +44,11 @@
                     <div id="myTabContent1" class="tab-content padding-1"> 
                         
                         <div id="s1" class="tab-pane fade active in">
+                            <div id="botones_1" class="text-right" style=" padding-top: 10px">
+                                    <button  type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="imp_rep_botaderos();">
+                                       <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reporte
+                                   </button>
+                            </div>
                             <div class="col-xs-12" style="padding: 5px">
                                 
                                 

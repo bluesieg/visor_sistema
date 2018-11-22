@@ -251,3 +251,7 @@ function iniciar_botaderos(id)
     }); 
     crear_dlg("dlg_botaderos",1000,"Botaderos");
 }
+function imp_rep_botaderos()
+{
+    window.open('botaderos/0?grid=reporte');
+}

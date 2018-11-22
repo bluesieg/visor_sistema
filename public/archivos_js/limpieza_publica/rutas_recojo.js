@@ -475,3 +475,7 @@ function iniciar_visualizar_mapa_recojo(id,des,cod,placa)
     }); 
     crear_dlg("dlg_ruta_recojo_basura",1000,"Ruta Recojo de Residuos Solidos");
 }
+function imp_rep_recojo()
+{
+    window.open('rutas_recojo_residuos/0?grid=reporte');
+}

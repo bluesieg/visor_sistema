@@ -43,8 +43,9 @@
                                     </button>
                                 </div>
                                 <div id="botones_1" class="text-right" style=" padding-top: 10px">
-
-                                       <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_ruta();">
+                                        <button  type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="imp_rep_recojo();">
+                                           <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reporte
+                                       </button>                                       <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_ruta();">
                                            <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                        </button>
                                 </div>

@@ -1,4 +1,4 @@
-function limpiar_area_verde(dialogo)
+function limpiar_infra_deportiva(dialogo)
 {
     $("#"+dialogo+" input[type='text']").val("");
     $("#"+dialogo+" input[type='hidden']").val(0);
@@ -18,40 +18,42 @@ function crear_dlg(dlg,ancho,titulo)
             }]
     }).dialog('open');
 }
-function nuevo_area_verde(id)
+function nuevo_infra_deportiva(id)
 {
-    $("#foto_area_verde").html("");
-    limpiar_area_verde("dlg_areas_verdes");
+    
+    $("#foto_infra_deportiva").html("");
+    limpiar_infra_deportiva("dlg_infra_deportiva");
     $("#save_button").show();
     $("#mod_button").hide();
     if(id>0)
     {
         
-        $.ajax({url: 'areas_verdes/'+id+'?grid=normal',
+        $.ajax({url: 'infra_deportiva/'+id+'?grid=normal',
         type: 'GET',
         success: function(r) 
         {
-            $("#dlg_edit_cod_area_verde").val(r[0].codigo);
-            $("#dlg_edit_ubicacion_area_verde").val(r[0].ubicacion);
+            $("#dlg_edit_pertenencia_infra_deportiva").val(r[0].pertenencia);
+            $("#dlg_edit_ubicacion_infra_deportiva").val(r[0].ubicacion);
+            $("#dlg_edit_encargado_infra_deportiva").val(r[0].encargado);
             $("#dlg_sec").val(r[0].sector);
             $("#dlg_mzna").val(r[0].manzana);
             $("#dlg_lot").val(r[0].lote);
             $("#hidden_dlg_lot").val(id);
-            carusel_areas_verdes(id)
+            carusel_infra_deportiva(id)
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
             console.log('error');
             console.log(data);  
-            MensajeDialogLoadAjaxFinish('dlg_botaderos');
+            MensajeDialogLoadAjaxFinish('dlg_infra_deportiva');
         }
         });
         $("#save_button").hide();
         $("#mod_button").show();
     }
-    crear_dlg("dlg_areas_verdes",1100,"Mantenimiento Areas Verdes");
+    crear_dlg("dlg_infra_deportiva",1100,"Mantenimiento Infraestructura Deportiva");
 }
-function carusel_areas_verdes(id)
+function carusel_infra_deportiva(id)
 {
  $.ajax({url: 'traefoto_lote_id/'+id,
     type: 'GET',
@@ -86,11 +88,11 @@ function carusel_areas_verdes(id)
                 <a class="left carousel-control" href="#myCarousel" data-slide="next"> <span class="glyphicon glyphicon-chevron-left"></span> </a>\n\
                 <a class="right carousel-control" href="#myCarousel" data-slide="prev"> <span class="glyphicon glyphicon-chevron-right"></span> </a>\n\
                 </div>';
-            $("#foto_area_verde").html(final);
+            $("#foto_infra_deportiva").html(final);
         }
         else
         {
-            $("#foto_area_verde").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
+            $("#foto_infra_deportiva").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
         }
         
     },
@@ -102,7 +104,7 @@ function carusel_areas_verdes(id)
     }
     });    
 }
-function save_area_verde(tipo)
+function save_infra_deportiva(tipo)
 {
     if($("#hidden_dlg_lot").val()==""||$("#hidden_dlg_lot").val()==0)
     {
@@ -111,44 +113,45 @@ function save_area_verde(tipo)
     }
    if(tipo==1)
    {
-       url='areas_verdes/create';
+       url='infra_deportiva/create';
    }
    else
    {
-       url='areas_verdes/'+$("#hidden_dlg_lot").val()+'/edit';
+       url='infra_deportiva/'+$("#hidden_dlg_lot").val()+'/edit';
    }
-    MensajeDialogLoadAjax('dlg_areas_verdes', '.:: Cargando ...');
+    MensajeDialogLoadAjax('dlg_infra_deportiva', '.:: Cargando ...');
     $.ajax({url: url,
     type: 'GET',
     data:{id:$("#hidden_dlg_lot").val(),
-        cod:$("#dlg_edit_cod_area_verde").val(),
-        ubi:$("#dlg_edit_ubicacion_area_verde").val(),
-        tipo_create:"area_verde"},
+        prop:$("#dlg_edit_pertenencia_infra_deportiva").val(),
+        ubi:$("#dlg_edit_ubicacion_infra_deportiva").val(),
+        encargado:$("#dlg_edit_encargado_infra_deportiva").val(),
+        tipo_create:"infra_deportiva"},
     success: function(r) 
     {
-        MensajeDialogLoadAjaxFinish('dlg_areas_verdes'); 
-        MensajeExito('Se Modificó con Exito','Su Contenedor fue modificado',5000);
+        MensajeDialogLoadAjaxFinish('dlg_infra_deportiva'); 
+        MensajeExito('Se Modificó con Exito','Su Registro fue modificado',5000);
     },
     error: function(data) {
         mostraralertas("hubo un error, Comunicar al Administrador");
         console.log('error');
         console.log(data);
-        MensajeDialogLoadAjaxFinish('dlg_areas_verdes');
+        MensajeDialogLoadAjaxFinish('dlg_infra_deportiva');
     }
     }); 
 }
 aux_mapa_lote=0;
-function map_reg_lote_areas()
+function map_reg_lote_infra_derportiva()
 {
     MensajeDialogLoadAjax('dlg_nuevo_exp', '.:: Cargando ...');
     if(aux_mapa_lote==0)
     {
         aux_mapa_lote=1;
-        iniciar_mapa_areas();
+        iniciar_mapa_infra_deportiva();
     }
     crear_dlg("dlg_mapa_reg_lote",1000,"Seleccione Lote");
 }
-function iniciar_mapa_areas()
+function iniciar_mapa_infra_deportiva()
 {
         autocompletar_haburb('inp_habilitacion_2');
         window.app = {};
@@ -496,11 +499,11 @@ function viewlong_lote(id)
                 <a class="left carousel-control" href="#myCarousel" data-slide="next"> <span class="glyphicon glyphicon-chevron-left"></span> </a>\n\
                 <a class="right carousel-control" href="#myCarousel" data-slide="prev"> <span class="glyphicon glyphicon-chevron-right"></span> </a>\n\
                 </div>';
-            $("#dlg_img_view_big, #foto_area_verde").html(final);
+            $("#dlg_img_view_big, #foto_infra_deportiva").html(final);
         }
         else
         {
-            $("#dlg_img_view, #foto_area_verde").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
+            $("#dlg_img_view, #foto_infra_deportiva").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
         }
         MensajeDialogLoadAjaxFinish('dlg_view_foto');
         
@@ -527,9 +530,9 @@ function selec_reg_lote()
 
 
 /////////////mapa pantalla inicial
-function crear_mapa_areas_verdes()
+function crear_mapa_infra_deportiva()
 {
-    $.ajax({url: 'areas_verdes/0?grid=mapa_areas_verdes',
+    $.ajax({url: 'infra_deportiva/0?grid=mapa_infra_deportiva',
                     type: 'GET',
                     async: false,
                     success: function(r)
@@ -543,15 +546,15 @@ function crear_mapa_areas_verdes()
                         });
                         jsonSource.addFeatures(features);
 
-                        lyr_areas_verdes = new ol.layer.Vector({
+                        lyr_infra_deportiva = new ol.layer.Vector({
                             source:jsonSource,
-                            style: areastyle,
-                            title: "Area Verde",
+                            style: infra_dep_style,
+                            title: "Infraestructura Deportiva",
 
                         });
 
-                        map.addLayer(lyr_areas_verdes);
-                        var extent = lyr_areas_verdes.getSource().getExtent();
+                        map.addLayer(lyr_infra_deportiva);
+                        var extent = lyr_infra_deportiva.getSource().getExtent();
                         map.getView().fit(extent, map.getSize());
 
                         MensajeDialogLoadAjaxFinish('map');
@@ -559,14 +562,14 @@ function crear_mapa_areas_verdes()
             }
         });
 }
-function areastyle(feature, resolution) {
+function infra_dep_style(feature, resolution) {
             return new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: 'green',
+                    color: 'red',
                     width: 2
                 }),
                 fill: new ol.style.Fill({
-                    color: 'rgba(0, 255, 0, 0.1)'
+                    color: 'rgba(255, 0, 0, 0.1)'
                 }),
                 text: new ol.style.Text({
                     font: '12px Calibri,sans-serif',
@@ -578,32 +581,27 @@ function areastyle(feature, resolution) {
                 })
             });
         }
-function iniciar_area_verde(id)
+function iniciar_infra_deportiva(id)
 {
-    $.ajax({url: 'areas_verdes/'+id+'?grid=normal',
+    $.ajax({url: 'infra_deportiva/'+id+'?grid=normal',
         type: 'GET',
         success: function(r) 
         {
-            $("#dlg_edit_cod_area_verde").val(r[0].codigo);
-            $("#dlg_edit_ubicacion_area_verde").val(r[0].ubicacion);
-            $("#dlg_sec").val(r[0].sector);
-            $("#dlg_mzna").val(r[0].manzana);
-            $("#dlg_lot").val(r[0].lote);
-            $("#hidden_dlg_lot").val(id);
-            carusel_areas_verdes(id)
+            $("#dlg_edit_pertenencia_infra_deportiva").val(r[0].pertenencia);
+            $("#dlg_edit_ubicacion_infra_deportiva").val(r[0].ubicacion);
+            $("#dlg_edit_encargado_infra_deportiva").val(r[0].encargado);
+            $("#dlg_sec_infra_deportiva").val(r[0].sector);
+            $("#dlg_mzna_infra_deportiva").val(r[0].manzana);
+            $("#dlg_lot_infra_deportiva").val(r[0].lote);
+            carusel_infra_deportiva(id)
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
             console.log('error');
             console.log(data);  
-            MensajeDialogLoadAjaxFinish('dlg_botaderos');
         }
         });
     
     
-    crear_dlg("dlg_areas_verdes",1100,"Areas Verdes");
-}
-function imp_rep_areas_verdes()
-{
-    window.open('areas_verdes/0?grid=reporte');
+    crear_dlg("dlg_infra_deportiva",1100,"Infraestructura Deportiva");
 }

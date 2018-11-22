@@ -98,6 +98,10 @@ class Recojo_Residuos_Controller extends Controller
         {
             return $this->rutas_mapa($request);
         }
+        if($id==0&&$request['grid']=="reporte")
+        {
+            return $this->reporte($request);
+        }
     }
 
      public function edit($id, Request $request)
@@ -320,5 +324,20 @@ class Recojo_Residuos_Controller extends Controller
                           FROM (SELECT * FROM limpieza_publica.vw_rutas_recojo) row) features;");
 
         return response()->json($rutas);
+    }
+    
+    public function reporte(Request $request){
+        $sql    =DB::connection('gerencia_catastro')->table('limpieza_publica.vw_rutas_recojo')->orderby('cod_ruta_recojo','asc')->get();
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('limpieza_publica.reportes.recojo', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Barrido.pdf");
+        }
+        else
+        {
+            return "No hay datos";
+        }
     }
 }

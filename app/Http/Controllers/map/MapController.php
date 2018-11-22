@@ -388,7 +388,12 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
       
     }
     
-    function get_vias(){
+    function get_vias(Request $request){
+        $donde="";
+        if($request["id"]>0)
+        {
+            $donde="Where gid=".$request["id"];
+        }
         $vias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -403,7 +408,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
                                 'result', result
                              )
                           ) AS feature
-                          FROM (SELECT * FROM catastro.vias_geom) row) features;");
+                          FROM (SELECT * FROM catastro.vias_geom $donde) row) features;");
 
         return response()->json($vias);
     }

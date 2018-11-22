@@ -61,6 +61,10 @@ class Contenedores_Controller extends Controller
         {
             return $this->mapa($request);
         }
+        if($id==0&&$request['grid']=="reporte")
+        {
+            return $this->reporte($request);
+        }
     }
     public function show_normal($id)
     {
@@ -169,5 +173,19 @@ class Contenedores_Controller extends Controller
                           FROM (SELECT * FROM limpieza_publica.contenedores) row) features;");
 
         return response()->json($rutas);
+    }
+    public function reporte(Request $request){
+        $sql    =DB::connection('gerencia_catastro')->table('limpieza_publica.contenedores')->orderby('codigo','asc')->get();
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('limpieza_publica.reportes.contenedores', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Botaderos.pdf");
+        }
+        else
+        {
+            return "No hay datos";
+        }
     }
 }

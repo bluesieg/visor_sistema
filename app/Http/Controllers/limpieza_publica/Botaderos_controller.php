@@ -62,6 +62,10 @@ class Botaderos_controller extends Controller
         {
             return $this->list_observacion_botaderos($request);
         }
+        if($id==0&&$request['grid']=="reporte")
+        {
+            return $this->reporte($request);
+        }
     }
     public function show_normal($id)
     {
@@ -126,5 +130,19 @@ class Botaderos_controller extends Controller
                           FROM (SELECT * FROM limpieza_publica.botaderos) row) features;");
 
         return response()->json($rutas);
+    }
+    public function reporte(Request $request){
+        $sql    =DB::connection('gerencia_catastro')->table('limpieza_publica.botaderos')->orderby('cod_botadero','asc')->get();
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('limpieza_publica.reportes.botaderos', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Botaderos.pdf");
+        }
+        else
+        {
+            return "No hay datos";
+        }
     }
 }

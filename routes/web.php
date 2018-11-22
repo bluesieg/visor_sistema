@@ -275,6 +275,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'desarrollo_economico'], function() {
         Route::resource('mypes','Mypes_Controller');
     });
+    ///////////////////////infrestructura deportiva
+    Route::group(['namespace' => 'infra_deportiva'], function() {
+        Route::resource('infra_deportiva','Infra_Deportiva_Controller');
+    });
     
     /****************************** PERSONAS RENIEC ********************************************************/
     Route::group(['namespace' => 'personas'], function() {

@@ -258,3 +258,7 @@ function iniciar_contenedores(id)
     }); 
     crear_dlg("dlg_contenedores",1000,"Contenedores");
 }
+function imp_rep_contenedores()
+{
+    window.open('contenedores/0?grid=reporte');
+}

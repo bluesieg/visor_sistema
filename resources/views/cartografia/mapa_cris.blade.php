@@ -64,6 +64,7 @@
   
     <form >
 
+    <input type="hidden" id="hidden_inp_vias" value="0"/>
     <input type="hidden" id="hidden_inp_habilitacion" value="0"/>
     
     <input type="hidden" id="hidden_inp_habilitacion_adm_tributaria" value="0"/>
@@ -137,13 +138,21 @@
 
             var selectList = document.createElement("input");
             selectList.id = "inp_habilitacion";
-            selectList.className = "input-sm col-xs-9";
+            selectList.className = "input-sm col-xs-8";
             selectList.type = "text";
-            selectList.style = "height:18px;display:none";
+            selectList.style = "height:32px;display:none";
             selectList.placeholder = "Seleccione Habilitación";
+            
+            var select_via = document.createElement("input");
+            select_via.id = "inp_vias";
+            select_via.className = "input-sm col-xs-8";
+            select_via.type = "text";
+            select_via.style = "height:32px;display:none";
+            select_via.placeholder = "Seleccione vias";
+            
             var selectList_anio = document.createElement("select");
             selectList_anio.id = "anio_pred";
-            selectList_anio.className = "input-sm col-xs-2";
+            selectList_anio.className = "input-sm col-xs-1";
             
             
             var selectList_adm_tributaria = document.createElement("input");
@@ -321,6 +330,7 @@
             element.appendChild(selectList_gopi_mantenimiento);
             element.appendChild(selectList_gopi_obra);
             element.appendChild(boton_busqueda);
+            element.appendChild(select_via);
             //element.appendChild(div2);
             //element.appendChild(label);
             ol.control.Control.call(this, {
@@ -2659,5 +2669,6 @@
 @include('limpieza_publica.div_botaderos')
 @include('areas_verdes.div_areas_verdes')
 @include('desarrollo_economico.div_mypes')
+@include('infra_deportiva.div_deporte')
 
 @endsection

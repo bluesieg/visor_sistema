@@ -44,9 +44,13 @@
                     <div id="myTabContent1" class="tab-content padding-1"> 
                         
                         <div id="s1" class="tab-pane fade active in">
+                            
                             <div class="col-xs-12" style="padding: 5px">
                                 
                                 <div  class="col-xs-12 text-right" style=" padding-top: 5px">
+                                    <button  type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="imp_rep_areas_verdes();">
+                                       <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Reporte
+                                   </button>
                                         <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="nuevo_area_verde(0);">
                                             <span class="btn-label"><i class="glyphicon glyphicon-save"></i></span>Nuevo
                                         </button>

@@ -394,3 +394,7 @@ function iniciar_visualizar_mapa_barrido(id,des,cod)
     crear_dlg("dlg_ruta_barrido",1000,"Ruta Barrido Calles");
 }
 
+function imp_rep_barrido()
+{
+    window.open('rutas_barrido_calles/0?grid=reporte');
+}

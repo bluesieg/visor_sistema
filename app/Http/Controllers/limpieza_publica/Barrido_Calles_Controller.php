@@ -79,6 +79,10 @@ class Barrido_Calles_Controller extends Controller
         {
             return $this->rutas_mapa($request);
         }
+         if($id==0&&$request['grid']=="reporte")
+        {
+            return $this->reporte($request);
+        }
     }
      
     public function edit($id, Request $request)
@@ -243,5 +247,19 @@ class Barrido_Calles_Controller extends Controller
                           FROM (SELECT * FROM limpieza_publica.rutas_barrido_calles) row) features;");
 
         return response()->json($rutas);
+    }
+    public function reporte(Request $request){
+        $sql    =DB::connection('gerencia_catastro')->table('limpieza_publica.rutas_barrido_calles')->orderby('cod_ruta_barrido','asc')->get();
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('limpieza_publica.reportes.barrido', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Barrido.pdf");
+        }
+        else
+        {
+            return "No hay datos";
+        }
     }
 }

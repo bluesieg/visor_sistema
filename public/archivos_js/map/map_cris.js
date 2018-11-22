@@ -419,6 +419,12 @@ map.on('singleclick', function(evt) {
                     iniciar_mypes(feature.get('id_lote'));
                     return false;
                 }
+                if(layer.get('title')=='Infraestructura Deportiva'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_infra_deportiva(feature.get('id_lote'));
+                    return false;
+                }
                 
                 
             });  
@@ -914,7 +920,13 @@ function valida_capa(check)
         }
         if(check=='chk_vias')
         {
-            crearvias();
+            crearvias(0);
+        }
+        if(check=='chk_nuevo_vias')
+        {
+            crearvias(0);
+            autocompletar_via("inp_vias");
+            $("#inp_vias").show();
         }
         if(check=='chk_z_urbana')
         {
@@ -1153,6 +1165,10 @@ function valida_capa(check)
         {
             crear_mapa_mypes();
         }
+        if(check=='chk_infra_deportiva')
+        {
+            crear_mapa_infra_deportiva();
+        }
     }
     else
     {
@@ -1198,6 +1214,11 @@ function valida_capa(check)
         }
         if(check=='chk_vias')
         {
+            map.removeLayer(lyr_vias);
+        }
+        if(check=='chk_nuevo_vias')
+        {
+            $("#inp_vias").hide();
             map.removeLayer(lyr_vias);
         }
         if(check=='chk_z_urbana')
@@ -1501,6 +1522,10 @@ function valida_capa(check)
         if(check=='chk_mypes')
         {
             map.removeLayer(lyr_mypes);
+        }
+        if(check=='chk_infra_deportiva')
+        {
+            map.removeLayer(lyr_infra_deportiva);
         }
     }
 }
@@ -2010,9 +2035,9 @@ function stylecamaras(feature, resolution){
       });
 }
 
-function crearvias()
+function crearvias(id)
 {
-    $.ajax({url: 'getvias_lineas',
+    $.ajax({url: 'getvias_lineas?id='+id,
             type: 'GET',
 //            async: false,
             success: function(r)
@@ -3446,6 +3471,35 @@ function autocompletar_haburb(textbox){
                     });
                 }
             });
+        }
+var varcomplete_vias=0;
+function autocompletar_via(textbox){
+    if(varcomplete_vias==0)
+    {
+        varcomplete_vias=1;
+            $.ajax({
+                type: 'GET',
+                url: 'vias/0?grid=completar_vias',
+                success: function (data) {
+
+                    var $datos = data;
+                    $("#"+ textbox).autocomplete({
+                        source: $datos,
+                        focus: function (event, ui) {
+                            $("#" + textbox).val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#" + textbox).val(ui.item.label);
+                            $("#hidden_"+ textbox).val(ui.item.value);
+                            map.removeLayer(lyr_vias);
+                            crearvias(ui.item.value);
+                            return false;
+                        }
+                    });
+                }
+            });
+        }
         }
         
         

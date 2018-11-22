@@ -65,6 +65,10 @@ class Areas_Verdes_Controller extends Controller
         {
             return $this->mapa($request);
         }
+        if($id==0&&$request['grid']=="reporte")
+        {
+            return $this->reporte($request);
+        }
     }
     public function show_normal($id)
     {
@@ -132,5 +136,19 @@ class Areas_Verdes_Controller extends Controller
                           FROM (SELECT * FROM catastro.lotes where id_lote in (".$texto.")) row) features;");
 
         return response()->json($rutas);
+    }
+    public function reporte(Request $request){
+        $sql    =DB::connection('gerencia_catastro')->table('areas_verdes.areas_verdes')->orderby('codigo','asc')->get();
+        if(count($sql)>=1)
+        {
+            $view =  \View::make('areas_verdes.reportes.areas_verdes', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("areas_verdes.pdf");
+        }
+        else
+        {
+            return "No hay datos";
+        }
     }
 }
