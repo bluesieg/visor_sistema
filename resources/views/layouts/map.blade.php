@@ -2510,13 +2510,27 @@
                                                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-colegios"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Colegios
+                                                            Educación, Cultura y Deporte
                                                         </a>
                                                     </h4>
                                                 </div>
                                                 <div id="collapseOne-sub-colegios" class="panel-collapse cr_toogle collapse">
                                                     <div class="panel-body" style="padding-left: 30px" >
                                                         <div>
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+
+                                                                 <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="educacion_cultura_deporte"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Colegios|Cultura|Deporte
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>                                                                                                                    
+                                                                
+                                                            </div>
                                                         <!--widget edit box -->
                                                             <div class="jarviswidget-editbox">
                                                             </div>
@@ -2525,22 +2539,52 @@
                                                             widget content -->
                                                            <div class="widget-body">
 
+                                                                <div class="widget-body">
                                                                <div class="tree smart-form" style="color:white !important">
                                                                     <ul >
 
                                                                             <li >
                                                                                 <span style="width: 160px;">
                                                                                     <label class="checkbox inline-block" style="color:white !important">
-                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_a_colegios" onchange=""/>
-
-                                                                                        <i></i>
-                                                                                        <span style="background-color: #ffff00; width: 5px !important ; height: 5px !important;"></span>
-                                                                                        Colegios
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_colegio" onchange="valida_capa_desarrollo_social('chk_mapa_colegio')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                COLEGIOS
+                                                                                </label> 
                                                                                 </span>
                                                                             </li>
                                     
                                                                     </ul>
                                                               </div>
+                                                           </div>
+                                                        <div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_ccultural" onchange="valida_capa_desarrollo_social('chk_mapa_ccultural')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                C. CULTURALES
+                                                                                </label> 
+                                                                            </span> 
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                          </div><div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_cdeportivo" onchange="valida_capa_desarrollo_social('chk_mapa_cdeportivo')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                C. DEPORTIVOS
+                                                                                </label> 
+                                                                            </span> 
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                          </div>
                                                            </div>
                                                         <!--end widget content -->
                                                         </div>
@@ -2555,35 +2599,77 @@
                                                         <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-comple_deportivos" class="collapsed"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Complejos Deportivos
+                                                            Mujer y Desarrollo Humano
                                                         </a>
                                                     </h4>
                                                 </div>
                                                 <div id="collapseTwo_sub-comple_deportivos" class="panel-collapse collapse cr_toogle">
                                                     <div class="panel-body" style="padding-left: 30px" >
                                                         <div>
+                                                            
                                                         <!--widget edit box -->
                                                             <div class="jarviswidget-editbox">
                                                             </div>
                                                         <!--end widget edit box 
 
                                                             widget content -->
-                                                           <div class="widget-body">
+                                                           <div class="widget-body no-padding">
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
 
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="mujer_desarrollo_humano"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                               CIAM|DEMUNA|OMAPED
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                            </div>
+                                                        </div>
+                                                           <div class="widget-body">
                                                                <div class="tree smart-form" style="color:white !important">
                                                                   <ul >
-                                                                      
-                                                                        <li>
+                                                                        <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_a_comple_deportivos" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Complejos Deportivos
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_ciam" onchange="valida_capa_desarrollo_social('chk_mapa_ciam')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                CIAM
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
-                                                                        
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                         <div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_demuna" onchange="valida_capa_desarrollo_social('chk_mapa_demuna')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                DEMUNA
+                                                                                </label> 
+                                                                            </span> 
+                                                                        </li>
+                                                                    </ul>
+                                                        </div>
+                                                    </div>
+                                                           <div class="widget-body">
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                  <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_omaped" onchange="valida_capa_desarrollo_social('chk_mapa_omaped')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                OMAPED
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
                                                                   </ul>
                                                               </div>
                                                            </div>
@@ -2596,17 +2682,31 @@
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-comedores" class="collapsed"> 
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-psociales"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Comedores Populares
+                                                            Programas sociales
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapseTwo_sub-comedores" class="panel-collapse collapse cr_toogle">
+                                                <div id="collapseOne-sub-psociales" class="panel-collapse cr_toogle collapse">
                                                     <div class="panel-body" style="padding-left: 30px" >
                                                         <div>
+                                                            <div class="panel-group smart-accordion-default" id="accordion-3">
+
+                                                                 <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="programas_sociales"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                SISFOH|PENSIÓN 65|COMEDORES POPULARES|
+                                                                                VASO DE LECHE|BIENESTAR SOCIAL|INS. ASOCIACIONES
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>                                                                                                                    
+                                                                
+                                                            </div>
                                                         <!--widget edit box -->
                                                             <div class="jarviswidget-editbox">
                                                             </div>
@@ -2615,16 +2715,15 @@
                                                             widget content -->
                                                            <div class="widget-body">
 
+                                                            <div class="widget-body">
                                                                <div class="tree smart-form" style="color:white !important">
                                                                   <ul >
-                                                                      
-                                                                        <li>
+                                                                        <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_comedores" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Comedores
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_sisfoh" onchange="valida_capa_desarrollo_social('chk_mapa_sisfoh')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                SISFOH
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
@@ -2632,130 +2731,99 @@
                                                                   </ul>
                                                               </div>
                                                            </div>
-                                                        <!--end widget content -->
+                                                        <div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_pension" onchange="valida_capa_desarrollo_social('chk_mapa_pension')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                PENSIÓN 65
+                                                                                </label> 
+                                                                            </span> 
+                                                                        </li>
+                                                                    </ul>
                                                         </div>
                                                     </div>
+                                                          <div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_comedores" onchange="valida_capa_desarrollo_social('chk_mapa_comedores')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                COMEDORES POPULARES
+                                                                                </label> 
+                                                                            </span> 
+                                                                        </li>
+                                                                    </ul>
                                                 </div>
                                             </div>
-                                            <!-- fin option-->
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-guarderias" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Guarderías wawa wasi
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_sub-guarderias" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
                                                            <div class="widget-body">
-
                                                                <div class="tree smart-form" style="color:white !important">
                                                                   <ul >
-                                                                      
-                                                                        <li>
+                                                                        <li >
                                                                             <span style="width: 160px;">
                                                                                 <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_guarderias" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Guarderías
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_vaso" onchange="valida_capa_desarrollo_social('chk_mapa_vaso')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                VASO DE LECHE
                                                                                 </label> 
                                                                             </span>
                                                                         </li>
-                                                                        
+                                                                    </ul>
+                                                                </div>
+                                                          </div>
+                                                          <div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_bienestar" onchange="valida_capa_desarrollo_social('chk_mapa_bienestar')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                BIENESTAR SOCIAL
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                          </div>
+                                                          <div class="widget-body">
+                                                                <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+                                                                        <li >
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                <input type="checkbox" name="checkbox-inline" id="chk_mapa_asociaciones" onchange="valida_capa_desarrollo_social('chk_mapa_asociaciones')" ><i></i>
+                                                                                <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                ASOCIACIONES
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
                                                                   </ul>
                                                               </div>
                                                            </div>
+                                                           </div>
                                                         <!--end widget content -->
                                                         </div>
+                                                    
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- fin option-->
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-pro_soc" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Sub Ge. Programas Sociales
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_sub-pro_soc" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
                                                             </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                  <ul >
-                                                                      
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_sisfoh" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    SISFOH
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_vaso_leche" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Vaso Leche
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_pension_65" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #EA7D09; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Pensión 65
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                        
-                                                                  </ul>
-                                                              </div>
-                                                           </div>
-                                                        <!--end widget content -->
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- fin option-->
                                             
+                                                    
+                                          
+                                                   
                                         </div>
                                     </div>
                                     <!-- end widget content -->
                                     </div>
                                 </div>
-                            </div>
-                        </div>
                         <!--fin option-->
                        <!--option-->
                         <div class="panel panel-default" style="background:  transparent;">
@@ -3162,6 +3230,9 @@
                 });
             });                       
         </script>
+        <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/gerencia_desa_social/mapa_desa_social.js') }}"></script>
+        <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/ger_admin_finanzas/mapa_admin_finanzas.js') }}"></script>
+
         @endif
 
         @yield('page-js-script')

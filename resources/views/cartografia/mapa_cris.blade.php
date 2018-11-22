@@ -265,6 +265,114 @@
             boton_info.onclick = function(e){
                 //iniciar_largo();
             }
+            var boton_busqueda_ciam = document.createElement("button");
+            boton_busqueda_ciam.id = "btn_busqueda_ciam";
+            boton_busqueda_ciam.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_ciam.type = "button";
+            boton_busqueda_ciam.style = "color:green;display:none";
+            boton_busqueda_ciam.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_ciam.onclick = function(e){
+                cargar_habilitacion_ciam();
+            }
+            var boton_busqueda_demuna = document.createElement("button");
+            boton_busqueda_demuna.id = "btn_busqueda_demuna";
+            boton_busqueda_demuna.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_demuna.type = "button";
+            boton_busqueda_demuna.style = "color:green;display:none";
+            boton_busqueda_demuna.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_demuna.onclick = function(e){
+                cargar_habilitacion_demuna();
+            }
+            var boton_busqueda_omaped = document.createElement("button");
+            boton_busqueda_omaped.id = "btn_busqueda_omaped";
+            boton_busqueda_omaped.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_omaped.type = "button";
+            boton_busqueda_omaped.style = "color:green;display:none";
+            boton_busqueda_omaped.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_omaped.onclick = function(e){
+                cargar_habilitacion_omaped();
+            }
+            var boton_busqueda_colegio = document.createElement("button");
+            boton_busqueda_colegio.id = "btn_busqueda_colegio";
+            boton_busqueda_colegio.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_colegio.type = "button";
+            boton_busqueda_colegio.style = "color:green;display:none";
+            boton_busqueda_colegio.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_colegio.onclick = function(e){
+                cargar_habilitacion_colegio();
+            }
+            var boton_busqueda_ccultural = document.createElement("button");
+            boton_busqueda_ccultural.id = "btn_busqueda_ccultural";
+            boton_busqueda_ccultural.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_ccultural.type = "button";
+            boton_busqueda_ccultural.style = "color:green;display:none";
+            boton_busqueda_ccultural.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_ccultural.onclick = function(e){
+                cargar_habilitacion_ccultural();
+            }
+            var boton_busqueda_cdeportivo = document.createElement("button");
+            boton_busqueda_cdeportivo.id = "btn_busqueda_cdeportivo";
+            boton_busqueda_cdeportivo.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_cdeportivo.type = "button";
+            boton_busqueda_cdeportivo.style = "color:green;display:none";
+            boton_busqueda_cdeportivo.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_cdeportivo.onclick = function(e){
+                cargar_habilitacion_cdeportivo();
+            }
+            var boton_busqueda_sisfoh = document.createElement("button");
+            boton_busqueda_sisfoh.id = "btn_busqueda_sisfoh";
+            boton_busqueda_sisfoh.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_sisfoh.type = "button";
+            boton_busqueda_sisfoh.style = "color:green;display:none";
+            boton_busqueda_sisfoh.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_sisfoh.onclick = function(e){
+                cargar_habilitacion_sisfoh();
+            }
+            var boton_busqueda_pension = document.createElement("button");
+            boton_busqueda_pension.id = "btn_busqueda_pension";
+            boton_busqueda_pension.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_pension.type = "button";
+            boton_busqueda_pension.style = "color:green;display:none";
+            boton_busqueda_pension.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_pension.onclick = function(e){
+                cargar_habilitacion_pension();
+            }
+            var boton_busqueda_comedores = document.createElement("button");
+            boton_busqueda_comedores.id = "btn_busqueda_comedores";
+            boton_busqueda_comedores.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_comedores.type = "button";
+            boton_busqueda_comedores.style = "color:green;display:none";
+            boton_busqueda_comedores.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_comedores.onclick = function(e){
+                cargar_habilitacion_comedores();
+            }
+            var boton_busqueda_vaso = document.createElement("button");
+            boton_busqueda_vaso.id = "btn_busqueda_vaso";
+            boton_busqueda_vaso.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_vaso.type = "button";
+            boton_busqueda_vaso.style = "color:green;display:none";
+            boton_busqueda_vaso.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_vaso.onclick = function(e){
+                cargar_habilitacion_vaso();
+            }
+            var boton_busqueda_bienestar = document.createElement("button");
+            boton_busqueda_bienestar.id = "btn_busqueda_bienestar";
+            boton_busqueda_bienestar.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_bienestar.type = "button";
+            boton_busqueda_bienestar.style = "color:green;display:none";
+            boton_busqueda_bienestar.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_bienestar.onclick = function(e){
+                cargar_habilitacion_bienestar();
+            }
+            var boton_busqueda_asociaciones = document.createElement("button");
+            boton_busqueda_asociaciones.id = "btn_busqueda_asociaciones";
+            boton_busqueda_asociaciones.className = "input-sm col-xs-1 btn btn-labeled bg-color-blue txt-color-white";
+            boton_busqueda_asociaciones.type = "button";
+            boton_busqueda_asociaciones.style = "color:green;display:none";
+            boton_busqueda_asociaciones.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
+            boton_busqueda_asociaciones.onclick = function(e){
+                cargar_habilitacion_asociaciones();
+            }
 
 //            var sectores = {!! json_encode($sectores) !!};
 //            var option = document.createElement("option");
@@ -327,6 +435,18 @@
             element.appendChild(inp_fec_desde);
             element.appendChild(inp_fec_hasta);
             element.appendChild(boton_busqueda_delitos);
+            element.appendChild(boton_busqueda_ciam);
+            element.appendChild(boton_busqueda_demuna);
+            element.appendChild(boton_busqueda_omaped);
+            element.appendChild(boton_busqueda_colegio);
+            element.appendChild(boton_busqueda_ccultural);
+            element.appendChild(boton_busqueda_cdeportivo);
+             element.appendChild(boton_busqueda_sisfoh);
+              element.appendChild(boton_busqueda_pension);
+               element.appendChild(boton_busqueda_comedores);
+                element.appendChild(boton_busqueda_vaso);
+                 element.appendChild(boton_busqueda_bienestar);
+                  element.appendChild(boton_busqueda_asociaciones);
             //element.appendChild(div2);
             //element.appendChild(label);
             ol.control.Control.call(this, {
@@ -1445,4 +1565,6 @@
 @include('desarrollo_economico.div_mypes')
 @include('infra_deportiva.div_deporte')
 
+
+@include('ger_desarrollo_social.div_mujer_desa_social')
 @endsection

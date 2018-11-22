@@ -72,6 +72,7 @@ class PersonasController extends Controller
                 'nombre' => trim(str_replace('-','',$personas->pers_nombres)),
                 'apaterno' => trim(str_replace('-','',$personas->pers_ape_pat)),
                 'amaterno' => trim(str_replace('-','',$personas->pers_ape_mat)),
+                'fnac' => trim(str_replace('-','',$personas->pers_fnac)),
             ]);
         }
     }
@@ -148,6 +149,7 @@ class PersonasController extends Controller
             'nombre' => trim(str_replace('-','',$Personas->pers_nombres)),
             'apaterno' => trim(str_replace('-','',$Personas->pers_ape_pat)),
             'amaterno' => trim(str_replace('-','',$Personas->pers_ape_mat)),
+            'fnac' => trim(str_replace('-','',$Personas->pers_fnac)),
         ]);
     }
     

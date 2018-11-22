@@ -450,6 +450,46 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
+ if(layer.get('title')=='gds_ciam'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#inp_cod_catastral_ciam").text(feature.get('cod_catastral'));
+                    $("#inp_dni_ciam").text(feature.get('pers_nro_doc'));
+                    $("#inp_nombre_ciam").text(feature.get('persona'));
+                    $("#inp_fechanac_ciam").text(feature.get('pers_fnac'));
+                    $("#inp_direccion_ciam").text(feature.get('direccion'));
+                    $("#sel_local_ciam").text(feature.get('descripcion'));                                        
+                    crear_dlg("dlg_mapa_ciam",1000,"GDS - MAPA CIAM");
+                    return false;
+                }
+                if(layer.get('title')=='gds_demuna'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#inp_cod_catastral_demuna").text(feature.get('cod_catastral'));
+                    $("#inp_dni_demuna").text(feature.get('pers_nro_doc'));
+                    $("#inp_nombre_demuna").text(feature.get('persona'));
+                    $("#inp_fechanac_demuna").text(feature.get('pers_fnac'));
+                    $("#inp_direccion_demuna").text(feature.get('direccion'));
+                    $("#sel_albergue_demuna").text(feature.get('albergue'));  
+                    $("#sel_comisaria_demuna").text(feature.get('nombre'));                                        
+                    $("#sel_tipo_delito_demuna").text(feature.get('delito'));                                        
+
+                    crear_dlg("dlg_mapa_demuna",1000,"GDS - MAPA DEMUNA");
+                    return false;
+                }
+                if(layer.get('title')=='gds_omaped'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#inp_cod_catastral_omaped").text(feature.get('cod_catastral'));
+                    $("#inp_dni_omaped").text(feature.get('pers_nro_doc'));
+                    $("#inp_nombre_omaped").text(feature.get('persona'));
+                    $("#inp_fechanac_omaped").text(feature.get('pers_fnac'));
+                    $("#inp_direccion_omaped").text(feature.get('direccion'));
+                    $("#sel_local_omaped").text(feature.get('local'));                                        
+                    crear_dlg("dlg_mapa_omaped",1000,"GDS - MAPA OMAPED");
+                    return false;
+                }
+                
                 
             });  
     }

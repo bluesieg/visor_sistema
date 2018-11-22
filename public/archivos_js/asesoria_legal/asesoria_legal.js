@@ -66,6 +66,70 @@ function new_exp_asesoria()
         aux_asesoria=1;
     }
 }
+function edit_exp_asesoria()
+{
+    id_asesoria_legal = $('#table_recdocumentos').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_asesoria_legal) {
+        
+        $('#btn_agregar_expediente').hide();
+        $('#btn_modificar_expediente').show();
+        $("#dlg_new_exp_asesoria").dialog({
+            autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION EXPEDIENTE ASESORIA LEGAL :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_new_exp_asesoria").dialog('open');
+
+
+        MensajeDialogLoadAjax('dlg_new_exp_asesoria', '.:: Cargando ...');
+
+        $.ajax({url: 'asesoria_legal/'+id_asesoria_legal+'?show=legaledit',
+            type: 'GET',
+            success: function(data)
+            {          
+                $("#inp_nro_exp").val(data[0].nro_expediente);
+                $("#inp_id_gestor").val(data[0].id_gestor);
+                $("#inp_gestor").val(data[0].gestor);
+                $("#inp_dni").val(data[0].nro_doc_gestor);
+                $("#inp_fec_ini").val(data[0].fecha_inicio_tramite);
+                $("#sel_responsable").val(data[0].id_responsable);
+                $("#sel_tipo").val(data[0].id_tipo);
+                $("#hidden_inp_hab_urb").val(data[0].id_hab_urb);
+                $("#inp_hab_urb").val(data[0].nomb_hab_urb);
+                $("#inp_cod_catastral").val(data[0].cod_catastral);
+                $("#sel_tipo_san").val(data[0].id_tipo_sancion);
+                $("#sel_materia").val(data[0].id_materia);
+                $("#sel_proceso").val(data[0].id_proceso);
+                $("#sel_caso").val(data[0].id_caso);
+                $("#inp_referencia").val(data[0].referencia);
+                $("#inp_procedimiento").val(data[0].procedimiento);
+                
+                id_asesoria_legal = $("#inp_id_asesoria_legal").val(data[0].id_asesoria_legal);
+                if (id_asesoria_legal == null) {
+                    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'asesoria_legal/0?grid=observaciones&indice='+0 }).trigger('reloadGrid');
+                }else{
+                    jQuery("#table_observaciones").jqGrid('setGridParam', {url: 'asesoria_legal/0?grid=observaciones&indice='+$('#inp_id_asesoria_legal').val() }).trigger('reloadGrid');
+                }
+                MensajeDialogLoadAjaxFinish('dlg_new_exp_asesoria');
+            },
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_new_exp_asesoria');
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_recdocumentos");
+    }
+}
 
 function fn_obtener_exp_a()
 {
@@ -636,7 +700,84 @@ function save_datos(variable)
             }
         });
     }
-    
+    else if(variable == 3){
+        
+        observacion = $('#dlg_observacion').val();
+        if(observacion == "")
+        {
+            mostraralertasconfoco("* El Campo Observacion es Obligatorio","#dlg_observacion");
+            return false;
+        }
+        
+        id_det_asesoria_legal = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
+        
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
+        
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'asesoria_legal/'+id_det_asesoria_legal+'/edit?tipo=observaciones',
+            type: 'GET',
+            data: {
+                observacion : $('#dlg_observacion').val()                
+            },
+            success: function(data) 
+            {     
+                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+                fn_actualizar_grilla('table_observaciones');
+                $("#dlg_nueva_observacion").dialog("close");
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_observaciones');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
+    else if(variable == 4){
+        
+        id_asesoria_legal = $('#table_recdocumentos').jqGrid ('getGridParam', 'selrow');
+        
+        MensajeDialogLoadAjax('dlg_new_exp_asesoria', '.:: Cargando ...');
+        
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'asesoria_legal/'+id_asesoria_legal+'/edit?tipo=legal',
+            type: 'GET',
+            data: {
+                nro_expediente : nro_expediente,
+                id_gestor : id_gestor,
+                gestor : gestor,
+                dni : dni,
+                fecha_ini : fecha_ini,
+                id_responsable : id_responsable,
+                id_tipo : id_tipo,
+                id_hab_urba : id_hab_urba,
+                hab_urba : hab_urba,
+                codigo_catastral : codigo_catastral,
+                id_tipo_sancion : id_tipo_sancion,
+                id_materia : id_materia,
+                id_proceso : id_proceso,
+                id_caso : id_caso,
+                referencia : referencia,
+                procedimiento : procedimiento,
+                
+            },
+            success: function(data) 
+            {     
+                MensajeExito('Se Modifico Correctamente', 'Su Registro Fue Modificado Correctamente...');
+                MensajeDialogLoadAjaxFinish('dlg_new_exp_asesoria');
+                fn_actualizar_grilla('table_recdocumentos');
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                MensajeDialogLoadAjaxFinish('table_recdocumentos');
+                console.log('error');
+                console.log(data);
+            }
+        });
+    }
 }
 
 function nueva_observacion_asesoria()
@@ -671,4 +812,52 @@ function nueva_observacion_asesoria()
     }
 }
 
-edit_exp_asesoria
+
+function edit_observacion_asesoria()
+{
+    id_det_asesoria_legal = $('#table_observaciones').jqGrid ('getGridParam', 'selrow');
+    
+    if (id_det_asesoria_legal) {
+        
+        $("#dlg_nueva_observacion").dialog({
+            autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR INFORMACION OBSERVACION :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                    save_datos(3);
+                }
+            },{
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_nueva_observacion").dialog('open');
+
+
+        MensajeDialogLoadAjax('dlg_nueva_observacion', '.:: Cargando ...');
+
+        $.ajax({url: 'asesoria_legal/'+id_det_asesoria_legal+'?show=observaciones',
+            type: 'GET',
+            success: function(data)
+            {          
+                $("#dlg_observacion").val(data[0].observaciones);
+                
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+            },
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_nueva_observacion');
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_observaciones");
+    }
+}
+

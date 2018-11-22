@@ -312,5 +312,18 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'gduc'], function() {
         Route::resource('infraestructura_urbana','Infraestructura_Urbana_Controller');
     });
+    
+    /*******************************  DESARROLLO SOCIAL **********************************************************/
+    Route::group(['namespace' => 'ger_desarrollo_social'], function() {
+        Route::resource('educacion_cultura_deporte','Edu_Cult_Dep_Controller');
+        Route::resource('mujer_desarrollo_humano','Mujer_Desarrollo_Controller');
+        Route::resource('programas_sociales','Programas_Sociales_Controller');
+    });
+    
+    /*******************************  ADMINISTRACION FINANZAS  ***************************************************/
+    Route::group(['namespace' => 'ger_admin_finanzas'], function() {
+        Route::resource('control_patrimonial','Control_Patrimonial_Controller');        
+    });
+
         
 });

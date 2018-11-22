@@ -75,56 +75,44 @@
                                     <section style="padding-right: 10px">
                                         <div class="col-xs-12">
                                             
-                                    <h1 ><b>ADJUNTAR DOCUMENTOS</b></h1>
-                                        <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
-                                           <div class="input-group input-group-md">
-                                               <span class="input-group-addon">Desde:</span>
-                                               <div class="icon-addon addon-md">
-                                                   <input  id="fec_ini_asignacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="col-lg-3" style="padding-right: 5px; padding-top: 20px; ">
+                                    <h1><b>ADJUNTAR DOCUMENTOS</b></h1>
+                                        <div class="col-xs-5">
                                             <div class="input-group input-group-md">
-                                                <span class="input-group-addon">Hasta:</span>
-                                                <div class="icon-addon addon-md">
-                                                    <input id="fec_fin_asignacion" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                                                <span class="input-group-addon">Nº EXPEDIENTE:. &nbsp;<i class="fa fa-male"></i></span>
+                                                <div>
+                                                    <input id="dlg_buscar_nro_expediente" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 1.2em;width: 102% !important" autofocus="focus" placeholder="ESCRIBIR Nº EXPEDIENTE">
                                                 </div>
                                             </div>
                                         </div>
-                                    
-                                        <div class="col-lg-3" style="padding-right: 0px; padding-top: 20px; ">
-                                            <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="seleccionafecha_asignacion();">
-                                                   <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span> BUSCAR
-                                            </button>
+
+                                        <div class="col-xs-2">
+                                            <div class="text-left">
+                                                    <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="busqueda_escaneo_asesoria();">
+                                                        <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>BUSCAR
+                                                    </button>
+                                            </div>
                                         </div>
                                     
-                                       <div class="text-right" style=" padding-top: 20px">
-
-                                           <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="crear_nueva_asignacion();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                                           </button>
-
-                                           <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="actualizar_asignacion();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                                           </button>
-
-                                           <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_exp_asignacion();">
-                                               <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                           </button>
-                                           
-                                       </div>
                                         </div>
                                         
                                     </section>
                                     
                                     </div>
-                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
-                                            <article class="col-xs-11" style=" padding: 0px !important">
-                                                    <table id="table_asignacion"></table>
-                                                    <div id="pager_table_asignacion"></div>
+                                
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 35px;">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_escaneos"></table>
+                                                    <div id="pager_table_escaneos"></div>
                                             </article>
                                         </div>
+                                
+                                        <div class="col-xs-12" style="padding: 0px; margin-top: 10px; padding-left: 150px;">
+                                            <article class="col-xs-12" style=" padding: 0px !important">
+                                                    <table id="table_doc"></table>
+                                                    <div id="pager_table_doc"></div>
+                                            </article>
+                                        </div>
+                                
                                     </div>
                                 </div>
                         </section>
@@ -165,7 +153,7 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){modificar_documento();}
+            ondblClickRow: function (Id){edit_exp_asesoria();}
         });
         
         jQuery("#table_observaciones").jqGrid({
@@ -193,8 +181,63 @@
             ondblClickRow: function (Id){modificar_observacion()}
         });
         
+        jQuery("#table_escaneos").jqGrid({
+            url: 'asesoria_legal/0?grid=escaneos',
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['ID', 'NUMERO EXPEDIENTE','Nº DOCUMENTO','GESTOR','SUBIR'],
+            rowNum: 50, sortname: 'id_procuraduria', sortorder: 'desc', viewrecords: true, caption: 'REGISTRO DE EXPEDIENTES', align: "center",
+            colModel: [
+                {name: 'id_procuraduria', index: 'id_procuraduria', align: 'left',width: 20, hidden: true},
+                {name: 'nro_expediente', index: 'nro_expediente', align: 'left', width: 150},
+                {name: 'nro_doc_gestor', index: 'nro_doc_gestor', align: 'left', width: 120},
+                {name: 'gestor', index: 'gestor', align: 'left', width: 500},
+                {name: 'archivo', index: 'archivo', align: 'center', width: 170}
+            ],
+            pager: '#pager_table_escaneos',
+            rowList: [10, 20, 30, 40, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_escaneos').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_escaneos').jqGrid('getDataIDs')[0];
+                            $("#table_escaneos").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id)
+            {
+                jQuery("#table_doc").jqGrid('setGridParam', {url: 'asesoria_legal/0?grid=doc_adjuntos&id='+Id}).trigger('reloadGrid');
+            },
+            ondblClickRow: function (Id){}
+        });
         
-        $("#inp_nro_exp").keypress(function (e) {
+        jQuery("#table_doc").jqGrid({
+            url: '',
+            datatype: 'json', mtype: 'GET',
+            height: '150px', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['id_doc_adj', 'DESCRIPCION','VER','ELIMINAR'],
+            rowNum: 200, sortname: 'id_doc_adj', sortorder: 'desc', viewrecords: true, caption: 'DOCUMENTOS ESCANEADOS', align: "center",
+            colModel: [
+                {name: 'id_doc_adj', index: 'id_doc_adj', hidden: true},
+                {name: 'descripcion', index: 'descripcion', align: 'left', width: 400},
+                {name: 'ver', index: 'ver', align: 'center', width: 160},
+                {name: 'del', index: 'del', align: 'center', width: 150},
+            ],
+            pager: '#pager_table_doc',
+            rowList: [20, 50],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_doc').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                        var firstid = jQuery('#table_doc').jqGrid('getDataIDs')[0];
+                            $("#table_doc").setSelection(firstid);    
+                        }
+                },
+            onSelectRow: function (Id){},
+            ondblClickRow: function (Id){}
+        });
+         
+       $("#inp_nro_exp").keypress(function (e) {
             if (e.which == 13) {
 
                    fn_obtener_exp_a();
@@ -417,13 +460,13 @@
             </div>
             
             <div id="btn_agregar_expediente">
-            <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-5" onclick="save_datos(1);" style="padding: 0px;margin-top: 10px ">
+            <button type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-5" onclick="save_datos_colegio(1);" style="padding: 0px;margin-top: 10px ">
                 <span class="cr-btn-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>Guardar Datos
             </button>
             </div>
             
             <div id="btn_modificar_expediente">
-            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="save_datos(2);" style="padding: 0px;margin-top: 10px ">
+            <button type="button" class="btn bg-color-blue txt-color-white btn-labeled col-xs-5" onclick="save_datos_colegio(4);" style="padding: 0px;margin-top: 10px ">
                 <span class="cr-btn-label"><i class="glyphicon glyphicon-edit"></i></span>Modificar Datos
             </button>
             </div>
@@ -445,7 +488,7 @@
                     <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 120px;"onclick="nueva_observacion_asesoria();" >
                        <i class="glyphicon glyphicon-plus-sign"></i>
                     </button>
-                    <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="" >
+                    <button class="btn bg-color-blue txt-color-white cr-btn-big"style="width: 120px;" onclick="edit_observacion_asesoria();" >
                        <i class="glyphicon glyphicon-edit"></i>
                     </button>
                     <button class="btn bg-color-red txt-color-white cr-btn-big"style="width: 120px;" onclick="" >

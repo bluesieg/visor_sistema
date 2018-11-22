@@ -106,10 +106,23 @@ class AsesorialegalController extends Controller
         if($id==0 && $request['grid']=='caso' ){
            return $this->grid_asesoria_caso($request['descripcion']);
         }
+        if($id==0 && $request['grid']=='escaneos' ){
+            return $this->cargar_datos_escaneos($request);                   
+        }
+        if($id==0 && $request['grid']=='doc_adjuntos' ){
+            return $this->cargar_documentos_adjuntos($request);        
+        }
+        
         if($id>0)
         {
             if($request['show']=='legal' ){
                 return $this->show_asesoria_legal($id);
+            }
+             if($request['show']=='legaledit' ){
+                return $this->traer_datos_asesoria_legal($id);
+            }
+            if($request['show']=='observaciones' ){
+                return $this->show_asesoria_observacion($id);
             }
             if($request['show']=='abogados' ){
                 return $this->show_asesoria_abogados($id);
@@ -134,7 +147,10 @@ class AsesorialegalController extends Controller
     public function edit($id, Request $request)
     {
         if( $request['tipo']=='legal'){
-            return $this->edit_asesoria_legal($id);
+            return $this->edit_asesoria_legal($id,$request);
+        }
+        if( $request['tipo']=='observaciones'){
+            return $this->edit_asesoria_observaciones($id);
         }
         if( $request['tipo']=='abogados'){
             return $this->edit_asesoria_abogados($id,$request);
@@ -589,6 +605,11 @@ class AsesorialegalController extends Controller
     
     ////////////////// SHOW /////////////////////////////////
     
+    public function traer_datos_asesoria_legal($id_asesoria_legal)
+    {
+        $asesoria_legal = DB::connection('gerencia_catastro')->table('asesoria_legal.vw_mtr_asesoria')->where('id_asesoria_legal',$id_asesoria_legal)->get();
+        return $asesoria_legal;
+    }
     public function show_asesoria_legal($codigo_expediente) {  
         $expedientes = DB::connection("sql_crud")->table('vw_catastro')->where('codigoTramite',strtoupper($codigo_expediente))->first();
         
@@ -619,6 +640,10 @@ class AsesorialegalController extends Controller
             ]);
         }
     }
+    public function show_asesoria_observaciones($id){
+         $observaciones = DB::connection('gerencia_catastro')->table('procuraduria.vw_dte_asesoria_legal')->where('id_det_asesoria_legal',$id)->get();
+        return $observaciones;
+    }
     public function show_asesoria_abogados($id){
         $abogados= DB::connection('gerencia_catastro')->table('asesoria_legal.vw_abogados')->where('id_abogado',$id)->get();
             return $abogados;
@@ -645,7 +670,43 @@ class AsesorialegalController extends Controller
     }
     
     ////////////////// EDIT /////////////////////////////////
-    public function edit_asesoria_legal($id, Request $request){}
+    public function edit_asesoria_legal($id_asesoria_legal, Request $request){
+       $Mtrasesoria_legal = new Mtrasesoria_legal;
+       $val=  $Mtrasesoria_legal::where("id_asesoria_legal","=",$id_asesoria_legal )->first();
+        if($val)
+        {
+            $val->nro_expediente = strtoupper($request['nro_expediente']);
+            $val->id_gestor = $request['id_gestor'];
+            $val->gestor = $request['gestor'];
+            $val->nro_doc_gestor = $request['dni'];
+            $val->fecha_inicio_tramite = $request['fecha_ini'];
+            $val->id_responsable = $request['id_responsable'];
+            $val->id_tipo = $request['id_tipo'];
+            $val->id_hab_urb = $request['id_hab_urba'];
+            $val->nomb_hab_urb = $request['hab_urba'];
+            $val->cod_catastral = $request['codigo_catastral'];
+            $val->id_tipo_sancion = $request['id_tipo_sancion'];
+            $val->id_materia = $request['id_materia'];
+            $val->id_proceso = $request['id_proceso'];
+            $val->id_caso = $request['id_caso'];
+            $val->referencia = strtoupper($request['referencia']);
+            $val->procedimiento = strtoupper($request['procedimiento']);
+            
+            $val->save();
+        }
+        return $id_asesoria_legal;
+    }
+    
+    public function edit_asesoria_observaciones($id, Request $request){
+        $Dteasesoria_legal = new Dteasesoria_legal;
+        $val=  $Dteasesoria_legal::where("id_det_asesoria_legal","=",$id_det_asesoria_legal )->first();
+        if($val)
+        {
+            $val->observaciones = strtoupper($request['observacion']);
+            $val->save();
+        }
+        return $id_det_asesoria_legal;
+    }
     public function edit_asesoria_abogados($id, Request $request) {
         $select=DB::connection('gerencia_catastro')->table('asesoria_legal.vw_abogados')->where('dni',strtoupper($request['dni']))->where('id_abogado','<>',$id)->get();
         if (count($select)>0) {
@@ -717,6 +778,93 @@ class AsesorialegalController extends Controller
             $val->save();
         }
         return $id_caso;
+    }
+    
+    //////////////adjuntar docs
+    public function cargar_datos_escaneos(Request $request)
+    {
+        header('Content-type: application/json');
+        $nro_expediente = $request['nro_expediente'];
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        
+        $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from asesoria_legal.vw_mtr_asesoria where nro_expediente like '%".strtoupper($nro_expediente)."%'");
+        $sql = DB::connection('gerencia_catastro')->table('asesoria_legal.vw_mtr_asesoria')->where('nro_expediente','like', '%'.strtoupper($nro_expediente).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_procuraduria;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_procuraduria),
+                trim($Datos->nro_expediente),
+                trim($Datos->nro_doc_gestor),
+                trim($Datos->gestor),
+                '<button class="btn btn-labeled bg-color-greenDark txt-color-white" type="button" onclick="subir_scan_procuraduria('.trim($Datos->id_procuraduria).')"><span class="btn-label"><i class="fa fa-print"></i></span> SUBIR ESCANEO</button>'
+            );
+        }
+        return response()->json($Lista);
+    }
+    
+    public function cargar_documentos_adjuntos(Request $request)
+    {
+        header('Content-type: application/json');
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+         $totalg = DB::connection('gerencia_catastro')->select("select count(*) as total from asesoria_legal.vw_doc_adjuntos where id_procuraduria=".$request['id']);
+         $sql = DB::connection('gerencia_catastro')->table('asesoria_legal.vw_doc_adjuntos')->where('id_procuraduria',$request['id'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        foreach ($sql as $Index => $Datos) {                
+            $Lista->rows[$Index]['id'] = $Datos->id_doc_adj;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_doc_adj),
+                trim($Datos->descripcion),
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER</button>',
+                '<button class="btn btn-labeled btn-danger" type="button" onclick="delfile('.trim($Datos->id_doc_adj).')"><span class="btn-label"><i class="fa fa-trash"></i></span> BORRAR</button>',
+            );
+        }
+        return response()->json($Lista);
     }
 
 
