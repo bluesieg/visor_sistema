@@ -267,6 +267,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'areas_verdes'], function() {
         Route::resource('areas_verdes','Areas_Verdes_Controller');
     });
+    ///////////////////////Mantenimiento de vias
+    Route::group(['namespace' => 'vias'], function() {
+        Route::resource('vias','Vias_Controller');
+    });
     ///////////////////////desarrollo economico
     Route::group(['namespace' => 'desarrollo_economico'], function() {
         Route::resource('mypes','Mypes_Controller');

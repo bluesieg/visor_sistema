@@ -37,7 +37,7 @@ function nuevo_area_verde(id)
             $("#dlg_mzna").val(r[0].manzana);
             $("#dlg_lot").val(r[0].lote);
             $("#hidden_dlg_lot").val(id);
-            carusel(id)
+            carusel_areas_verdes(id)
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -51,7 +51,7 @@ function nuevo_area_verde(id)
     }
     crear_dlg("dlg_areas_verdes",1100,"Mantenimiento Areas Verdes");
 }
-function carusel(id)
+function carusel_areas_verdes(id)
 {
  $.ajax({url: 'traefoto_lote_id/'+id,
     type: 'GET',
@@ -138,17 +138,17 @@ function save_area_verde(tipo)
     }); 
 }
 aux_mapa_lote=0;
-function map_reg_lote()
+function map_reg_lote_areas()
 {
     MensajeDialogLoadAjax('dlg_nuevo_exp', '.:: Cargando ...');
     if(aux_mapa_lote==0)
     {
         aux_mapa_lote=1;
-        iniciar_mapa();
+        iniciar_mapa_areas();
     }
     crear_dlg("dlg_mapa_reg_lote",1000,"Seleccione Lote");
 }
-function iniciar_mapa()
+function iniciar_mapa_areas()
 {
         autocompletar_haburb('inp_habilitacion_2');
         window.app = {};
@@ -590,7 +590,7 @@ function iniciar_area_verde(id)
             $("#dlg_mzna").val(r[0].manzana);
             $("#dlg_lot").val(r[0].lote);
             $("#hidden_dlg_lot").val(id);
-            carusel(id)
+            carusel_areas_verdes(id)
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");

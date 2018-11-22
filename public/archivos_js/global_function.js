@@ -657,13 +657,12 @@ function buscar_datos_reniec()
     setTimeout(function(){ MensajeDialogLoadAjaxFinish('dialog_Personas'); }, 3000);
 }
 
-function printDiv(nombreDiv) {
-     var contenido= document.getElementById(nombreDiv).innerHTML;
-     var contenidoOriginal= document.body.innerHTML;
-
-     document.body.innerHTML = contenido;
-
-     window.print();
-
-     document.body.innerHTML = contenidoOriginal;
+function printMap() {
+        document.body.style.cursor = 'progress';
+        var canvas = document.getElementById("map").getElementsByClassName("ol-unselectable")[0];
+        var img = canvas.toDataURL("image/png");
+        var doc = new jsPDF('landscape', undefined, 'a4');;
+        doc.addImage(img, 'JPEG', 0, 0, 297, 210);
+        doc.save('map.pdf');
+        document.body.style.cursor = 'auto';
 }

@@ -27,6 +27,7 @@ function crear_edit_contenedores(id)
         $("#dlg_edit_cod_contenedor").val(r[0].codigo);
         $("#dlg_edit_cantidad_contenedor").val(r[0].cantidad);
         $("#dlg_edit_ubicacion_contendor").val(r[0].ubicacion);
+        $("#dlg_edit_estado_contendor").val(r[0].estado);
         $("#foto_contenedor").html("<center><img src= 'data:image/png;base64," + r[0].imagen+"'/></center>");
                     
     },
@@ -150,7 +151,8 @@ function save_contenedor()
     type: 'GET',
     data:{cod:$("#dlg_edit_cod_contenedor").val(),
         cant:$("#dlg_edit_cantidad_contenedor").val(),
-        ubi:$("#dlg_edit_ubicacion_contendor").val()},
+        ubi:$("#dlg_edit_ubicacion_contendor").val(),
+        estado:$("#dlg_edit_estado_contendor").val()},
     success: function(r) 
     {
         MensajeDialogLoadAjaxFinish('dlg_contenedores');
@@ -224,6 +226,7 @@ function iniciar_contenedores(id)
         $("#dlg_edit_cod_contenedor").val(r[0].codigo);
         $("#dlg_edit_cantidad_contenedor").val(r[0].cantidad);
         $("#dlg_edit_ubicacion_contendor").val(r[0].ubicacion);
+        $("#dlg_edit_estado_contendor").val(r[0].estado==1?'BUENO':r[0].estado==2?'REGULAR':r[0].estado==3?'MALO':'');
         $("#foto_contenedor").html("<center><img src= 'data:image/png;base64," + r[0].imagen+"'/></center>");
                     
     },

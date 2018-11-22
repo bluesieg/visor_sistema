@@ -342,9 +342,21 @@
             </div>
             <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-map"></i></span>
                     <div class="icon-addon addon-md">
                         <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ubicacion_contendor" type="text" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 200px">Estado &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                    <div class="icon-addon addon-md">
+                        <select  class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_estado_contendor" >
+                            <option value="1">BUENO</option>
+                            <option value="2">REGULAR</option>
+                            <option value="3">MALO</option>
+                        </select>
                     </div>
                 </div>
             </div>

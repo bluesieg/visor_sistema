@@ -34,7 +34,7 @@ var lyr_map_gopi_obra_entregada;
 
 var aux_constancias=0;
 map.on('singleclick', function(evt) {
-    if(inicio_largo==0)
+    if(inicio_largo==0&&inicio_coordenadas==0)
     {
         mostrar=0;
         var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
@@ -422,6 +422,11 @@ map.on('singleclick', function(evt) {
                 
                 
             });  
+    }
+    if(inicio_coordenadas==1)
+    {
+        //alert(evt.coordinate);
+        alert(ol.proj.toLonLat(evt.coordinate));
     }
 });
 
@@ -1483,11 +1488,11 @@ function valida_capa(check)
         }
         if(check=='chk_contendores')
         {
-            map.removeLayer(lyr_mapa_contenedores);
+            map.removeLayer(lyr_contenedores);
         }
         if(check=='chk_botaderos')
         {
-            map.removeLayer(lyr_mapa_botaderos);
+            map.removeLayer(lyr_contenedores);
         }
         if(check=='chk_are_verdes')
         {
@@ -5004,6 +5009,7 @@ var measureTooltip;
 var continueLineMsg = 'Clic para seguir dibujando';
 var draw;
 var inicio_largo=0;
+
 var formatLength = function (line) {
     var length = Math.round(line.getLength() * 100) / 100;
     var output;
@@ -5050,6 +5056,25 @@ function iniciar_largo()
         vector_mesure.getSource().clear();
         map.removeInteraction(draw);
         $(".tooltip-static").remove();
+    }
+    
+}
+var inicio_coordenadas=0;
+function iniciar_coordenadas()
+{
+    if(inicio_coordenadas==0)
+    {
+        $("#btn_coordenadas").removeClass("bg-color-blue");
+        $("#btn_coordenadas").addClass("bg-color-blueLight");
+        inicio_coordenadas=1;
+      
+    }
+    else
+    {
+        $("#btn_coordenadas").removeClass("bg-color-blueLight");
+        $("#btn_coordenadas").addClass("bg-color-blue");
+        inicio_coordenadas=0;
+        
     }
     
 }

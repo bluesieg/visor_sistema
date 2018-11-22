@@ -34,9 +34,17 @@
             </div>
             <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
                 <div class="input-group input-group-md" style="width: 100%">
-                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-map"></i></span>
                     <div class="icon-addon addon-md">
                         <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_ubicacion_contendor" disabled="" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding-left: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 200px">Ubicación de Contenedor &nbsp;&nbsp;<i class="fa fa-info-circle"></i></span>
+                    <div class="icon-addon addon-md">
+                        <input class=" form-control" style="height: 32px; width: 100%" id="dlg_edit_estado_contendor" disabled="" >
                     </div>
                 </div>
             </div>

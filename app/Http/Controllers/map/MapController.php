@@ -29,7 +29,7 @@ class MapController extends Controller
         {
            $where="where id_sect=".$request['sector']; 
         }
-        $mznas = DB::select("SELECT json_build_object(
+        $mznas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -88,7 +88,7 @@ class MapController extends Controller
     }
     function get_sectores(){
 
-        $sectores = DB::select("SELECT json_build_object(
+        $sectores = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -134,7 +134,7 @@ class MapController extends Controller
         {
            $where="where id_sect=".$req->codigo; 
         }
-        $lotes = DB::select("SELECT json_build_object(
+        $lotes = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -168,13 +168,13 @@ class MapController extends Controller
         /*
         $centro_sector = DB::select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from mdcc_2017.sectores_cat where codigo = '" . $reques->codigo . "'");
         return response()->json($centro_sector);*/
-        $centro_sector = DB::select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from catastro.sectores where id_sec = '" . $reques->codigo . "'");
+        $centro_sector = DB::connection('pgsql')->select("SELECT ST_X(ST_Centroid(ST_Transform (geom, 4326))) lat,ST_Y(ST_Centroid(ST_Transform (geom, 4326))) lon  from catastro.sectores where id_sec = '" . $reques->codigo . "'");
         return response()->json($centro_sector);
 
     }
 
     function mznas_x_sector(Request $req){
-        $mznas=DB::select("SELECT id_mzna, codi_mzna FROM catastro.manzanas where id_sect = '". $req->codigo."';");
+        $mznas=DB::connection('pgsql')->select("SELECT id_mzna, codi_mzna FROM catastro.manzanas where id_sect = '". $req->codigo."';");
 
         return view("principal/fpart/vw_select_mznas", compact('mznas'));
 
@@ -185,7 +185,7 @@ class MapController extends Controller
     }
 
     function get_hab_urb(){
-        $sectores = DB::select("SELECT json_build_object(
+        $sectores = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -211,7 +211,7 @@ class MapController extends Controller
 
     function geogetmznas_x_sector(Request $req){
 
-        $mznas = DB::select("SELECT json_build_object(
+        $mznas = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -257,7 +257,7 @@ class MapController extends Controller
 
     function get_predios_rentas(Request $req){
 
-        $predios = DB::select("SELECT json_build_object(
+        $predios = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -316,7 +316,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     
     function get_agencias(){
 
-        $agencias = DB::select("SELECT json_build_object(
+        $agencias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -339,7 +339,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     
     function get_agencias_polygono(){
 
-        $agencias = DB::select("SELECT json_build_object(
+        $agencias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -367,7 +367,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     
     function get_camaras(){
 
-        $camaras = DB::select("SELECT json_build_object(
+        $camaras = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -389,7 +389,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     }
     
     function get_vias(){
-        $vias = DB::select("SELECT json_build_object(
+        $vias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -411,7 +411,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     function get_z_urbana()
     {
 
-        $agencias = DB::select("SELECT json_build_object(
+        $agencias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -439,7 +439,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     function get_z_agricola()
     {
 
-        $agencias = DB::select("SELECT json_build_object(
+        $agencias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -464,7 +464,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     function get_z_eriaza()
     {
 
-        $agencias = DB::select("SELECT json_build_object(
+        $agencias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )
@@ -489,7 +489,7 @@ JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_u
     function get_aportes()
     {
 
-        $agencias = DB::select("SELECT json_build_object(
+        $agencias = DB::connection('pgsql')->select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
                         )

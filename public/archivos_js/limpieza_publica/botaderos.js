@@ -182,7 +182,7 @@ function crear_mapa_botaderos()
 
                         lyr_contenedores = new ol.layer.Vector({
                             source:jsonSource,
-                            style: contenedorstyle,
+                            style: botaderostyle,
                             title: "Botaderos",
 
                         });
@@ -196,7 +196,7 @@ function crear_mapa_botaderos()
             }
         });
 }
-function contenedorstyle(feature, resolution) {
+function botaderostyle(feature, resolution) {
     return  new ol.style.Style({
     image: new ol.style.Icon({
       scale: map.getView().getZoom() > 16 ? (map.getView().getZoom() > 18 ? 0.3 : 0.1) : 0.07,

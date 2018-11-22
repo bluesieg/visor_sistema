@@ -38,7 +38,7 @@ function nuevo_mypes(id)
             $("#dlg_mzna").val(r[0].manzana);
             $("#dlg_lot").val(r[0].lote);
             $("#hidden_dlg_lot").val(id);
-            carusel(id)
+            carusel_mypes(id)
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -52,7 +52,7 @@ function nuevo_mypes(id)
     }
     crear_dlg("dlg_mypes",1100,"Mantenimiento MYPES");
 }
-function carusel(id)
+function carusel_mypes(id)
 {
  $.ajax({url: 'traefoto_lote_id/'+id,
     type: 'GET',
@@ -593,7 +593,7 @@ function iniciar_mypes(id)
             $("#dlg_mzna_mypes").val(r[0].manzana);
             $("#dlg_lot_mypes").val(r[0].lote);
             $("#hidden_dlg_lot_mypes").val(id);
-            carusel(id)
+            carusel_mypes(id)
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");

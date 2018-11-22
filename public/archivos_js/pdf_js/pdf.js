@@ -10,46 +10,6 @@
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
   };
 
-  /** @preserve
-   * jsPDF - PDF Document creation from JavaScript
-   * Version 1.3.2 Built on 2016-09-30T20:33:17.116Z
-   *                           CommitID 7d854cc77d
-   *
-   * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
-   *               2010 Aaron Spike, https://github.com/acspike
-   *               2012 Willow Systems Corporation, willow-systems.com
-   *               2012 Pablo Hess, https://github.com/pablohess
-   *               2012 Florian Jenett, https://github.com/fjenett
-   *               2013 Warren Weckesser, https://github.com/warrenweckesser
-   *               2013 Youssef Beddad, https://github.com/lifof
-   *               2013 Lee Driscoll, https://github.com/lsdriscoll
-   *               2013 Stefan Slonevskiy, https://github.com/stefslon
-   *               2013 Jeremy Morel, https://github.com/jmorel
-   *               2013 Christoph Hartmann, https://github.com/chris-rock
-   *               2014 Juan Pablo Gaviria, https://github.com/juanpgaviria
-   *               2014 James Makes, https://github.com/dollaruw
-   *               2014 Diego Casorran, https://github.com/diegocr
-   *               2014 Steven Spungin, https://github.com/Flamenco
-   *               2014 Kenneth Glassey, https://github.com/Gavvers
-   *
-   * Licensed under the MIT License
-   *
-   * Contributor(s):
-   *    siefkenj, ahwolf, rickygu, Midnith, saintclair, eaparango,
-   *    kim3er, mfo, alnorth, Flamenco
-   */
-
-  /**
-   * Creates new jsPDF document object instance.
-   *
-   * @class
-   * @param orientation One of "portrait" or "landscape" (or shortcuts "p" (Default), "l")
-   * @param unit        Measurement unit to be used when coordinates are specified.
-   *                    One of "pt" (points), "mm" (Default), "cm", "in"
-   * @param format      One of 'pageFormats' as shown below, default: a4
-   * @returns {jsPDF}
-   * @name jsPDF
-   */
   var jsPDF = function (global) {
       'use strict';
 
@@ -1381,7 +1341,7 @@
               }
               // End the path object without filling or stroking it.
               // This operator is a path-painting no-op, used primarily for the side effect of changing the current clipping path
-              // (see Section 4.4.3, “Clipping Path Operators”)
+              // (see Section 4.4.3, â€œClipping Path Operatorsâ€�)
               out('n');
           };
 
@@ -3042,7 +3002,7 @@ Q\n";
           get: function get() {
               if (!_T || _T.length < 1) {
                   if (this instanceof AcroForm.ChildClass) {
-                      // In case of a Child from a Radio´Group, you don't need a FieldName!!!
+                      // In case of a Child from a RadioÂ´Group, you don't need a FieldName!!!
                       return;
                   }
                   return "(FieldObject" + AcroForm.Field.FieldNum++ + ")";
@@ -6706,7 +6666,7 @@ Q\n";
        *
        * Returns an object with four points, where x1,y1 and x4,y4 are the arc's end points and x2,y2 and x3,y3 are the cubic bezier's control points.
        *
-       * This algorithm is based on the approach described in: A. Riškus, "Approximation of a Cubic Bezier Curve by Circular Arcs and Vice Versa," Information Technology and Control, 35(4), 2006 pp. 371-378.
+       * This algorithm is based on the approach described in: A. RiÅ¡kus, "Approximation of a Cubic Bezier Curve by Circular Arcs and Vice Versa," Information Technology and Control, 35(4), 2006 pp. 371-378.
        */
 
       c2d.internal.createSmallArc = function (r, a1, a2) {

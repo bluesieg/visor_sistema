@@ -352,7 +352,7 @@
                         </div>
                     </div>
                 <div class="col-xs-3" style="padding-left: 0px;">
-                    <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="map_reg_lote();">
+                    <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="map_reg_lote_areas();">
                         <span class="btn-label"><i class="glyphicon glyphicon-globe"></i></span>Buscar en Mapa
                     </button>
                 </div>

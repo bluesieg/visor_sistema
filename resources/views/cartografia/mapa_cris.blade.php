@@ -228,7 +228,7 @@
             boton_print.innerHTML = '<i class="glyphicon glyphicon-print" ></i>';
             boton_print.title='Imprimir';
             boton_print.onclick = function(e){
-                printDiv('map');
+                printMap();
             }
             var boton_coordendas = document.createElement("button");
             boton_coordendas.id = "btn_coordenadas";
@@ -238,7 +238,7 @@
             boton_coordendas.innerHTML = '<i class="glyphicon glyphicon-map-marker" ></i>';
             boton_coordendas.title='Coordenadas UTM';
             boton_coordendas.onclick = function(e){
-                //iniciar_largo();
+                iniciar_coordenadas();
             }
             var boton_ayuda = document.createElement("button");
             boton_ayuda.id = "btn_ayuda";

@@ -81,6 +81,7 @@ class Contenedores_Controller extends Controller
         {
             $val->codigo = $request['cod'];
             $val->cantidad = $request['cant'];
+            $val->estado = $request['estado'];
             $val->ubicacion = strtoupper($request['ubi']);
             $val->save();
         }

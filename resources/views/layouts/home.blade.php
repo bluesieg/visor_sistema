@@ -94,8 +94,7 @@
         <script src="{{ asset('js/notification/SmartNotification.min.js')}}"></script>
         
         <script src="{{ asset('js/jquery-confirm.js')}}"></script>
-        <script src="{{ asset('js/pdf/jspdf.debug.js') }}"></script>
-        <script src="{{ asset('js/pdf/html2pdf.js') }}"></script>
+        
 
         <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
 

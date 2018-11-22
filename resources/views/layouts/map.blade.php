@@ -32,6 +32,8 @@
         <script src='mapbox/mapbox.js'></script>
         <link href='mapbox/mapbox.css' rel='stylesheet' />
         <link href="{{ asset('css/jquery-confirm.css') }}" rel="stylesheet">
+        
+
          
 
 
@@ -1634,6 +1636,62 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-mantenimiento_vias"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Sub. Gerencia Mante. Vias
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-mantenimiento_vias" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding: 0px;padding-left: 20px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box 
+
+                                                            widget content -->
+                                                           <div class="widget-body">
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="vias"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Mantenimiento Vías
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_are_verdes" onchange="valida_capa('chk_are_verdes')"/>
+                                                                                                     <i></i>
+                                                                                                     MAPA VIAS
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
+                                                                
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
                                             
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
@@ -3041,7 +3099,7 @@
         <script src="{{ asset('archivos_js/configuracion.js') }}"></script>
 
         <script src="{{ asset('js/jquery-confirm.js')}}"></script>
-
+        <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/pdf_js/pdf.js') }}"></script>
         @if (!Auth::guest()) 
 
         <script>
