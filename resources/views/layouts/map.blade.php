@@ -1980,37 +1980,53 @@
                                                            </div>
                                                         </div>
                                                                 
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=rutas_serenazgo"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                Mantenimiento Rutas Serenazgo
-                                                        </a>
-                                                    </h4>
-                                                </div>
+                                                            <div class="panel panel-default" style="background: transparent">
+                                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=rutas_serenazgo"> 
+                                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                    Mantenimiento Rutas Serenazgo
+                                                                        </a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="widget-body">
+                                                                    <div class="tree smart-form" style="color:white !important">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_rut_serenazgo" onchange="valida_capa('chk_geren_seg_ciud_rut_serenazgo')" >
+                                                                                        <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                        Mapa Rutas Serenazgo
+                                                                                    </label> 
+                                                                                </span>
+                                                                            </li>
+                                                                       </ul>
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                                 <div class="panel panel-default" style="background: transparent">
-                                                           <div class="widget-body">
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                            <ul>
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_camaras" onchange="valida_capa('chk_geren_seg_ciud_camaras')" >
-                                                                                    <i></i>
-                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
-                                                                                         Mapa de Camaras
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                  </ul>
-                                                              </div>
-                                                           </div>
-                                                        </div>
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                                     <ul>
+                                                                                 <li>
+                                                                                     <span style="width: 160px;">
+                                                                                         <label class="checkbox inline-block" style="color:white !important">
+                                                                                                  <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_camaras" onchange="valida_capa('chk_geren_seg_ciud_camaras')" >
+                                                                                             <i></i>
+                                                                                                 <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                                  Mapa de Camaras
+                                                                                         </label> 
+                                                                                     </span>
+                                                                                 </li>
+                                                                           </ul>
+                                                                       </div>
+                                                                    </div>
+                                                                 </div>
                                             
-                                                </div>
+                                                                </div>
                                                             </div>
 <!--                                                           <div class="widget-body">
 
@@ -2099,6 +2115,22 @@
                                                                                 Mod. Zonas de Riesgos
                                                                             </a>
                                                                         </h4>
+                                                                    </div>
+                                                                    <div class="widget-body">
+                                                                        <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <span style="width: 160px;">
+                                                                                        <label class="checkbox inline-block" style="color:white !important">
+                                                                                            <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_zon_riesgo" onchange="valida_capa('chk_geren_seg_ciud_zon_riesgo')" >
+                                                                                            <i></i>
+                                                                                            <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                            Mapa de Zonas de Riesgo
+                                                                                        </label> 
+                                                                                    </span>
+                                                                                </li>
+                                                                           </ul>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">

@@ -1552,6 +1552,8 @@
 @include('procuraduria.div_procuraduria')
 @include('gerencia_seg_ciud.div_comisaria')
 @include('gerencia_seg_ciud.div_delitos')
+@include('gerencia_seg_ciud.div_zona_riesgo')
+@include('gerencia_seg_ciud.div_rutas_serenazgo')
 @include('gerencia_obras_pub_infra.div_expedientes_tecnicos')
 @include('gerencia_obras_pub_infra.div_mantenimiento')
 @include('gerencia_obras_pub_infra.div_obras')

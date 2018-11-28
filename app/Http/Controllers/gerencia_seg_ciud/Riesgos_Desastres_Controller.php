@@ -90,6 +90,14 @@ class Riesgos_Desastres_Controller extends Controller
             {
                 return $this->cargar_datos_observaciones_ctr_zona_riesgo($request);
             }
+            if($request['mapa']=='zona_riesgo')
+            {
+                return $this->cargar_mapa_zona_riesgo($request);
+            }
+            if($request['reporte']=='zona_riesgo')
+            {
+                return $this->abrir_reporte_zona_riesgo($request);
+            }
         }  
     }
     
@@ -625,6 +633,57 @@ class Riesgos_Desastres_Controller extends Controller
             $val->delete();
         }
         return "destroy ".$request['id_observ_ctr_zon_rg'];
+    }
+    
+    public function cargar_mapa_zona_riesgo(Request $request)
+    {
+        $id_tipo_riesgo = $request['id_tipo_riesgo'];
+        $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_zona_riesgo where id_tipo_riesgo = $id_tipo_riesgo");
+        
+        if($sql)
+        {
+            $zona_riesgo = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                                'type',     'FeatureCollection',
+                                'features', json_agg(feature)
+                            )
+                            FROM (
+                              SELECT json_build_object(
+                                'type',       
+                                'Feature',
+                                'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                                'properties', json_build_object(
+                                    'id_zona_riesgo',id_zona_riesgo,
+                                    'nro_doc_propietario',nro_doc_propietario,
+                                    'propietario',propietario,
+                                    'ubicacion',ubicacion,
+                                    'id_tipo_riesgo',id_tipo_riesgo,
+                                    'descripcion',descripcion
+                                 )
+                              ) AS feature
+                              FROM (SELECT * FROM geren_seg_ciudadana.vw_zona_riesgo where id_tipo_riesgo = $id_tipo_riesgo) row) features;");
+
+            return response()->json($zona_riesgo);
+        }
+        else
+        {
+            return 0; 
+        }
+    }
+    
+    public function abrir_reporte_zona_riesgo(Request $request)
+    { 
+        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_zona_riesgo')->where('id_zona_riesgo',$request['id_zona_riesgo'])->first();
+        $observaciones = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.plan')->where('id_zona_riesgo',$sql->id_zona_riesgo)->get();
+        
+        if($sql)
+        {
+            $view =  \View::make('gerencia_seg_ciud.reportes.reporte_zona_riesgo', compact('sql','observaciones'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("REPORTE ZONA RIESGO".".pdf");
+        }
+        else
+        {   return 'No hay datos';}
     }
     
 }

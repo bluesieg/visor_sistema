@@ -158,6 +158,14 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
             {
                 return $this->documentos_adjuntos_comisaria($request);
             }
+            if($request['mapa']=='rutas_serenazgo')
+            {
+                return $this->cargar_mapa_rutas_serenazgo($request);
+            }
+            if($request['reporte']=='rutas_serenazgo')
+            {
+                return $this->abrir_reporte_rutas_serenazgo($request);
+            }
             
         }      
     }
@@ -1413,6 +1421,46 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
             );
         }
         return response()->json($Lista);
+    }
+    
+    function cargar_mapa_rutas_serenazgo(){
+        $rutas_serenazgo = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                                'id_ruta_serenazgo',id_ruta_serenazgo,
+                                'ubicacion',ubicacion,
+                                'unidad',unidad,
+                                'placa',placa,
+                                'personal',personal,
+                                'descripcion',descripcion
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM geren_seg_ciudadana.vw_rutas_serenazgo) row) features;");
+
+        return response()->json($rutas_serenazgo);
+    }
+    
+    public function abrir_reporte_rutas_serenazgo(Request $request)
+    { 
+        $sql = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_rutas_serenazgo')->where('id_ruta_serenazgo',$request['id_ruta_serenazgo'])->first();
+        $observaciones = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.observacion_ruta_serenazgo')->where('id_ruta_serenazgo',$sql->id_ruta_serenazgo)->get();
+        $personal = DB::connection('gerencia_catastro')->table('geren_seg_ciudadana.vw_personal_ruta_serenazgo')->where('id_ruta_serenazgo',$sql->id_ruta_serenazgo)->get();
+        
+        if($sql)
+        {
+            $view =  \View::make('gerencia_seg_ciud.reportes.reporte_rutas_serenazgo', compact('sql','observaciones','personal'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("REPORTE RUTA SERENAZGO".".pdf");
+        }
+        else
+        {   return 'No hay datos';}
     }
     
 }

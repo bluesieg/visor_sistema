@@ -31,6 +31,10 @@ var lyr_map_gopi_obra_recepcionada;
 var lyr_map_gopi_obra_liquidada;
 var lyr_map_gopi_obra_entregada;
 
+var lyr_map_gsc_str_mal_estado;
+var lyr_map_gsc_riesgo_derrum;
+var lyr_map_gsc_caida_huayco;
+
 
 var aux_constancias=0;
 map.on('singleclick', function(evt) {
@@ -368,6 +372,38 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
+                if(layer.get('title')=='gsc_str_mal_estado'||layer.get('title')=='gsc_riesgo_derrumbe'||layer.get('title')=='gsc_caida_huayco'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gsc_zona_riesgo").val(feature.get('id_zona_riesgo'));
+                    $("#dlg_gsc_zona_riesgo_dni_prop").text(feature.get('nro_doc_propietario'));
+                    $("#dlg_gsc_zona_riesgo_nomb_prop").text(feature.get('propietario'));
+                    $("#dlg_gsc_zona_riesgo_ubicacion").text(feature.get('ubicacion'));
+                    $("#dlg_gsc_zona_riesgo_tip_riesgo").text(feature.get('descripcion'));
+                                  
+                    crear_dlg("dlg_gsc_zona_riesgo",1000,"GSC - ZONAS DE RIESGO");
+                    return false;
+                }
+                
+                if(layer.get('title')=='gsc_rutas_serenazgo'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#id_gsc_ruta_serenazgo").val(feature.get('id_ruta_serenazgo'));
+                    $("#dlg_gsc_ruta_serenazgo_ubicacion").text(feature.get('ubicacion'));
+                    $("#dlg_gsc_ruta_serenazgo_unidad").text(feature.get('unidad'));
+                    $("#dlg_gsc_ruta_serenazgo_placa").text(feature.get('placa'));
+                    $("#dlg_gsc_ruta_serenazgo_tipo").text(feature.get('descripcion'));
+                    
+                    if (feature.get('personal') == '1') {
+                        $("#dlg_gsc_ruta_serenazgo_personal").text('SERENAZGO');
+                    }else{
+                        $("#dlg_gsc_ruta_serenazgo_personal").text('INTEGRADO');
+                    }
+
+                    crear_dlg("dlg_gsc_rutas_serenazgo",1000,"GSC - RUTAS DE SERENAZGO");
+                    return false;
+                }
+                
                 if(layer.get('title')=='geren_seg_ciudadana_camaras'&&mostrar==0)
                 {
                     mostrar=1;
@@ -378,6 +414,7 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_gsc_mapa_camaras",1000,"GSC - MAPA CAMARAS");
                     return false;
                 }
+                
                 if(layer.get('title')=='gerencia_procuraduria'&&mostrar==0)
                 {
                     mostrar=1;
@@ -1261,6 +1298,26 @@ function valida_capa(check)
         {
             crear_mapa_gduc_turistico();
         }
+        if(check=='chk_geren_seg_ciud_zon_riesgo')
+        {
+            crear_mapa_gsc_zona_riesgo();
+        }
+        if(check=='chk_estr_mal_estado')
+        {
+            crear_estados_mapa_gsc_zona_riesgo(1);
+        }
+        if(check=='chk_riesgo_derrum')
+        {
+            crear_estados_mapa_gsc_zona_riesgo(2);
+        }
+        if(check=='chk_caida_huayco')
+        {
+            crear_estados_mapa_gsc_zona_riesgo(3);
+        }
+        if(check=='chk_geren_seg_ciud_rut_serenazgo')
+        {
+            crear_mapa_gsc_rutas_serenazgo();
+        }
     }
     else
     {
@@ -1653,6 +1710,29 @@ function valida_capa(check)
         if(check=='chk_gduc_financiera')
         {
             map.removeLayer(lyr_gduc_financiera);
+        }
+        if(check=='chk_geren_seg_ciud_zon_riesgo')
+        {
+            map.removeLayer(lyr_map_gsc_str_mal_estado);
+            map.removeLayer(lyr_map_gsc_riesgo_derrum);
+            map.removeLayer(lyr_map_gsc_caida_huayco);
+            $("#legend").hide();
+        }
+        if(check=='chk_estr_mal_estado')
+        {
+            map.removeLayer(lyr_map_gsc_str_mal_estado);
+        }
+        if(check=='chk_riesgo_derrum')
+        {
+            map.removeLayer(lyr_map_gsc_riesgo_derrum);
+        }
+        if(check=='chk_caida_huayco')
+        {
+            map.removeLayer(lyr_map_gsc_caida_huayco);
+        }
+        if(check=='chk_geren_seg_ciud_rut_serenazgo')
+        {
+            map.removeLayer(lyr_gsc_rutas_serenazgo);
         }
     }
 }
@@ -5049,6 +5129,7 @@ function crear_mapa_gsc_mapa_delitos(valor)
                 if(data == 0)
                 {
                     MensajeAlerta('DELITOS','NO SE ENCONTRO REGISTROS.');
+                    map.removeLayer(lyr_gsc_delitos);
                 }
                 else
                 {
@@ -5183,6 +5264,193 @@ function geren_seg_ciudadana_style_camaras(feature, resolution){
             offsetY:map.getView().getZoom() > 16 ? 40 : 20
         })
       });
+}
+
+// GSC - ZONAS DE RIESGO
+
+function crear_mapa_gsc_zona_riesgo()
+{
+    $("#anio_pred").hide();
+    $("#legend").html("");
+    html=
+        html='<div >\n\
+                    <ul>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_estr_mal_estado" onchange="valida_capa('+"'chk_estr_mal_estado'"+')">\n\
+                                    <i></i>\n\
+                                    ESTRUCTURA EN MAL ESTADO\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_riesgo_derrum" onchange="valida_capa('+"'chk_riesgo_derrum'"+')">\n\
+                                    <i></i>\n\
+                                    RIESGO DE DERRUMBE\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                        <li style="padding-left: 10px;">\n\
+                            <span style="width: 120px">\n\
+                                <label class="checkbox inline-block" style="color:black !important;font-weight: bold">\n\
+                                    <input type="checkbox" name="checkbox-inline" id="chk_caida_huayco" onchange="valida_capa('+"'chk_caida_huayco'"+')">\n\
+                                    <i></i>\n\
+                                    CAIDA DE HUAYCO\n\
+                                </label> \n\
+                            </span> \n\
+                        </li>\n\
+                    </ul>\n\
+            </div>';
+    $("#legend").html(html);
+    $("#legend").show();
+  
+    MensajeDialogLoadAjaxFinish('map');   
+}
+
+function crear_estados_mapa_gsc_zona_riesgo(estado)
+{
+    MensajeDialogLoadAjax('map', '.:: Cargando ...');
+        $.ajax({url: 'sub_geren_riesgos_desastres/0?mapa=zona_riesgo&id_tipo_riesgo='+estado,
+            type: 'GET',
+            success: function(data)
+            {
+                if(data==0)
+                {
+                    MensajeAlerta('ZONA RIESGO','NO SE ENCONTRO DATOS.');
+                }
+                else
+                {
+                   var format = new ol.format.GeoJSON();
+                    var features= format.readFeatures(JSON.parse(data[0].json_build_object),
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource.addFeatures(features);
+                    if(estado == 1)
+                    {
+                        lyr_map_gsc_str_mal_estado = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: style_gsc_zona_riesgo,
+                            title: "gsc_str_mal_estado"
+                        });
+                        map.addLayer(lyr_map_gsc_str_mal_estado);
+                        var extent = lyr_map_gsc_str_mal_estado.getSource().getExtent();
+                    }
+                    if(estado == 2)
+                    {
+                        lyr_map_gsc_riesgo_derrum = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: style_gsc_zona_riesgo,
+                            title: "gsc_riesgo_derrumbe"
+                        });
+                        map.addLayer(lyr_map_gsc_riesgo_derrum);
+                        var extent = lyr_map_gsc_riesgo_derrum.getSource().getExtent();
+                    }
+                    if(estado == 3)
+                    {
+                        lyr_map_gsc_caida_huayco = new ol.layer.Vector({
+                            source:jsonSource,
+                            style: style_gsc_zona_riesgo,
+                            title: "gsc_caida_huayco"
+                        });
+                        map.addLayer(lyr_map_gsc_caida_huayco);
+                        var extent = lyr_map_gsc_caida_huayco.getSource().getExtent();
+                    }
+                    map.getView().fit(extent, map.getSize());
+                }
+                MensajeDialogLoadAjaxFinish('map');
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró.');
+            }
+        });
+}
+
+function style_gsc_zona_riesgo(feature, resolution)
+{
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#C1BF28',
+            width: 2,
+            lineCap: 'butt',
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(169, 50, 38, 0.5)'
+        }),
+        text: new ol.style.Text({
+            font: '12px Roboto',
+            text: feature.get('descripcion')
+        })
+    });
+}
+
+function imprimir_docs_mapa_zona_riesgo()
+{
+    window.open('sub_geren_riesgos_desastres/0?reporte=zona_riesgo&id_zona_riesgo='+$('#id_gsc_zona_riesgo').val());
+}
+
+// GSC - RUTAS SERENAZGO
+
+function crear_mapa_gsc_rutas_serenazgo()
+{
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=rutas_serenazgo',
+            type: 'GET',
+            success: function(r)
+            {
+                geojson = JSON.parse(r[0].json_build_object);
+                var format= new ol.format.GeoJSON();
+                var features = format.readFeatures(geojson,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource.addFeatures(features);
+                lyr_gsc_rutas_serenazgo= new ol.layer.Vector({
+                    source:jsonSource,
+                    style: gsc_rutas_serenazgo,
+                    title: "gsc_rutas_serenazgo"
+                });
+                map.addLayer(lyr_gsc_rutas_serenazgo);
+                var extent = lyr_gsc_rutas_serenazgo.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+              
+                MensajeDialogLoadAjaxFinish('map');
+            }
+        });
+}
+
+function gsc_rutas_serenazgo(feature, resolution){
+    return new ol.style.Style({
+       stroke: new ol.style.Stroke({
+        color: '#B40477',
+        width: 2
+      }),
+        text: new ol.style.Text({
+            Placement: 'line',
+            textAlign: "center",
+            text: map.getView().getZoom() > 14 ? feature.get('cod_ruta_barrido') : "", 
+            Baseline:'middle',
+            maxAngle: 6.283185307179586,
+            rotation: 0,
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
+        })
+    });
+}
+
+function imprimir_docs_mapa_rutas_serenazgo()
+{
+    window.open('sub_geren_op_vigilancia_interna/0?reporte=rutas_serenazgo&id_ruta_serenazgo='+$('#id_gsc_ruta_serenazgo').val());
 }
 
 // PROCURADURIA
