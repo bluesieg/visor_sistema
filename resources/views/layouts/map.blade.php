@@ -1286,7 +1286,7 @@
                                                                 </div>
                                                 </div>
 
-                                                                <div class="panel panel-default" style="background: transparent">
+                                                                 <div class="panel panel-default" style="background: transparent">
                                                                     <div class="panel-heading" style=" background:  transparent;color: white;">
                                                         <h4 class="panel-title"><a href="procuraduria?tipo=tipo_sancion"> 
                                                                                 <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
@@ -1652,7 +1652,35 @@
                                                                              </div>
                                                                     </div>
                                                                </div>
-                                                                
+                                                                 <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="bermas"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Mantenimiento Bermas
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_bermas" onchange="valida_capa('chk_bermas')"/>
+                                                                                                     <i></i>
+                                                                                                     MAPA BERMAS
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
                                                            </div>
                                                         <!--end widget content -->
                                                         </div>
@@ -1980,15 +2008,15 @@
                                                            </div>
                                                         </div>
                                                                 
-                                                            <div class="panel panel-default" style="background: transparent">
-                                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=rutas_serenazgo"> 
-                                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                                                    Mantenimiento Rutas Serenazgo
-                                                                        </a>
-                                                                    </h4>
-                                                                </div>
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="sub_geren_op_vigilancia_interna?tipo=rutas_serenazgo"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                                                Mantenimiento Rutas Serenazgo
+                                                        </a>
+                                                    </h4>
+                                                </div>
                                                                 <div class="widget-body">
                                                                     <div class="tree smart-form" style="color:white !important">
                                                                         <ul>
@@ -2003,30 +2031,30 @@
                                                                                 </span>
                                                                             </li>
                                                                        </ul>
-                                                                    </div>
+                                                            </div>
                                                                 </div>
                                                             </div>
 
                                                                 <div class="panel panel-default" style="background: transparent">
-                                                                    <div class="widget-body">
-                                                                        <div class="tree smart-form" style="color:white !important">
-                                                                                     <ul>
-                                                                                 <li>
-                                                                                     <span style="width: 160px;">
-                                                                                         <label class="checkbox inline-block" style="color:white !important">
-                                                                                                  <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_camaras" onchange="valida_capa('chk_geren_seg_ciud_camaras')" >
-                                                                                             <i></i>
-                                                                                                 <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
-                                                                                                  Mapa de Camaras
-                                                                                         </label> 
-                                                                                     </span>
-                                                                                 </li>
-                                                                           </ul>
-                                                                       </div>
-                                                                    </div>
-                                                                 </div>
+                                                           <div class="widget-body">
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                            <ul>
+                                                                        <li>
+                                                                            <span style="width: 160px;">
+                                                                                <label class="checkbox inline-block" style="color:white !important">
+                                                                                         <input type="checkbox" name="checkbox-inline" id="chk_geren_seg_ciud_camaras" onchange="valida_capa('chk_geren_seg_ciud_camaras')" >
+                                                                                    <i></i>
+                                                                                        <span style="background-color: green; width: 5px !important ; height: 5px !important;"></span>
+                                                                                         Mapa de Camaras
+                                                                                </label> 
+                                                                            </span>
+                                                                        </li>
+                                                                  </ul>
+                                                              </div>
+                                                           </div>
+                                                        </div>
                                             
-                                                                </div>
+                                                </div>
                                                             </div>
 <!--                                                           <div class="widget-body">
 
@@ -2130,7 +2158,7 @@
                                                                                     </span>
                                                                                 </li>
                                                                            </ul>
-                                                                        </div>
+                                                                </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="panel panel-default" style="background: transparent">
@@ -2405,6 +2433,64 @@
                                                                                                      <input type="checkbox" name="checkbox-inline" id="chk_mypes" onchange="valida_capa('chk_mypes')"/>
                                                                                                      <i></i>
                                                                                                      MAPA MYPES
+                                                                                                 </labe>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                 </ul>
+                                                                             </div>
+                                                                    </div>
+                                                               </div>
+                                                                
+                                                           </div>
+                                                        <!--end widget content -->
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" style="background: transparent">
+                                                <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-lic_funcionamiento"> 
+                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            sub Gerencia Licencias Funcionamiento
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne-sub-lic_funcionamiento" class="panel-collapse cr_toogle collapse">
+                                                    <div class="panel-body" style="padding: 0px;padding-left: 20px" >
+                                                        <div>
+                                                        <!--widget edit box -->
+                                                            <div class="jarviswidget-editbox">
+                                                            </div>
+                                                        <!--end widget edit box -->
+
+                                                        
+                                                        
+                                                        
+                                                           <div class="widget-body">
+                                                                <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        <h4 class="panel-title"><a href="lic_fun"> 
+                                                                                <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
+                                                                                <i class="fa fa-fw fa-minus-circle txt-color-white"></i> 
+                                                                                Man. Licencias Funcionamiento
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                               </div>
+                                                               <div class="panel panel-default" style="background: transparent">
+                                                                    <div class="panel-heading" style=" background:  transparent;color: white;">
+                                                                        
+                                                                        
+                                                                            <div class="tree smart-form" style="color:white !important">
+                                                                                 <ul >
+                                                                                         <li >
+                                                                                             <span style="width: 170px;">
+                                                                                                 <label class="checkbox inline-block" style="color:white !important">
+                                                                                                     <input type="checkbox" name="checkbox-inline" id="chk_lic_fun" onchange="valida_capa('chk_lic_fun')"/>
+                                                                                                     <i></i>
+                                                                                                     MAPA LIC. FUN.
                                                                                                  </labe>
                                                                                              </span>
                                                                                          </li>

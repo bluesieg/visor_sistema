@@ -1422,7 +1422,7 @@
           
         </div>
     </div>
-</div>  
+</div>
 
 <div id="dlg_gsc_semaforos" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;padding-bottom: 0px;">
@@ -1565,7 +1565,9 @@
 @include('limpieza_publica.div_botaderos')
 @include('areas_verdes.div_areas_verdes')
 @include('desarrollo_economico.div_mypes')
+@include('desarrollo_economico.div_lic_fun')
 @include('infra_deportiva.div_deporte')
+@include('vias.div_bermas')
 
 
 @include('ger_desarrollo_social.div_mujer_desa_social')

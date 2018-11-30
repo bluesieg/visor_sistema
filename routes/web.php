@@ -270,10 +270,13 @@ Route::group(['middleware' => 'auth'], function() {
     ///////////////////////Mantenimiento de vias
     Route::group(['namespace' => 'vias'], function() {
         Route::resource('vias','Vias_Controller');
+        Route::resource('bermas','Bermas_Controller');
     });
     ///////////////////////desarrollo economico
     Route::group(['namespace' => 'desarrollo_economico'], function() {
         Route::resource('mypes','Mypes_Controller');
+        Route::resource('lic_fun','Licencias_funcionamiento_Controller');
+        Route::post('create_scaneo_lic_fun', 'Licencias_funcionamiento_Controller@create_pdf');
     });
     ///////////////////////infrestructura deportiva
     Route::group(['namespace' => 'infra_deportiva'], function() {
@@ -307,11 +310,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('sub_geren_estudios_proyectos','Estudios_Proyectos_Controller');
         Route::resource('sub_geren_apoyo_matenimiento','Apoyo_Mantenimiento_Controller');
         Route::resource('sub_geren_obras_publicas','Obras_Publicas_Controller');
-    });
-    
+});
+        
     Route::group(['namespace' => 'gduc'], function() {
         Route::resource('infraestructura_urbana','Infraestructura_Urbana_Controller');
-    });
+});
     
     /*******************************  DESARROLLO SOCIAL **********************************************************/
     Route::group(['namespace' => 'ger_desarrollo_social'], function() {

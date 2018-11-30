@@ -526,7 +526,18 @@ map.on('singleclick', function(evt) {
                     crear_dlg("dlg_mapa_omaped",1000,"GDS - MAPA OMAPED");
                     return false;
                 }
-                
+                 if(layer.get('title')=='Bermas'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_bermas(feature.get('gid'));
+                    return false;
+                }
+                if(layer.get('title')=='Lic. Funcionamiento'&&mostrar==0)
+                {
+                    mostrar=1;
+                    iniciar_lic_fun(feature.get('id_lote'));
+                    return false;
+                }
                 
             });  
     }
@@ -1029,6 +1040,12 @@ function valida_capa(check)
             autocompletar_via("inp_vias");
             $("#inp_vias").show();
         }
+        if(check=='chk_bermas')
+        {
+            crearbermas(0);
+            autocompletar_via("inp_vias");
+            $("#inp_vias").show();
+        }
         if(check=='chk_z_urbana')
         {
              crear_z_urbana();
@@ -1318,6 +1335,10 @@ function valida_capa(check)
         {
             crear_mapa_gsc_rutas_serenazgo();
         }
+        if(check=='chk_lic_fun')
+        {
+            crear_mapa_lic_fun();
+        }
     }
     else
     {
@@ -1369,6 +1390,11 @@ function valida_capa(check)
         {
             $("#inp_vias").hide();
             map.removeLayer(lyr_vias);
+        }
+        if(check=='chk_bermas')
+        {
+            $("#inp_bermas").hide();
+            map.removeLayer(lyr_bermas);
         }
         if(check=='chk_z_urbana')
         {
@@ -1733,6 +1759,10 @@ function valida_capa(check)
         if(check=='chk_geren_seg_ciud_rut_serenazgo')
         {
             map.removeLayer(lyr_gsc_rutas_serenazgo);
+        }
+        if(check=='chk_lic_fun')
+        {
+            map.removeLayer(lyr_lic_fun);
         }
     }
 }
