@@ -1249,7 +1249,7 @@ function valida_capa(check)
         }
         if(check=='chk_geren_seg_ciud_delitos')
         {
-            crear_mapa_gsc_mapa_delitos(1);
+            crear_detalle_mapa_delito();
         }
         if(check=='chk_geren_seg_ciud_camaras')
         {
@@ -5106,89 +5106,64 @@ function imprimir_docs_semaforos()
 
 // GSC - MAPA DELITOS
 
-function crear_mapa_gsc_mapa_delitos(valor)
+function crear_detalle_mapa_delito()
 {
     $("#anio_pred").hide();
     $("#fec_desde").show();
     $("#fec_hasta").show();
+    $("#fec_desde").val('');
+    $("#fec_hasta").val('');
     $("#btn_busqueda_delitos").show();
-    
-    MensajeDialogLoadAjax('map', '.:: Cargando ...');
-    if (valor == 1) 
-    {
-        $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos&valor=1',
-            type: 'GET',
-            success: function(data)
-            {
-                if(data == 0)
-                {
-                    MensajeAlerta('DELITOS','NO SE ENCONTRO REGISTROS.');
-                }
-                else
-                {
-                    geojson_gsc_delitos = JSON.parse(data[0].json_build_object);
-                    var format_gsc_delitos= new ol.format.GeoJSON();
-                    var features_gsc_delitos = format_gsc_delitos.readFeatures(geojson_gsc_delitos,
-                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                    var jsonSource_gsc_delitos = new ol.source.Vector({
-                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                    });
-                    jsonSource_gsc_delitos.addFeatures(features_gsc_delitos);
-                    lyr_gsc_delitos = new ol.layer.Vector({
-                        source:jsonSource_gsc_delitos,
-                        style: geren_seg_ciudadana_style_delitos,
-                        title: "geren_seg_ciudadana_mapa_delitos"
-                    });
-                    map.addLayer(lyr_gsc_delitos);
-                    var extent = lyr_gsc_delitos.getSource().getExtent();
-                    map.getView().fit(extent, map.getSize());
-                }
-                MensajeDialogLoadAjaxFinish('map');
-            },
-            error: function (data) {
-                MensajeAlerta('Problema de red','Contactar con el Administrador.');
-            }
-        });
-    }
-    else
-    {
-        $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos&valor=2&fec_desde='+$("#fec_desde").val()+'&fec_hasta='+$("#fec_hasta").val(),
-            type: 'GET',
-            success: function(data)
-            {
-                if(data == 0)
-                {
-                    MensajeAlerta('DELITOS','NO SE ENCONTRO REGISTROS.');
-                    map.removeLayer(lyr_gsc_delitos);
-                }
-                else
-                {
-                    map.removeLayer(lyr_gsc_delitos);
-                    geojson_gsc_delitos = JSON.parse(data[0].json_build_object);
-                    var format_gsc_delitos= new ol.format.GeoJSON();
-                    var features_gsc_delitos = format_gsc_delitos.readFeatures(geojson_gsc_delitos,
-                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                    var jsonSource_gsc_delitos = new ol.source.Vector({
-                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                    });
-                    jsonSource_gsc_delitos.addFeatures(features_gsc_delitos);
-                    lyr_gsc_delitos = new ol.layer.Vector({
-                        source:jsonSource_gsc_delitos,
-                        style: geren_seg_ciudadana_style_delitos,
-                        title: "geren_seg_ciudadana_mapa_delitos"
-                    });
-                    map.addLayer(lyr_gsc_delitos);
-                    var extent = lyr_gsc_delitos.getSource().getExtent();
-                    map.getView().fit(extent, map.getSize());
-                }
-                MensajeDialogLoadAjaxFinish('map');
-            },
-            error: function (data) {
-                MensajeAlerta('Problema de red','Contactar con el Administrador.');
-            }
-        });
-    }
+    MensajeDialogLoadAjaxFinish('map');
 }
+
+function crear_mapa_gsc_mapa_delito()
+{
+    if ($("#fec_desde").val() == '') {
+        mostraralertasconfoco('* DEBES AGREGAR UNA FECHA...', '#fec_desde');
+        return false;
+    }
+    if ($("#fec_hasta").val() == '') {
+        mostraralertasconfoco('* DEBES AGREGAR UNA FECHA...', '#fec_hasta');
+        return false;
+    }
+    MensajeDialogLoadAjax('map', '.:: Cargando ...');
+    
+    $.ajax({url: 'sub_geren_op_vigilancia_interna/0?mapa=delitos&valor=2&fec_desde='+$("#fec_desde").val()+'&fec_hasta='+$("#fec_hasta").val(),
+        type: 'GET',
+        success: function(data)
+        {
+            if(data == 0)
+            {
+                MensajeAlerta('DELITOS','NO SE ENCONTRO REGISTROS.');
+            }
+            else
+            {
+                geojson_gsc_delitos = JSON.parse(data[0].json_build_object);
+                var format_gsc_delitos= new ol.format.GeoJSON();
+                var features_gsc_delitos = format_gsc_delitos.readFeatures(geojson_gsc_delitos,
+                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_gsc_delitos = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                jsonSource_gsc_delitos.addFeatures(features_gsc_delitos);
+                lyr_gsc_delitos = new ol.layer.Vector({
+                    source:jsonSource_gsc_delitos,
+                    style: geren_seg_ciudadana_style_delitos,
+                    title: "geren_seg_ciudadana_mapa_delitos"
+                });
+                map.addLayer(lyr_gsc_delitos);
+                var extent = lyr_gsc_delitos.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+            }
+            MensajeDialogLoadAjaxFinish('map');
+        },
+        error: function (data) {
+            MensajeAlerta('Problema de red','Contactar con el Administrador.');
+        }
+    });
+}
+
 function geren_seg_ciudadana_style_delitos(feature, resolution){
 
         return  new ol.style.Style({

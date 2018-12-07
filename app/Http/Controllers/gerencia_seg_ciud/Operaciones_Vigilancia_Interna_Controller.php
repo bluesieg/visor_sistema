@@ -1021,81 +1021,41 @@ class Operaciones_Vigilancia_Interna_Controller extends Controller
     
     public function cargar_mapa_delitos(Request $request)
     {
-        if ($request['valor'] == 1) 
-        {
-            $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_mapa_delito where fecha_registro = (select * from current_date)");
-        
-            if($sql)
-            {
-                $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
-                                    'type',     'FeatureCollection',
-                                    'features', json_agg(feature)
-                                )
-                                FROM (
-                                  SELECT json_build_object(
-                                    'type',       
-                                    'Feature',
-                                    'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
-                                    'properties', json_build_object(
-                                        'id_mapa_delito',id_mapa_delito,
-                                        'nro_doc_infractor',nro_doc_infractor,
-                                        'infractor',infractor,
-                                        'nro_doc_encargado',nro_doc_encargado,
-                                        'encargado',encargado,
-                                        'descripcion',descripcion,
-                                        'ubicacion',ubicacion,
-                                        'fecha_registro',fecha_registro,
-                                        'observacion',observacion,
-                                        'vehiculo',vehiculo
-                                     )
-                                  ) AS feature
-                                  FROM (SELECT id_mapa_delito,geom,nro_doc_infractor,infractor,nro_doc_encargado,encargado,descripcion,ubicacion,fecha_registro,observacion,vehiculo FROM geren_seg_ciudadana.vw_mapa_delito where fecha_registro = (select * from current_date)) row) features;");
+        $fec_desde = $request['fec_desde'];
+        $fec_hasta = $request['fec_hasta'];
+        $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fec_desde' and '$fec_hasta'");
 
-                return response()->json($delitos);
-            }
-            else
-            {
-                return 0; 
-            }
+        if($sql)
+        {
+            $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
+                                'type',     'FeatureCollection',
+                                'features', json_agg(feature)
+                            )
+                            FROM (
+                              SELECT json_build_object(
+                                'type',       
+                                'Feature',
+                                'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                                'properties', json_build_object(
+                                    'id_mapa_delito',id_mapa_delito,
+                                    'nro_doc_infractor',nro_doc_infractor,
+                                    'infractor',infractor,
+                                    'nro_doc_encargado',nro_doc_encargado,
+                                    'encargado',encargado,
+                                    'descripcion',descripcion,
+                                    'ubicacion',ubicacion,
+                                    'fecha_registro',fecha_registro,
+                                    'observacion',observacion,
+                                    'vehiculo',vehiculo
+                                 )
+                              ) AS feature
+                              FROM (SELECT id_mapa_delito,geom,nro_doc_infractor,infractor,nro_doc_encargado,encargado,descripcion,ubicacion,fecha_registro,observacion,vehiculo FROM geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fec_desde' and '$fec_hasta') row) features;");
+
+            return response()->json($delitos);
         }
         else
-        {   
-            $fec_desde = $request['fec_desde'];
-            $fec_hasta = $request['fec_hasta'];
-            $sql = DB::connection('gerencia_catastro')->select("select * from geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fec_desde' and '$fec_hasta'");
-            
-            if($sql)
-            {
-                $delitos = DB::connection('gerencia_catastro')->select("SELECT json_build_object(
-                                    'type',     'FeatureCollection',
-                                    'features', json_agg(feature)
-                                )
-                                FROM (
-                                  SELECT json_build_object(
-                                    'type',       
-                                    'Feature',
-                                    'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
-                                    'properties', json_build_object(
-                                        'id_mapa_delito',id_mapa_delito,
-                                        'nro_doc_infractor',nro_doc_infractor,
-                                        'infractor',infractor,
-                                        'nro_doc_encargado',nro_doc_encargado,
-                                        'encargado',encargado,
-                                        'descripcion',descripcion,
-                                        'ubicacion',ubicacion,
-                                        'fecha_registro',fecha_registro,
-                                        'observacion',observacion,
-                                        'vehiculo',vehiculo
-                                     )
-                                  ) AS feature
-                                  FROM (SELECT id_mapa_delito,geom,nro_doc_infractor,infractor,nro_doc_encargado,encargado,descripcion,ubicacion,fecha_registro,observacion,vehiculo FROM geren_seg_ciudadana.vw_mapa_delito where fecha_registro between '$fec_desde' and '$fec_hasta') row) features;");
-
-                return response()->json($delitos);
-            }
-            else
-            {
-                return 0; 
-            }
+        {
+            return 0; 
         }
     }
     

@@ -161,7 +161,7 @@
             boton_busqueda_delitos.style = "color:green;display:none";
             boton_busqueda_delitos.innerHTML = '<i class="glyphicon glyphicon-search" ></i>';
             boton_busqueda_delitos.onclick = function(e){
-                crear_mapa_gsc_mapa_delitos(2);
+                crear_mapa_gsc_mapa_delito();
             }
             
             var selectList_anio = document.createElement("select");
