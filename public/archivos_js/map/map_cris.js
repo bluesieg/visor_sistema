@@ -487,7 +487,7 @@ map.on('singleclick', function(evt) {
                     return false;
                 }
                 
- if(layer.get('title')=='gds_ciam'&&mostrar==0)
+                if(layer.get('title')=='gds_ciam'&&mostrar==0)
                 {
                     mostrar=1;
                     $("#inp_cod_catastral_ciam").text(feature.get('cod_catastral'));
@@ -524,6 +524,49 @@ map.on('singleclick', function(evt) {
                     $("#inp_direccion_omaped").text(feature.get('direccion'));
                     $("#sel_local_omaped").text(feature.get('local'));                                        
                     crear_dlg("dlg_mapa_omaped",1000,"GDS - MAPA OMAPED");
+                    return false;
+                }
+                
+                 if(layer.get('title')=='gds_colegio'&&mostrar==0)
+                {
+                    
+                    mostrar=1;
+                    $("#inp_direccion").text(feature.get('direccion'));
+                    $("#inp_nombre").text(feature.get('cen_edu_l'));
+                    $("#inp_nro_colegio").text(feature.get('numero'));
+                    $("#inp_nro_alumnos").text(feature.get('nro_alumnos'));
+                    $("#sel_tipo_colegio").text(feature.get('descripcion'));
+                    $("#inp_dni_propietario").text(feature.get('pers_nro_doc')); 
+                    $("#inp_propietario").text(feature.get('persona'));                                        
+                    $("#inp_cod_catastral_colegio").text(feature.get('persona'));                                        
+
+                    crear_dlg("dlg_mapa_colegio",1000,"GDS - MAPA COLEGIO");
+                    return false;
+                }
+                 if(layer.get('title')=='gds_ccultural'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#inp_direccion_ccultural").text(feature.get('direccion'));
+                    $("#inp_nombre_ccultural").text(feature.get('nombre'));
+                    $("#sel_tipo_ccultural").text(feature.get('descripcion'));
+                    $("#inp_dni_propietario_ccultural").text(feature.get('pers_nro_doc')); 
+                    $("#inp_propietario_ccultural").text(feature.get('persona'));      
+                    $("#inp_cod_catastral_ccultural").text(feature.get('cod_catastral'));                                        
+                    crear_dlg("dlg_mapa_ccultural",1000,"GDS - MAPA CENTRO CULTURAL");
+                    return false;
+                    
+                    
+                }
+                if(layer.get('title')=='gds_cdeportivo'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#inp_direccion_cdeportivo").text(feature.get('direccion'));
+                    $("#inp_nombre_cdeportivo").text(feature.get('nombre'));
+                    $("#sel_tipo_cdeportivo").text(feature.get('descripcion'));
+                    $("#inp_dni_propietario_cdeportivo").text(feature.get('pers_nro_doc')); 
+                    $("#inp_propietario_cdeportivo").text(feature.get('persona'));      
+                    $("#inp_cod_catastral_cdeportivo").text(feature.get('cod_catastral'));                                      
+                    crear_dlg("dlg_mapa_cdeportivo",1000,"GDS - MAPA CENTRO DEPORTIVO");
                     return false;
                 }
                  if(layer.get('title')=='Bermas'&&mostrar==0)

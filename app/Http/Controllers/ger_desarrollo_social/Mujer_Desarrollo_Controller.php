@@ -800,6 +800,14 @@ class Mujer_Desarrollo_Controller extends Controller
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                 'id',id,
+                                'cod_catastral',cod_catastral,
+                                'numero',numero,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'nro_alumnos',nro_alumnos,
+                                'cen_edu_l',cen_edu_l,
+                                'persona',persona,
+                                'pers_nro_doc',pers_nro_doc,
+                                'descripcion',descripcion,
                                 'direccion',direccion
                              )
                           ) AS feature
@@ -831,6 +839,12 @@ class Mujer_Desarrollo_Controller extends Controller
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                 'id_ccultural',id_ccultural,
+                                'nombre',nombre,
+                                'cod_catastral',cod_catastral,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'descripcion',descripcion,
+                                'persona',persona,
+                                'pers_nro_doc',pers_nro_doc,
                                 'direccion',direccion
                              )
                           ) AS feature
@@ -862,6 +876,12 @@ class Mujer_Desarrollo_Controller extends Controller
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                 'id_cdeportivo',id_cdeportivo,
+                                'nombre',nombre,
+                                'cod_catastral',cod_catastral,
+                                'nomb_hab_urba',nomb_hab_urba,
+                                'descripcion',descripcion,
+                                'persona',persona,
+                                'pers_nro_doc',pers_nro_doc,
                                 'direccion',direccion
                              )
                           ) AS feature

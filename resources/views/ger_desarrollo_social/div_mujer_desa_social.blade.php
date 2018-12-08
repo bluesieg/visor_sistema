@@ -8,7 +8,7 @@
                     <header>
                             <span class="widget-icon"> <i class="fa fa-info"></i> </span>
                             <input id="hidden_id_ciam" name="hidden_inp_ciam" type="hidden" class="form-control" style="height: 30px;" >
-                            <h2>Ingresar Información de Persona::..</h2>
+                            <h2> Información de Persona::..</h2>
                     </header>
                 </div>
             </section>    
@@ -44,7 +44,7 @@
                 <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px;"  >
                     <header>
                             <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                            <h2>Ingresar Información de Ubicación::..</h2>
+                            <h2> Información de Ubicación::..</h2>
                     </header>
                 </div>
             </section> 
@@ -667,3 +667,299 @@
     </div>            
 </div> 
 
+<div id="dlg_mapa_colegio" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2>Información de Colegio::..</h2>
+                    </header>
+                </div>
+            </section>  
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">NOMBRE : &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                       
+                        <label id="inp_nombre" name="inp_nombre" type="text" class="form-control text-uppercase" style="height: 30px;" maxlength="150" >
+                    </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top:5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DIRECIÓN: &nbsp;<i class="fa fa-location-arrow"></i></span>
+                    <div>
+                        <label id="inp_direccion" type="text" name="inp_direccion" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                    </label>
+                    </div>
+                </div>
+            </div>                        
+            <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">N°. COLEGIO: &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div> 
+                        <label id="inp_nro_colegio" name="inp_nro_colegio" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                    </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4" style="padding: 0px; margin-top: 10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 150px">N°. ALUMNOS: &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div> 
+                        <label id="inp_nro_alumnos" name="inp_nro_alumnos" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                    </label>
+                    </div>
+                </div>
+            </div>            
+           
+            <div class="col-xs-4" style="margin-top: 10px;padding: 0px; margin-bottom: 10px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 150px">TIPO: &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="sel_tipo_colegio" name="inp_nro_alumnos" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+</label>
+                    </div>
+                </div>
+            </div>                      
+            </div>  
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-bottom: 10px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2>Información de Propietario::..</h2>
+                    </header>
+                </div>
+            </section>    
+             <div class="col-xs-5" style="padding: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DNI PROPIETARIO: &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div> 
+                        <label id="inp_dni_propietario" name="inp_dni_propietario" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                   </label>
+                    </div>
+                </div>
+            </div>  
+            <div class="col-xs-7" style="padding: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">PROPIETARIO: &nbsp;<i class="fa fa-user"></i></span>
+                    <div> 
+                        <label id="inp_propietario" name="inp_propietario" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                    </label>
+                    </div>
+                </div>
+            </div>  
+            </div> 
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2>Información de ubicación::..</h2>
+                    </header>
+                </div>
+            </section>    
+             <div class="col-xs-9" style="padding: 0px; margin-top:0px;">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">COD. CATASTRAL : &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="inp_cod_catastral_colegio" name="inp_cod_catastral_colegio" type="text" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                    </label>
+                    </div>
+                </div>
+            </div> 
+               
+                        
+        </div>
+    </div>
+</div>
+<div id="dlg_mapa_ccultural" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2> Información de Centro Cultural::..</h2>
+                    </header>
+                </div>
+            </section>  
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">NOMBRE : &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="inp_nombre_ccultural" name="inp_nombre_ccultural" type="text" class="form-control text-uppercase" style="height: 30px;" maxlength="150" >
+                    </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top:5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DIRECIÓN: &nbsp;<i class="fa fa-location-arrow"></i></span>
+                    <div>
+                        <label id="inp_direccion_ccultural" type="text" name="inp_direccion_ccultural" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                   </label>
+                    </div>
+                </div>
+            </div>                        
+            
+            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; margin-bottom: 10px">
+                <div class="input-group input-group-md" style="width: 180%">
+                    <span class="input-group-addon" style="width: 180px">TIPO: &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="sel_tipo_ccultural" type="text" name="inp_direccion_ccultural" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                   </label>
+                    </div>
+                </div>
+            </div>                      
+            </div>  
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-bottom: 10px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2> Información de Propietario::..</h2>
+                    </header>
+                </div>
+            </section>    
+             <div class="col-xs-5" style="padding: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DNI PROPIETARIO: &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div> 
+                        <label id="inp_dni_propietario_ccultural" name="inp_dni_propietario_ccultural" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                    </label>
+                    </div>
+                </div>
+            </div>  
+            <div class="col-xs-7" style="padding: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">PROPIETARIO: &nbsp;<i class="fa fa-user"></i></span>
+                    <div> 
+                        <label id="inp_propietario_ccultural" name="inp_propietario_ccultural" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                   </label>
+                    </div>
+                </div>
+            </div>  
+            </div> 
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2>Información de ubicación::..</h2>
+                    </header>
+                </div>
+            </section>    
+             <div class="col-xs-9" style="padding: 0px; margin-top:0px;">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">COD. CATASTRAL : &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="inp_cod_catastral_ccultural" name="inp_cod_catastral_ccultural" type="text" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                   </label>
+                    </div>
+                </div>
+            </div> 
+                
+            </div> 
+            
+        </div>
+    </div>
+</div>
+<div id="dlg_mapa_cdeportivo" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2> Información de Centro Deportivo::..</h2>
+                    </header>
+                </div>
+            </section>  
+            <div class="col-xs-12" style="padding: 0px; margin-top:10px;">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">NOMBRE : &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="inp_nombre_cdeportivo" name="inp_nombre_cdeportivo" type="text" class="form-control text-uppercase" style="height: 30px;" maxlength="150" >
+                    </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding: 0px; margin-top:5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DIRECIÓN: &nbsp;<i class="fa fa-location-arrow"></i></span>
+                    <div>
+                        <label id="inp_direccion_cdeportivo" type="text" name="inp_direccion_cdeportivo" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                   </label>
+                    </div>
+                </div>
+            </div>                        
+            
+            <div class="col-xs-12" style="margin-top: 10px;padding: 0px; margin-bottom: 10px">
+                <div class="input-group input-group-md" style="width: 180%">
+                    <span class="input-group-addon" style="width: 180px">TIPO: &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="sel_tipo_cdeportivo" type="text" name="inp_direccion_cdeportivo" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                  </label>
+                    </div>
+                </div>
+            </div>                      
+            </div>  
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-bottom: 10px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 10px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2> Información de Propietario::..</h2>
+                    </header>
+                </div>
+            </section>    
+             <div class="col-xs-5" style="padding: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">DNI PROPIETARIO: &nbsp;<i class="fa fa-hashtag"></i></span>
+                    <div> 
+                        <label id="inp_dni_propietario_cdeportivo" name="inp_dni_propietario_cdeportivo" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                    </label>
+                    </div>
+                </div>
+            </div>  
+            <div class="col-xs-7" style="padding: 0px; margin-top: 5px">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">PROPIETARIO: &nbsp;<i class="fa fa-user"></i></span>
+                    <div> 
+                        <label id="inp_propietario_cdeportivo" name="inp_propietario_cdeportivo" type="text" class="form-control" style="height: 30px;" maxlength="9" onkeypress="return soloNumeroTab(event);">
+                    </label>
+                    </div>
+                </div>
+            </div>  
+            </div> 
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+            <section>
+                <div class="jarviswidget jarviswidget-color-blue" style="margin-bottom: 15px;"  >
+                    <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2> Información de ubicación::..</h2>
+                    </header>
+                </div>
+            </section>    
+             <div class="col-xs-9" style="padding: 0px; margin-top:0px;">
+                <div class="input-group input-group-md" style="width: 100%">
+                    <span class="input-group-addon" style="width: 180px">COD. CATASTRAL : &nbsp;<i class="fa fa-home"></i></span>
+                    <div>
+                        <label id="inp_cod_catastral_cdeportivo" name="inp_cod_catastral_cdeportivo" type="text" class="form-control text-uppercase" maxlength="150" style="height: 30px;"  >
+                    </label>
+                    </div>
+                </div>
+            </div> 
+                
+            </div> 
+        </div>
+    </div>
+</div>
