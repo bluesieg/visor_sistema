@@ -587,9 +587,33 @@ map.on('singleclick', function(evt) {
     if(inicio_coordenadas==1)
     {
         //alert(evt.coordinate);
-        alert(ol.proj.toLonLat(evt.coordinate));
+        //ol.proj.toLonLat(evt.coordinate)
+        $('#dlg_coordenadas').html("");
+        crear_dlg('dlg_coordenadas',500,'Coordenadas');
+        lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+        coordendas_utm(lonlat[0],lonlat[1]);
     }
 });
+function coordendas_utm(lon,lat)
+{
+    
+    $.ajax({ url: 'mapa_cris/0?grid=utm',
+    type: 'GET',
+    data:{lon:lon,lat:lat},
+    success: function(r) 
+    {
+        $('#dlg_coordenadas').html("<label style='with:100px'>Lon lat:</label>"+lon+" "+lat+"<br><br>\n\
+                                    <label style='with:100px'>Coordenadas Utm :</label>"+r[0].utm_x+" "+r[0].utm_y);
+
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_edit_ruta');
+    }
+    }); 
+}
 
 
 function crear_grilla_constancias()
@@ -6069,7 +6093,6 @@ function iniciar_coordenadas()
         $("#btn_coordenadas").removeClass("bg-color-blueLight");
         $("#btn_coordenadas").addClass("bg-color-blue");
         inicio_coordenadas=0;
-        
     }
     
 }

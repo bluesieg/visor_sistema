@@ -22,6 +22,24 @@ class MapaController extends Controller
         $anio_tra = DB::connection('pgsql')->select('select anio from adm_tri.uit order by anio desc');
         return view('cartografia/mapa_cris', compact('sectores','anio_tra','menu','permisos'));
     }
+    public function show($id, Request $request)
+    {
+        
+        if($id==0&&$request['grid']=="utm")
+        {
+            return $this->get_utm($request);
+        }
+    }
+    function get_utm(Request $request)
+    {
+       
+       return DB::connection('gerencia_catastro')->select("SELECT ST_x(ST_Transform(ST_GeomFromText('POINT(".$request['lon']." ".$request['lat'].")',4326),
+       32630))::numeric(16,3) As utm_x,
+       ST_y(ST_Transform(ST_GeomFromText('POINT(".$request['lon']." ".$request['lat'].")',4326),
+       32630))::numeric(16,3) As utm_y");
+
+    }
+    
     function get_limites(){
 
         $limites =  DB::connection('pgsql')->select("SELECT json_build_object(

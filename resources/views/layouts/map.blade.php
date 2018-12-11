@@ -172,10 +172,10 @@
                                         <div class="panel-group smart-accordion-default" id="accordion-3">
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#zon_terri"> 
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-zon_terri"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
                                                             <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Zonas Territoriales </a>
+                                                            Unidades Territoriales </a>
                                                     </h4>
                                                 </div>
                                                 <div id="collapseOne-sub-zon_terri" class="panel-collapse cr_toogle collapse">
@@ -187,7 +187,54 @@
                                                         <!--end widget edit box 
 
                                                             widget content -->
-                                                           
+                                                           <div class="widget-body">
+
+                                                               <div class="tree smart-form" style="color:white !important">
+                                                                    <ul >
+
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_ut_1" onchange="valida_capa('chk_ut_1')"/>
+
+                                                                                        <i></i>
+                                                                                        Unidad Territorial 1
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_ut_2" onchange="valida_capa('chk_ut_2')"/>
+
+                                                                                        <i></i>
+                                                                                        Unidad Territorial 2
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_ut_3" onchange="valida_capa('chk_ut_3')"/>
+
+                                                                                        <i></i>
+                                                                                        Unidad Territorial 3
+                                                                                </span>
+                                                                            </li>
+                                                                            <li >
+                                                                                <span style="width: 160px;">
+                                                                                    <label class="checkbox inline-block" style="color:white !important">
+                                                                                        <input type="checkbox" name="checkbox-inline" id="chk_ut_4" onchange="valida_capa('chk_ut_4')"/>
+
+                                                                                        <i></i>
+                                                                                        Unidad Territorial 4
+                                                                                </span>
+                                                                            </li>
+                                                                           
+
+
+                                                                    </ul>
+                                                                   
+                                                              </div>
+                                                           </div>
                                                         <!--end widget content -->
                                                         </div>
                                                     
@@ -196,7 +243,9 @@
                                             </div>
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-1"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> Zonas Distritales </a></h4>
+                                                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-3" class="collapsed" href="#collapseOne-sub-1"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+                                                            Zonas Distritales </a>
+                                                    </h4>
                                                 </div>
                                                 <div id="collapseOne-sub-1" class="panel-collapse cr_toogle collapse">
                                                     <div class="panel-body" style="padding-left: 30px" >
@@ -518,36 +567,10 @@
                                                 </div>
                                             </div>
                                             <!-- fin option-->
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-predios_mun" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Predios Municipales 
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_sub-predios_mun" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           
-                                                        <!--end widget content -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- fin option-->
+                                            
                                             <!--option-->
                                                 <div class="panel panel-default" style="background:  transparent;">
-                                                <div class="panel-heading" style="background: #2471A3; color: white">
+                                                <div class="panel-heading" style="background: transparent; color: white">
 
                                                     <h4 class="panel-title"><a data-toggle="collapse" href="#collapse_plan">
                                                             <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -622,7 +645,7 @@
                                             <!-- fin option-->
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  #2471A3; color: white;">
+                                                <div class="panel-heading" style=" background:  transparent; color: white;">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse" data-parent="#accordion-3" href="#collapse_licencias_edificacion" class="collapsed"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -699,7 +722,7 @@
                                             <!-- fin option-->
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  #2471A3; color: white;">
+                                                <div class="panel-heading" style=" background:  transparent; color: white;">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse" data-parent="#accordion-3" href="#collapse_hab_urbana" class="collapsed"> 
                                                             <i class="fa fa-fw fa-plus-circle txt-color-white"></i> 
@@ -751,50 +774,7 @@
                                                 
                                             </div>
                                             <!-- fin option-->
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-espa_publi" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Sub Ge. Cat. y espacios Publicos
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_sub-espa_publi" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                  <ul >
-                                                                        <li >
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_fiscalizacion" onchange="">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #6666ff; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Fiscalización
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                       
-                                                                  </ul>
-                                                              </div>
-                                                           </div>
-                                                        <!--end widget content -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- fin option-->
+                                            
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">
@@ -948,50 +928,7 @@
                                                 </div>
                                             </div>
                                             <!-- fin option-->
-                                            <!--option-->
-                                            <div class="panel panel-default" style="background: transparent">
-                                                <div class="panel-heading" style=" background:  transparent;color: white;">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion-3" href="#collapseTwo_sub-extrac_mat" class="collapsed"> 
-                                                            <i class="fa fa-fw fa-plus-circle txt-color-green"></i> 
-                                                            <i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-                                                            Extracción de Materiales 
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo_sub-extrac_mat" class="panel-collapse collapse cr_toogle">
-                                                    <div class="panel-body" style="padding-left: 30px" >
-                                                        <div>
-                                                        <!--widget edit box -->
-                                                            <div class="jarviswidget-editbox">
-                                                            </div>
-                                                        <!--end widget edit box 
-
-                                                            widget content -->
-                                                           <div class="widget-body">
-
-                                                               <div class="tree smart-form" style="color:white !important">
-                                                                  <ul >
-                                                                      
-                                                                        <li>
-                                                                            <span style="width: 160px;">
-                                                                                <label class="checkbox inline-block" style="color:white !important">
-                                                                                    <input type="checkbox" name="checkbox-inline" id="chk_ext_mat" onchange="valida_capa('chk_ext_mat')">
-                                                                                    <i></i>
-                                                                                    <span style="background-color: #09EAD9; width: 5px !important ; height: 5px !important;"></span>
-                                                                                    Extracción de Materiales
-                                                                                </label> 
-                                                                            </span>
-                                                                        </li>
-                                                                  </ul>
-                                                              </div>
-                                                           </div>
-                                                        <!--end widget content -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- fin option-->
+                                            
                                             <!--option-->
                                             <div class="panel panel-default" style="background: transparent">
                                                 <div class="panel-heading" style=" background:  transparent;color: white;">

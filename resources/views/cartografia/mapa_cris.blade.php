@@ -1548,6 +1548,9 @@
         </button>
     </div>
 </div>
+<div id="dlg_coordenadas" style="display: none;">
+    
+</div>
 
 @include('procuraduria.div_procuraduria')
 @include('gerencia_seg_ciud.div_comisaria')

@@ -384,7 +384,7 @@ class PredioController extends Controller
     {
         if($request['tipo_consulta']==1)
         {
-            $lote = DB::select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");
+            $lote = DB::connection('pgsql')->select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");
         }
         if($request['tipo_consulta']==2)
         {
